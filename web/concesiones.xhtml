@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Lista de Derechos Mineros"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                <h:panelGrid columns="3">
+                    <h:panelGrid columns="3">
+                        <h:panelGrid columns="1" >
+                            <p:outputLabel value="Código:"/>
+                            <p:inputText value="#{coordenadaCtrl.codigoFiltro}"/>
+                            <p:spacer height="10"/>
+                        </h:panelGrid>
+                        <p:spacer width="20"/>
+                        <h:commandButton actionListener="#{coordenadaCtrl.buscar}" image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar"/>
+                    </h:panelGrid>
+                    
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 80%"/>
+                    
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Inicio"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+                
+                <!--
+                <h1 class="titulo_centrado">Lista de Concesiones Mineras - Regional #{concesionMineraCtrl.login.regional}</h1>
+                -->
+                
+                <h1 class="titulo_centrado">Lista de Concesiones Mineras</h1>
+                
+                <p:dataTable id="amdt" var="reg" value="#{coordenadaCtrl.concesiones}" paginator="true"
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" rowIndexVar="rowIndex"
+                             emptyMessage="No existen registros" rows="10">
+
+                    <p:column headerText="#" style="width: 25px">
+                        <h:outputText value="#{rowIndex + 1}"/>
+                    </p:column>
+
+                    <p:column headerText="CODIGO" style="width: 85px; text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" value="#{reg.codigoArcom}" />
+                    </p:column>
+
+                    <p:column headerText="NOMBRE">
+                        <h:outputText value="#{reg.nombreConcesion}" />
+                    </p:column>
+
+                    <p:column headerText="CASILLERO JUDICIAL" style="width: 100px; text-align: right">
+                        <h:outputText value="#{reg.casilleroJudicial}" />
+                    </p:column>
+
+                    <p:column headerText="ESTADO" width="200">
+                        <h:outputText value="#{reg.estadoConcesion.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="REGIONAL" style="width: 85px">
+                        <h:outputText value="#{reg.codigoRegional.ciudadRegional}" />
+                    </p:column>
+                    
+                    <p:column headerText="PROVINCIA" style="width: 85px">
+                        <h:outputText value="#{coordenadaCtrl.cargarLocalidad(reg.codigoProvincia)}" />
+                    </p:column>
+
+                    <p:column headerText="CANTÓN" style="width: 85px">
+                        <h:outputText value="#{coordenadaCtrl.cargarLocalidad(reg.codigoCanton)}" />
+                    </p:column>
+
+                    <p:column headerText="PARROQUIA">
+                        <h:outputText value="#{coordenadaCtrl.cargarLocalidad(reg.codigoParroquia)}" />
+                    </p:column>
+
+                    <p:column headerText="EDITAR" style="width:37px; text-align: right">
+                        <p:commandButton action="#{coordenadaCtrl.editAction(rowIndex)}" icon="ui-icon-pencil" title="Editar" ajax="false"></p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

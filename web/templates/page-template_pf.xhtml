@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!--    <f:view contentType="text/html" locale="es">-->
+    <!--   <f:loadBundle var= "msgs" basename= "messages_es" />
+    -->
+    <h:head>
+        <title><ui:insert name="title">Agencia de Regulación y Control Minero</ui:insert></title>
+        <h:outputStylesheet library="css" name="reset.css"/>
+        <h:outputStylesheet library="css" name="global_css.css"/>
+        <h:outputStylesheet name="css/style.css"/>
+        <h:outputScript name="js/migracion.js"/>
+        <h:outputScript library="js" name="CalendarEs.js" />
+
+
+    </h:head>
+    <h:body>
+
+        <div id="container">
+            <ui:insert name="header">
+                <ui:include src="/templates/header.xhtml" />
+            </ui:insert>
+            <ui:include src="/templates/timeOut.xhtml" />
+
+            <p:messages globalOnly="true" id="msgs"/> 
+            <ui:insert name="popUp"></ui:insert>
+
+            <p:ajaxStatus onstart="PF('statusDialog').show()" 
+                          onsuccess="PF('statusDialog').hide()" />
+
+            <p:dialog id="statusDialog" 
+                      modal="true"
+                      widgetVar="statusDialog"
+                      header="Espere por favor..."   
+                      draggable="false"
+                      closable="true" resizable="false">  
+                <h:graphicImage library="_images/general" name="ajaxloadingbar.gif" />
+
+            </p:dialog> 
+            <div id="panelBase">
+                <ui:insert name="content" id="contenido"/>                                
+            </div>
+
+            <div id="footer">
+                <ui:insert name="footer">
+                    <ui:include src="/templates/footer.xhtml"/>
+                </ui:insert>
+            </div>
+
+        </div>
+    </h:body>
+    <!--    </f:view>-->
+</html>

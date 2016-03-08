@@ -1,0 +1,596 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Actualización de Datos"/>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="form">
+
+                <p:growl id="growl" showDetail="true" showSummary="false" life="8000" autoUpdate="true"/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 80%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="autogestion?faces-redirect=true" title="Volver" styleClass="boton_salir" immediate="true">
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/back57.png" title="Volver" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Volver"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+                <h2 class="titulo_centrado" style="width: 55.5%;position: relative;right: -299px;">AUTOGESTION</h2>
+                <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                    <f:facet name="header">
+                        <h:panelGroup style="display:block; text-align:center">
+                            <p:outputLabel value="DATOS DE AUTOGESTION"/>
+                        </h:panelGroup>
+                    </f:facet>
+
+                    <p:outputLabel for="tipServ" value="Tipo de servicio:"></p:outputLabel>
+                    <p:selectOneMenu id="tipServ" value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoTipoServicio.codigoCatalogoDetalle}" 
+                                     required="true" requiredMessage="Tipo servicio es requerido" style="width: 93%">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{registroPagoObligacionesCtrl.tipoServicios}" />
+                        <p:ajax listener="#{registroPagoObligacionesCtrl.cargarConceptosPago}" update="conPago valorRef" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="conPago" value="Concepto pago:"></p:outputLabel>
+                    <p:selectOneMenu id="conPago" 
+                                     value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoConceptoPago.codigoConceptoPago}" 
+                                     required="true" requiredMessage="Concepto pago es requerido" style="width: 93%">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{registroPagoObligacionesCtrl.conceptosPago}" />
+                        <f:ajax listener="#{registroPagoObligacionesCtrl.obtenerValorConceptoPago}" render="valorRef"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="valorRef" value="Valor concepto pago:"></p:outputLabel>
+                    <p:inputText id="valorRef" 
+                                 value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.valorReferenciaEntregaImpresa}"
+                                 readonly="true" required="true" requiredMessage="Valor concepto pago requerido"/>
+
+                    <p:outputLabel for="numDep" value="Número depósito:"></p:outputLabel>
+                    <p:inputMask id="numDep" mask="9?9999999" 
+                                 value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.numeroComprobanteBanco}" 
+                                 size="50" placeHolder=""
+                                 maxlength="8" required="true" requiredMessage="Número documento requerido">
+                    </p:inputMask>
+
+                    <p:outputLabel for="valorPago" value="Valor pago:"></p:outputLabel>
+                    <p:inputText id="valorPago" value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.valorPagadoUsuario}"
+                                 required="true" requiredMessage="Valor pago requerido"/>
+
+                    <p:outputLabel value="Generar Nro. comprobante?" 
+                                   rendered="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoRegistro == null}"/>
+                    <p:selectBooleanCheckbox value="#{registroPagoObligacionesCtrl.generacionComprobante}"
+                                             rendered="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoRegistro == null}"
+                                             disabled="true">
+                        <p:ajax update="numCompPago"/>
+                    </p:selectBooleanCheckbox>
+
+                    <p:outputLabel for="numCompPago" value="Nro. comprobante:"></p:outputLabel>
+                    <p:inputText id="numCompPago" 
+                                 value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.numeroComprobanteArcom}"
+                                 readonly="#{registroPagoObligacionesCtrl.generacionComprobante}"
+                                 required="true" requiredMessage="Nro. comprobante requerido"/>
+
+                    <p:outputLabel value="Aplica cantidad?"/>
+                    <p:selectBooleanCheckbox value="#{registroPagoObligacionesCtrl.aplicaCantidad}">
+                        <p:ajax update="panelCant1 panelCant2"/>
+                    </p:selectBooleanCheckbox>
+
+                    <h:panelGroup id="panelCant1">
+                        <p:outputLabel for="cant" value="Cantidad:"
+                                       rendered="#{registroPagoObligacionesCtrl.aplicaCantidad}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup id="panelCant2">
+                        <p:inputText id="cant" 
+                                     value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.cantidad}" 
+                                     rendered="#{registroPagoObligacionesCtrl.aplicaCantidad}" required="true"
+                                     requiredMessage="Cantidad requerida"/>
+                    </h:panelGroup>
+
+                    <p:outputLabel for="entBanc" value="Entidad bancaria:"></p:outputLabel>
+                    <p:selectOneMenu id="entBanc"
+                                     value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoBanco.codigoCatalogoDetalle}" 
+                                     style="width: 93%" required="true" requiredMessage="Entidad bancaria requerida">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{selectItemCtrl.entidadesBancarias}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Fecha creación:" rendered="false"></p:outputLabel>
+                    <p:calendar id="fecCreacion" readonlyInput="true" placeholder="aaaa-mm-dd" navigator="true"
+                                value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.fechaCreacion}"  
+                                locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" rendered="false"/>
+
+                    <p:outputLabel for="fecDep" value="Fecha depósito:"></p:outputLabel>
+                    <p:calendar id="fecDep" readonlyInput="true" placeholder="aaaa-mm-dd" navigator="true"
+                                value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.fechaEmisionPago}"  
+                                locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
+                                required="true" requiredMessage="Fecha depósito requerida"/>
+
+                    <p:outputLabel for="lugDep" value="Lugar depósito:"/>
+                    <p:selectOneMenu id="lugDep" 
+                                     value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.lugarEmisionPago.codigoLocalidad}" 
+                                     style="width: 93%"
+                                     required="true"
+                                     requiredMessage="Lugar depósito requerido">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{registroPagoObligacionesCtrl.provincias}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="tipRegistro" value="Tipo de derecho minero:"></p:outputLabel>
+                    <p:selectOneMenu id="tipRegistro" 
+                                     value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoTipoRegistro}" 
+                                     required="true" 
+                                     requiredMessage="Tipo de registro es requerido" 
+                                     style="width: 93%">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{selectItemCtrl.tiposSolicitud}" />
+                        <p:ajax listener="#{registroPagoObligacionesCtrl.cambiarPopUp}" 
+                                update="panelCodigo panelCodigo2 panelDerechosMineros botones" />
+                    </p:selectOneMenu>
+
+                    <h:panelGroup id="panelCodigo">
+                        <p:outputLabel value="Código derecho minero:" 
+                                       rendered="#{!registroPagoObligacionesCtrl.sujetoMinero and registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoTipoRegistro != 1000}"/>
+                    </h:panelGroup>
+
+                    <h:panelGrid id="panelDerechosMineros" columns="2" width="95%">
+                        <p:dataTable id="derechosMinerosTable" var="reg" value="#{registroPagoObligacionesCtrl.derechosMineros}" 
+                                     styleClass="texto_tabla_datos" rowIndexVar="rowIndex" emptyMessage="No existen registros" style="width: 95%"
+                                     rendered="#{!registroPagoObligacionesCtrl.sujetoMinero}" >
+                            <p:column headerText="#" style="width: 25px">
+                                <h:outputText value="#{rowIndex + 1}"/>
+                            </p:column>
+                            <p:column headerText="Código" >
+                                <h:outputText value="#{reg.codigo}"/>
+                            </p:column>
+                            <p:column headerText="Tipo Derecho Minero" >
+                                <h:outputText value="#{reg.tipoDerechoMinero}"/>
+                            </p:column>
+                            <p:column headerText="Valor Pago" >
+                                <h:outputText value="#{reg.valorPagoDerechoMinero}"/>
+                            </p:column>
+                            <p:column headerText="Eliminar" >
+                                <p:commandLink action="#{registroPagoObligacionesCtrl.eliminarDerechoMinero}"
+                                               title="Eliminar" immediate="true" update="derechosMinerosTable">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/delete.png" title="Eliminar" style="width: 25px; height: 25px" />
+                                    </h:panelGrid>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                        <h:panelGrid id="panelCodigo2" columns="2">
+                            <p:commandLink id="botonBusquedaCodigo" onclick="PF('dlgBusqCod').show();" 
+                                           title="Añadir Derecho Minero" immediate="true" style="position: absolute"
+                                           rendered="#{!registroPagoObligacionesCtrl.sujetoMinero and registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoTipoRegistro != 1000}">
+                                <h:panelGrid style="text-align:center">
+                                    <h:graphicImage value="resources/images/plus.png" title="Buscar código" style="width: 30px; height: 30px"/>
+                                </h:panelGrid>
+                                <f:ajax execute="tipRegistro"/>
+                            </p:commandLink>
+                        </h:panelGrid>
+                    </h:panelGrid>
+
+                    <p:outputLabel for="cedOtServ" value="Cédula titular:"></p:outputLabel>
+                    <h:panelGrid id="panelCedula" columns="2">
+                        <p:inputText id="cedOtServ" 
+                                     value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.documentoPersonaPago}"
+                                     required="true" requiredMessage="Cédula titular requerido"
+                                     readonly="#{facesContext.renderResponse}"/>
+                        <h:panelGroup id="botones">
+                            <p:commandLink id="botonBusquedaSujMin" onclick="PF('dlgBusqSujMin').show();" 
+                                           title="Buscar Sujeto Minero" immediate="true" 
+                                           rendered="#{registroPagoObligacionesCtrl.sujetoMinero and registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoTipoRegistro == 100}">
+                                <h:panelGrid style="text-align:center">
+                                    <h:graphicImage value="resources/images/persona.png" title="Buscar Sujeto Minero" style="width: 40px; height: 40px"/>
+                                </h:panelGrid>
+                                <f:ajax execute="tipRegistro"/>
+                            </p:commandLink>
+                            <p:commandLink id="botonBusquedaPersona" onclick="PF('dlgBusqPersona').show();" 
+                                           title="Buscar Persona" immediate="true" 
+                                           rendered="#{!registroPagoObligacionesCtrl.sujetoMinero or registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoTipoRegistro == 1000}">
+                                <h:panelGrid style="text-align:center">
+                                    <h:graphicImage value="resources/images/persona.png" title="Buscar Persona" style="width: 40px; height: 40px"/>
+                                </h:panelGrid>
+                                <f:ajax execute="tipRegistro"/>
+                            </p:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:outputLabel value="Nombre titular:"></p:outputLabel>
+                    <p:inputText id="nomOtServ" value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.nombrePersonaPago}"
+                                 readonly="true"/>
+
+                    <p:outputLabel value="Apellido titular:"></p:outputLabel>
+                    <p:inputText id="apOtServ" value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.apellidoPersonaPago}"
+                                 readonly="true"/>
+
+                    <h:outputText value="Observación económico:" />
+                    <p:inputTextarea value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.observacionAnalistaEconomico}"
+                                     cols="52" maxlength="500"/>
+
+                    <f:facet name="footer">
+                        <h:panelGroup style="display:block; text-align:center">
+                            <p:commandButton value="Guardar" action="#{registroPagoObligacionesCtrl.guardarRegistroAutoGestion}" update="growl" ></p:commandButton>
+                            <p:commandButton value="Cancelar" action="autogestion.xhtml?faces-redirect=true" immediate="true" update="growl" ></p:commandButton>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+            <p:dialog header="Persona Natural" widgetVar="dlgPerNat" modal="true" dynamic="true" resizable="false" draggable="false">
+                <h:form id="form4">
+                    <p:growl id="message4" showDetail="true" autoUpdate="true"/>
+                    <div align="center">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Cédula/RUC titular:" />
+                            <p:inputMask id="numDoc" mask="9?999999999" value="#{licenciaComercializacionCtrl.personaNatural.numeroDocumento}" 
+                                         size="50" placeHolder=""
+                                         maxlength="10" required="true" requiredMessage="Cédula/RUC requerido"  >
+                                <p:ajax event="blur" update="@form" listener="#{licenciaComercializacionCtrl.validarCedulaPersonaNatural}"  />
+                            </p:inputMask>
+                            <p:outputLabel value="Nombres del titular:"></p:outputLabel>
+                            <p:inputText value="#{licenciaComercializacionCtrl.personaNatural.nombre}" required="true" requiredMessage="Nombres titular es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel value="Apellidos del titular:"></p:outputLabel>
+                            <p:inputText value="#{licenciaComercializacionCtrl.personaNatural.apellido}" required="true" requiredMessage="Nombres titular es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel value="Teléfono celular:"></p:outputLabel>
+                            <p:inputMask mask="9?999999999" value="#{licenciaComercializacionCtrl.personaNatural.celular}" size="50" placeholder=""
+                                         validatorMessage="Teléfono celular debe tener 10 dígitos" >
+                                <f:validateLength minimum="10" maximum="10" />
+                            </p:inputMask>
+
+                            <p:outputLabel value="Teléfono convencional:"></p:outputLabel>
+                            <p:inputMask mask="9?99999999" value="#{licenciaComercializacionCtrl.personaNatural.telefono}" size="50" placeholder=""
+                                         validatorMessage="Teléfono convencional debe tener 9 dígitos">
+                                <f:validateLength minimum="9" maximum="9" />
+                            </p:inputMask>
+
+                            <p:outputLabel value="Casillero judicial:"></p:outputLabel>
+                            <p:inputMask mask="9?99999999999" value="#{licenciaComercializacionCtrl.personaNatural.casilleroJudicial}" size="50" placeHolder=""
+                                         maxlength="12" required="true" requiredMessage="Casillero judicial requerido" />
+
+                            <p:outputLabel value="Dirección:"></p:outputLabel>
+                            <p:inputText size="50" value="#{licenciaComercializacionCtrl.personaNatural.direccion}" required="true" requiredMessage="Dirección es requerida" maxlength="90"></p:inputText>
+
+                            <p:outputLabel value="Correo electrónico:"></p:outputLabel>
+                            <p:inputText size="50" value="#{licenciaComercializacionCtrl.personaNatural.email}" required="true" requiredMessage="Correo electrónico es requerido"
+                                         validatorMessage="Correo electrónico inválido" label="Correo electrónico" maxlength="50">
+                                <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                        </h:panelGrid>
+                        <p:spacer/>
+                        <h:panelGroup>
+                            <h:panelGrid style="text-align:center" columns="2">
+                                <p:commandLink actionListener="#{licenciaComercializacionCtrl.guardarPersonaNatural}" title="Guardar" 
+                                               update=":form:nomTit :form:apTit :form:email :form:numDoc">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Guardar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <p:commandLink onclick="PF('dlgPerNat').hide();" title="Cancelar" immediate="true">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Cancelar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </div>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Persona Jurídica" widgetVar="dlgPerJur" modal="true" dynamic="true" resizable="false" draggable="false">
+                <h:form id="form5">
+                    <p:growl id="message4" showDetail="true" autoUpdate="true"/>
+                    <div align="center">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Cédula/RUC titular:" />
+                            <p:inputMask id="numDoc" mask="9?999999999999" value="#{licenciaComercializacionCtrl.personaJuridica.ruc}" size="50" placeHolder=""
+                                         maxlength="13" required="true" requiredMessage="Cédula/RUC requerido"  >
+                                <p:ajax event="blur" update="@form" listener="#{licenciaComercializacionCtrl.validarCedulaPersonaJuridica}"  />
+                            </p:inputMask>
+                            <p:outputLabel value="Nombre legal:"></p:outputLabel>
+                            <p:inputText value="#{licenciaComercializacionCtrl.personaJuridica.nombreLegal}" required="true" requiredMessage="Nombre legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel value="Nombre comercial:"></p:outputLabel>
+                            <p:inputText value="#{licenciaComercializacionCtrl.personaJuridica.nombreComercial}" required="true" requiredMessage="Nombre comercial es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel value="Teléfono celular:"></p:outputLabel>
+                            <p:inputMask mask="9?999999999" value="#{licenciaComercializacionCtrl.personaJuridica.celular}" size="50" placeholder=""
+                                         validatorMessage="Teléfono celular debe tener 10 dígitos" >
+                                <f:validateLength minimum="10" maximum="10" />
+                            </p:inputMask>
+
+                            <p:outputLabel value="Teléfono convencional:"></p:outputLabel>
+                            <p:inputMask mask="9?99999999" value="#{licenciaComercializacionCtrl.personaJuridica.telefono}" size="50" placeholder=""
+                                         validatorMessage="Teléfono convencional debe tener 9 dígitos">
+                                <f:validateLength minimum="9" maximum="9" />
+                            </p:inputMask>
+
+                            <p:outputLabel value="Casillero judicial:"></p:outputLabel>
+                            <p:inputMask mask="9?99999999999" value="#{licenciaComercializacionCtrl.personaJuridica.casilleroJudicial}" size="50" placeHolder=""
+                                         maxlength="12" required="true" requiredMessage="Casillero judicial requerido" />
+
+                            <p:outputLabel value="Dirección:"></p:outputLabel>
+                            <p:inputText size="50" value="#{licenciaComercializacionCtrl.personaJuridica.direccion}" required="true" requiredMessage="Dirección es requerida" maxlength="90"></p:inputText>
+
+                            <p:outputLabel value="Correo electrónico:"></p:outputLabel>
+                            <p:inputText size="50" value="#{licenciaComercializacionCtrl.personaJuridica.email}" required="true" requiredMessage="Correo electrónico es requerido"
+                                         validatorMessage="Correo electrónico inválido" label="Correo electrónico" maxlength="50">
+                                <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                            <p:outputLabel value="Documento Rep. Legal:"></p:outputLabel>
+                            <p:inputMask id="numDoc2" mask="9?999999999999" value="#{licenciaComercializacionCtrl.personaJuridica.documentoRepresentanteLegal}" size="50" placeHolder=""
+                                         maxlength="13" required="true" requiredMessage="Cédula/RUC requerido" >
+                                <p:ajax event="blur" update="numDoc2" listener="#{licenciaComercializacionCtrl.validarCedulaRepresentanteLegal()}"  />
+                            </p:inputMask>
+                            <p:outputLabel value="Nombre Representante Legal:"></p:outputLabel>
+                            <p:inputText value="#{licenciaComercializacionCtrl.personaJuridica.nombreRepresentanteLegal}" required="true" requiredMessage="Nombre Rep. legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel value="Apellido Representante Legal:"></p:outputLabel>
+                            <p:inputText value="#{licenciaComercializacionCtrl.personaJuridica.apellidoRepresentanteLegal}" required="true" requiredMessage="Apellido Rep. legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+                        </h:panelGrid>
+                        <p:spacer/>
+                        <h:panelGroup>
+                            <h:panelGrid style="text-align:center" columns="2">
+                                <p:commandLink actionListener="#{licenciaComercializacionCtrl.guardarPersonaJuridica}" title="Guardar" 
+                                               update=":form:nomTit :form:apTit :form:email :form:numDoc">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Guardar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <p:commandLink onclick="PF('dlgPerJur').hide();" title="Cancelar" immediate="true">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Cancelar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </div>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Búsqueda de código" widgetVar="dlgBusqCod" modal="true" dynamic="true" resizable="false" draggable="true">
+                <h:form id="form6">
+                    <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Código:"/>
+                            <p:inputText id="codFiltro" value="#{registroPagoObligacionesCtrl.codigoFiltro}"/>
+                        </h:panelGrid>
+                        <p:commandButton actionListener="#{registroPagoObligacionesCtrl.buscarRegistro}" value="Buscar" title="Buscar" update="form6"/>
+                    </h:panelGrid>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <h:panelGroup id="panelRespuesta">
+                        <p:outputLabel value="No existen registros" rendered="#{registroPagoObligacionesCtrl.concesionMineraPopup == null 
+                                                                                and registroPagoObligacionesCtrl.licenciaComercializacionPopup == null 
+                                                                                and registroPagoObligacionesCtrl.plantaBeneficioPopup == null}" />
+                        <h:panelGrid columns="3" rendered="#{registroPagoObligacionesCtrl.concesionMineraPopup != null}">
+                            <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" style="width: 300px">
+                                <f:facet name="header">
+                                    <h:panelGroup style="display:block; text-align:center">
+                                        <p:outputLabel value="Registro Encontrado"/>
+                                    </h:panelGroup>
+                                </f:facet>
+                                <p:outputLabel value="Código:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.concesionMineraPopup.codigoArcom}" />
+                                <p:outputLabel value="Nombre Concecionario Principal:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.concesionMineraPopup.nombreConcesionarioPrincipal}" />
+                                <p:outputLabel value="Apellido Concecionario Principal:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.concesionMineraPopup.apellidoConcesionarioPrincipal}" />
+                                <p:outputLabel value="Nombre Concesión:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.concesionMineraPopup.nombreConcesion}" />
+                                <p:outputLabel value="Casillero Judicial:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.concesionMineraPopup.casilleroJudicial}" />
+                                <p:outputLabel value="Provincia:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.provincia.nombre}" />
+                                <p:outputLabel value="Cantón:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.canton.nombre}" />
+                                <p:outputLabel value="Parroquia:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.parroquia.nombre}" />
+                            </p:panelGrid>
+                            <h:panelGrid columns="1" style="position: relative; right: -22px">
+                                <p:outputLabel value="Valor Pago:"/>
+                                <pe:inputNumber id="valorPagoDerMin" thousandSeparator="," decimalSeparator="." decimalPlaces="2" 
+                                                maxValue="9999999999.99" value="#{registroPagoObligacionesCtrl.valorPagoDerechoMinero}" 
+                                                required="true" requiredMessage="Valor Pago es requerido"
+                                                style="width: 70%"/>
+                            </h:panelGrid>
+                            <h:commandButton actionListener="#{registroPagoObligacionesCtrl.seleccionarConcesion}"
+                                             value="Seleccionar"
+                                             title="Seleccionar"
+                                             style="position: relative; right: 0px" onclick="PF('dlgBusqCod').hide()">
+                                <f:ajax render=":form:derechosMinerosTable" execute="valorPagoDerMin"/>
+                            </h:commandButton>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3" rendered="#{registroPagoObligacionesCtrl.licenciaComercializacionPopup != null}">
+                            <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" style="width: 300px">
+                                <f:facet name="header">
+                                    <h:panelGroup style="display:block; text-align:center">
+                                        <p:outputLabel value="Registro Encontrado"/>
+                                    </h:panelGroup>
+                                </f:facet>
+                                <p:outputLabel value="Código:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.licenciaComercializacionPopup.codigoArcom}" />
+                                <p:outputLabel value="Nombre:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.licenciaComercializacionPopup.nombre}" />
+                                <p:outputLabel value="Apellido:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.licenciaComercializacionPopup.apellido}" />
+                                <p:outputLabel value="Tipo Licencia:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.licenciaComercializacionPopup.tipoLicencia.nombre}" />
+                                <p:outputLabel value="Casillero Judicial:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.licenciaComercializacionPopup.casilleroJudicial}" />
+                                <p:outputLabel value="Provincia:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.provincia.nombre}" />
+                                <p:outputLabel value="Cantón:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.canton.nombre}" />
+                                <p:outputLabel value="Parroquia:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.parroquia.nombre}" />
+                            </p:panelGrid>
+                            <h:panelGrid columns="1" style="position: relative; right: -22px">
+                                <p:outputLabel value="Valor Pago:"/>
+                                <pe:inputNumber id="valorPagoDerMin2" thousandSeparator="," decimalSeparator="." decimalPlaces="2" 
+                                                maxValue="9999999999.99" value="#{registroPagoObligacionesCtrl.valorPagoDerechoMinero}" 
+                                                required="true" requiredMessage="Valor Pago es requerido"
+                                                style="width: 70%"/>
+                            </h:panelGrid>
+                            <h:commandButton actionListener="#{registroPagoObligacionesCtrl.seleccionarLicencia}"
+                                             value="Seleccionar"
+                                             title="Seleccionar"
+                                             style="position: relative; right: 0px" onclick="PF('dlgBusqCod').hide()">
+                                <f:ajax render=":form:derechosMinerosTable" execute="valorPagoDerMin2"/>
+                            </h:commandButton>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3" rendered="#{registroPagoObligacionesCtrl.plantaBeneficioPopup != null}">
+                            <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" style="width: 300px">
+                                <f:facet name="header">
+                                    <h:panelGroup style="display:block; text-align:center">
+                                        <p:outputLabel value="Registro Encontrado"/>
+                                    </h:panelGroup>
+                                </f:facet>
+                                <p:outputLabel value="Código:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.plantaBeneficioPopup.codigoArcom}" />
+                                <p:outputLabel value="Nombre Rep. Legal:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.plantaBeneficioPopup.nombreRepresentanteLegal}" />
+                                <p:outputLabel value="Apellido Rep. Legal:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.plantaBeneficioPopup.apellidoRepresentanteLegal}" />
+                                <p:outputLabel value="Nombre Planta Beneficio:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.plantaBeneficioPopup.nombrePlantaBeneficio}" />
+                                <p:outputLabel value="Casillero Judicial:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.plantaBeneficioPopup.casilleroJudicial}" />
+                                <p:outputLabel value="Provincia:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.provincia.nombre}" />
+                                <p:outputLabel value="Cantón:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.canton.nombre}" />
+                                <p:outputLabel value="Parroquia:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.parroquia.nombre}" />
+                            </p:panelGrid>
+                            <h:panelGrid columns="1" style="position: relative; right: -22px">
+                                <p:outputLabel value="Valor Pago:"/>
+                                <pe:inputNumber id="valorPagoDerMin3" thousandSeparator="," decimalSeparator="." decimalPlaces="2" 
+                                                maxValue="9999999999.99" value="#{registroPagoObligacionesCtrl.valorPagoDerechoMinero}" 
+                                                required="true" requiredMessage="Valor Pago es requerido"
+                                                style="width: 70%"/>
+                            </h:panelGrid>
+                            <p:commandButton actionListener="#{registroPagoObligacionesCtrl.seleccionarPlanta}"
+                                             value="Seleccionar"
+                                             title="Seleccionar"
+                                             style="position: relative; right: 0px" onclick="PF('dlgBusqCod').hide()">
+                                <f:ajax render=":form:derechosMinerosTable" execute="valorPagoDerMin3"/>
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGroup> 
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Búsqueda de Sujeto Minero" widgetVar="dlgBusqSujMin" modal="true" dynamic="true" resizable="false" draggable="true">
+                <h:form id="form7">
+                    <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Identificación sujeto minero:"/>
+                            <p:inputText id="codFiltro" value="#{registroPagoObligacionesCtrl.identificacionSujetoMinero}"/>
+                        </h:panelGrid>
+                        <p:commandButton actionListener="#{registroPagoObligacionesCtrl.buscarSujetoMinero}" value="Buscar" style="width: 150px; height: 50px;" title="Buscar" update="form7"/>
+                    </h:panelGrid>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <h:panelGroup id="panelRespuesta">
+                        <p:outputLabel value="No existen registros" rendered="#{registroPagoObligacionesCtrl.sujetoMineroPopUp == null}" />
+                        <h:panelGrid columns="2" rendered="#{registroPagoObligacionesCtrl.sujetoMineroPopUp != null}">
+                            <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" >
+                                <f:facet name="header">
+                                    <h:panelGroup style="display:block; text-align:center">
+                                        <p:outputLabel value="Registro Encontrado"/>
+                                    </h:panelGroup>
+                                </f:facet>
+                                <p:outputLabel value="Número documento:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.sujetoMineroPopUp.numeroDocumento}" />
+                                <p:outputLabel value="Nombre Concecionario Principal:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.sujetoMineroPopUp.nombre}" />
+                                <p:outputLabel value="Apellido Concecionario Principal:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.sujetoMineroPopUp.email}" />
+                            </p:panelGrid>
+                            <h:commandButton actionListener="#{registroPagoObligacionesCtrl.seleccionarSujetoMinero}" image="resources/images/select.png" style="width: 150px; height: 150px;" title="Seleccionar">
+                                <p:ajax update=":form:panelCodigo2 :form:cedOtServ :form:nomOtServ :form:apOtServ" />
+                            </h:commandButton>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Búsqueda de Persona" widgetVar="dlgBusqPersona" modal="true" dynamic="true" resizable="false" draggable="true">
+                <h:form id="form8">
+                    <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Identificación persona:"/>
+                            <p:inputText id="identificacionFiltro" value="#{registroPagoObligacionesCtrl.numIdentificacionBusqueda}"/>
+                        </h:panelGrid>
+                        <p:commandButton actionListener="#{registroPagoObligacionesCtrl.buscarPersona}" value="Buscar" style="width: 150px; height: 50px;" title="Buscar" update="form8"/>
+                    </h:panelGrid>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <h:panelGroup id="panelRespuesta">
+                        <p:outputLabel value="No existen registros" rendered="#{registroPagoObligacionesCtrl.personaDto == null}" />
+                        <h:panelGrid columns="2" rendered="#{registroPagoObligacionesCtrl.personaDto != null}">
+                            <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" >
+                                <f:facet name="header">
+                                    <h:panelGroup style="display:block; text-align:center">
+                                        <p:outputLabel value="Registro Encontrado"/>
+                                    </h:panelGroup>
+                                </f:facet>
+                                <p:outputLabel value="Número documento:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.personaDto.identificacion}" />
+                                <p:outputLabel value="Nombres:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.personaDto.nombres}" />
+                                <p:outputLabel value="Apellidos:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.personaDto.apellidos}" />
+                                <p:outputLabel value="Dirección:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.personaDto.direccion}" />
+                                <p:outputLabel value="Teléfono:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.personaDto.telefono}" />
+                                <p:outputLabel value="Email:" />
+                                <p:outputLabel value="#{registroPagoObligacionesCtrl.personaDto.email}" />
+                            </p:panelGrid>
+                            <h:commandButton actionListener="#{registroPagoObligacionesCtrl.seleccionarPersona}" image="resources/images/select.png" style="width: 150px; height: 150px;" title="Seleccionar">
+                                <p:ajax update=":form:panelCodigo2 :form:cedOtServ :form:nomOtServ :form:apOtServ" />
+                            </h:commandButton>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+

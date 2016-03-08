@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/basetemplate.xhtml">
+    <ui:define name="title">
+        <h:outputText value="Seleccione una opción" />
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h:form>
+            <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+            <p:separator />
+            <h:panelGrid columns="2" styleClass="panel_grid_usuario">
+                <h:panelGrid columns="2" style="text-align: left">
+                    <p:outputLabel value="Bienvenido:"></p:outputLabel>
+                    <p:outputLabel value="#{loginCtrl.userName} - Regional #{loginCtrl.regional}" style="font-style: italic"></p:outputLabel>
+                </h:panelGrid>
+                <p:commandButton value="Salir" icon="ui-icon-extlink" action="#{loginCtrl.logoutAction()}" styleClass="boton_salir" style="text-align: right; right: -70%;"/>
+            </h:panelGrid>
+            <p:separator />
+            <div align="center">
+                <h:panelGrid columns="4" columnClasses="columnHome,columnHome,columnHome,columnHome" rowClasses="centrado, centrado">
+                    <h:commandLink action="web/concesionesmineras?faces-redirect=true" title="Concesión Minera" 
+                                   rendered="#{loginCtrl.registroMinero}">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/diamond.png" style="width: 128px; height: 128px"/>
+                            <h:outputText value="Concesión Minera"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/licenciascomercializacion?faces-redirect=true" title="Licencias Comercialización" 
+                                   rendered="#{loginCtrl.registroMinero}">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/licencia.png" style="width: 100px; height: 100px"/>
+                            <h:outputText value="Licencias Comercialización"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/plantasbeneficio?faces-redirect=true" title="Plantas de Beneficio" 
+                                   rendered="#{loginCtrl.registroMinero}">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/industrial5.png" style="width: 116px; height: 116px"/>
+                            <h:outputText value="Plantas de Beneficio"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/concesionesminerasro?faces-redirect=true" title="Concesión Minera" 
+                                   rendered="false">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/diamond.png" style="width: 128px; height: 128px"/>
+                            <h:outputText value="Concesión Minera"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/licenciascomercializacionro?faces-redirect=true" title="Licencias Comercialización" 
+                                   rendered="false">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/licencia.png" style="width: 100px; height: 100px"/>
+                            <h:outputText value="Licencias Comercialización"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/plantasbeneficioro?faces-redirect=true" title="Plantas de Beneficio"
+                                   rendered="false">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/industrial5.png" style="width: 116px; height: 116px"/>
+                            <h:outputText value="Plantas de Beneficio"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/derechosMinerosNacional?faces-redirect=true" title="Consulta Derechos Mineros">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/nacional.png" style="width: 116px; height: 116px"/>
+                            <h:outputText value="Consulta Derechos Mineros"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/instrumentos?faces-redirect=true" title="Registro Minero"
+                                   rendered="false">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/minero.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Registro Minero"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/autogestion?faces-redirect=true" title="Autogestión" 
+                                   rendered="#{loginCtrl.economico or loginCtrl.economicoNacional}">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/autogestion.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Autogestión"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/patentesUtilidadesRegalias?faces-redirect=true" title="Patentes, Utilidades y Regalías"
+                                   rendered="false">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/patentesUtilidadesRegalias.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Patentes, Utilidades y Regalías"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+                    
+                    <h:commandLink action="web/concesiones?faces-redirect=true" title="Coordenadas"
+                                   rendered="true">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/map.png" style="width: 150px; height: 150px"/>
+                            <h:outputText value="Coordenadas"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+                    
+                    <h:commandLink action="web/contratos?faces-redirect=true" title="Contratos"
+                                   rendered="true">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/contratos.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Contratos"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+
+                    <h:commandLink action="web/reporteForm?faces-redirect=true" title="Generar Reporte">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/report.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Generar reporte"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+                </h:panelGrid>
+            </div>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

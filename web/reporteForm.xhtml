@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Actualización de Datos"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+
+                <p:growl id="growl" showDetail="true" showSummary="false" life="8000" autoUpdate="true"/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 80%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="index?faces-redirect=true" title="Volver" styleClass="boton_salir" immediate="true">
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/back57.png" title="Volver" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Volver"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+                <h2 class="titulo_centrado" style="width: 54.8%;position: relative;right: -308px;">GENERACIÓN DE REPORTES</h2>
+                <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                    <f:facet name="header">
+                        <h:panelGroup style="display:block; text-align:center">
+                            <p:outputLabel value="GENERACION DE REPORTES"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <p:outputLabel value="Tipo de Reporte:"></p:outputLabel>
+                    <p:selectOneMenu id="codigoTipoMineria"
+                                     value="#{reporteCtrl.codigoTipoMineria}" 
+                                     required="true" 
+                                     requiredMessage="Tipo de reporte es requerido" 
+                                     style="width: 93%">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{reporteCtrl.tipoSolicitudes}" />
+                        <f:selectItem itemValue="101" itemLabel="Autogestión" />
+                        <p:ajax update="panelFiltros botones"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:panelGrid id="panelFiltros" columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                    <p:outputLabel value="Fecha Desde:" rendered="false"/>
+                    <p:calendar placeholder="aaaa-mm-dd" navigator="true"
+                                value="#{reporteCtrl.fechaDesdeFiltro}"  
+                                locale="es" pattern="yyyy-MM-dd"  
+                                effect="fold" 
+                                style="width: 93%" 
+                                required="true"
+                                requiredMessage="Fecha Desde requerida"
+                                rendered="false"/>
+                    <p:outputLabel value="Fecha Hasta:" rendered="false"/>
+                    <p:calendar placeholder="aaaa-mm-dd" navigator="true"
+                                value="#{reporteCtrl.fechaHastaFiltro}"  
+                                locale="es" pattern="yyyy-MM-dd" 
+                                effect="fold" 
+                                style="width: 93%" 
+                                required="true"
+                                requiredMessage="Fecha Hasta requerida"
+                                rendered="false"/>
+                    <p:outputLabel value="Prefijo regional:" rendered="#{reporteCtrl.codigoTipoMineria == 101}"/>
+                    <p:selectOneMenu value="#{reporteCtrl.prefijoRegionalFiltro}" 
+                                     required="true" 
+                                     requiredMessage="Prefijo regional es requerido" 
+                                     style="width: 93%"
+                                     rendered="#{reporteCtrl.codigoTipoMineria == 101}">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{reporteCtrl.regionales}" />
+                    </p:selectOneMenu>
+                    <f:facet name="footer">
+                        <h:panelGroup id="botones" style="display:block; text-align:center">
+                            <h:commandButton value="Generar" 
+                                             actionListener="#{reporteCtrl.generarReporte}" 
+                                             rendered="#{reporteCtrl.codigoTipoMineria != 101}"/>
+                            <p:commandButton update="@form"
+                                             value="Generar"
+                                             title="Comprobante" 
+                                             oncomplete="PF('visorTramite').show();return false;"
+                                             actionListener="#{reporteCtrl.generarReporteAutogestion}"
+                                             rendered="#{reporteCtrl.codigoTipoMineria == 101}"/>
+                            <p:commandButton value="Cancelar" action="index.xhtml?faces-redirect=true" immediate="true"/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:panelGrid>
+                <p:dialog id="dialoVisorTareas" header="Comprobante" 
+                          widgetVar="visorTramite" width="95%" height="600px"  
+                          showEffect="fade" draggable="false" 
+                          resizable="false" modal="true" >
+                    <iframe frameborder="0"
+                            src="#{reporteCtrl.urlReporte}"
+                            name="frameTareas" id="frameTareas" scrolling="auto" 
+                            width="100%" height="98%" 
+                            marginheight="0" marginwidth="0">
+                    </iframe>
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

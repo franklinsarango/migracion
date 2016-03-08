@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Actualización de Datos"/>
+        </ui:define>
+
+        <ui:define name="content">
+            
+            <h:form id="form">
+
+                <p:growl id="growl" showDetail="true" showSummary="false" life="8000" autoUpdate="true"/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 80%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="licenciascomercializacionro?faces-redirect=true" title="Volver" styleClass="boton_salir" immediate="true">
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/back57.png" title="Volver" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Volver"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+                <h2 class="titulo_centrado" style="width: 55.5%;position: relative;right: -299px;">LICENCIA COMERCIALIZACION</h2>
+                <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                    <f:facet name="header">
+                        <h:panelGroup style="display:block; text-align:center">
+                            <p:outputLabel value="DATOS DE LICENCIA COMERCIALIZACION"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <p:outputLabel for="codArc" value="Código:"></p:outputLabel>
+                    <p:inputMask id="codArc" mask="9?999999999999999999999999999999999" value="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoArcom}" size="50" 
+                                 disabled="#{!licenciaComercializacionCtrl.existeCodigoArcom}" required="true" requiredMessage="Código requerido" placeHolder="" 
+                                 rendered="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoLicenciaComercializacion == null}" placeholder="" maxlength="9">
+                        <p:ajax update="panel2 codArc" listener="#{licenciaComercializacionCtrl.validarCodigoArcom}" />
+                    </p:inputMask>
+                    <p:inputMask mask="9?999999999999999999999999999999999" value="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoArcom}" size="50" disabled="#{!licenciaComercializacionCtrl.codigoArcomNull}"
+                                 required="true" requiredMessage="Código requerido" placeHolder="" rendered="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoLicenciaComercializacion != null}" maxlength="9">
+                        <p:ajax update="panel2 codArc" listener="#{licenciaComercializacionCtrl.validarCodigoArcom}" />
+                    </p:inputMask>
+                </p:panelGrid>
+                <h:panelGroup id="panel2">
+                    <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" 
+                                 rendered="#{!licenciaComercializacionCtrl.existeCodigoArcom}" >
+                        <p:outputLabel for="tipoPersona" value="Tipo de persona:" />
+                        <p:selectOneRadio id="tipoPersona" value="#{licenciaComercializacionCtrl.licenciaComercializacion.tipoPersona}" 
+                                          required="true" requiredMessage="Tipo persona es requerido" disabled="true">
+                            <f:selectItem itemLabel="Natural" itemValue="PNA" />
+                            <f:selectItem itemLabel="Jurídica" itemValue="PJU" />
+                            <p:ajax update="panelPersona" listener="#{licenciaComercializacionCtrl.validarTipoPersona}" />
+                        </p:selectOneRadio>
+
+                        <p:outputLabel for="numDoc" value="Número documento:"></p:outputLabel>
+                        <h:panelGrid id="panelPersona" columns="2">
+                            <p:inputMask id="numDoc" mask="9?999999999999" value="#{licenciaComercializacionCtrl.licenciaComercializacion.numeroDocumento}" size="50" placeHolder=""
+                                         maxlength="13" required="true" requiredMessage="Número documento requerido" disabled="true">
+                                <p:ajax update="numDoc" listener="#{licenciaComercializacionCtrl.validarCedula}"  />
+                            </p:inputMask>
+                            <p:commandLink id="botonPersonaNatural" actionListener="#{licenciaComercializacionCtrl.llenaPopUpPersonaNatural}" oncomplete="PF('dlgPerNat').show();" 
+                                           title="Agregar Persona Natural" immediate="true" rendered="#{licenciaComercializacionCtrl.perNatural}" disabled="true">
+                                <h:panelGrid style="text-align:center" rendered="#{licenciaComercializacionCtrl.perNatural}">
+                                    <h:graphicImage value="resources/images/persona.png" title="Agregar Persona Natural" style="width: 25px; height: 25px"/>
+                                </h:panelGrid>
+                            </p:commandLink>
+                            <p:commandLink id="botonPersonaJuridica" actionListener="#{licenciaComercializacionCtrl.llenarPopUpPersonaJuridica}" oncomplete="PF('dlgPerJur').show();" 
+                                           title="Agregar Persona Jurídica" immediate="true" rendered="#{!licenciaComercializacionCtrl.perNatural}" disabled="true">
+                                <h:panelGrid style="text-align:center" rendered="#{!licenciaComercializacionCtrl.perNatural}">
+                                    <h:graphicImage value="resources/images/persona.png" title="Agregar Persona Jurídica" style="width: 25px; height: 25px"/>
+                                </h:panelGrid>
+                            </p:commandLink>
+                        </h:panelGrid>
+
+                        <p:outputLabel for="nomTit" value="Nombre:"></p:outputLabel>
+                        <p:inputText id="nomTit" value="#{licenciaComercializacionCtrl.licenciaComercializacion.nombre}" size="50" required="true" requiredMessage="Nombre requerido" onkeypress="return acceptText(event)"
+                                     maxlength="30" disabled="true"/>
+
+                        <p:outputLabel for="apTit" value="Apellido:"></p:outputLabel>
+                        <p:inputText id="apTit" value="#{licenciaComercializacionCtrl.licenciaComercializacion.apellido}" size="50" required="false" requiredMessage="Apellido requerido" onkeypress="return acceptText(event)"
+                                     maxlength="30" disabled="true"/>
+
+                        <p:outputLabel for="email" value="Correo electrónico:"></p:outputLabel>
+                        <p:inputText id="email" size="50" value="#{licenciaComercializacionCtrl.licenciaComercializacion.correoElectronico}"
+                                     validatorMessage="Correo electrónico inválido" label="Correo electrónico" maxlength="50" disabled="true">
+<!--                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />-->
+                        </p:inputText>
+
+                        <p:outputLabel for="dircc" value="Dirección:"></p:outputLabel>
+                        <p:inputText id="dircc" size="50" value="#{licenciaComercializacionCtrl.licenciaComercializacion.direccion}"
+                                     maxlength="90" disabled="true"></p:inputText>
+
+                        <p:outputLabel for="tlfn" value="Teléfono:"></p:outputLabel>
+                        <p:inputMask id="tlfn" mask="9?999999999" value="#{licenciaComercializacionCtrl.licenciaComercializacion.telefono}" size="50" placeholder=""
+                                     validatorMessage="Tel[efono debe tener m[inimo 9 d[igitos y m[aximo 10 dígitos" disabled="true">
+                            <f:validateLength minimum="0" maximum="10" />
+                        </p:inputMask>
+
+                        <p:outputLabel for="casJud" value="Casillero judicial:"></p:outputLabel>
+                        <p:inputMask id="casJud" mask="9?99999999999" value="#{licenciaComercializacionCtrl.licenciaComercializacion.casilleroJudicial}" size="50" placeHolder=""
+                                     maxlength="12" required="true" requiredMessage="Casillero judicial requerido" disabled="true"/>
+
+                        <p:outputLabel for="estadoLic" value="Estado:"></p:outputLabel>
+                        <p:selectOneMenu id="estadoLic" 
+                                         value="#{licenciaComercializacionCtrl.licenciaComercializacion.estadoLicencia.codigoCatalogoDetalle}" 
+                                         required="true" requiredMessage="Estado es requerido" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{selectItemCtrl.estadosCodigoCatalogo19}" />
+                            <p:ajax process=":form:fecOtorga :form:fecInscribe" update=":form:fecOtorga :form:fecInscribe" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="fecOtorga" value="Fecha otorga:"></p:outputLabel>
+                        <p:calendar id="fecOtorga" placeholder="aaaa-mm-dd" navigator="true"
+                                    value="#{licenciaComercializacionCtrl.licenciaComercializacion.fechaOtorga}"  
+                                    locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" disabled="true"/>
+
+                        <p:outputLabel for="fecInscribe" value="Fecha inscribe:"></p:outputLabel>
+                        <p:calendar id="fecInscribe" placeholder="aaaa-mm-dd" navigator="true"
+                                    value="#{licenciaComercializacionCtrl.licenciaComercializacion.fechaInscribe}"  
+                                    locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" disabled="true"/>
+
+                        <p:outputLabel for="somProvincia01" value="Provincia:"></p:outputLabel>
+                        <p:selectOneMenu id="somProvincia01" value="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoProvincia}" 
+                                         required="true" requiredMessage="Provincia es requerida" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{licenciaComercializacionCtrl.provincias}"/>
+                            <p:ajax  listener="#{licenciaComercializacionCtrl.cargaCantones}" update="somCanton01 somParroquia01" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="somCanton01" value="Cantón:"></p:outputLabel>
+                        <p:selectOneMenu id="somCanton01" value="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoCanton}" 
+                                         required="true" requiredMessage="Cantón es requerido" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{licenciaComercializacionCtrl.cantones}"/>
+                            <p:ajax  listener="#{licenciaComercializacionCtrl.cargaParroquias}" update="somParroquia01" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="somParroquia01" value="Parroquia:"></p:outputLabel>
+                        <p:selectOneMenu id="somParroquia01" value="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoParroquida}" 
+                                         required="true" requiredMessage="Parroquia es requerida" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{licenciaComercializacionCtrl.parroquias}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="mineral" value="Mineral:"></p:outputLabel>
+                        <p:selectOneMenu id="mineral" 
+                                         value="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoTipoMineral.codigoCatalogoDetalle}" 
+                                         required="true" requiredMessage="Mineral es requerido" style="width: 93%" disabled="true"> 
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{licenciaComercializacionCtrl.tipoMaterial}"/>
+                            <p:ajax listener="#{licenciaComercializacionCtrl.cargaTipoMaterialDetalle}" update="tipoMineral"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="tipoMineral" value="Tipo Mineral:"></p:outputLabel>
+                        <p:selectOneMenu id="tipoMineral" 
+                                         value="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoMineralInteres.codigoCatalogoDetalle}" 
+                                         style="width: 93%" disabled="true"> 
+                            <f:selectItem itemValue="1000" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{licenciaComercializacionCtrl.tipoMaterialDetalle}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputText value="Observaciones generales:" />
+                        <p:inputTextarea value="#{licenciaComercializacionCtrl.licenciaComercializacion.observaciones}" cols="52" maxlength="200"
+                                         disabled="true"/>
+
+                        <f:facet name="footer">
+                            <h:panelGroup style="display:block; text-align:center">
+                                <p:commandButton value="Guardar" action="#{licenciaComercializacionCtrl.guardarRegistro}" update="growl" rendered="false"></p:commandButton>
+                                <p:commandButton value="Cancelar" action="licenciascomercializacionro.xhtml?faces-redirect=true" immediate="true" update="growl" ></p:commandButton>
+                            </h:panelGroup>
+                        </f:facet>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </h:form>
+            <p:dialog header="Persona Natural" widgetVar="dlgPerNat" modal="true" dynamic="true" resizable="false" draggable="false">
+                <h:form id="form4">
+                    <p:growl id="message4" showDetail="true" autoUpdate="true"/>
+                    <div align="center">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="numDoc" value="Cédula/RUC titular:" />
+                            <p:inputMask id="numDoc" mask="9?999999999" value="#{licenciaComercializacionCtrl.personaNatural.numeroDocumento}" size="50" placeHolder=""
+                                         maxlength="10" required="true" requiredMessage="Cédula/RUC requerido">
+                                <p:ajax event="blur" update="@form" listener="#{licenciaComercializacionCtrl.validarCedulaPersonaNatural}"  />
+                            </p:inputMask>
+                            <p:outputLabel for="nombreTitular" value="Nombres del titular:"></p:outputLabel>
+                            <p:inputText id="nombreTitular" value="#{licenciaComercializacionCtrl.personaNatural.nombre}" required="true" requiredMessage="Nombres titular es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="apellidoTitular" value="Apellidos del titular:"></p:outputLabel>
+                            <p:inputText id="apellidoTitular" value="#{licenciaComercializacionCtrl.personaNatural.apellido}" required="true" requiredMessage="Nombres titular es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="movilTitular" value="Teléfono celular:"></p:outputLabel>
+                            <p:inputMask id="movilTitular" mask="9?999999999" value="#{licenciaComercializacionCtrl.personaNatural.celular}" size="50" placeholder=""
+                                         validatorMessage="Teléfono celular debe tener 10 dígitos" >
+                                <f:validateLength minimum="0" maximum="10" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="fijoTitular" value="Teléfono convencional:"></p:outputLabel>
+                            <p:inputMask id="fijoTitular" mask="9?99999999" value="#{licenciaComercializacionCtrl.personaNatural.telefono}" size="50" placeholder=""
+                                         validatorMessage="Teléfono convencional debe tener 9 dígitos">
+                                <f:validateLength minimum="0" maximum="9" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="casilleroTit" value="Casillero judicial:"></p:outputLabel>
+                            <p:inputMask id="casilleroTit" mask="9?99999999999" value="#{licenciaComercializacionCtrl.personaNatural.casilleroJudicial}" size="50" placeHolder=""
+                                         maxlength="12" required="true" requiredMessage="Casillero judicial requerido" />
+
+                            <p:outputLabel for="direccionTit" value="Dirección:"></p:outputLabel>
+                            <p:inputText id="direccionTit" size="50" value="#{licenciaComercializacionCtrl.personaNatural.direccion}" maxlength="90"></p:inputText>
+
+                            <p:outputLabel for="emailTit" value="Correo electrónico:"></p:outputLabel>
+                            <p:inputText id="emailTit" size="50" value="#{licenciaComercializacionCtrl.personaNatural.email}"
+                                         validatorMessage="Correo electrónico inválido" label="Correo electrónico" maxlength="50">
+<!--                                <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />-->
+                            </p:inputText>
+                        </h:panelGrid>
+                        <p:spacer/>
+                        <h:panelGroup>
+                            <h:panelGrid style="text-align:center" columns="2">
+                                <p:commandLink actionListener="#{licenciaComercializacionCtrl.guardarPersonaNatural}" title="Guardar" 
+                                               update=":form:nomTit :form:apTit :form:email :form:numDoc :form:dircc :form:tlfn :form:casJud">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Guardar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <p:commandLink onclick="PF('dlgPerNat').hide();" title="Cancelar" immediate="true">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Cancelar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </div>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Persona Jurídica" widgetVar="dlgPerJur" modal="true" dynamic="true" resizable="false" draggable="false">
+                <h:form id="form5">
+                    <p:growl id="message4" showDetail="true" autoUpdate="true"/>
+                    <div align="center">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="numDoc" value="Cédula/RUC titular:" />
+                            <p:inputMask id="numDoc" mask="9?999999999999" value="#{licenciaComercializacionCtrl.personaJuridica.ruc}" size="50" placeHolder=""
+                                         maxlength="13" required="true" requiredMessage="Cédula/RUC requerido"  >
+                                <p:ajax event="blur" update="@form" listener="#{licenciaComercializacionCtrl.validarCedulaPersonaJuridica}"  />
+                            </p:inputMask>
+                            <p:outputLabel for="nomLegal" value="Nombre legal:"></p:outputLabel>
+                            <p:inputText id="nomLegal" value="#{licenciaComercializacionCtrl.personaJuridica.nombreLegal}" required="true" requiredMessage="Nombre legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="nomCom" value="Nombre comercial:"></p:outputLabel>
+                            <p:inputText id="nomCom" value="#{licenciaComercializacionCtrl.personaJuridica.nombreComercial}" required="true" requiredMessage="Nombre comercial es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="cellTit" value="Teléfono celular:"></p:outputLabel>
+                            <p:inputMask id="cellTit" mask="9?999999999" value="#{licenciaComercializacionCtrl.personaJuridica.celular}" size="50" placeholder=""
+                                         validatorMessage="Teléfono celular debe tener 10 dígitos" >
+                                <f:validateLength minimum="0" maximum="10" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="fijoTit" value="Teléfono convencional:"></p:outputLabel>
+                            <p:inputMask id="fijoTit" mask="9?99999999" value="#{licenciaComercializacionCtrl.personaJuridica.telefono}" size="50" placeholder=""
+                                         validatorMessage="Teléfono convencional debe tener 9 dígitos">
+                                <f:validateLength minimum="0" maximum="9" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="casJudTit" value="Casillero judicial:"></p:outputLabel>
+                            <p:inputMask id="casJudTit" mask="9?99999999999" value="#{licenciaComercializacionCtrl.personaJuridica.casilleroJudicial}" size="50" placeHolder=""
+                                         maxlength="12" required="true" requiredMessage="Casillero judicial requerido" />
+
+                            <p:outputLabel for="dirTit" value="Dirección:"></p:outputLabel>
+                            <p:inputText id="dirTit" size="50" value="#{licenciaComercializacionCtrl.personaJuridica.direccion}" maxlength="90"></p:inputText>
+
+                            <p:outputLabel for="correoTit" value="Correo electrónico:"></p:outputLabel>
+                            <p:inputText id="correoTit" size="50" value="#{licenciaComercializacionCtrl.personaJuridica.email}"
+                                         validatorMessage="Correo electrónico inválido" label="Correo electrónico" maxlength="50">
+<!--                                <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />-->
+                            </p:inputText>
+                            <p:outputLabel for="numDoc2" value="Documento Rep. Legal:"></p:outputLabel>
+                            <p:inputMask id="numDoc2" mask="9?999999999999" value="#{licenciaComercializacionCtrl.personaJuridica.documentoRepresentanteLegal}" size="50" placeHolder=""
+                                         maxlength="13" required="true" requiredMessage="Cédula/RUC requerido" >
+                                <p:ajax event="blur" update="numDoc2" listener="#{licenciaComercializacionCtrl.validarCedulaRepresentanteLegal()}"  />
+                            </p:inputMask>
+                            <p:outputLabel for="nomRepLegal" value="Nombre Representante Legal:"></p:outputLabel>
+                            <p:inputText id="nomRepLegal" value="#{licenciaComercializacionCtrl.personaJuridica.nombreRepresentanteLegal}" required="true" requiredMessage="Nombre Rep. legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="apeRepLegal" value="Apellido Representante Legal:"></p:outputLabel>
+                            <p:inputText id="apeRepLegal" value="#{licenciaComercializacionCtrl.personaJuridica.apellidoRepresentanteLegal}" required="true" requiredMessage="Apellido Rep. legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+                        </h:panelGrid>
+                        <p:spacer/>
+                        <h:panelGroup>
+                            <h:panelGrid style="text-align:center" columns="2">
+                                <p:commandLink actionListener="#{licenciaComercializacionCtrl.guardarPersonaJuridica}" title="Guardar" 
+                                               update=":form:nomTit :form:apTit :form:email :form:numDoc :form:dircc :form:tlfn :form:casJud">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Guardar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <p:commandLink onclick="PF('dlgPerJur').hide();" title="Cancelar" immediate="true">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Cancelar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </div>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+

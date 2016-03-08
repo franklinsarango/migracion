@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title><ui:insert name="title">Guía de aprendizaje de facelets</ui:insert></title>
+        <h:outputStylesheet name="css/style.css"/>
+        <h:outputScript name="js/migracion.js"/>
+    </h:head>
+
+    <h:body>
+        <div id="header">
+            <ui:insert name="header">
+                <ui:include src="/templates/header.xhtml"/>
+            </ui:insert>
+        </div>
+
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <!--            <f:facet name="start">
+                            <p:graphicImage name="/images/loading.gif" />
+                        </f:facet>-->
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/loading.gif" />
+        </p:dialog>
+
+        <div id="content" class="center_content">
+            <ui:insert name="content">
+            </ui:insert>
+        </div>
+
+        <div id="footer">
+            <ui:insert name="footer">
+                <ui:include src="/templates/footer.xhtml"/>
+            </ui:insert>
+        </div>
+    </h:body>
+</html>

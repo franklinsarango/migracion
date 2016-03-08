@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Lista de Contratos"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                <h:panelGrid columns="3">
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Código:"/>
+                            <p:inputText value="#{contratoOperacionCtrl.codigoArcomFiltro}"/>
+                            <p:outputLabel value="CI Titular:"/>
+                            <p:inputText value="#{contratoOperacionCtrl.numDocumentoFiltro}"/>
+                        </h:panelGrid>
+                        <h:commandButton image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar">
+                            <p:ajax listener="#{contratoOperacionCtrl.buscar}" update="@form" process="@form" />
+                        </h:commandButton>
+                    </h:panelGrid>
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Inicio"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                        <h:commandLink action="contratoform?faces-redirect=true" title="Nuevo" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/plus.png" title="Nuevo" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Nuevo"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+
+                <h1 class="titulo_centrado">Lista de Contratos</h1>
+
+                <p:dataTable id="amdt" var="reg" value="#{contratoOperacionCtrl.contratosOperacion}" rows="20" 
+                             paginator="true"
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" styleClass="texto_tabla_datos" rowIndexVar="rowIndex" emptyMessage="No existen registros" style="width: 95%">
+
+                    <p:column headerText="#" width="25">
+                        <h:outputText value="#{rowIndex + 1}"/>
+                    </p:column>
+
+                    <p:column headerText="CODIGO" style="text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" 
+                                       value="#{reg.codigoConcesion.codigoArcom}" />
+                    </p:column>
+                    
+                    <p:column headerText="NUM. DOCUMENTO" style="text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" 
+                                       value="#{reg.numeroDocumento}" />
+                    </p:column>
+
+                    <p:column headerText="PROVINCIA"
+                              style="text-align: right">
+                        <h:outputText value="#{reg.codigoProvincia.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="CANTON"  
+                              style="text-align: right">
+                        <h:outputText value="#{reg.codigoCanton.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="PARROQUIA"  
+                              style="text-align: right">
+                        <h:outputText value="#{reg.codigoParroquia.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="FECHA CREACION" 
+                              style="text-align: right">
+                        <h:outputText value="#{reg.fechaCreacion}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="EDITAR" style="width:37px; text-align: right">
+                        <p:commandButton action="#{contratoOperacionCtrl.editarRegistro}" 
+                                         icon="ui-icon-pencil" 
+                                         title="Editar" 
+                                         ajax="false"/>
+                    </p:column>
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

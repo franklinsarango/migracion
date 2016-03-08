@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      >
+    <ui:composition>
+        <!--10 segundos--> 
+        <!--<p:idleMonitor timeout="10000" onidle="PF('timeoutDialog').show()" />-->
+        
+        <!--5minutos-->
+        <!--<p:idleMonitor timeout="300000" onidle="PF('timeoutDialog').show()" />-->
+        <p:idleMonitor timeout="1200000" onidle="PF('timeoutDialog').show()" />        
+        <p:dialog id="timeoutSession"
+         header="Sesión Expirada"
+         widgetVar="timeoutDialog"
+         showEffect="fade" hideEffect="fade"
+         modal="true"
+         width="400"
+         height="80"
+         closable="false"
+         draggable="false"
+         resizable="false"
+         >
+         <br/>
+         <p>  
+         <h:form>
+            <p:panel>
+                <span class="ui-icon ui-icon-alert" style="float: left; margin: 0px 8px 0;"/>
+                <h:outputLabel >Su sesión ha expirado por favor ingrese nuevamente </h:outputLabel>
+                <h:commandButton value="Aceptar" 
+                                 action="login"
+                                 style="float: right; margin: 10px 8px 0;"
+                                 />
+                
+            </p:panel>
+         </h:form>
+         </p>
+      </p:dialog>
+        
+    </ui:composition>
+</html>

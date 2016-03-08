@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <f:view contentType="text/html" locale="es">
+        <!--   <f:loadBundle var= "msgs" basename= "messages_es" />
+        -->
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <META NAME="AUTHOR" CONTENT="ARCOM" />
+            <META NAME="REPLY-TO" CONTENT="arcom@arcom.gob.ec" />
+            <LINK REV="made" href="mailto:arcom@arcom.gob.ec" />
+            <META NAME="Resource-type" CONTENT="Document"/>
+            <META NAME="Revisit-after" CONTENT="7 days"/>
+            <META NAME="robots" content="ALL"/>
+            <META NAME="DESCRIPTION" CONTENT="Agencia de Regulación y Control Minero" />
+            <META NAME="KEYWORDS" CONTENT="ARCOM, Ecuador" />
+            
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="global_css.css"/>
+              
+    
+            <title>Agencia de Regulación y Control Minero</title>
+                
+        </h:head>
+        <h:body >
+                
+
+            <div id="container">
+
+                
+
+                <p:messages globalOnly="true" id="msgs"/> 
+                <ui:insert name="popUp"></ui:insert>
+                <p:ajaxStatus onstart="statusDialog.show();" 
+                              onsuccess="statusDialog.hide();" />
+ 
+                <p:dialog widgetVar="statusDialog" 
+                          modal="true" 
+                          draggable="false" 
+                          closable="false" 
+                          resizable="false" 
+                          header="Espere por favor..." >
+                    <h:graphicImage library="_images/general" name="ajaxloadingbar.gif" />
+                </p:dialog>
+
+                
+                <div id="panelBase">
+                    <ui:insert name="page-content" id="contenido"/>                                
+                </div>
+
+
+            </div>
+        </h:body>
+    </f:view>
+</html>

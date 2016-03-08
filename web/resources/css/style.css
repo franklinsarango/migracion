@@ -1,0 +1,201 @@
+/* 
+   Created on : 04/03/2015, 03:30:07 PM
+   Author     : mejiaw
+*/
+body {
+    
+}
+
+form {
+    width: 100%;
+}
+
+h1 {
+    font-size: 22px;
+    color: #000000;
+}
+
+h2 {
+    font-size: 14px;
+    color: #000000;
+}
+
+.titulo_centrado {
+    text-align: center;
+}
+
+.texto_centrado {
+    text-align: center;
+}
+
+.texto_centrado_2 {
+    margin: 0 auto;
+}
+
+#header {
+    position: relative;
+    background-color: #ffffff;
+    color: white;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+}
+
+.center_content {
+    position: relative;
+    background-color: #f4f4f4;
+    padding: 5px;
+    text-align: justify;
+}
+
+#footer {
+    position: relative;
+    background-color: #f3eded;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+    text-align: center;
+}
+
+.style_orange {
+    background-color: orange;
+}
+
+.img_header_2 {
+    float: right;
+}
+
+.panel_grid_center {
+    margin: 0 auto;
+    width: 750px;
+}
+
+.panel_grid_center_2 {
+    margin: 0 auto;
+}
+
+.panel_grid_center_3 {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.size_botones_internos {
+    width: 100px;
+    height: 35px;
+}
+
+.tabla_cursos {
+    width: 500px;
+}
+
+.texto_1 {
+    font-size: 10px;
+}
+
+.texto_2 {
+    font-size: 11px;
+}
+
+.texto_tabla_datos {
+    font-size: 12px;
+    width: 100%;
+    padding-right: 10px;
+}
+
+.texto_tabla_datos_codigo {
+    font-weight: bold;
+}
+
+.panel_grid_center_login {
+    margin: 0 auto;
+    width: 30%;
+    text-align: left;
+}
+
+.panel_grid_usuario {
+    width: 100%;
+}
+
+.form-label-width {
+    text-align: right;
+    padding: 3px;
+    vertical-align: middle;
+    background-color: #eee;
+    width: 26%;
+}
+
+.form-label {
+    text-align: right;
+    padding: 3px;
+    vertical-align: middle;
+    background-color: #eee;
+    width: 50%;
+}
+
+.form-input {
+    text-align: left;
+    padding: 3px;
+    vertical-align: middle;
+    width: 93%;
+}
+
+.textarea {
+    text-align: left;
+    padding: 3px;
+    vertical-align: middle;
+}
+
+.columnHome{
+    width:184px;
+    text-align: center;
+}
+
+.botonHome{
+    text-align:center;
+    font-size: 16px;
+    width:130px;
+    /*color:gray;*/
+    margin-bottom: 0px; 
+}
+
+.centrado{
+    text-align: center;
+}
+
+h2 {
+    color: white;
+}
+
+.form-input-bold {
+    text-align: left;
+    padding: 3px;
+    vertical-align: middle;
+    width: 93%;
+    color: black;
+    font-weight: bolder;
+}
+
+.form-input_ancho {
+    text-align: left;
+    padding: 3px;
+    vertical-align: middle;
+    width: 95%;
+}
+
+.listaCoordenadas {
+    font-size: 11px;
+    margin: 0 auto;
+    width: 750px;
+}
+
+.panelCentrado {
+    margin: 0 auto;
+    width: 750px;
+}
+
+.panelCentrado {
+    margin: 0 auto;
+    width: 750px;
+}
+
+.panelCentrado.ui-panel-content, .panelCentrado.ui-widget-content{
+    border: none;
+}

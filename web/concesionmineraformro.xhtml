@@ -1,0 +1,609 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Actualización de Datos"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form1">
+
+                <p:growl id="growl" showDetail="true" showSummary="false" life="8000" autoUpdate="true"/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 80%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="concesionesminerasro?faces-redirect=true" title="Volver" styleClass="boton_salir" immediate="true">
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/back57.png" title="Volver" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Volver"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+                <h2 class="titulo_centrado" style="width: 55.5%;position: relative;right: -299px;">CONCESIÓN MINERA</h2>
+                <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                    <f:facet name="header">
+                        <h:panelGroup style="display:block; text-align:center">
+                            <p:outputLabel value="DATOS DEL AREA"/>
+                        </h:panelGroup>
+                    </f:facet>
+
+                    <p:outputLabel value="Código:"></p:outputLabel>
+                    <p:inputText id="codArc" value="#{concesionMineraCtrl.concesionMinera.codigoArcom}" size="50" 
+                                 readonly="#{!concesionMineraCtrl.existeCodigoArcom}" required="true" requiredMessage="Código requerido"
+                                 rendered="#{concesionMineraCtrl.concesionMinera.codigoConcesion == null}" maxlength="9">
+                        <p:ajax update="panel2 codArc botones" listener="#{concesionMineraCtrl.validarCodigoArcom}" />
+                    </p:inputText>
+                    <p:outputLabel value="#{concesionMineraCtrl.concesionMinera.codigoArcom}" 
+                                   rendered="#{concesionMineraCtrl.concesionMinera.codigoConcesion != null}" />
+                </p:panelGrid>
+
+                <h:panelGroup id="panel2">
+                    <h:panelGroup>
+                        <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input"  rendered="#{!concesionMineraCtrl.existeCodigoArcom}">
+                            <p:outputLabel for="codCensal" value="Código censal:"></p:outputLabel>
+                            <p:inputText id="codCensal" value="#{concesionMineraCtrl.concesionMinera.codigoCensal}" 
+                                         size="50" maxlength="15" disabled="true"/>
+
+                            <p:outputLabel for="nomConc" value="Nombre concesión:"></p:outputLabel>
+                            <p:inputText id="nomConc" value="#{concesionMineraCtrl.concesionMinera.nombreConcesion}" 
+                                         size="50" required="true" requiredMessage="Nombre concesión requerido" maxlength="30"
+                                         disabled="true"/>
+
+                            <p:outputLabel for="sector" value="Sector:"></p:outputLabel>
+                            <p:inputText id="sector" size="50" value="#{concesionMineraCtrl.concesionMinera.sector}" disabled="true"
+                                         required="true" requiredMessage="Sector es requerido" maxlength="30"></p:inputText>
+
+                            <p:outputLabel for="tipoPersona" value="Tipo de persona:" />
+                            <p:selectOneRadio id="tipoPersona" value="#{concesionMineraCtrl.tipoPersona}" disabled="true">
+                                <f:selectItem itemLabel="Natural" itemValue="N" />
+                                <f:selectItem itemLabel="Jurídica" itemValue="J" />
+                                <p:ajax update="panel3 panelPersona" listener="#{concesionMineraCtrl.validarTipoPersona}" />
+                            </p:selectOneRadio> 
+
+                            <p:outputLabel for="numDoc" value="Cédula/RUC titular:"></p:outputLabel>
+                            <h:panelGrid id="panelPersona" columns="2" >
+                                <p:inputMask id="numDoc" mask="9?999999999999" value="#{concesionMineraCtrl.concesionMinera.documentoConcesionarioPrincipal}" size="50" placeHolder=""
+                                             maxlength="13" required="true" requiredMessage="Cédula/RUC requerido" disabled="true" >
+                                    <p:ajax update="numDoc" listener="#{concesionMineraCtrl.validarCedula}" />
+                                </p:inputMask>
+                                <p:commandLink id="botonPersonaNatural" actionListener="#{concesionMineraCtrl.llenaPopUpPersonaNatural}" oncomplete="PF('dlgPerNat').show();" 
+                                               title="Agregar Persona Natural" immediate="true" rendered="#{concesionMineraCtrl.perNatural}"
+                                               disabled="true">
+                                    <h:panelGrid style="text-align:center" rendered="#{concesionMineraCtrl.perNatural}">
+                                        <h:graphicImage value="resources/images/persona.png" title="Agregar Persona Natural" style="width: 25px; height: 25px"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <p:commandLink id="botonPersonaJuridica" actionListener="#{concesionMineraCtrl.llenarPopUpPersonaJuridica}" oncomplete="PF('dlgPerJur').show();" 
+                                               title="Agregar Persona Jurídica" immediate="true" rendered="#{!concesionMineraCtrl.perNatural}" disabled="true">
+                                    <h:panelGrid style="text-align:center" rendered="#{!concesionMineraCtrl.perNatural}">
+                                        <h:graphicImage value="resources/images/persona.png" title="Agregar Persona Jurídica" style="width: 25px; height: 25px"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                            </h:panelGrid>
+
+                            <p:outputLabel for="nomTit" value="Nombres del titular:"></p:outputLabel>
+                            <p:inputText id="nomTit" value="#{concesionMineraCtrl.solicitud.nombreSolicitante}" required="true" requiredMessage="Nombres titular es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)" disabled="true"/>
+
+                            <p:outputLabel for="apTit" value="Apellidos del titular:"></p:outputLabel>
+                            <p:inputText id="apTit" value="#{concesionMineraCtrl.solicitud.apellidoSolicitante}" required="true" requiredMessage="Nombres titular es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)" disabled="true"/>
+
+                            <p:outputLabel for="email" value="Correo electrónico:"></p:outputLabel>
+                            <p:inputText id="email" size="50" value="#{concesionMineraCtrl.solicitud.emailSolicitante}" required="true" requiredMessage="Correo electrónico es requerido"
+                                         validatorMessage="Correo electrónico inválido" label="Correo electrónico" maxlength="50" disabled="true">
+                                <!-- <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" /> -->
+                            </p:inputText>
+
+                            <p:outputLabel for="telfCel" value="Teléfono celular:"></p:outputLabel>
+                            <p:inputMask id="telfCel" mask="9?999999999" value="#{concesionMineraCtrl.solicitud.telefonoCelularSolicitante}" size="50" placeholder=""
+                                         validatorMessage="Teléfono celular debe tener 10 dígitos" disabled="true">
+                                <f:validateLength minimum="0" maximum="10" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="telfConv" value="Teléfono convencional:"></p:outputLabel>
+                            <p:inputMask id="telfConv" mask="9?99999999" value="#{concesionMineraCtrl.solicitud.telefonoConvencionalSolicitante}" size="50" placeholder=""
+                                         validatorMessage="Teléfono convencional debe tener 9 dígitos" disabled="true">
+                                <f:validateLength minimum="0" maximum="9" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="casJud" value="Casillero judicial:"></p:outputLabel>
+                            <h:panelGrid columns="2">
+                                <p:inputMask id="casJud" mask="9?99999999999" value="#{concesionMineraCtrl.concesionMinera.casilleroJudicial}" size="10" placeHolder=""
+                                             maxlength="12" disabled="true"/>
+                                <p:selectOneMenu value="#{concesionMineraCtrl.concesionMinera.codigoCasilleroLocalidad.codigoLocalidad}" 
+                                                 required="true" requiredMessage="Casillero localidad es requerido" style="width: 120%" disabled="true">
+                                    <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                    <f:selectItems value="#{concesionMineraCtrl.provincias}" />
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+
+                            <p:outputLabel for="dircc" value="Dirección:"></p:outputLabel>
+                            <p:inputText id="dircc" size="50" value="#{concesionMineraCtrl.solicitud.direccionSolicitante}" 
+                                         required="true" requiredMessage="Dirección es requerida" maxlength="190" disabled="true"/>
+
+                        </p:panelGrid>
+                        <p:panelGrid id="panel3" columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input"  
+                                     rendered="#{!concesionMineraCtrl.existeCodigoArcom}" >
+                            <p:outputLabel for="numDoc2" value="Cédula rep. legal:" rendered="#{!concesionMineraCtrl.perNatural}"></p:outputLabel>
+                            <p:inputMask id="numDoc2" mask="9?999999999999" value="#{concesionMineraCtrl.solicitud.representanteLegal}" size="50" placeHolder=""
+                                         maxlength="13" required="true" requiredMessage="Cédula/RUC requerido" rendered="#{!concesionMineraCtrl.perNatural}" disabled="true" >
+                                <p:ajax update="numDoc2" listener="#{concesionMineraCtrl.validarCedulaRepLegal}" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="nomRep" value="Nombres del rep. legal:" rendered="#{!concesionMineraCtrl.perNatural}"></p:outputLabel>
+                            <p:inputText id="nomRep" size="50" value="#{concesionMineraCtrl.solicitud.nombreRepresentanteLegal}" required="true" requiredMessage="Nombres Rep. Legal son requeridos" 
+                                         maxlength="60" rendered="#{!concesionMineraCtrl.perNatural}" onkeypress="return acceptText(event)" disabled="true"></p:inputText>
+
+                            <p:outputLabel for="apeRep" value="Apellidos del rep. legal:" rendered="#{!concesionMineraCtrl.perNatural}"></p:outputLabel>
+                            <p:inputText id="apeRep" size="50" value="#{concesionMineraCtrl.solicitud.apellidoRepresentanteLegal}" required="true" requiredMessage="Apellidos Rep. Legal son requeridos" 
+                                         maxlength="60" rendered="#{!concesionMineraCtrl.perNatural}" onkeypress="return acceptText(event)" disabled="true"></p:inputText>
+                        </p:panelGrid>
+                    </h:panelGroup>
+                    <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" 
+                                 rendered="#{!concesionMineraCtrl.existeCodigoArcom}">
+                        <p:outputLabel for="plazo" value="Plazo (meses - días):"></p:outputLabel>
+                        <h:panelGrid columns="2">
+                            <p:inputText id="plazo" placeholder="Meses" maxlength="4" size="14" value="#{concesionMineraCtrl.concesionMinera.plazoConcesion}" 
+                                         required="true" requiredMessage="Plazo es requerido" onkeypress="return acceptNum(event)" disabled="true"/>
+                            <p:inputText id="dias" placeholder="Días" maxlength="2" size="10" value="#{concesionMineraCtrl.concesionMinera.dias}" 
+                                         onkeypress="return acceptNum(event)" disabled="true"/>
+                        </h:panelGrid>
+
+                        <p:outputLabel for="fecInforme" value="Fecha informe:" rendered="false"></p:outputLabel>
+                        <p:calendar id="fecInforme" readonlyInput="true" rendered="false"
+                                    value="#{concesionMineraCtrl.concesionMinera.fechaInforme}" placeholder="aaaa-mm-dd" navigator="true"
+                                    locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" disabled="true"/>
+
+                        <p:outputLabel id="fecOtorgaLab" for="fecOtorga" value="Fecha otorga:"></p:outputLabel>
+                        <p:calendar id="fecOtorga" placeholder="aaaa-mm-dd" navigator="true"
+                                    value="#{concesionMineraCtrl.concesionMinera.fechaOtorga}" 
+                                    locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" disabled="true"/>
+
+                        <p:outputLabel id="fecInscribeLab" for="fecInscribe" value="Fecha inscribe:"></p:outputLabel>
+                        <p:calendar id="fecInscribe" placeholder="aaaa-mm-dd" navigator="true"
+                                    value="#{concesionMineraCtrl.concesionMinera.fechaInscribe}" 
+                                    locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" disabled="true"/>
+
+                        <p:outputLabel for="fecSustitucion" value="Fecha sustitución:"></p:outputLabel>
+                        <p:calendar id="fecSustitucion"
+                                    value="#{concesionMineraCtrl.concesionMinera.fechaSustitucion}" placeholder="aaaa-mm-dd" navigator="true"
+                                    locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" disabled="true"/>
+
+                        <p:outputLabel for="fecInscSustitucion" value="Fecha inscripciòn sustitución:"></p:outputLabel>
+                        <p:calendar id="fecInscSustitucion"
+                                    value="#{concesionMineraCtrl.concesionMinera.fechaInscripcionSustitucion}" placeholder="aaaa-mm-dd" navigator="true"
+                                    locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" disabled="true"/>
+
+                        <p:outputLabel for="console" value="Zona:"></p:outputLabel>
+                        <p:selectOneRadio id="console" value="#{concesionMineraCtrl.solicitud.zona}" 
+                                          required="true" requiredMessage="Zona es requerida" disabled="true">
+                            <f:selectItem itemLabel="Zona 15" itemValue="15" />
+                            <f:selectItem itemLabel="Zona 16" itemValue="16" />
+                            <f:selectItem itemLabel="Zona 17" itemValue="17" />
+                            <f:selectItem itemLabel="Zona 18" itemValue="18" />
+                        </p:selectOneRadio>
+
+                        <p:outputLabel for="superficieConc" value="Superficie (Hectáreas):"></p:outputLabel>
+                        <pe:inputNumber id="superficieConc" thousandSeparator="," decimalSeparator="." decimalPlaces="2" 
+                                        maxValue="99999.99" value="#{concesionMineraCtrl.solicitud.numeroHectareas}" 
+                                        required="true" requiredMessage="Superficie es requerida" style="width: 93%" disabled="true"/>
+
+                        <p:outputLabel value="Volumen total (m3):"></p:outputLabel>
+                        <pe:inputNumber thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="9999999999.99" 
+                                        value="#{concesionMineraCtrl.concesionMinera.volumenTotalExplotacion}" disabled="true"
+                                        style="width: 93%"/>
+
+                        <p:outputLabel for="somEstado" value="Estado concesión:"></p:outputLabel>
+                        <p:selectOneMenu id="somEstado" value="#{concesionMineraCtrl.concesionMinera.estadoConcesion.codigoCatalogoDetalle}" 
+                                         required="true" requiredMessage="Estado concesión es requerido" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{selectItemCtrl.estadosCodigoCatalogo4}" />
+                            <p:ajax process=":form1:somEstado :form1:fecOtorga :form1:fecInscribe" update=":form1:fecOtorgaLab :form1:fecInscribeLab :form1:fecOtorga :form1:fecInscribe" immediate="true"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="tipoSolic" value="Tipo solicitud:"></p:outputLabel>
+                        <p:selectOneMenu id="tipoSolic" value="#{concesionMineraCtrl.solicitud.tipoSolicitud}" 
+                                         required="true" requiredMessage="Tipo solicitud es requerido" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{selectItemCtrl.tipoMineriaNemonicoCatalogo}" />
+                            <p:ajax listener="#{concesionMineraCtrl.validarRegimenFase}" update="reg1 reg2 fas1 fas2 modTrab modTrab2"/>
+                        </p:selectOneMenu>
+
+                        <h:panelGroup id="reg1">
+                            <p:outputLabel for="regimen" value="Régimen:" rendered="#{concesionMineraCtrl.tipSolConcMin}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="reg2">
+                            <p:selectOneMenu id="regimen" value="#{concesionMineraCtrl.concesionMinera.codigoRegimen.codigoRegimen}" style="width: 93%"
+                                             rendered="#{concesionMineraCtrl.tipSolConcMin}" disabled="true">
+                                <f:selectItem itemValue="1000" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.regimenes}" />
+                                <p:ajax listener="#{concesionMineraCtrl.obtenerFasePorRegimen}" update="fase" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+
+                        <h:panelGroup id="fas1">
+                            <p:outputLabel for="fase" value="Fase:" rendered="#{concesionMineraCtrl.tipSolConcMin}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fas2">
+                            <p:selectOneMenu id="fase" value="#{concesionMineraCtrl.concesionMinera.codigoFase.codigoFase}" style="width: 93%"
+                                             rendered="#{concesionMineraCtrl.tipSolConcMin}" disabled="true">
+                                <f:selectItem itemValue="1000" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{concesionMineraCtrl.fasesCodigoCatalogo}" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+
+                        <h:panelGroup id="modTrab">
+                            <p:outputLabel for="modalidad" value="Modalidad trabajo:" rendered="#{!sadminDataCtrl.tipoSolMineriaArtesanal}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="modTrab2">
+                            <p:selectOneMenu id="modalidad" value="#{concesionMineraCtrl.concesionMinera.codigoModalidadTrabajo.codigoCatalogoDetalle}" style="width: 93%"
+                                             rendered="#{!sadminDataCtrl.tipoSolMineriaArtesanal}" disabled="true">
+                                <f:selectItem itemValue="1000" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.modalidadesTrabajo}" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+
+                        <p:outputLabel for="somProvincia01" value="Provincia:"></p:outputLabel>
+                        <p:selectOneMenu id="somProvincia01" value="#{concesionMineraCtrl.concesionMinera.codigoProvincia}" 
+                                         required="true" requiredMessage="Provincia es requerida" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{concesionMineraCtrl.provincias}"/>
+                            <p:ajax  listener="#{concesionMineraCtrl.cargaCantones}" update="somCanton01 somParroquia01" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="somCanton01" value="Cantón:"></p:outputLabel>
+                        <p:selectOneMenu id="somCanton01" value="#{concesionMineraCtrl.concesionMinera.codigoCanton}" 
+                                         required="true" requiredMessage="Cantón es requerido" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{concesionMineraCtrl.cantones}"/>
+                            <p:ajax  listener="#{concesionMineraCtrl.cargaParroquias}" update="somParroquia01" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="somParroquia01" value="Parroquia:"></p:outputLabel>
+                        <p:selectOneMenu id="somParroquia01" value="#{concesionMineraCtrl.concesionMinera.codigoParroquia}" 
+                                         required="true" requiredMessage="Parroquia es requerida" style="width: 93%" disabled="true">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{concesionMineraCtrl.parroquias}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="metExp" value="Método de Explotación:"></p:outputLabel>
+                        <p:selectOneMenu id="metExp" value="#{concesionMineraCtrl.concesionMinera.codigoFormaExplotacion.codigoCatalogoDetalle}" 
+                                         style="width: 93%" disabled="true"> 
+                            <f:selectItem itemValue="1000" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{selectItemCtrl.metodosExplotacionCodigo}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="mineral" value="Mineral:"></p:outputLabel>
+                        <p:selectOneMenu id="mineral" value="#{concesionMineraCtrl.concesionMinera.tipoMaterial}" required="true" 
+                                         requiredMessage="Mineral es requerido" style="width: 93%" disabled="true"> 
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{concesionMineraCtrl.tipoMaterial}"/>
+                            <p:ajax listener="#{concesionMineraCtrl.cargaTipoMaterialDetalle}" update="tipoMineral"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="tipoMineral" value="Tipo Mineral:"></p:outputLabel>
+                        <p:selectOneMenu id="tipoMineral" value="#{concesionMineraCtrl.concesionMinera.materialInteres}" 
+                                         style="width: 93%" disabled="true"> 
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{concesionMineraCtrl.tipoMaterialDetalle}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputText value="MAE:" />
+                        <p:selectBooleanCheckbox value="#{concesionMineraCtrl.concesionMinera.mae}" disabled="true"/>
+
+                        <h:outputText value="SENAGUA:" />
+                        <p:selectBooleanCheckbox value="#{concesionMineraCtrl.concesionMinera.senagua}" disabled="true"/>
+
+                        <h:outputText value="Observaciones generales:" />
+                        <p:inputTextarea value="#{concesionMineraCtrl.concesionMinera.obsActosAdmPrevios}" cols="52" maxlength="500" disabled="true"/>
+
+                        <f:facet name="footer">
+                            <h:panelGroup style="display:block; text-align:center; height: 24px">
+                                <p:outputLabel value=""/>
+                            </h:panelGroup>
+                        </f:facet>
+                    </p:panelGrid>
+                </h:panelGroup>
+                <div align="center" >
+                    <h:panelGroup id="botones">
+                        <h:panelGrid style="text-align:center" columns="4" rendered="#{!concesionMineraCtrl.existeCodigoArcom}">
+                            <p:commandLink action="#{concesionMineraCtrl.guardarRegistro}" title="Guardar" 
+                                           update=":form1:botonCoordenada :form1:botonMaquinaria" rendered="false">
+                                <h:panelGrid style="text-align:center">
+                                    <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                    <h:outputText value="Guardar"/>
+                                </h:panelGrid>
+                            </p:commandLink>
+                            <h:panelGroup>
+                                <p:commandLink id="botonCoordenada" onclick="PF('dlg').show();" title="Ver coordenadas" immediate="true" update="growl" >
+                                    <h:panelGrid style="text-align:center" rendered="#{concesionMineraCtrl.mostrarCoordenadas}">
+                                        <h:graphicImage value="resources/images/map.png" title="Ver coordenadas" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Ver coordenadas"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:commandLink id="botonMaquinaria" onclick="PF('dlgMaq').show();" title="Ver maquinaria" immediate="true" update="growl" >
+                                    <h:panelGrid style="text-align:center" rendered="#{concesionMineraCtrl.mostrarMaquinaria}">
+                                        <h:graphicImage value="resources/images/excavadora.png" title="Ver maquinaria" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Ver maquinaria"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                            </h:panelGroup>
+                            <p:commandLink action="concesionesminerasro?faces-redirect=true" title="Cancelar" immediate="true" update="growl">
+                                <h:panelGrid style="text-align:center">
+                                    <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                    <h:outputText value="Cancelar"/>
+                                </h:panelGrid>
+                            </p:commandLink>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </div>
+            </h:form>
+            <p:dialog header="Coordenadas" widgetVar="dlg" modal="true" dynamic="true" resizable="true" draggable="false" width="951px" height="424px">
+                <h:form id="form2">
+                    <p:growl id="message2" showDetail="true" />
+                    <div align="center">
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Coordenada x:" />
+                            <p:inputText id="coorx" value="#{concesionMineraCtrl.coordenadaX}" 
+                                         required="true" requiredMessage="Coordenada X es requerida"/>
+                            <p:outputLabel value="Coordenada y:" />
+                            <p:inputText id="coory" value="#{concesionMineraCtrl.coordenadaY}" 
+                                         required="true" requiredMessage="Coordenada Y es requerida"/>
+                        </h:panelGrid>
+                        <h:outputLabel value="Por favor ingresar las coordenadas en sentido horario y en orden" />
+                        <p:spacer/>
+                        <h:panelGroup >
+                            <h:panelGrid style="text-align:center" columns="2">
+                                <p:commandLink actionListener="#{concesionMineraCtrl.guardarCoordenadas}" title="Guardar" update="@form" rendered="false">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Guardar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <!-- <p:commandLink action="concesionesmineras?faces-redirect=true" oncomplete="PF('dlg').hide();" title="Cancelar" immediate="true" update="message2">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Cancelar"/>
+                                    </h:panelGrid>
+                                </p:commandLink> -->
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </div>
+                    <p:dataTable id="tablaCoordenadas" var="crd" value="#{concesionMineraCtrl.coordenadasSolicitud}" 
+                                 emptyMessage="No existen registros" scrollable="true">
+                        <p:column headerText="Orden">
+                            <h:outputText value="#{crd.numeroCoordenada}" />
+                        </p:column>
+                        <p:column headerText="Coordenada x">
+                            <h:outputText value="#{crd.coordenadaUtmEste}" />
+                        </p:column>
+                        <p:column headerText="Coordenada y">
+                            <h:outputText value="#{crd.coordenadaUtmNorte}" />
+                        </p:column>
+                        <p:column width="40">
+                            <p:commandLink action="#{concesionMineraCtrl.eliminarCoordenadas}" title="Eliminar" immediate="true" update="@form" 
+                                           rendered="#{crd.numeroCoordenada == concesionMineraCtrl.longitudCoordenadas - 1}" disabled="true">
+                                <h:panelGrid style="text-align:center">
+                                    <h:graphicImage value="resources/images/delete.png" title="Eliminar" style="width: 25px; height: 25px" />
+                                </h:panelGrid>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Maquinarias" widgetVar="dlgMaq" modal="true" dynamic="true" resizable="true" draggable="false" width="951px" height="424px" >
+                <h:form id="form3">
+                    <p:growl id="message3" showDetail="true" />
+                    <div align="center">
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Tipo de maquinaria:" />
+                            <p:selectOneMenu id="maquinaria" value="#{concesionMineraCtrl.codigoMaquinaria}" required="true" requiredMessage="Mineral es requerido" style="width: 112%"> 
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.tipoMaquinarias}"/>
+                                <f:ajax execute="@form" />
+                            </p:selectOneMenu>
+                            <h:outputLabel for="cant" value="Cantidad:" />
+                            <p:spinner id="cant" value="#{concesionMineraCtrl.cantidadMaquinaria}" />
+                        </h:panelGrid>
+                        <p:spacer/>
+                        <h:panelGroup>
+                            <h:panelGrid style="text-align:center" columns="2">
+                                <p:commandLink actionListener="#{concesionMineraCtrl.guardarMaquinaria}" title="Guardar" update="@form" rendered="false">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Guardar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <!-- <p:commandLink action="concesionesmineras?faces-redirect=true" oncomplete="PF('dlgMaq').hide();" title="Cancelar" immediate="true" update="message3">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Cancelar"/>
+                                    </h:panelGrid>
+                                </p:commandLink> -->
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </div>
+                    <p:dataTable id="tablaCoordenadas" var="maq" value="#{concesionMineraCtrl.maquinariasPorConcesion}" emptyMessage="No existen registros" scrollable="true">
+                        <p:column headerText="Maquinaria">
+                            <h:outputText value="#{maq.codigoTipoMaquinaria.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{maq.cantidadMaquinaria}" />
+                        </p:column>
+                        <p:column width="40">
+                            <p:commandLink action="#{concesionMineraCtrl.eliminarMaquinaria}" title="Eliminar" 
+                                           immediate="true" update="@form" disabled="true">
+                                <h:panelGrid style="text-align:center">
+                                    <h:graphicImage value="resources/images/delete.png" title="Eliminar" style="width: 25px; height: 25px"/>
+                                </h:panelGrid>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Persona Natural" widgetVar="dlgPerNat" modal="true" dynamic="true" resizable="false" draggable="false">
+                <h:form id="form4">
+                    <p:growl id="message4" showDetail="true" autoUpdate="true"/>
+                    <div align="center">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="numDoc" value="Cédula/RUC titular:" />
+                            <p:inputMask id="numDoc" mask="9?999999999" value="#{concesionMineraCtrl.personaNatural.numeroDocumento}" size="50" placeHolder=""
+                                         maxlength="10" required="true" requiredMessage="Cédula/RUC requerido"  >
+                                <p:ajax event="blur" update="@form" listener="#{concesionMineraCtrl.validarCedulaPersonaNatural}"  />
+                            </p:inputMask>
+                            <p:outputLabel for="nomTit" value="Nombres del titular:"></p:outputLabel>
+                            <p:inputText id="nomTit" value="#{concesionMineraCtrl.personaNatural.nombre}" required="true" requiredMessage="Nombres titular es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="apeTit" value="Apellidos del titular:"></p:outputLabel>
+                            <p:inputText id="apeTit" value="#{concesionMineraCtrl.personaNatural.apellido}" required="true" requiredMessage="Nombres titular es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="celTit" value="Teléfono celular:"></p:outputLabel>
+                            <p:inputMask id="celTit" mask="9?999999999" value="#{concesionMineraCtrl.personaNatural.celular}" size="50" placeholder=""
+                                         validatorMessage="Teléfono celular debe tener 10 dígitos" >
+                                <f:validateLength minimum="0" maximum="10" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="telTit" value="Teléfono convencional:"></p:outputLabel>
+                            <p:inputMask id="telTit" mask="9?99999999" value="#{concesionMineraCtrl.personaNatural.telefono}" size="50" placeholder=""
+                                         validatorMessage="Teléfono convencional debe tener 9 dígitos">
+                                <f:validateLength minimum="0" maximum="9" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="casTit" value="Casillero judicial:"></p:outputLabel>
+                            <p:inputMask id="casTit" mask="9?99999999999" value="#{concesionMineraCtrl.personaNatural.casilleroJudicial}" size="50" placeHolder=""
+                                         maxlength="12" required="true" requiredMessage="Casillero judicial requerido" />
+
+                            <p:outputLabel for="direccionTit" value="Dirección:"></p:outputLabel>
+                            <p:inputText id="direccionTit" size="50" value="#{concesionMineraCtrl.personaNatural.direccion}" required="true" requiredMessage="Dirección es requerida" maxlength="90"></p:inputText>
+
+                            <p:outputLabel for="correoTit" value="Correo electrónico:"></p:outputLabel>
+                            <p:inputText id="correoTit" size="50" value="#{concesionMineraCtrl.personaNatural.email}"
+                                         validatorMessage="Correo electrónico inválido" label="Correo electrónico" maxlength="50">
+                                <!-- <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" /> -->
+                            </p:inputText>
+                        </h:panelGrid>
+                        <p:spacer/>
+                        <h:panelGroup>
+                            <h:panelGrid style="text-align:center" columns="2">
+                                <p:commandLink actionListener="#{concesionMineraCtrl.guardarPersonaNatural}" title="Guardar" 
+                                               update=":form1:numDoc :form1:nomTit :form1:apTit :form1:email :form1:casJud :form1:dircc :form1:telfCel :form1:telfConv">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Guardar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <!-- <p:commandLink onclick="PF('dlgPerNat').hide();" title="Cancelar" immediate="true">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Cancelar"/>
+                                    </h:panelGrid>
+                                </p:commandLink> -->
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </div>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Persona Jurídica" widgetVar="dlgPerJur" modal="true" dynamic="true" resizable="false" draggable="false">
+                <h:form id="form5">
+                    <p:growl id="message4" showDetail="true" autoUpdate="true"/>
+                    <div align="center">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="numDoc" value="Cédula/RUC titular:" />
+                            <p:inputMask id="numDoc" mask="9?999999999999" value="#{concesionMineraCtrl.personaJuridica.ruc}" size="50" placeHolder=""
+                                         maxlength="13" required="true" requiredMessage="Cédula/RUC requerido"  >
+                                <p:ajax event="blur" update="@form" listener="#{concesionMineraCtrl.validarCedulaPersonaJuridica}"  />
+                            </p:inputMask>
+                            <p:outputLabel for="nomLegal" value="Nombre legal:"></p:outputLabel>
+                            <p:inputText id="nomLegal" value="#{concesionMineraCtrl.personaJuridica.nombreLegal}" required="true" requiredMessage="Nombre legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="nomCom" value="Nombre comercial:"></p:outputLabel>
+                            <p:inputText id="nomCom" value="#{concesionMineraCtrl.personaJuridica.nombreComercial}" required="true" requiredMessage="Nombre comercial es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="cellEmp" value="Teléfono celular:"></p:outputLabel>
+                            <p:inputMask id="cellEmp" mask="9?999999999" value="#{concesionMineraCtrl.personaJuridica.celular}" size="50" placeholder=""
+                                         validatorMessage="Teléfono celular debe tener 10 dígitos" >
+                                <f:validateLength minimum="0" maximum="10" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="telEmp" value="Teléfono convencional:"></p:outputLabel>
+                            <p:inputMask id="telEmp" mask="9?99999999" value="#{concesionMineraCtrl.personaJuridica.telefono}" size="50" placeholder=""
+                                         validatorMessage="Teléfono convencional debe tener 9 dígitos">
+                                <f:validateLength minimum="0" maximum="9" />
+                            </p:inputMask>
+
+                            <p:outputLabel for="casJudEmp" value="Casillero judicial:"></p:outputLabel>
+                            <p:inputMask id="casJudEmp" mask="9?99999999999" value="#{concesionMineraCtrl.personaJuridica.casilleroJudicial}" size="50" placeHolder=""
+                                         maxlength="12" required="true" requiredMessage="Casillero judicial requerido" />
+
+                            <p:outputLabel for="dirEmp" value="Dirección:"></p:outputLabel>
+                            <p:inputText id="dirEmp" size="50" value="#{concesionMineraCtrl.personaJuridica.direccion}" required="true" requiredMessage="Dirección es requerida" maxlength="90"></p:inputText>
+
+                            <p:outputLabel for="correoEmp" value="Correo electrónico:"></p:outputLabel>
+                            <p:inputText id="correoEmp" size="50" value="#{concesionMineraCtrl.personaJuridica.email}" 
+                                         validatorMessage="Correo electrónico inválido" label="Correo electrónico" maxlength="50">
+                                <!-- <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" /> -->
+                            </p:inputText>
+                            <p:outputLabel for="numDoc2" value="Documento Rep. Legal:"></p:outputLabel>
+                            <p:inputMask id="numDoc2" mask="9?999999999999" value="#{concesionMineraCtrl.personaJuridica.documentoRepresentanteLegal}" size="50" placeHolder=""
+                                         maxlength="13" required="true" requiredMessage="Cédula/RUC requerido" >
+                                <p:ajax event="blur" update="numDoc2" listener="#{concesionMineraCtrl.validarCedulaRepresentanteLegal()}"  />
+                            </p:inputMask>
+                            <p:outputLabel for="nomRepLegal" value="Nombre Representante Legal:"></p:outputLabel>
+                            <p:inputText id="nomRepLegal" value="#{concesionMineraCtrl.personaJuridica.nombreRepresentanteLegal}" required="true" requiredMessage="Nombre Rep. legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+
+                            <p:outputLabel for="apeRepLegal" value="Apellido Representante Legal:"></p:outputLabel>
+                            <p:inputText id="apeRepLegal" value="#{concesionMineraCtrl.personaJuridica.apellidoRepresentanteLegal}" required="true" requiredMessage="Apellido Rep. legal es requerido" size="50" 
+                                         maxlength="60" onkeypress="return acceptText(event)"/>
+                        </h:panelGrid>
+                        <p:spacer/>
+                        <h:panelGroup>
+                            <h:panelGrid style="text-align:center" columns="2">
+                                <p:commandLink actionListener="#{concesionMineraCtrl.guardarPersonaJuridica}" title="Guardar" 
+                                               update=":form1:numDoc :form1:nomTit :form1:apTit :form1:email :form1:casJud :form1:dircc :form1:telfCel :form1:telfConv :form1:panel3">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Guardar"/>
+                                    </h:panelGrid>
+                                </p:commandLink>
+                                <!-- <p:commandLink onclick="PF('dlgPerJur').hide();" title="Cancelar" immediate="true">
+                                    <h:panelGrid style="text-align:center">
+                                        <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                        <h:outputText value="Cancelar"/>
+                                    </h:panelGrid>
+                                </p:commandLink> -->
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </div>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>

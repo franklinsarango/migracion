@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Lista de Registros de Autogestión"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                <h:panelGrid columns="3">
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Fecha Desde:"/>
+                            <p:calendar placeholder="aaaa-mm-dd" navigator="true"
+                                        value="#{registroPagoObligacionesCtrl.fechaDesdeFiltro}"  
+                                        locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" />
+                            <p:outputLabel value="Fecha Hasta:"/>
+                            <p:calendar placeholder="aaaa-mm-dd" navigator="true"
+                                        value="#{registroPagoObligacionesCtrl.fechaHastaFiltro}"  
+                                        locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" />
+                            <p:outputLabel value="Número Comprobante:"/>
+                            <p:inputText value="#{registroPagoObligacionesCtrl.numeroComprobanteArcomFiltro}"/>
+                            <p:outputLabel value="Código Derecho Minero:"/>
+                            <p:inputText value="#{registroPagoObligacionesCtrl.codigoArcomFiltro}"/>
+                        </h:panelGrid>
+                        <h:commandButton actionListener="#{registroPagoObligacionesCtrl.buscar}" 
+                                         image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar"/>
+                    </h:panelGrid>
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Inicio"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                        <h:commandLink action="autogestionform?faces-redirect=true" title="Nuevo" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/plus.png" title="Nuevo" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Nuevo"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+
+                <h1 class="titulo_centrado">Lista de Registros de Autogestión</h1>
+
+                <p:dataTable id="amdt" var="reg" value="#{registroPagoObligacionesCtrl.listaRegistrosAutoGestion}" rows="20" 
+                             paginator="true"
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" styleClass="texto_tabla_datos" rowIndexVar="rowIndex" emptyMessage="No existen registros" style="width: 95%">
+
+                    <p:column headerText="#" style="width: 25px">
+                        <h:outputText value="#{rowIndex + 1}"/>
+                    </p:column>
+
+                    <p:column headerText="FECHA CREACION" style="width: 85px; text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" value="#{reg.fechaCreacion}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="FECHA DEPOSITO" style="width: 85px; text-align: right">
+                        <h:outputText value="#{reg.fechaEmisionPago}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="No. DEPOSITO" style="width: 85px; text-align: right">
+                        <h:outputText value="#{reg.numeroComprobanteBanco}" />
+                    </p:column>
+
+                    <p:column headerText="TIPO INGRESO/CONCEPTO" width="150">
+                        <h:outputText value="#{reg.codigoConceptoPago.descripcionConceptoPago}" />
+                    </p:column>
+
+                    <p:column headerText="ESTADO PAGO" style="width: 85px">
+                        <h:outputText value="#{reg.estadoPago.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="VALOR" style="width: 85px">
+                        <h:outputText value="#{reg.valorPagadoUsuario}" />
+                    </p:column>
+
+                    <p:column headerText="NUMERO COMPROBANTE INGRESO/RECAUDACION" width="85">
+                        <h:outputText value="#{reg.numeroComprobanteArcom}"/>
+                    </p:column>
+
+                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="false">
+                        <p:commandButton action="#{registroPagoObligacionesCtrl.editarRegistro}" icon="ui-icon-pencil" 
+                                         title="Editar" ajax="false"></p:commandButton>
+                    </p:column>
+
+                    <p:column headerText="Comprobante" style="width:37px; text-align: right">
+                        <p:commandButton update="@form"
+                                         icon="ui-icon-arrowthickstop-1-s"
+                                         title="Descargar comprobante" 
+                                         oncomplete="PF('visorTramite').show();return false;"
+                                         actionListener="#{registroPagoObligacionesCtrl.descargaPDF}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dialog id="dialoVisorTareas" header="Comprobante de Pago" 
+                          widgetVar="visorTramite" width="95%" height="600px"  
+                          showEffect="fade" draggable="false" 
+                          resizable="false" modal="true" >
+                        <iframe frameborder="0"
+                                src="#{registroPagoObligacionesCtrl.urlReporte}"
+                                name="frameTareas" id="frameTareas" scrolling="auto" 
+                                width="100%" height="98%" 
+                                marginheight="0" marginwidth="0">
+                        </iframe>
+                </p:dialog>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

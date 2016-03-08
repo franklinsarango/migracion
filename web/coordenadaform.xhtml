@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Actualización de Datos"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+
+                <p:growl id="growl" showDetail="true" showSummary="false" life="8000" autoUpdate="true"/>
+
+                <h:panelGroup>
+                    
+                    <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                        <f:facet name="header">
+                            <h:panelGroup style="display:block; text-align:center">
+                                <p:outputLabel value="DATOS DEL AREA"/>
+                            </h:panelGroup>
+                        </f:facet>
+
+                        <p:outputLabel value="Código área:"></p:outputLabel>
+                        <p:outputLabel value="#{coordenadaCtrl.concesion.codigoArcom}"/>
+
+                        <p:outputLabel value="Nombre área:"/>
+                        <p:outputLabel value="#{coordenadaCtrl.concesion.nombreConcesion}"/>
+
+                        <p:outputLabel value="Cédula/RUC titular:"/>
+                        <p:outputLabel value="#{coordenadaCtrl.concesion.documentoConcesionarioPrincipal}"/>
+
+                        <p:outputLabel value="Nombres y apellidos del titular:"/>
+                        <p:outputLabel value="#{coordenadaCtrl.obtenerNombreApellidoTitular()}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+
+                        <p:outputLabel value="Zona:"></p:outputLabel>
+                        <p:outputLabel value="#{coordenadaCtrl.concesion.codigoZona.nombre}"/>
+
+                        <p:outputLabel for="superficie" value="Superficie (Hectáreas):"></p:outputLabel>
+                        <pe:inputNumber id="superficie" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="99999.99" value="#{coordenadaCtrl.concesion.numeroHectareasConcesion}" 
+                                        required="true" requiredMessage="Superficie es requerida" style="width: 93%"/>
+                        
+                        
+
+                        <f:facet name="footer">
+                            <h:panelGroup style="display:block; text-align:center; height: 24px">
+                                <p:outputLabel value=""/>
+                            </h:panelGroup>
+                        </f:facet>
+                    </p:panelGrid>
+                    
+                    <p:dataTable id="coordt" var="coor" value="#{coordenadaCtrl.devolverCoordenadas()}" paginator="true"
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                             styleClass="listaCoordenadas"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" rowIndexVar="rowIndex" emptyMessage="No existen registros" rows="15"
+                             editable="true">
+                        
+                        <p:ajax event="rowEdit" listener="#{coordenadaCtrl.onRowEdit}"/>
+
+                        <p:column headerText="Orden" style="width: 40px; text-align: center">
+                            <h:outputText value="#{coor.numeroCoordenada}"/>
+                        </p:column>
+
+                        <p:column headerText="UTM Este" style="text-align: center">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{coor.utmEste}"/></f:facet>
+                                <f:facet name="input"><p:inputText value="#{coor.utmEste}" required="true" requiredMessage="Valor de coordenada es requerido"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="UTM Norte" style="text-align: center"> 
+                           <p:cellEditor>
+                               <f:facet name="output"><h:outputText value="#{coor.utmNorte}" /></f:facet>
+                               <f:facet name="input"><p:inputText value="#{coor.utmNorte}" required="true" requiredMessage="Valor de coordenada es requerido"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Editar" style="width:35px; text-align: center">
+                            <p:rowEditor/>
+                        </p:column>
+                        
+                        <p:column style="width:30px; text-align: center">
+                            <p:commandButton action="#{coordenadaCtrl.eliminarCoordenadas(rowIndex)}" icon="ui-icon-trash" title="Eliminar" ajax="false"
+                                             immediate="true" update="@form" rendered="#{coor.numeroCoordenada == coordenadaCtrl.longitudCoordenadas -1}"/>
+
+                        </p:column>
+                        
+                    </p:dataTable>
+                </h:panelGroup>
+                
+                <p:panel styleClass="panelCentrado">
+                    <p:commandButton action="#{coordenadaCtrl.agregarCoordenada()}" value="Agregar" update="@form"/>
+                </p:panel>
+                
+                <div align="center">
+                    <h:panelGrid style="text-align:center" columns="3">
+                        <p:commandLink action="#{coordenadaCtrl.actualizarCoordenadas()}" title="Guardar">
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/guardar.png" title="Guardar" style="width: 60px; height: 60px"/>
+                                <h:outputText value="Guardar"/>
+                            </h:panelGrid>
+                        </p:commandLink>
+                        
+                        <p:commandLink action="concesiones?faces-redirect=true" title="Cancelar" immediate="true" update="growl">
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
+                                <h:outputText value="Cancelar"/>
+                            </h:panelGrid>
+                        </p:commandLink>
+                    </h:panelGrid>
+                </div>
+                
+            </h:form>
+            
+        </ui:define>
+    </ui:composition>
+</html>
+
