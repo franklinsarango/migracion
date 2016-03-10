@@ -88,8 +88,10 @@
                         </p:column>
                         
                         <p:column style="width:30px; text-align: center">
-                            <p:commandButton action="#{coordenadaCtrl.eliminarCoordenadas(rowIndex)}" icon="ui-icon-trash" title="Eliminar" ajax="false"
-                                             immediate="true" update="@form" rendered="#{coor.numeroCoordenada == coordenadaCtrl.longitudCoordenadas -1}"/>
+                            <p:commandButton id="delete" actionListener="#{coordenadaCtrl.eliminarCoordenadas(rowIndex)}" icon="ui-icon-trash" title="Eliminar"
+                                             immediate="true" update="@form" rendered="#{coor.numeroCoordenada == coordenadaCtrl.longitudCoordenadas -1}">
+                                <p:confirm header="Borrar coordenadas" message="¿Esta seguro que desea borrar estas coordenadas?" icon="ui-icon-alert"/>
+                            </p:commandButton>
 
                         </p:column>
                         
@@ -109,7 +111,7 @@
                             </h:panelGrid>
                         </p:commandLink>
                         
-                        <p:commandLink action="concesiones?faces-redirect=true" title="Cancelar" immediate="true" update="growl">
+                        <p:commandLink onclick="PF('cancelConfirm').show()"  title="Cancelar" immediate="true">
                             <h:panelGrid style="text-align:center">
                                 <h:graphicImage value="resources/images/cancelar.png" title="Cancelar" style="width: 60px; height: 60px"/>
                                 <h:outputText value="Cancelar"/>
@@ -118,6 +120,16 @@
                     </h:panelGrid>
                 </div>
                 
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+                
+                <p:confirmDialog showEffect="fade" hideEffect="fade" widgetVar="cancelConfirm" header="Cancelar"
+                                 message="Si cancela no se guardaran las nuevas coordenadas, ¿esta seguro?">
+                    <p:commandButton value="Si" action="concesiones?faces-redirect=true" icon="ui-icon-check" oncomplete="PF('cancelConfirm').hide()"/>
+                    <p:commandButton value="No" oncomplete="PF('cancelConfirm').hide()" icon="ui-icon-close"/>
+                </p:confirmDialog>
             </h:form>
             
         </ui:define>
