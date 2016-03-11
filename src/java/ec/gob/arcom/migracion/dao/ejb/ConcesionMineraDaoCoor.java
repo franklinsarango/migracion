@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.dao.ejb;
 
 import ec.gob.arcom.migracion.dao.ConcesionMineraDaoLocal;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
+import ec.gob.arcom.migracion.modelo.CoordenadaArea;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,7 +36,9 @@ public class ConcesionMineraDaoCoor implements ConcesionMineraDaoLocal {
 
     @Override
     public void update(ConcesionMinera cm) {
-        em.merge(cm);
+        for (CoordenadaArea c : cm.getAreaMineraList().get(0).getCoordenadaAreaList()) {
+            em.merge(c);
+        }
     }
 
     @Override
