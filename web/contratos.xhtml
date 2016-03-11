@@ -62,9 +62,14 @@
                         <h:outputText value="#{rowIndex + 1}"/>
                     </p:column>
 
-                    <p:column headerText="CODIGO" style="text-align: right">
-                        <h:outputText  styleClass="texto_tabla_datos_codigo" 
+                    <p:column headerText="CODIGO CONCESION" style="text-align: right">
+                        <h:outputText styleClass="texto_tabla_datos_codigo" 
                                        value="#{reg.codigoConcesion.codigoArcom}" />
+                    </p:column>
+                    
+                    <p:column headerText="CODIGO CONTRATO" style="text-align: right">
+                        <h:outputText styleClass="texto_tabla_datos_codigo"
+                                      value="#{reg.codigoArcom}"/>
                     </p:column>
                     
                     <p:column headerText="NUM. DOCUMENTO" style="text-align: right">

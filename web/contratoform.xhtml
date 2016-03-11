@@ -48,12 +48,12 @@
                         </h:panelGroup>
                     </f:facet>
 
-
                     <p:outputLabel for="tipoCont" value="Tipo Contrato:"></p:outputLabel>
                     <p:selectOneMenu id="tipoCont" 
                                      value="#{contratoOperacionCtrl.contratoOperacion.tipoContrato.codigoCatalogoDetalle}" 
                                      required="true" 
-                                     requiredMessage="Parroquia es requerida">
+                                     requiredMessage="Tipo contrato es requerida"
+                                     disabled="#{contratoOperacionCtrl.contratoOperacion.codigoContratoOperacion != null}">
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{selectItemCtrl.tipoContratos}"/>
                         <p:ajax update="panelPorc panelPorc2" />
@@ -79,6 +79,19 @@
                     <p:inputText id="sector" 
                                  value="#{contratoOperacionCtrl.contratoOperacion.sector}"/>
 
+                    <p:outputLabel for="estado" value="Estado:"></p:outputLabel>
+                    <p:selectOneMenu id="estado" 
+                                     value="#{contratoOperacionCtrl.contratoOperacion.estadoContrato.codigoCatalogoDetalle}" 
+                                     required="true" 
+                                     requiredMessage="Estado es requerida">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{selectItemCtrl.estadosCodigoCatalogo19}"/>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel for="fechaInsc" value="Fecha Inscribe:"></p:outputLabel>
+                    <p:calendar id="fechaInsc" readonlyInput="true"
+                                value="#{contratoOperacionCtrl.contratoOperacion.fechaInscribe}" placeholder="aaaa-mm-dd" navigator="true"
+                                locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" required="true" requiredMessage="Fecha inscribe es requerida"/>
                 </p:panelGrid>
                 <p:panelGrid columns="2"    
                              styleClass="panel_grid_center"
@@ -124,6 +137,20 @@
                                  value="#{contratoOperacionCtrl.contratoOperacion.codigoConcesion.apellidoConcesionarioPrincipal}"
                                  readonly="true"
                                  size="40"/>
+                    <p:outputLabel for="provincia" value="Provincia:"></p:outputLabel>
+                    <p:inputText id="provincia" 
+                                 value="#{contratoOperacionCtrl.contratoOperacion.codigoConcesion.provinciaString}"
+                                 readonly="true"/>
+
+                    <p:outputLabel for="canton" value="Cantón:"></p:outputLabel>
+                    <p:inputText id="canton" 
+                                 value="#{contratoOperacionCtrl.contratoOperacion.codigoConcesion.cantonString}"
+                                 readonly="true"/>
+
+                    <p:outputLabel for="parroquia" value="Parroquia:"></p:outputLabel>
+                    <p:inputText id="parroquia" 
+                                 value="#{contratoOperacionCtrl.contratoOperacion.codigoConcesion.parroquiaString}"
+                                 readonly="true"/>
                 </p:panelGrid>
                 <p:panelGrid columns="2"   
                              styleClass="panel_grid_center"
@@ -166,20 +193,7 @@
                                  value="#{contratoOperacionCtrl.contratoOperacion.emailPersona}" 
                                  readonly="true"
                                  size="40"/>
-                    <p:outputLabel for="provincia" value="Provincia:"></p:outputLabel>
-                    <p:inputText id="provincia" 
-                                 value="#{contratoOperacionCtrl.contratoOperacion.codigoConcesion.provinciaString}"
-                                 readonly="true"/>
-
-                    <p:outputLabel for="canton" value="Cantón:"></p:outputLabel>
-                    <p:inputText id="canton" 
-                                 value="#{contratoOperacionCtrl.contratoOperacion.codigoConcesion.cantonString}"
-                                 readonly="true"/>
-
-                    <p:outputLabel for="parroquia" value="Parroquia:"></p:outputLabel>
-                    <p:inputText id="parroquia" 
-                                 value="#{contratoOperacionCtrl.contratoOperacion.codigoConcesion.parroquiaString}"
-                                 readonly="true"/>
+                    
                     <f:facet name="footer">
                         <h:panelGroup style="display:block; text-align:center; height: 24px">
                             <p:outputLabel value=""/>

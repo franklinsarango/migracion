@@ -119,6 +119,11 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
             sql += "tipo_contrato=" + null + ", \n";
         }
         sql += "porcentaje=" + contratoOperacion.getPorcentaje() + ", \n";
+        if (contratoOperacion.getFechaInscribe() != null) {
+            sql += "fecha_inscribe='" + contratoOperacion.getFechaInscribe() + "', \n";
+        } else {
+            sql += "fecha_inscribe=" + null + ", \n";
+        }
         if (contratoOperacion.getCodigoArcom() != null) {
             sql += "codigo_arcom='" + contratoOperacion.getCodigoArcom() + "' \n";
         } else {
@@ -134,7 +139,7 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
     public List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento) {
         String jpql = "select co from ContratoOperacion co where 1=1 \n";
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
-            jpql += "and co.codigoConcesion.codigoArcom = :codigoArcom \n";
+            jpql += "and co.codigoArcom = :codigoArcom \n";
         }
         if (numDocumento != null && !numDocumento.isEmpty()) {
             jpql += "and co.numeroDocumento = :numDocumento";

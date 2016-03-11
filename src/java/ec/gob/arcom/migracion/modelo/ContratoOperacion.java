@@ -6,10 +6,8 @@
 package ec.gob.arcom.migracion.modelo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -109,6 +106,9 @@ public class ContratoOperacion implements Serializable {
     private String apellidoPersona;
     @Transient
     private String emailPersona;
+    @Column(name = "fecha_inscribe")
+    @Temporal(TemporalType.DATE)
+    private Date fechaInscribe;
     
     public ContratoOperacion() {
     }
@@ -326,6 +326,14 @@ public class ContratoOperacion implements Serializable {
         this.porcentaje = porcentaje;
     }
 
+    public Date getFechaInscribe() {
+        return fechaInscribe;
+    }
+
+    public void setFechaInscribe(Date fechaInscribe) {
+        this.fechaInscribe = fechaInscribe;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -348,7 +356,16 @@ public class ContratoOperacion implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.gob.arcom.migracion.modelo.ContratoOperacion[ codigoContratoOperacion=" + codigoContratoOperacion + " ]";
+        return "ContratoOperacion{" + "codigoContratoOperacion=" + codigoContratoOperacion + ", sector=" + sector 
+                + ", numeroDocumento=" + numeroDocumento + ", campoReservado05=" + campoReservado05 + ", campoReservado04=" + campoReservado04 
+                + ", campoReservado03=" + campoReservado03 + ", campoReservado02=" + campoReservado02 + ", campoReservado01=" + campoReservado01 
+                + ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion 
+                + ", fechaModificacion=" + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion + ", codigoProvincia=" + codigoProvincia != null ? codigoProvincia.getCodigoLocalidad() != null ? codigoProvincia.getCodigoLocalidad().toString() : null : null
+                + ", codigoParroquia=" + codigoParroquia != null ? codigoParroquia.getCodigoLocalidad() != null ? codigoParroquia.getCodigoLocalidad().toString() : null : null + ", codigoCanton=" + codigoCanton != null ? codigoCanton.getNombre() : null + ", codigoInforme=" + codigoInforme != null ? codigoInforme.getCodigoInforme() != null ? codigoInforme.getCodigoInforme().toString() : null : null + ", codigoConcesion=" 
+                + codigoConcesion != null ? codigoConcesion.getCodigoConcesion() != null ? codigoConcesion.getCodigoConcesion().toString() : null : null 
+                + ", estadoContrato=" + estadoContrato != null ? estadoContrato.getCodigoCatalogoDetalle() != null ? estadoContrato.getCodigoCatalogoDetalle().toString() : null : null + ", codigoArea=" + codigoArea != null ? codigoArea.getCodigoAreaMinera() != null ? codigoArea.getCodigoAreaMinera().toString() : null : null + ", codigoArcom=" + codigoArcom 
+                + ", tipoContrato=" + tipoContrato != null ? tipoContrato.getCodigoCatalogoDetalle() != null ? tipoContrato.getCodigoCatalogoDetalle().toString() : null : null + ", porcentaje=" + porcentaje + ", nombrePersona=" + nombrePersona + ", apellidoPersona=" 
+                + apellidoPersona + ", emailPersona=" + emailPersona + ", fechaInscribe=" + fechaInscribe + '}';
     }
 
 }

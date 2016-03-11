@@ -93,6 +93,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     private Secuencia secuenciaContratoOperacion;
     
     private int longitudCoordenadas;
+    private ContratoOperacion contratoOperacionAnterior;
     
     public ContratoOperacion getContratoOperacion() {
         if (contratoOperacion == null) {
@@ -105,8 +106,10 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                 contratoOperacion = new ContratoOperacion();
                 contratoOperacion.setCodigoConcesion(new ConcesionMinera());
                 contratoOperacion.setTipoContrato(new CatalogoDetalle());
+                contratoOperacion.setEstadoContrato(new CatalogoDetalle());
             } else {
                 contratoOperacion = contratoOperacionServicio.findByPk(idContrato);
+                contratoOperacionAnterior = contratoOperacionServicio.findByPk(idContrato);
                 if (contratoOperacion.getCodigoConcesion() == null) {
                     contratoOperacion.setCodigoConcesion(new ConcesionMinera());
                 }
@@ -121,6 +124,9 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                 }
                 if (contratoOperacion.getTipoContrato() == null) {
                     contratoOperacion.setTipoContrato(new CatalogoDetalle());
+                }
+                if (contratoOperacion.getEstadoContrato() == null) {
+                    contratoOperacion.setEstadoContrato(new CatalogoDetalle());
                 }
                 PersonaDto personaDto = personaNaturalServicio
                         .obtenerPersonaPorNumIdentificacion(contratoOperacion.getNumeroDocumento());
@@ -173,13 +179,27 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                 generarCodigoArcomContrato();
                 contratoOperacionServicio.actualizarContratoOperacion(contratoOperacion);
                 //contratoOperacionServicio.guardarTodo(contratoOperacion);
+                Auditoria auditoria = new Auditoria();
+                auditoria.setAccion("INSERT");
+                auditoria.setDetalleAnterior(contratoOperacion.toString());
+                auditoria.setDetalleCambios(null);
+                auditoria.setFecha(getCurrentTimeStamp());
+                auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                auditoriaServicio.create(auditoria);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Registro guardado con éxito", null));
+                        "Registro guardado con éxito con código " + contratoOperacion.getCodigoArcom(), null));
                 return null;
             } else {
                 contratoOperacion.setFechaModificacion(new Date());
                 contratoOperacion.setUsuarioModificacion(BigInteger.valueOf(us.getCodigoUsuario()));
                 contratoOperacionServicio.actualizarContratoOperacion(contratoOperacion);
+                Auditoria auditoria = new Auditoria();
+                auditoria.setAccion("UPDATE");
+                auditoria.setDetalleAnterior(contratoOperacionAnterior.toString());
+                auditoria.setDetalleCambios(contratoOperacion.toString());
+                auditoria.setFecha(getCurrentTimeStamp());
+                auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                auditoriaServicio.create(auditoria);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                         "Registro actualizado con éxito", null));
                 return "contratos";
@@ -187,6 +207,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Error: " + ex.getMessage(), ex.getMessage()));
+            ex.printStackTrace();
             return null;
         }
         //return "contratos";
@@ -558,6 +579,14 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
     public void setLongitudCoordenadas(int longitudCoordenadas) {
         this.longitudCoordenadas = longitudCoordenadas;
+    }
+
+    public ContratoOperacion getContratoOperacionAnterior() {
+        return contratoOperacionAnterior;
+    }
+
+    public void setContratoOperacionAnterior(ContratoOperacion contratoOperacionAnterior) {
+        this.contratoOperacionAnterior = contratoOperacionAnterior;
     }
 
 }
