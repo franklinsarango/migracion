@@ -220,7 +220,7 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
                 + "    \n"
                 + "    (select nombre from catmin.localidad where cm.codigo_parroquia = codigo_localidad) as parroquia,\n"
                 + "	\n"
-                + "               cast(cm.campo_reservado_10 as date) as fecha_sustitucion,\n"
+                + "               cast(null as date) as fecha_sustitucion,\n"
                 + "\n"
                 + "    'C' tipo_tabla \n"
                 + "FROM\n"

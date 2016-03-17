@@ -48,7 +48,7 @@
                     <p:outputLabel value="Código:"></p:outputLabel>
                     <p:inputText id="codArc" value="#{concesionMineraCtrl.concesionMinera.codigoArcom}" size="50" 
                                  readonly="#{!concesionMineraCtrl.existeCodigoArcom}" required="true" requiredMessage="Código requerido"
-                                 rendered="#{concesionMineraCtrl.concesionMinera.codigoConcesion == null}" maxlength="10">
+                                 rendered="#{concesionMineraCtrl.concesionMinera.codigoConcesion == null}" maxlength="17">
                         <p:ajax update="panel2 codArc botones" listener="#{concesionMineraCtrl.validarCodigoArcom}" />
                     </p:inputText>
                     <p:outputLabel value="#{concesionMineraCtrl.concesionMinera.codigoArcom}" 
