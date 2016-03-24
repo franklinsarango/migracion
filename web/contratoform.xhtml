@@ -92,6 +92,33 @@
                     <p:calendar id="fechaInsc" readonlyInput="true"
                                 value="#{contratoOperacionCtrl.contratoOperacion.fechaInscribe}" placeholder="aaaa-mm-dd" navigator="true"
                                 locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" required="true" requiredMessage="Fecha inscribe es requerida"/>
+                    
+                    <h:panelGroup id="panelCotaMinLbl">
+                        <p:outputLabel for="cotaMin" 
+                                       value="Cota Mínima" />
+                    </h:panelGroup>
+                    <h:panelGroup id="panelCotaMin">
+                        <pe:inputNumber id="cotaMin" 
+                                        thousandSeparator="," 
+                                        decimalSeparator="." 
+                                        decimalPlaces="2" 
+                                        maxValue="9999999999.99" 
+                                        value="#{contratoOperacionCtrl.contratoOperacion.cotaMinima}" />
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="panelCotaMaxLbl">
+                        <p:outputLabel for="cotaMax" 
+                                       value="Cota Máxima:" />
+                    </h:panelGroup>
+                    <h:panelGroup id="panelCotaMax">
+                        <pe:inputNumber id="cotaMax" 
+                                        thousandSeparator="," 
+                                        decimalSeparator="." 
+                                        decimalPlaces="2" 
+                                        maxValue="9999999999.99" 
+                                        value="#{contratoOperacionCtrl.contratoOperacion.cotaMaxima}" />
+                    </h:panelGroup>
+                    
                 </p:panelGrid>
                 <p:panelGrid columns="2"    
                              styleClass="panel_grid_center"

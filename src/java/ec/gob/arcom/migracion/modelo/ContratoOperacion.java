@@ -100,6 +100,10 @@ public class ContratoOperacion implements Serializable {
     private CatalogoDetalle tipoContrato;
     @Column(name = "porcentaje", length = 20, precision = 2)
     private Double porcentaje;
+    @Column(name = "cota_minima", length = 20, precision = 2)
+    private Double cotaMinima;
+    @Column(name = "cota_maxima", length = 20, precision = 2)
+    private Double cotaMaxima;
     @Transient
     private String nombrePersona;
     @Transient
@@ -360,12 +364,40 @@ public class ContratoOperacion implements Serializable {
                 + ", numeroDocumento=" + numeroDocumento + ", campoReservado05=" + campoReservado05 + ", campoReservado04=" + campoReservado04 
                 + ", campoReservado03=" + campoReservado03 + ", campoReservado02=" + campoReservado02 + ", campoReservado01=" + campoReservado01 
                 + ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion 
-                + ", fechaModificacion=" + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion + ", codigoProvincia=" + codigoProvincia != null ? codigoProvincia.getCodigoLocalidad() != null ? codigoProvincia.getCodigoLocalidad().toString() : null : null
-                + ", codigoParroquia=" + codigoParroquia != null ? codigoParroquia.getCodigoLocalidad() != null ? codigoParroquia.getCodigoLocalidad().toString() : null : null + ", codigoCanton=" + codigoCanton != null ? codigoCanton.getNombre() : null + ", codigoInforme=" + codigoInforme != null ? codigoInforme.getCodigoInforme() != null ? codigoInforme.getCodigoInforme().toString() : null : null + ", codigoConcesion=" 
-                + codigoConcesion != null ? codigoConcesion.getCodigoConcesion() != null ? codigoConcesion.getCodigoConcesion().toString() : null : null 
-                + ", estadoContrato=" + estadoContrato != null ? estadoContrato.getCodigoCatalogoDetalle() != null ? estadoContrato.getCodigoCatalogoDetalle().toString() : null : null + ", codigoArea=" + codigoArea != null ? codigoArea.getCodigoAreaMinera() != null ? codigoArea.getCodigoAreaMinera().toString() : null : null + ", codigoArcom=" + codigoArcom 
-                + ", tipoContrato=" + tipoContrato != null ? tipoContrato.getCodigoCatalogoDetalle() != null ? tipoContrato.getCodigoCatalogoDetalle().toString() : null : null + ", porcentaje=" + porcentaje + ", nombrePersona=" + nombrePersona + ", apellidoPersona=" 
-                + apellidoPersona + ", emailPersona=" + emailPersona + ", fechaInscribe=" + fechaInscribe + '}';
+                + ", fechaModificacion=" + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion + ", codigoProvincia=" + (codigoProvincia != null ? codigoProvincia.getCodigoLocalidad(): null) 
+                + ", codigoParroquia=" + (codigoParroquia != null ? codigoParroquia.getCodigoLocalidad(): null) + ", codigoCanton=" + (codigoCanton != null ? codigoCanton.getNombre() : null) + ", codigoInforme=" + (codigoInforme != null ? codigoInforme.getCodigoInforme():  null) + ", codigoConcesion=" 
+                + (codigoConcesion != null ? codigoConcesion.getCodigoConcesion() : null  )
+                + ", estadoContrato=" + (estadoContrato != null ? estadoContrato.getCodigoCatalogoDetalle() : null) + ", codigoArea=" + (codigoArea != null ? codigoArea.getCodigoAreaMinera() : null) + ", codigoArcom=" + codigoArcom 
+                + ", tipoContrato=" + (tipoContrato != null ? tipoContrato.getCodigoCatalogoDetalle() : null ) + ", porcentaje=" + porcentaje + ", nombrePersona=" + nombrePersona + ", apellidoPersona=" 
+                + apellidoPersona + ", emailPersona=" + emailPersona + ", fechaInscribe=" + fechaInscribe + ", cotaMinima=" + cotaMinima + ", cotaMaxima=" + cotaMaxima +'}';
+    }
+
+    /**
+     * @return the cotaMinima
+     */
+    public Double getCotaMinima() {
+        return cotaMinima;
+    }
+
+    /**
+     * @param cotaMinima the cotaMinima to set
+     */
+    public void setCotaMinima(Double cotaMinima) {
+        this.cotaMinima = cotaMinima;
+    }
+
+    /**
+     * @return the cotaMaxima
+     */
+    public Double getCotaMaxima() {
+        return cotaMaxima;
+    }
+
+    /**
+     * @param cotaMaxima the cotaMaxima to set
+     */
+    public void setCotaMaxima(Double cotaMaxima) {
+        this.cotaMaxima = cotaMaxima;
     }
 
 }

@@ -124,6 +124,16 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         } else {
             sql += "fecha_inscribe=" + null + ", \n";
         }
+        if (contratoOperacion.getCotaMinima()!= null) {
+            sql += "cota_minima='" + contratoOperacion.getCotaMinima() + "', \n";
+        } else {
+            sql += "cota_minima=" + null + ", \n";
+        }
+        if (contratoOperacion.getCotaMaxima()!= null) {
+            sql += "cota_maxima='" + contratoOperacion.getCotaMaxima() + "', \n";
+        } else {
+            sql += "cota_maxima=" + null + ", \n";
+        }
         if (contratoOperacion.getCodigoArcom() != null) {
             sql += "codigo_arcom='" + contratoOperacion.getCodigoArcom() + "' \n";
         } else {
@@ -152,7 +162,19 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         if (numDocumento != null && !numDocumento.isEmpty()) {
             query.setParameter("numDocumento", numDocumento);
         }
-        return query.getResultList();
+        
+        try {
+            List<ContratoOperacion> listaFinal = query.getResultList();
+            for (ContratoOperacion cop : listaFinal) {
+                this.refresh(cop);
+            }
+            return listaFinal;
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+        
+        //return query.getResultList();
+        return null;
     }
 
 }
