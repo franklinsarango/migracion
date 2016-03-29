@@ -7,9 +7,11 @@ package ec.gob.arcom.migracion.ctrl;
 
 import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
+import ec.gob.arcom.migracion.dao.AuditorTecnicoDao;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
 import ec.gob.arcom.migracion.dto.PersonaDto;
+import ec.gob.arcom.migracion.modelo.AuditorTecnico;
 import ec.gob.arcom.migracion.modelo.Auditoria;
 import ec.gob.arcom.migracion.modelo.Catalogo;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
@@ -18,6 +20,8 @@ import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.CostoServicios;
 import ec.gob.arcom.migracion.modelo.LicenciaComercializacion;
 import ec.gob.arcom.migracion.modelo.Localidad;
+import ec.gob.arcom.migracion.modelo.PersonaJuridica;
+import ec.gob.arcom.migracion.modelo.PersonaNatural;
 import ec.gob.arcom.migracion.modelo.PlantaBeneficio;
 import ec.gob.arcom.migracion.modelo.RegistroPagoDetalle;
 import ec.gob.arcom.migracion.modelo.RegistroPagoObligaciones;
@@ -33,6 +37,7 @@ import ec.gob.arcom.migracion.servicio.CostoServiciosServicio;
 import ec.gob.arcom.migracion.servicio.LicenciaComercializacionServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadRegionalServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
+import ec.gob.arcom.migracion.servicio.PersonaJuridicaServicio;
 import ec.gob.arcom.migracion.servicio.PersonaNaturalServicio;
 import ec.gob.arcom.migracion.servicio.PlantaBeneficioServicio;
 import ec.gob.arcom.migracion.servicio.RegistroPagoDetalleServicio;
@@ -43,6 +48,7 @@ import ec.gob.arcom.migracion.servicio.UsuarioRolServicio;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -93,7 +99,12 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     @EJB
     private PersonaNaturalServicio personaNaturalServicio;
     @EJB
+    private PersonaJuridicaServicio personaJuridicaServicio;
+    @EJB
     private RegistroPagoDetalleServicio registroPagoDetalleServicio;
+    @EJB
+    private AuditorTecnicoDao auditorTecnicoServicio;
+    
     @ManagedProperty(value = "#{loginCtrl}")
     private LoginCtrl login;
     private RegistroPagoObligaciones registroPagoObligacionesAutoGestion;
@@ -144,9 +155,33 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     private List<DerechoMineroDto> derechosMineros;
 
     private BigDecimal valorPagoDerechoMinero;
+    
+    private boolean registrarAuditor;
+
+    public boolean isRegistrarAuditor() {
+        return registrarAuditor;
+    }
+
+    public void setRegistrarAuditor(boolean registrarAuditor) {
+        this.registrarAuditor = registrarAuditor;
+    }
+    
+    public void enablePanelAuditor() {
+        if(this.registroPagoObligacionesAutoGestion.getCodigoTipoServicio().getCodigoCatalogoDetalle()==1610) {
+            this.registrarAuditor= true;
+        } else {
+            this.registrarAuditor= false;
+        }
+        System.out.println("Codigo del cat: " + this.registroPagoObligacionesAutoGestion.getCodigoTipoServicio().getCodigoCatalogoDetalle() + "\n");
+    }
+    
+    public void disablePanelAuditor() {
+        this.registrarAuditor= false;
+    }
 
     public RegistroPagoObligacionesCtrl() {
         listaRegistrosAutoGestion = null;
+        registrarAuditor= false;
     }
 
     public void buscar() {
@@ -901,12 +936,96 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
             return;
         }
     }
-
+    
+    public void buscarAuditor() {
+        AuditorTecnico auditorTecnico= auditorTecnicoServicio.findByRuc(numIdentificacionBusqueda);
+        if (auditorTecnico != null) {
+            if(auditorTecnico.getTipopersona().equals(AuditorTecnico.PERSONA_NATURAL)) {
+                personaDto = personaNaturalServicio.obtenerPersonaPorNumIdentificacion(auditorTecnico.getCedularepresentantelegal());
+                if(personaDto == null) {
+                    auditor2Persona(auditorTecnico);
+                    personaDto = personaNaturalServicio.obtenerPersonaPorNumIdentificacion(auditorTecnico.getCedularepresentantelegal());
+                    /*personaDto= new PersonaDto();
+                    personaDto.setIdentificacion(auditorTecnico.getCedularepresentantelegal());
+                    personaDto.setApellidos(auditorTecnico.getApellidorepresentantelegal());
+                    personaDto.setNombres(auditorTecnico.getNombrerepresentantelegal());
+                    personaDto.setEmail(auditorTecnico.getEmail());
+                    personaDto.setTelefono(auditorTecnico.getTelefono());
+                    personaDto.setDireccion(auditorTecnico.getDireccion());*/
+                }
+            } else {
+                personaDto = personaNaturalServicio.obtenerPersonaPorNumIdentificacion(auditorTecnico.getRuc());
+                if(personaDto == null) {
+                    auditor2Persona(auditorTecnico);
+                    personaDto = personaNaturalServicio.obtenerPersonaPorNumIdentificacion(auditorTecnico.getRuc());
+                    /*personaDto= new PersonaDto();
+                    personaDto.setIdentificacion(auditorTecnico.getRuc());
+                    personaDto.setNombres(auditorTecnico.getRazonsocial());
+                    personaDto.setEmail(auditorTecnico.getEmail());
+                    personaDto.setTelefono(auditorTecnico.getTelefono());
+                    personaDto.setDireccion(auditorTecnico.getDireccion());*/
+                }
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "No existe auditor", null));
+            return;
+        }
+    }
+    
+    private void auditor2Persona(AuditorTecnico a) {
+        if(a.getTipopersona().equals(AuditorTecnico.PERSONA_NATURAL)) {
+            PersonaNatural perNat= new PersonaNatural();
+            perNat.setNumeroDocumento(a.getCedularepresentantelegal());
+            perNat.setTipoDocumento(71);
+            perNat.setApellido(a.getApellidorepresentantelegal());
+            perNat.setNombre(a.getNombrerepresentantelegal());
+            perNat.setEmail(a.getEmail());
+            perNat.setTelefono(a.getTelefono());
+            perNat.setCelular(a.getCelular());
+            perNat.setDireccion(a.getDireccion());
+            perNat.setCodigoProvincia(BigInteger.valueOf(localidadServicio.findByCodInternacional(a.getCodigoinec()).getCodigoLocalidad()));
+            perNat.setEstadoRegistro(true);
+            perNat.setFechaCreacion(Calendar.getInstance().getTime());
+            perNat.setUsuarioCreacion(BigInteger.ZERO);
+            personaNaturalServicio.create(perNat);
+        } else {
+            PersonaJuridica perJur= new PersonaJuridica();
+            perJur.setRuc(a.getRuc());
+            perJur.setNombreLegal(a.getRazonsocial());
+            perJur.setNombreComercial(a.getRazonsocial());
+            perJur.setDocumentoRepresentanteLegal(a.getCedularepresentantelegal());
+            perJur.setApellidoRepresentanteLegal(a.getApellidorepresentantelegal());
+            perJur.setNombreRepresentanteLegal(a.getNombrerepresentantelegal());
+            perJur.setEsPublica(false);
+            perJur.setClasePersona(catalogoDetalleServicio.obtenerPorCodigoCatalogoDetalle(new Long(132)));
+            perJur.setEmail(a.getEmail());
+            perJur.setTelefono(a.getTelefono());
+            perJur.setCelular(a.getCelular());
+            perJur.setDireccion(a.getDireccion());
+            perJur.setCodigoProvincia(BigInteger.valueOf(localidadServicio.findByCodInternacional(a.getCodigoinec()).getCodigoLocalidad()));
+            perJur.setEstadoRegistro(true);
+            perJur.setFechaCreacion(Calendar.getInstance().getTime());
+            perJur.setUsuarioCreacion(BigInteger.ZERO);
+            personaJuridicaServicio.create(perJur);
+        }
+    }
+    
     public void seleccionarPersona() {
         registroPagoObligacionesAutoGestion.setDocumentoPersonaPago(personaDto.getIdentificacion());
         registroPagoObligacionesAutoGestion.setNombrePersonaPago(personaDto.getNombres());
         registroPagoObligacionesAutoGestion.setApellidoPersonaPago(personaDto.getApellidos());
         RequestContext.getCurrentInstance().execute("PF('dlgBusqPersona').hide()");
+    }
+    
+    public void seleccionarAuditor() {
+        //AuditorTecnico = auditorTecnicoServicio.findByRuc()
+        
+        
+        registroPagoObligacionesAutoGestion.setDocumentoPersonaPago(personaDto.getIdentificacion());
+        registroPagoObligacionesAutoGestion.setNombrePersonaPago(personaDto.getNombres());
+        registroPagoObligacionesAutoGestion.setApellidoPersonaPago(personaDto.getApellidos());
+        RequestContext.getCurrentInstance().execute("PF('dlgBusqAuditor').hide()");
     }
 
     public String getNumIdentificacionBusqueda() {
