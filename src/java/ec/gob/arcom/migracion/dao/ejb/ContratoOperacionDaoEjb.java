@@ -147,7 +147,7 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
 
     @Override
     public List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento) {
-        String jpql = "select co from ContratoOperacion co where 1=1 \n";
+        String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoArcom is not null \n";
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
             jpql += "and co.codigoArcom = :codigoArcom \n";
         }
