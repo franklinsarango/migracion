@@ -190,19 +190,25 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                         "Registro guardado con éxito con código " + contratoOperacion.getCodigoArcom(), null));
                 return null;
             } else {
-                contratoOperacion.setFechaModificacion(new Date());
-                contratoOperacion.setUsuarioModificacion(BigInteger.valueOf(us.getCodigoUsuario()));
-                contratoOperacionServicio.actualizarContratoOperacion(contratoOperacion);
-                Auditoria auditoria = new Auditoria();
-                auditoria.setAccion("UPDATE");
-                auditoria.setDetalleAnterior(contratoOperacionAnterior.toString());
-                auditoria.setDetalleCambios(contratoOperacion.toString());
-                auditoria.setFecha(getCurrentTimeStamp());
-                auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-                auditoriaServicio.create(auditoria);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Registro actualizado con éxito", null));
-                return "contratos";
+                if(contratoOperacionAnterior != null){
+                    contratoOperacion.setFechaModificacion(new Date());
+                    contratoOperacion.setUsuarioModificacion(BigInteger.valueOf(us.getCodigoUsuario()));
+                    contratoOperacionServicio.actualizarContratoOperacion(contratoOperacion);
+                    Auditoria auditoria = new Auditoria();
+                    auditoria.setAccion("UPDATE");
+                    auditoria.setDetalleAnterior(contratoOperacionAnterior.toString());
+                    auditoria.setDetalleCambios(contratoOperacion.toString());
+                    auditoria.setFecha(getCurrentTimeStamp());
+                    auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                    auditoriaServicio.create(auditoria);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Registro actualizado con éxito", null));
+                    return "contratos";
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Registro ya guardado con éxito con código " + contratoOperacion.getCodigoArcom(), null));
+                    return null;
+                }
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
