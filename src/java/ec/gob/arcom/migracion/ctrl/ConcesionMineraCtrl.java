@@ -1160,6 +1160,8 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                         fasesPorRegimen = faseServicio.obtenerFasesLikeDescripcion(ConstantesEnum.MED_MINERIA.getDescripcion());
                     } else if (regimen.getNemonico().equals(ConstantesEnum.PEQ_MINERIA.getNemonico())) {
                         fasesPorRegimen = faseServicio.obtenerFasesLikeDescripcion(ConstantesEnum.PEQ_MINERIA.getDescripcion());
+                    } else if (regimen.getNemonico().equals(ConstantesEnum.REG_GENERAL.getNemonico())) {
+                        fasesPorRegimen = faseServicio.obtenerFasesLikeDescripcion(ConstantesEnum.REG_GENERAL.getDescripcion());
                     }
                 }
                 if (concesionMinera.getCodigoRegimen().getCodigoRegimen().equals(1000L)) {
