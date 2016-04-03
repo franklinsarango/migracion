@@ -27,7 +27,7 @@ public class AreaMineraDaoEjb extends GenericDaoEjbEl<AreaMinera, Long> implemen
     @Override
     public AreaMinera obtenerPorConcesionMinera(Long codigoConcesion) {
         try {
-            String sql = "select am from AreaMinera am where am.codigoConcesion.codigoConcesion = :codigoConcesion";
+            String sql = "select am from AreaMinera am where am.codigoConcesion.codigoConcesion = :codigoConcesion and am.estadoRegistro = true ";
             Query query = em.createQuery(sql);
             query.setParameter("codigoConcesion", codigoConcesion);
             AreaMinera areaMinera = (AreaMinera) query.getSingleResult();
