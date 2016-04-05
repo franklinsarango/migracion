@@ -159,9 +159,9 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
     public String guardarContrato() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
-        CatalogoDetalle cd = new CatalogoDetalle();
+        /*CatalogoDetalle cd = new CatalogoDetalle();
         cd.setCodigoCatalogoDetalle(ConversionEstadosEnum.OTORGADO.getCodigo19());
-        contratoOperacion.setEstadoContrato(cd);
+        contratoOperacion.setEstadoContrato(cd);*/
         contratoOperacion.setEstadoRegistro(Boolean.TRUE);
         if (!contratoOperacion.getTipoContrato().getCodigoCatalogoDetalle()
                 .equals(ConstantesEnum.TIPO_CONTRATO_CESION_DERECHOS.getCodigo())) {
@@ -221,7 +221,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
     public List<ContratoOperacion> getContratosOperacion() {
         if (contratosOperacion == null) {
-            contratosOperacion = contratoOperacionServicio.obtenerContratosOperacion(codigoArcomFiltro, numDocumentoFiltro);
+            contratosOperacion = contratoOperacionServicio.obtenerContratosOperacion(codigoArcomFiltro, numDocumentoFiltro, login.getUserName());
         }
         return contratosOperacion;
     }

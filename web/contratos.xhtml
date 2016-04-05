@@ -92,9 +92,14 @@
                         <h:outputText value="#{reg.codigoParroquia.nombre}"/>
                     </p:column>
 
-                    <p:column headerText="FECHA CREACION" 
+                    <p:column headerText="ESTADO"  
                               style="text-align: right">
-                        <h:outputText value="#{reg.fechaCreacion}" >
+                        <h:outputText value="#{reg.estadoContrato.nombre}"/>
+                    </p:column>
+                    
+                    <p:column headerText="FECHA INSCRIPCIÓN" 
+                              style="text-align: right">
+                        <h:outputText value="#{reg.fechaInscribe}" >
                             <f:convertDateTime pattern="yyyy-MM-dd"/>
                         </h:outputText>
                     </p:column>

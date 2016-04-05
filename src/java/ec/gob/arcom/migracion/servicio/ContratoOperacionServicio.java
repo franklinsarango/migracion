@@ -23,6 +23,6 @@ public interface ContratoOperacionServicio extends GenericService<ContratoOperac
 
     void actualizarContratoOperacion(ContratoOperacion contratoOperacion);
 
-    List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento);
+    List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento, String loginDocumento);
 
 }

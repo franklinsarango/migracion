@@ -22,6 +22,6 @@ public interface ContratoOperacionDao extends GenericDao<ContratoOperacion, Long
 
     void actualizarContratoOperacion(ContratoOperacion contratoOperacion);
 
-    List<ContratoOperacion> obtenerContratosOperacion(String codigoConcesion, String numDocumneto);
+    List<ContratoOperacion> obtenerContratosOperacion(String codigoConcesion, String numDocumneto, String loginDocumento);
 
 }

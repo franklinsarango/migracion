@@ -49,8 +49,8 @@ public class ContratoOperacionServicioImpl extends GenericServiceImpl<ContratoOp
     }
 
     @Override
-    public List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento) {
-        return contratoOperacionDao.obtenerContratosOperacion(codigoArcom, numDocumento);
+    public List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento, String loginDocumento) {
+        return contratoOperacionDao.obtenerContratosOperacion(codigoArcom, numDocumento, loginDocumento);
     }
 
 }
