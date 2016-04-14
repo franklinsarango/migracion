@@ -77,8 +77,8 @@ public class LicenciaComercializacionDaoEjb extends GenericDaoEjbEl<LicenciaCome
                 + "(select nombre from catmin.localidad where codigo_localidad = l.codigo_provincia) as provincia_inec,\n"
                 + "codigo_canton,\n"
                 + "(select nombre from catmin.localidad where codigo_localidad = l.codigo_canton) as canton_inec,\n"
-                + "codigo_parroquida,\n"
-                + "(select nombre from catmin.localidad where codigo_localidad = l.codigo_parroquida) as parroquia_inec,\n"
+                + "codigo_parroquia,\n"
+                + "(select nombre from catmin.localidad where codigo_localidad = l.codigo_parroquia) as parroquia_inec,\n"
                 + "descripcion_material_comercializar,\n"
                 + "(select nombre from catmin.catalogo_detalle where codigo_catalogo_detalle = estado_licencia) as estado_nombre,\n"
                 + "estado_licencia as estado_codigo,\n"
@@ -162,7 +162,7 @@ public class LicenciaComercializacionDaoEjb extends GenericDaoEjbEl<LicenciaCome
             sql = sql + "    codigo_canton = " + licenciaComercializacion.getCodigoCanton() + ",\n";
         }
         if (licenciaComercializacion.getCodigoParroquida() != null) {
-            sql = sql + "    codigo_parroquida = " + licenciaComercializacion.getCodigoParroquida() + ",\n";
+            sql = sql + "    codigo_parroquia = " + licenciaComercializacion.getCodigoParroquida() + ",\n";
         }
         if (licenciaComercializacion.getDescripcionMaterialComercializar() != null) {
             sql = sql + "    descripcion_material_comercializar = '" + licenciaComercializacion.getDescripcionMaterialComercializar() + "',\n";

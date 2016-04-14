@@ -80,7 +80,7 @@ public class PlantaBeneficio implements Serializable {
     private BigInteger codigoProvincia;
     @Column(name = "codigo_canton")
     private BigInteger codigoCanton;
-    @Column(name = "codigo_parroquida")
+    @Column(name = "codigo_parroquia")
     private BigInteger codigoParroquida;
     @Size(max = 30)
     @Column(name = "material_a_explotar")

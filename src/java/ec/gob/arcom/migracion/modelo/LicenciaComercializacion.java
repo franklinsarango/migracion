@@ -64,7 +64,7 @@ public class LicenciaComercializacion implements Serializable {
     private BigInteger codigoProvincia;
     @Column(name = "codigo_canton")
     private BigInteger codigoCanton;
-    @Column(name = "codigo_parroquida")
+    @Column(name = "codigo_parroquia")
     private BigInteger codigoParroquida;
     @Size(max = 300)
     @Column(name = "descripcion_material_comercializar")
@@ -90,8 +90,8 @@ public class LicenciaComercializacion implements Serializable {
     @Size(max = 255)
     @Column(name = "campo_reservado_01")
     private String campoReservado01;
-    @Column(name = "xml_data")
-    private Serializable xmlData;
+    //@Column(name = "xml_data")
+    //private Serializable xmlData;
     @Column(name = "estado_registro")
     private Boolean estadoRegistro;
     @Column(name = "fecha_creacion")
@@ -303,13 +303,13 @@ public class LicenciaComercializacion implements Serializable {
         this.campoReservado01 = campoReservado01;
     }
 
-    public Serializable getXmlData() {
-        return xmlData;
-    }
+//    public Serializable getXmlData() {
+//        return xmlData;
+//    }
 
-    public void setXmlData(Serializable xmlData) {
-        this.xmlData = xmlData;
-    }
+//    public void setXmlData(Serializable xmlData) {
+//        this.xmlData = xmlData;
+//    }
 
     public Boolean getEstadoRegistro() {
         return estadoRegistro;

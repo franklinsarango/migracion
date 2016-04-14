@@ -75,8 +75,8 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
                 + "(select nombre from catmin.localidad where codigo_localidad = p.codigo_provincia) as provincia_inec,\n"
                 + "codigo_canton,\n"
                 + "(select nombre from catmin.localidad where codigo_localidad = p.codigo_canton) as canton_inec,\n"
-                + "codigo_parroquida,\n"
-                + "(select nombre from catmin.localidad where codigo_localidad = p.codigo_parroquida) as parroquia_inec,\n"
+                + "codigo_parroquia,\n"
+                + "(select nombre from catmin.localidad where codigo_localidad = p.codigo_parroquia) as parroquia_inec,\n"
                 + "material_a_explotar,\n"
                 + "volumen_a_explotar,\n"
                 + "(select nombre from catmin.catalogo_detalle where codigo_catalogo_detalle = estado_planta) as estado,\n"
@@ -176,7 +176,7 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
             sql = sql + "    codigo_canton = " + plantaBeneficio.getCodigoCanton() + ",\n";
         }
         if (plantaBeneficio.getCodigoParroquida() != null) {
-            sql = sql + "    codigo_parroquida = " + plantaBeneficio.getCodigoParroquida() + ",\n";
+            sql = sql + "    codigo_parroquia = " + plantaBeneficio.getCodigoParroquida() + ",\n";
         }
         if (plantaBeneficio.getMaterialAExplotar() != null) {
             sql = sql + "    material_a_explotar = '" + plantaBeneficio.getMaterialAExplotar() + "',\n";
