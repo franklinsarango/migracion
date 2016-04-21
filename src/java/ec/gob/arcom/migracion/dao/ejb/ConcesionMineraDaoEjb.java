@@ -15,6 +15,8 @@ import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
 import ec.gob.arcom.migracion.servicio.FaseServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +24,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import static javax.print.attribute.Size2DSyntax.MM;
 
 /**
  *
@@ -467,12 +470,14 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             sql = sql + "    usuario_modificacion = " + concesionMinera.getUsuarioModificacion() + ",\n";
         }
         if (concesionMinera.getFechaOtorga() != null) {
-            sql = sql + "    fecha_otorga = '" + concesionMinera.getFechaOtorga() + "',\n";
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_otorga = '" + formatoDelTexto.format(concesionMinera.getFechaOtorga()) + "',\n";
         } else {
             sql = sql + "    fecha_otorga = null" + ",\n";
         }
         if (concesionMinera.getFechaInscribe() != null) {
-            sql = sql + "    fecha_inscribe = '" + concesionMinera.getFechaInscribe() + "',\n";
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_inscribe = '" + formatoDelTexto.format(concesionMinera.getFechaInscribe()) + "',\n";
         } else {
             sql = sql + "    fecha_inscribe = null" + ",\n";
         }
@@ -489,7 +494,8 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             sql = sql + "    sector = '" + concesionMinera.getSector() + "',\n";
         }
         if (concesionMinera.getFechaInforme() != null) {
-            sql = sql + "    fecha_informe = '" + concesionMinera.getFechaInforme() + "',\n";
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_informe = '" + formatoDelTexto.format(concesionMinera.getFechaInforme()) + "',\n";
         } else {
             sql = sql + "    fecha_informe = null" + ",\n";
         }
@@ -497,12 +503,14 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             sql = sql + "    codigo_casillero_localidad = " + concesionMinera.getCodigoCasilleroLocalidad().getCodigoLocalidad() + ",\n";
         }
         if (concesionMinera.getFechaSustitucion() != null) {
-            sql = sql + "    fecha_sustitucion = '" + concesionMinera.getFechaSustitucion() + "',\n";
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_sustitucion = '" + formatoDelTexto.format(concesionMinera.getFechaSustitucion()) + "',\n";
         } else {
             sql = sql + "    fecha_sustitucion = " + null + ",\n";
         }
         if (concesionMinera.getFechaInscripcionSustitucion() != null) {
-            sql = sql + "    fecha_inscripcion_sustitucion = '" + concesionMinera.getFechaInscripcionSustitucion() + "',\n";
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_inscripcion_sustitucion = '" + formatoDelTexto.format(concesionMinera.getFechaInscripcionSustitucion()) + "',\n";
         } else {
             sql = sql + "    fecha_inscripcion_sustitucion = null ,\n";
         }

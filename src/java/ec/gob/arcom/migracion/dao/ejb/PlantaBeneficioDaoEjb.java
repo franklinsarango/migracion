@@ -102,7 +102,7 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
                 + "fecha_inscribe\n"
                 + "from catmin.planta_beneficio p\n"
                 + "where 1 = 1 and p.codigo_provincia in (select lcr.codigo_localidad from catmin.localidad_regional lcr where lcr.codigo_regional = (select r.codigo_regional from catmin.regional r, catmin.localidad_regional lr, catmin.usuario where numero_documento = '" + usuario +"'\n" +
-"                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia)) and migrada = true\n";
+"                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia)) and codigo_arcom is not null\n";
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
             sql = sql + "and codigo_arcom like '%" + codigoArcom + "%'\n";
             //sql.concat("and codigo_arcom like '%").concat(codigoArcom).concat("%'\n");

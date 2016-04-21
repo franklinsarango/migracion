@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.dao.ejb;
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.AreaMineraDao;
 import ec.gob.arcom.migracion.modelo.AreaMinera;
+import java.text.SimpleDateFormat;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -86,10 +87,12 @@ public class AreaMineraDaoEjb extends GenericDaoEjbEl<AreaMinera, Long> implemen
             sql = sql + "    usuario_modificacion = " + areaMinera.getUsuarioModificacion() + ",\n";
         }
         if (areaMinera.getFechaOtorga() != null) {
-            sql = sql + "    fecha_otorga = '" + areaMinera.getFechaOtorga() + "',\n";
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_otorga = '" + formatoDelTexto.format(areaMinera.getFechaOtorga()) + "',\n";
         }
         if (areaMinera.getFechaInscribe() != null) {
-            sql = sql + "    fecha_inscribe = '" + areaMinera.getFechaInscribe() + "',\n";
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_inscribe = '" + formatoDelTexto.format(areaMinera.getFechaInscribe()) + "',\n";
         }
         sql = sql + "    migrada = true\n"
                 + "WHERE\n"

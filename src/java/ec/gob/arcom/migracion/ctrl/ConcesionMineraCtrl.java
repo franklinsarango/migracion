@@ -553,6 +553,8 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         areaMinera.setUsuarioCreacion(BigInteger.valueOf(-1));
         areaMinera.setUsuarioModificacion(BigInteger.ZERO);
         areaMinera.setFechaModificacion(new Date());
+        areaMinera.setFechaOtorga(concesionMinera.getFechaOtorga());
+        areaMinera.setFechaInscribe(concesionMinera.getFechaInscribe());
         areaMinera.setMigrada(true);
 
         try {
