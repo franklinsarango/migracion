@@ -785,7 +785,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                     existeCodigoArcom = true;
                     concesionMinera.setCodigoArcom(null);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            "Código de licencia existente, por favor ingrese uno nuevo", null));
+                            "Código de Concesión existente, por favor ingrese uno nuevo", null));
                 }
             }
         }

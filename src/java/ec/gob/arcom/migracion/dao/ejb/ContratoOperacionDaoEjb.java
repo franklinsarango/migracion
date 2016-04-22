@@ -147,17 +147,20 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
 
     @Override
     public List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento, String loginDocumento) {
-        String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoArcom is not null order by co.fechaCreacion desc \n";
+        String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoArcom is not null \n";
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
-            jpql += "and co.codigoArcom = :codigoArcom \n";
+            jpql += "and co.codigoArcom like :codigoArcom \n";
         }
         if (numDocumento != null && !numDocumento.isEmpty()) {
-            jpql += "and co.numeroDocumento = :numDocumento";
+            jpql += "and co.numeroDocumento = :numDocumento \n";
         }
+        
+        jpql += "order by co.fechaCreacion, co.codigoArcom desc ";
+        
         System.out.println("jpql: " + jpql);
         Query query = em.createQuery(jpql);
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
-            query.setParameter("codigoArcom", codigoArcom);
+            query.setParameter("codigoArcom", codigoArcom + "%");
         }
         if (numDocumento != null && !numDocumento.isEmpty()) {
             query.setParameter("numDocumento", numDocumento);
