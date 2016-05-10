@@ -559,6 +559,8 @@ public class ConcesionMineraCtrl extends BaseCtrl {
 
         try {
             if (concesionMinera.getCodigoConcesion() == null) {
+                areaMinera.setEstadoRegistro(true);
+                concesionMinera.setEstadoRegistro(true);
                 //Long codigoConcesionSiguiente = concesionMineraServicio.obtenerSiguienteCodigoConcesion();
                 Secuencia secuenciaConcesion = secuenciaServicio.obtenerPorTabla("CONCESION_MINERA");
                 Long codigoConcesionSiguiente = secuenciaConcesion.getValor();

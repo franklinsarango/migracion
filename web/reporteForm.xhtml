@@ -79,7 +79,7 @@
                                      required="true" 
                                      requiredMessage="Prefijo regional es requerido" 
                                      style="width: 93%"
-                                     rendered="#{reporteCtrl.codigoTipoMineria == 101}">
+                                     rendered="#{reporteCtrl.codigoTipoMineria == 101 or (reporteCtrl.codigoTipoMineria == 10001)}">
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{reporteCtrl.regionales}" />
                     </p:selectOneMenu>

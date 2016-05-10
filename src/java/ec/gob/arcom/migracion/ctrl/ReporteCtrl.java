@@ -182,6 +182,14 @@ public class ReporteCtrl extends BaseCtrl {
         System.out.println("urlReporte: " + urlReporte);
     }
 
+    public void generarReporteObligacionesEconomicasBirt() {
+        System.out.println("entra generarReporteObligacionesEconomicas");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/ComprobatesPago/Rpt-patentesutilidadesregalias.rptdesign&"
+                + "regional=" + prefijoRegionalFiltro + "&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
     public LoginCtrl getLogin() {
         return login;
     }
@@ -256,7 +264,9 @@ public class ReporteCtrl extends BaseCtrl {
             generarReportePlantasBeneficioBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS.getCodigo())) {
             generarReporteDerechosMinerosConsolidadosBirt();
-        }
+        } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())) {
+            generarReporteObligacionesEconomicasBirt();
+        }     
     }
 
     public void habilitarSubTipoReporte() {
@@ -282,6 +292,7 @@ public class ReporteCtrl extends BaseCtrl {
                     tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
                 }
             }
+            tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getDescripcion()));
         }
         return tipoSolicitudes;
     }

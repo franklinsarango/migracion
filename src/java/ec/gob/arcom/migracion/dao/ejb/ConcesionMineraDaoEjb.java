@@ -235,6 +235,7 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
                 + "(select r.codigo_regional from catmin.regional r, catmin.localidad_regional lr, catmin.usuario where numero_documento = '" + cedulaRuc + "'\n"
                 + "                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia)) "
                 + "and (cm.migrada = true or cm.estado_concesion = 243) \n"
+                + "and cm.estado_registro = true\n"
                 + "and ('-1' = '" + codigoFiltro + "' or cm.codigo_arcom like '%" + codigoFiltro + "%')\n"
                 + "and ('-1' = '" + cedulaTitularFiltro + "' or cm.documento_concesionario_principal like '%" + cedulaTitularFiltro + "%')\n"
                 + "and ('-1' = '" + nombreAreaFiltro + "' or lower(cm.nombre_concesion) like lower('%" + nombreAreaFiltro + "%'))\n"
@@ -574,7 +575,8 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
                     + "and est.codigo_catalogo_detalle = cm.estado_concesion\n"
                     + "and cm.codigo_tipo_mineria = tm.codigo_tipo_mineria\n"
                     + "and cm.documento_concesionario_principal = p.numero_documento\n"
-                    + "and cm.codigo_arcom not like '%FALLIDA%'\n"
+                    //+ "and cm.codigo_arcom not like '%FALLIDA%'\n"
+                    + "and cm.estado_registro = true\n"
                     + ") as concesiones where 1=1\n";
             if (codigo != null && !codigo.isEmpty()) {
                 sql1 += "and concesiones.codigo_arcom = '" + codigo + "'\n";
