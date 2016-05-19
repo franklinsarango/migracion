@@ -1531,7 +1531,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
             if (concesionMinera.getCodigoTipoMineria().getCodigoTipoMineria()
                     .equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())) {
                 tipoSolMineriaArtesanal = true;
-                concesionMinera.setCodigoModalidadTrabajo(null);
+                //concesionMinera.setCodigoModalidadTrabajo(null);
             } else {
                 tipoSolMineriaArtesanal = false;
                 if (concesionMinera.getCodigoModalidadTrabajo() == null) {

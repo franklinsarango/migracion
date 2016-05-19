@@ -74,15 +74,15 @@
                         <h:outputText value="#{reg.nombreConcesion}" />
                     </p:column>
 
+                    <p:column headerText="TIPO">
+                        <h:outputText value="#{reg.tipoSolicitud}" />
+                    </p:column>
+                    
                     <p:column headerText="FASE">
                         <h:outputText value="#{reg.fase}"/>
                     </p:column>
 
-                    <p:column headerText="CASILLERO JUDICIAL" style="width: 100px; text-align: right">
-                        <h:outputText value="#{reg.casilleroJudicial}" />
-                    </p:column>
-
-                    <p:column headerText="ESTADO" width="300">
+                    <p:column headerText="ESTADO" width="95">
                         <h:outputText value="#{reg.estadoConcesion}" />
                     </p:column>
 
@@ -106,7 +106,7 @@
                         <p:commandButton action="#{concesionMineraCtrl.editarRegistro}" icon="ui-icon-pencil" title="Editar" ajax="false"></p:commandButton>
                     </p:column>
                     
-                    <p:column headerText="COTITULARES" style="width:37px; text-align: right">
+                    <p:column headerText="COTITULAR" style="width:65px; text-align: right">
                         <p:commandButton action="#{concesionMineraCtrl.editarCotitulares}" icon="ui-icon-person" title="Cotitulares"></p:commandButton>
                     </p:column>
                     

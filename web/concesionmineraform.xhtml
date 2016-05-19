@@ -253,12 +253,13 @@
                         </h:panelGroup>
 
                         <h:panelGroup id="modTrab">
-                            <p:outputLabel for="modalidad" value="Modalidad trabajo:" rendered="#{!concesionMineraCtrl.tipoSolMineriaArtesanal}"></p:outputLabel>
+                            <p:outputLabel for="modalidad" value="Modalidad trabajo:" rendered="#{concesionMineraCtrl.tipoSolMineriaArtesanal}"></p:outputLabel>
                         </h:panelGroup>
                         <h:panelGroup id="modTrab2">
                             <p:selectOneMenu id="modalidad" value="#{concesionMineraCtrl.concesionMinera.codigoModalidadTrabajo.codigoCatalogoDetalle}" style="width: 93%"
-                                             rendered="#{!concesionMineraCtrl.tipoSolMineriaArtesanal}">
-                                <f:selectItem itemValue="1000" itemLabel="--Seleccione una opción--" />
+                                             rendered="#{concesionMineraCtrl.tipoSolMineriaArtesanal}"
+                                             required="true" requiredMessage="Modalidad de Trabajo es requerido">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                                 <f:selectItems value="#{selectItemCtrl.modalidadesTrabajo}" />
                             </p:selectOneMenu>
                         </h:panelGroup>
@@ -299,7 +300,8 @@
 
                         <p:outputLabel for="tipoMineral" value="Tipo Mineral:"></p:outputLabel>
                         <p:selectOneMenu id="tipoMineral" value="#{concesionMineraCtrl.concesionMinera.codigoMaterialInteres.codigoCatalogoDetalle}" 
-                                         style="width: 93%"> 
+                                         style="width: 93%"
+                                         required="true" requiredMessage="Tipo Mineral es requerido"> 
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                             <f:selectItems value="#{concesionMineraCtrl.tipoMaterialDetalle}"/>
                         </p:selectOneMenu>
