@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
+import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import java.util.List;
 import javax.ejb.Local;
@@ -24,5 +25,7 @@ public interface ContratoOperacionServicio extends GenericService<ContratoOperac
     void actualizarContratoOperacion(ContratoOperacion contratoOperacion);
 
     List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento, String loginDocumento);
+    
+    List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera);
 
 }

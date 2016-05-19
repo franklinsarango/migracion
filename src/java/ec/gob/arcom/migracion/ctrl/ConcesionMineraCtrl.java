@@ -996,6 +996,17 @@ public class ConcesionMineraCtrl extends BaseCtrl {
 
     }
 
+    public String editarCotitulares() {        
+        //return "cotitularform?faces-redirect=true&idItem=" + concesionMinera.getCodigoArcom();
+        ConcesionMineraDto concesionMineraDtoItem = (ConcesionMineraDto) getExternalContext().getRequestMap().get("reg");
+        if (concesionMineraDtoItem.getTipoTabla().equals("C")) {
+            return "cotitularform?faces-redirect=true&idItem=" + concesionMineraDtoItem.getCodigoArcom();
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "No se encuentra el registro seleccionado", null));
+            return null;
+        }
+    }
     public void eliminarCoordenadas() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
         try {

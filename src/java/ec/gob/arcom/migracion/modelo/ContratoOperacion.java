@@ -113,6 +113,11 @@ public class ContratoOperacion implements Serializable {
     @Column(name = "fecha_inscribe")
     @Temporal(TemporalType.DATE)
     private Date fechaInscribe;
+    @Column(name = "procurador_comun")
+    private Boolean procuradorComun;
+    @JoinColumn(name = "tipo_procurador", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle tipoProcurador;
     
     public ContratoOperacion() {
     }
@@ -369,7 +374,8 @@ public class ContratoOperacion implements Serializable {
                 + (codigoConcesion != null ? codigoConcesion.getCodigoConcesion() : null  )
                 + ", estadoContrato=" + (estadoContrato != null ? estadoContrato.getCodigoCatalogoDetalle() : null) + ", codigoArea=" + (codigoArea != null ? codigoArea.getCodigoAreaMinera() : null) + ", codigoArcom=" + codigoArcom 
                 + ", tipoContrato=" + (tipoContrato != null ? tipoContrato.getCodigoCatalogoDetalle() : null ) + ", porcentaje=" + porcentaje + ", nombrePersona=" + nombrePersona + ", apellidoPersona=" 
-                + apellidoPersona + ", emailPersona=" + emailPersona + ", fechaInscribe=" + fechaInscribe + ", cotaMinima=" + cotaMinima + ", cotaMaxima=" + cotaMaxima +'}';
+                + apellidoPersona + ", emailPersona=" + emailPersona + ", fechaInscribe=" + fechaInscribe + ", cotaMinima=" + cotaMinima + ", cotaMaxima=" + cotaMaxima + ", procuradorComun=" + procuradorComun 
+                + ", tipoProcurador=" + (tipoProcurador != null ? tipoProcurador.getCodigoCatalogoDetalle() : null )+ '}';
     }
 
     /**
@@ -398,6 +404,34 @@ public class ContratoOperacion implements Serializable {
      */
     public void setCotaMaxima(Double cotaMaxima) {
         this.cotaMaxima = cotaMaxima;
+    }
+
+    /**
+     * @return the procuradorComun
+     */
+    public Boolean getProcuradorComun() {
+        return procuradorComun;
+    }
+
+    /**
+     * @param procuradorComun the procuradorComun to set
+     */
+    public void setProcuradorComun(Boolean procuradorComun) {
+        this.procuradorComun = procuradorComun;
+    }
+
+    /**
+     * @return the tipoProcurador
+     */
+    public CatalogoDetalle getTipoProcurador() {
+        return tipoProcurador;
+    }
+
+    /**
+     * @param tipoProcurador the tipoProcurador to set
+     */
+    public void setTipoProcurador(CatalogoDetalle tipoProcurador) {
+        this.tipoProcurador = tipoProcurador;
     }
 
 }

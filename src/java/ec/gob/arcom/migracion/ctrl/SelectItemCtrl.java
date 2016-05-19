@@ -81,6 +81,7 @@ public class SelectItemCtrl {
     private List<SelectItem> tiposMineriaCodigo;
     private List<SelectItem> tipoServicios;
     private List<SelectItem> tipoContratos;
+    private List<SelectItem> tipoProcuradorList;
 
     public List<SelectItem> getEstadosCatalogo() {
         if (estadosCatalogo == null) {
@@ -572,15 +573,41 @@ public class SelectItemCtrl {
             if (catalogo != null) {
                 List<CatalogoDetalle> tipoCont = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
                 for (CatalogoDetalle catDet : tipoCont) {
+                    if(! catDet.getNemonico().equals(ConstantesEnum.TIPO_CONTRATO_CESION_DERECHOS.getNemonico())){
                     tipoContratos.add(new SelectItem(catDet.getCodigoCatalogoDetalle(), catDet.getNombre()));
+                    }
                 }
             }
         }
         return tipoContratos;
     }
-
+    
     public void setTipoContratos(List<SelectItem> tipoContratos) {
         this.tipoContratos = tipoContratos;
+    }
+
+    /**
+     * @return the tipoProcuradorList
+     */
+    public List<SelectItem> getTipoProcuradorList() {
+        if (tipoProcuradorList == null) {
+            tipoProcuradorList = new ArrayList<>();
+            Catalogo catalogo = catalogoServicio.findByNemonico("TIPOPROC");
+            if (catalogo != null) {
+                List<CatalogoDetalle> tipoProc = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+                for (CatalogoDetalle catDet : tipoProc) {
+                    tipoProcuradorList.add(new SelectItem(catDet.getCodigoCatalogoDetalle(), catDet.getNombre()));
+                }
+            }
+        }
+        return tipoProcuradorList;
+    }
+
+    /**
+     * @param tipoProcuradorList the tipoProcuradorList to set
+     */
+    public void setTipoProcuradorList(List<SelectItem> tipoProcuradorList) {
+        this.tipoProcuradorList = tipoProcuradorList;
     }
 
 }

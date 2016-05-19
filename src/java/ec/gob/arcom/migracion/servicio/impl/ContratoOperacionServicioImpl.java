@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.servicio.impl;
 import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.ContratoOperacionDao;
+import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import ec.gob.arcom.migracion.servicio.ContratoOperacionServicio;
 import java.util.List;
@@ -53,4 +54,8 @@ public class ContratoOperacionServicioImpl extends GenericServiceImpl<ContratoOp
         return contratoOperacionDao.obtenerContratosOperacion(codigoArcom, numDocumento, loginDocumento);
     }
 
+    @Override
+    public List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera) {
+        return contratoOperacionDao.obtenerCotitulares(concesionMinera);
+    }
 }

@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.dao.ejb;
 
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.ContratoOperacionDao;
+import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -43,6 +44,7 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
     public void actualizarContratoOperacion(ContratoOperacion contratoOperacion) {
         String sql = "UPDATE catmin.contrato_operacion\n"
                 + "SET codigo_concesion=" + contratoOperacion.getCodigoConcesion().getCodigoConcesion() + ", ";
+        System.out.println("Query update contrato: " + sql);
         if (contratoOperacion.getCodigoArea() != null) {
             sql += "codigo_area=" + contratoOperacion.getCodigoArea().getCodigoAreaMinera() + ", ";
         } else {
@@ -53,9 +55,21 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         } else {
             sql += "codigo_informe=" + null + ", ";
         }
-        sql += "codigo_provincia=" + contratoOperacion.getCodigoProvincia().getCodigoLocalidad() + ", ";
-        sql += "codigo_canton=" + contratoOperacion.getCodigoCanton().getCodigoLocalidad() + ", ";
-        sql += "codigo_parroquia=" + contratoOperacion.getCodigoParroquia().getCodigoLocalidad() + ", ";
+        if (contratoOperacion.getCodigoProvincia() != null) {
+            sql += "codigo_provincia=" + contratoOperacion.getCodigoProvincia().getCodigoLocalidad() + ", ";
+        } else {
+            sql += "codigo_provincia=" + null + ", ";
+        }
+        if (contratoOperacion.getCodigoCanton() != null) {
+            sql += "codigo_canton=" + contratoOperacion.getCodigoCanton().getCodigoLocalidad() + ", ";
+        } else {
+            sql += "codigo_canton=" + null + ", ";
+        }
+        if (contratoOperacion.getCodigoParroquia() != null) {
+            sql += "codigo_parroquia=" + contratoOperacion.getCodigoParroquia().getCodigoLocalidad() + ", ";
+        } else {
+            sql += "codigo_parroquia=" + null + ", ";
+        }
         if (contratoOperacion.getSector() != null) {
             sql += "sector='" + contratoOperacion.getSector() + "', ";
         } else {
@@ -124,15 +138,25 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         } else {
             sql += "fecha_inscribe=" + null + ", \n";
         }
-        if (contratoOperacion.getCotaMinima()!= null) {
+        if (contratoOperacion.getCotaMinima() != null) {
             sql += "cota_minima='" + contratoOperacion.getCotaMinima() + "', \n";
         } else {
             sql += "cota_minima=" + null + ", \n";
         }
-        if (contratoOperacion.getCotaMaxima()!= null) {
+        if (contratoOperacion.getCotaMaxima() != null) {
             sql += "cota_maxima='" + contratoOperacion.getCotaMaxima() + "', \n";
         } else {
             sql += "cota_maxima=" + null + ", \n";
+        }
+        if (contratoOperacion.getProcuradorComun()!= null) {
+            sql += "procurador_comun=" + contratoOperacion.getProcuradorComun() + ", \n";
+        } else {
+            sql += "procurador_comun=" + null + ", \n";
+        }
+        if (contratoOperacion.getTipoProcurador()!= null) {
+            sql += "tipo_procurador=" + contratoOperacion.getTipoProcurador().getCodigoCatalogoDetalle() + ", \n";
+        } else {
+            sql += "tipo_procurador=" + null + ", \n";
         }
         if (contratoOperacion.getCodigoArcom() != null) {
             sql += "codigo_arcom='" + contratoOperacion.getCodigoArcom() + "' \n";
@@ -141,22 +165,23 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         }
         sql += "WHERE codigo_contrato_operacion=" + contratoOperacion.getCodigoContratoOperacion();
 
+        System.out.println("Query update contrato: " + sql);
         Query query = em.createNativeQuery(sql);
         query.executeUpdate();
     }
 
     @Override
     public List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento, String loginDocumento) {
-        String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoArcom is not null \n";
+        String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoArcom like :codigoArcomCO \n";
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
             jpql += "and co.codigoArcom like :codigoArcom \n";
         }
         if (numDocumento != null && !numDocumento.isEmpty()) {
             jpql += "and co.numeroDocumento = :numDocumento \n";
         }
-        
+
         jpql += "order by co.fechaCreacion, co.codigoArcom desc ";
-        
+
         System.out.println("jpql: " + jpql);
         Query query = em.createQuery(jpql);
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
@@ -165,7 +190,7 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         if (numDocumento != null && !numDocumento.isEmpty()) {
             query.setParameter("numDocumento", numDocumento);
         }
-        
+        query.setParameter("codigoArcomCO", "%" + "CO" + "%");
         try {
             List<ContratoOperacion> listaFinal = query.getResultList();
             for (ContratoOperacion cop : listaFinal) {
@@ -175,9 +200,33 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
-        
+
         //return query.getResultList();
         return null;
     }
 
+    @Override
+    public List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera) {
+        String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoConcesion = :concesionMinera and co.codigoArcom like :codigoArcom\n";
+        jpql += "order by co.codigoArcom desc ";
+
+        System.out.println("jpql: " + jpql);
+        Query query = em.createQuery(jpql);
+
+        query.setParameter("concesionMinera", concesionMinera);
+        query.setParameter("codigoArcom", "%" + "CD" + "%");
+
+        try {
+            List<ContratoOperacion> listaFinal = query.getResultList();
+            for (ContratoOperacion cop : listaFinal) {
+                this.refresh(cop);
+            }
+            return listaFinal;
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+
+        //return query.getResultList();
+        return null;
+    }
 }
