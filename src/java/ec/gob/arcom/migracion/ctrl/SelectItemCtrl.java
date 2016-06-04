@@ -10,10 +10,12 @@ import ec.gob.arcom.migracion.modelo.Catalogo;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.ConceptoPago;
 import ec.gob.arcom.migracion.modelo.Fase;
+import ec.gob.arcom.migracion.modelo.ParametroSistema;
 import ec.gob.arcom.migracion.modelo.Regimen;
 import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.TipoMaquinaria;
 import ec.gob.arcom.migracion.modelo.TipoMineria;
+import ec.gob.arcom.migracion.servicio.ParametroSistemaServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoServicio;
 import ec.gob.arcom.migracion.servicio.ConceptoPagoServicio;
@@ -37,6 +39,8 @@ public class SelectItemCtrl {
 
     @EJB
     private CatalogoDetalleServicio catalogoDetalleServicio;
+    @EJB
+    private ParametroSistemaServicio parametroSistemaServicio;
     @EJB
     private CatalogoServicio catalogoServicio;
     @EJB
@@ -82,6 +86,7 @@ public class SelectItemCtrl {
     private List<SelectItem> tipoServicios;
     private List<SelectItem> tipoContratos;
     private List<SelectItem> tipoProcuradorList;
+    private List<SelectItem> numeroFormularioList;
 
     public List<SelectItem> getEstadosCatalogo() {
         if (estadosCatalogo == null) {
@@ -424,7 +429,7 @@ public class SelectItemCtrl {
         }
         return tiposSolicitud;
     }
-
+    
     public void setTiposSolicitud(List<SelectItem> tiposSolicitud) {
         this.tiposSolicitud = tiposSolicitud;
     }
@@ -608,6 +613,28 @@ public class SelectItemCtrl {
      */
     public void setTipoProcuradorList(List<SelectItem> tipoProcuradorList) {
         this.tipoProcuradorList = tipoProcuradorList;
+    }
+
+    /**
+     * @return the numeroFormularioList
+     */
+    public List<SelectItem> getNumeroFormularioList() {
+        if (numeroFormularioList == null) {
+            numeroFormularioList = new ArrayList<>();
+            List<ParametroSistema> parSistList = parametroSistemaServicio.findByNemonicoLike("NUMFOR");
+            for (ParametroSistema parSist : parSistList) {
+                numeroFormularioList.add(new SelectItem(parSist.getCodigoParametro(), parSist.getValorParametro()));
+            }
+            
+        }
+        return numeroFormularioList;
+    }
+
+    /**
+     * @param numeroFormularioList the numeroFormularioList to set
+     */
+    public void setNumeroFormularioList(List<SelectItem> numeroFormularioList) {
+        this.numeroFormularioList = numeroFormularioList;
     }
 
 }

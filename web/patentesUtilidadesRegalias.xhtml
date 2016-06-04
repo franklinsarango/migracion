@@ -16,14 +16,14 @@
                 <h:panelGrid columns="3">
                     <h:panelGrid columns="2">
                         <h:panelGrid columns="2" >
-                            <p:outputLabel value="Código:"/>
-                            <p:inputText value="#{sadminDataCtrl.codigoFiltro}"/>
-                            <p:outputLabel value="CI Titular:"/>
-                            <p:inputText value="#{sadminDataCtrl.cedulaTitularFiltro}"/>
-                            <p:outputLabel value="Nombre Área:"/>
-                            <p:inputText value="#{sadminDataCtrl.nombreAreaFiltro}"/>
+                            <p:outputLabel value="CEP (Comprobante Electrónico de Pago):"/>
+                            <p:inputText value="#{patentesUtilidadesRegaliasCtrl.comprobanteElectronicoFiltro}"/>
+                            <p:outputLabel value="C.I. Persona Pago:"/>
+                            <p:inputText value="#{patentesUtilidadesRegaliasCtrl.documentoPersonaPagoFiltro}"/>
+                            <p:outputLabel value="Código Derecho Minero:"/>
+                            <p:inputText value="#{patentesUtilidadesRegaliasCtrl.codigoArcomFiltro}"/>
                         </h:panelGrid>
-                        <h:commandButton actionListener="#{sadminDataCtrl.buscar}" image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar"/>
+                        <h:commandButton actionListener="#{patentesUtilidadesRegaliasCtrl.buscar}" image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar"/>
                     </h:panelGrid>
                     <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
@@ -41,7 +41,8 @@
                                 <h:outputText value="Inicio"/>
                             </h:panelGrid>
                         </h:commandLink>
-                        <h:commandLink action="patentesUtilidadesRegaliasForm?faces-redirect=true" title="Nuevo" styleClass="boton_salir" >
+                        <h:commandLink action="patentesUtilidadesRegaliasForm?faces-redirect=true" title="Nuevo" styleClass="boton_salir" 
+                                       rendered="#{patentesUtilidadesRegaliasCtrl.usuarioEconomico}">
                             <h:panelGrid style="text-align:center">
                                 <h:graphicImage value="resources/images/plus.png" title="Nuevo" style="width: 50px; height: 50px"/>
                                 <h:outputText value="Nuevo"/>
@@ -60,47 +61,74 @@
 
                     <p:column headerText="#" style="width: 25px">
                         <h:outputText value="#{rowIndex + 1}"/>
+                    </p:column>                    
+                    
+                    <p:column headerText="Tipo Ingreso" width="300">
+                        <h:outputText value="#{reg.tipoPago}" styleClass="texto_tabla_datos_codigo"/>
                     </p:column>
 
-                    <p:column headerText="FECHA CREACION" style="width: 85px; text-align: right">
-                        <h:outputText  styleClass="texto_tabla_datos_codigo" value="#{reg.fechaCreacion}" >
+                    <p:column headerText="Periodo" width="300">
+                        <h:outputText value="#{reg.periodo}" styleClass="texto_tabla_datos_codigo"/>
+                    </p:column>
+                    
+                    <p:column headerText="Documento Persona">
+                        <h:outputText value="#{reg.documentoPersonaPago}" />
+                    </p:column>
+                    
+                    <p:column headerText="Fecha Presentación" style="text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" value="#{reg.fechaRevisionAnalistaEconomico}" >
                             <f:convertDateTime pattern="yyyy-MM-dd" />
                         </h:outputText>
                     </p:column>
+                    
+                    <p:column headerText="CEP (Comprobante Electrónico de Pago)">
+                        <h:outputText value="#{reg.comprobanteElectronico}" >
+                        </h:outputText>
+                    </p:column>
 
+                    <p:column headerText="Valor Pagado" style="width: 100px">
+                        <h:outputText value="#{reg.valorPagadoUsuario}" />
+                    </p:column>
+
+                    <p:column headerText="Valor Calculado" style="width: 100px">
+                        <h:outputText value="#{reg.valorCalculadoArcom}" />
+                    </p:column>                                      
+
+                    <p:column headerText="Codigo Derecho Minero" style="width: 100px">
+                        <h:outputText value="#{reg.codigoArcom}" />
+                    </p:column> 
+                    
                     <p:column headerText="FECHA DEPOSITO">
                         <h:outputText value="#{reg.fechaEmisionPago}" >
                             <f:convertDateTime pattern="yyyy-MM-dd" />
                         </h:outputText>
                     </p:column>
-
-                    <p:column headerText="No. DEPOSITO" style="width: 100px; text-align: right">
-                        <h:outputText value="#{reg.numeroComprobanteBanco}" />
-                    </p:column>
-
-                    <p:column headerText="TIPO INGRESO/CONCEPTO" width="300">
-                        <h:outputText value="#{reg.codigoConceptoPago.nombreConceptoPago}" />
-                    </p:column>
-
-                    <p:column headerText="NOMBRE AREA MINERA" style="width: 85px">
-                        <h:outputText value="#{reg.codigoArea.nombreAreaMinera}" />
-                    </p:column>
-
-                    <p:column headerText="VALOR" style="width: 85px">
-                        <h:outputText value="#{reg.valorPago}" />
-                    </p:column>
-
-                    <p:column headerText="NUMERO COMPROBANTE INGRESO/RECAUDACION">
-                        <h:outputText value="#{reg.numeroComprobanteArcom}" >
-                            <f:convertDateTime pattern="yyyy-MM-dd" />
-                        </h:outputText>
-                    </p:column>
-
-                    <p:column headerText="EDITAR" style="width:37px; text-align: right">
+                    
+                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="false">
                         <p:commandButton action="#{patentesUtilidadesRegaliasCtrl.editarRegistro}" icon="ui-icon-pencil" title="Editar" ajax="false"></p:commandButton>
+                    </p:column>
+                    
+                    <p:column headerText="Comprobante" style="width:37px; text-align: right">
+                        <p:commandButton update="@form"
+                                         icon="ui-icon-arrowthickstop-1-s"
+                                         title="Descargar comprobante" 
+                                         oncomplete="PF('visorTramite').show();return false;"
+                                         actionListener="#{patentesUtilidadesRegaliasCtrl.descargaPDF}"/>
                     </p:column>
                 </p:dataTable>
 
+                <p:dialog id="dialoVisorTareas" header="Comprobante de Pago" 
+                          widgetVar="visorTramite" width="95%" height="600px"  
+                          showEffect="fade" draggable="false" 
+                          resizable="false" modal="true" >
+                        <iframe frameborder="0"
+                                src="#{patentesUtilidadesRegaliasCtrl.urlReporte}"
+                                name="frameTareas" id="frameTareas" scrolling="auto" 
+                                width="100%" height="98%" 
+                                marginheight="0" marginwidth="0">
+                        </iframe>
+                </p:dialog>
+                
             </h:form>
         </ui:define>
     </ui:composition>

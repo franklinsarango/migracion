@@ -37,8 +37,10 @@
                         </h:commandLink>
                     </h:panelGroup>
                 </h:panelGrid>
-                <h2 class="titulo_centrado" style="width: 43.5%;position: relative;right: -380px;">PATENTES, REGALIAS Y UTILIDADES</h2>
+                
                 <div align="center">
+                    <h2 class="titulo_centrado" style="width: 43.5%;right: -380px;">PATENTES, REGALIAS Y UTILIDADES</h2>
+                    <p:spacer></p:spacer>
                     <p:panelGrid columns="2" columnClasses="form-label-width, form-input">
                         <f:facet name="header">
                             <h:panelGroup style="display:block; text-align:center">
@@ -50,25 +52,26 @@
                                          required="true" requiredMessage="Tipo de pago es requerido" style="width: 93%">
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                             <f:selectItems value="#{selectItemCtrl.tipoPago}" />
+                            <p:ajax listener="#{patentesUtilidadesRegaliasCtrl.eventChangeTipoPago()}" event="valueChange" update="form periodoID form:panelInf" />
                         </p:selectOneMenu>
                         <p:outputLabel value="Tipo de registro:"></p:outputLabel>
                         <p:selectOneMenu id="tipRegistro" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoTipoRegistro}" 
                                          required="true" requiredMessage="Tipo de registro es requerido" style="width: 93%">
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
-                            <f:selectItems value="#{selectItemCtrl.tiposSolicitud}" />
-                            <p:ajax listener="#{patentesUtilidadesRegaliasCtrl.cambiarPopUp}" immediate="true"/>
+                            <f:selectItems value="#{patentesUtilidadesRegaliasCtrl.tipoSolicitudList}" />
+                            <p:ajax listener="#{patentesUtilidadesRegaliasCtrl.eventChangeTipoRegistro}" immediate="true" update="@form"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Código derecho minero:" />
                         <h:panelGrid columns="2">
                             <p:inputMask id="codDerMin" mask="9?999999999999" 
                                          value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoDerechoMinero}"
-                                         disabled="#{facesContext.renderResponse}" required="true" requiredMessage="Código derecho minero es requerido"/>
+                                         readonly="true" required="true" requiredMessage="Código derecho minero es requerido"/>
                             <p:commandLink id="botonBusquedaCodigo" onclick="PF('dlgBusqCod').show();" 
                                            title="Buscar código" immediate="true">
                                 <h:panelGrid style="text-align:center">
                                     <h:graphicImage value="resources/images/barcode.png" title="Buscar código" style="width: 40px; height: 40px"/>
                                 </h:panelGrid>
-                                <f:ajax execute="tipRegistro" immediate="true"/>
+                                <p:ajax listener="#{patentesUtilidadesRegaliasCtrl.cargarPopupBusqueda}" immediate="true" update=":form6"/>
                             </p:commandLink>
                         </h:panelGrid>
                         <f:facet name="footer">
@@ -81,24 +84,29 @@
                         <p:panelGrid id="panelInf" columns="2" columnClasses="form-label-width, form-input-bold" style="width: 99%">
                             <f:facet name="header">
                                 <h:panelGroup style="display:block; text-align:center">
-                                    <p:outputLabel value="INFORMACION DE AREA"/>
+                                    <p:outputLabel value="INFORMACION DEL DERECHO MINERO"/>
                                 </h:panelGroup>
                             </f:facet>
 
+                            <p:outputLabel for="codigoID" value="Código:"></p:outputLabel>
+                            <p:inputText id="codigoID" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoDerechoMinero}" 
+                                         size="25"
+                                         maxlength="60" readonly="true" />
+
                             <p:outputLabel for="numDoc" value="Cédula/RUC titular:"></p:outputLabel>
                             <p:inputMask id="numDoc" mask="9?999999999999" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.numeroRuc}" size="25"
-                                         maxlength="13" placeHolder="" disabled="#{facesContext.renderResponse}" >
+                                         maxlength="13" placeHolder="" readonly="true" >
                             </p:inputMask>
 
                             <p:outputLabel for="nomApTit" value="Concesionario:"></p:outputLabel>
                             <p:inputText id="nomApTit" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.concesionario}" 
                                          size="25" onkeypress="return acceptText(event)"
-                                         maxlength="60" disabled="true" />
+                                         maxlength="60" readonly="true" />
 
                             <p:outputLabel for="superficie" value="Superficie (Hectáreas):"></p:outputLabel>
                             <pe:inputNumber id="superficie" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="99999.99" 
                                             value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.superficie}" 
-                                            style="width: 93%;" disabled="true"/>
+                                            style="width: 93%;" readOnly="true"/>
 
                             <p:outputLabel for="somProvincia01" value="Provincia:"></p:outputLabel>
                             <p:selectOneMenu id="somProvincia01" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoProvincia}" 
@@ -124,7 +132,7 @@
                             <p:outputLabel value="Nombre área:"></p:outputLabel>
                             <p:inputText id="nomArea" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.nombreDerechoMinero}" 
                                          size="25" onkeypress="return acceptText(event)"
-                                         maxlength="30" disabled="true" />
+                                         maxlength="30" readonly="true" />
 
                             <p:outputLabel value="Régimen:"></p:outputLabel>
                             <p:selectOneMenu value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoRegimen}" 
@@ -160,40 +168,59 @@
                                 </h:panelGroup>
                             </f:facet>
 
-                            <p:outputLabel for="valorPagado" value="Valor pagado:"></p:outputLabel>
-                            <pe:inputNumber id="valorPagado" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="99999.99" 
-                                            value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.valorPago}" 
-                                            required="true" requiredMessage="Valor pagado es requerido" style="width: 93%"/>
-
-                            <p:outputLabel for="numCompPago" value="Número comprobante pago:"></p:outputLabel>
-                            <p:inputText id="numCompPago" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.numeroComprobanteBanco}" 
+                            <p:outputLabel for="numCompPago" value="CEP (Comprobante Electrónico de Pago):"></p:outputLabel>
+                            <p:inputText id="numCompPago" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.comprobanteElectronico}" 
                                          required="true" requiredMessage="Número comprobante pago" size="25" 
                                          maxlength="60" />
+                            
+                            <p:outputLabel for="valorPagado" value="Valor Pagado:"></p:outputLabel>
+                            <pe:inputNumber id="valorPagado" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="99999999.99" 
+                                            value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.valorPagadoUsuario}" 
+                                            required="true" requiredMessage="Valor pagado es requerido" style="width: 93%"/>
 
-                            <p:outputLabel for="fecRecaudacion" value="Fecha recaudación SRI:"></p:outputLabel>
+                            <p:outputLabel for="valorCalculado" value="Valor calculado:"></p:outputLabel>
+                            <pe:inputNumber id="valorCalculado" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="99999999.99" 
+                                            value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.valorCalculadoArcom}" 
+                                            required="true" requiredMessage="Valor calculado es requerido" style="width: 93%"/>
+                            
+                            <p:outputLabel value="Código de Impuesto:"></p:outputLabel>
+                            <p:outputLabel value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoImpuesto}"></p:outputLabel>
+                            <p:outputLabel value="Número de Formulario:"></p:outputLabel>
+                            <p:outputLabel value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.numeroFormulario}"></p:outputLabel>
+                            
+                            <p:outputLabel for="numFormID" value="Número Formulario Pago:"></p:outputLabel>
+                            <p:selectOneMenu id="numFormID" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.numeroFormularioPago.codigoParametro}" 
+                                             style="width: 93%"
+                                             required="true" requiredMessage="Número Formulario Pago es requerido">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.numeroFormularioList}" />
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="periodoID" value="Periodo:"></p:outputLabel>
+                            <p:selectOneMenu id="periodoID" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoPeriodo.codigoParametro}" 
+                                             style="width: 93%"
+                                             required="true" requiredMessage="Periodo es requerido">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{patentesUtilidadesRegaliasCtrl.periodosList}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="fecRecaudacion" value="Fecha de Emisión (Recaudación SRI):"></p:outputLabel>
                             <p:calendar id="fecRecaudacion" placeholder="aaaa-mm-dd" navigator="true"
                                         value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.fechaEmisionPago}"  
                                         locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" />
 
-                            <p:outputLabel for="fecPresentacion" value="Fecha presentación ARCOM:"></p:outputLabel>
+                            <p:outputLabel for="fecPresentacion" value="Fecha revisión económico:"></p:outputLabel>
                             <p:calendar id="fecPresentacion" placeholder="aaaa-mm-dd" navigator="true"
-                                        value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.fechaPresentacion}"  
+                                        value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.fechaRevisionAnalistaEconomico}"  
                                         locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" />
-
-                            <p:outputLabel value="Entidad bancaria:"></p:outputLabel>
-                            <p:selectOneMenu value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoBanco.codigoCatalogoDetalle}" 
-                                             style="width: 93%">
-                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
-                                <f:selectItems value="#{selectItemCtrl.entidadesBancarias}" />
-                            </p:selectOneMenu>
 
                             <p:outputLabel for="numTramiteIng" value="Número trámite ingreso:"></p:outputLabel>
                             <p:inputText id="numTramiteIng" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.numeroTramite}" 
                                          required="true" requiredMessage="Número trámite ingreso" size="25" 
-                                         maxlength="60"/>
+                                         maxlength="60" readonly="true"/>
 
                             <p:outputLabel for="observaciones" value="Observaciones:"></p:outputLabel>
-                            <p:inputTextarea id="observaciones" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.observacionCoordinadorRegional}" 
+                            <p:inputTextarea id="observaciones" value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.observacionAnalistaEconomico}" 
                                              required="true" requiredMessage="Observaciones es requerida" rows="4"
                                              maxlength="60"/>
 
@@ -374,7 +401,7 @@
                             <p:outputLabel value="Código:"/>
                             <p:inputText id="codFiltro" value="#{patentesUtilidadesRegaliasCtrl.codigoFiltro}"/>
                         </h:panelGrid>
-                        <p:commandButton actionListener="#{patentesUtilidadesRegaliasCtrl.buscarRegistro}" value="Buscar" style="width: 150px; height: 50px;" title="Buscar" update="form6"/>
+                        <p:commandButton actionListener="#{patentesUtilidadesRegaliasCtrl.buscarRegistro}" value="Buscar" style="width: 150px; height: 50px;" title="Buscar" update="form6 panelRespuesta"/>
                     </h:panelGrid>
                     <p:spacer/>
                     <p:spacer/>
@@ -434,7 +461,7 @@
                                 <p:outputLabel value="#{patentesUtilidadesRegaliasCtrl.parroquia.nombre}" />
                             </p:panelGrid>
                             <h:commandButton actionListener="#{patentesUtilidadesRegaliasCtrl.seleccionarLicencia}" image="resources/images/select.png" style="width: 150px; height: 150px;" title="Seleccionar">
-                                <p:ajax update=":form:panelInf" />
+                                <p:ajax update=":form:codDerMin :form:panelInf" />
                             </h:commandButton>
                         </p:panelGrid>
                         <p:panelGrid columns="2" rendered="#{patentesUtilidadesRegaliasCtrl.plantaBeneficioPopup != null}">
@@ -462,7 +489,7 @@
                                 <p:outputLabel value="#{patentesUtilidadesRegaliasCtrl.parroquia.nombre}" />
                             </p:panelGrid>
                             <h:commandButton actionListener="#{patentesUtilidadesRegaliasCtrl.seleccionarPlanta}" image="resources/images/select.png" style="width: 150px; height: 150px;" title="Seleccionar" >
-                                <p:ajax update=":form:panelInf" />
+                                <p:ajax update=":form:codDerMin :form:panelInf" />
                             </h:commandButton>
                         </p:panelGrid>
                     </h:panelGroup> 

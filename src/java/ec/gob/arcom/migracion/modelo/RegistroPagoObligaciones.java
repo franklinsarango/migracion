@@ -213,6 +213,9 @@ public class RegistroPagoObligaciones implements Serializable {
     @JoinColumn(name = "codigo_planta_beneficio", referencedColumnName = "codigo_planta_beneficio")
     @ManyToOne
     private PlantaBeneficio codigoPlantaBeneficio;
+    @JoinColumn(name = "numero_formulario_pago", referencedColumnName = "codigo_parametro")
+    @ManyToOne
+    private ParametroSistema numeroFormularioPago;
     //@JoinColumn(name = "codigo_sujeto_minero", referencedColumnName = "codigo_sujeto_minero")
     //@ManyToOne
     @Transient
@@ -975,6 +978,20 @@ public class RegistroPagoObligaciones implements Serializable {
     @Override
     public String toString() {
         return "ec.gob.arcom.migracion.modelo.RegistroPagoObligaciones[ codigoRegistro=" + codigoRegistro + " ]";
+    }
+
+    /**
+     * @return the numeroFormularioPago
+     */
+    public ParametroSistema getNumeroFormularioPago() {
+        return numeroFormularioPago;
+    }
+
+    /**
+     * @param numeroFormularioPago the numeroFormularioPago to set
+     */
+    public void setNumeroFormularioPago(ParametroSistema numeroFormularioPago) {
+        this.numeroFormularioPago = numeroFormularioPago;
     }
 
 }

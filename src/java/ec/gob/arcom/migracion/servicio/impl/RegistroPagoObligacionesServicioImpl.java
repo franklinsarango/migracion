@@ -10,6 +10,7 @@ import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.dao.RegistroPagoObligacionesDao;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
+import ec.gob.arcom.migracion.dto.RegistroPagoObligacionesDto;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.LicenciaComercializacion;
 import ec.gob.arcom.migracion.modelo.PlantaBeneficio;
@@ -69,6 +70,13 @@ public class RegistroPagoObligacionesServicioImpl extends GenericServiceImpl<Reg
     }
 
     @Override
+    public List<RegistroPagoObligacionesDto> obtenerRegistrosPatUtiReg(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, 
+            String cedula, String codigoDerechoMinero, String prefijoRegionalParam) {
+        return registroPagoObligacionesDao.obtenerListaPatUtiReg(fechaInicio, fechaFin, numeroComprobanteArcom, 
+                cedula, codigoDerechoMinero, prefijoRegionalParam);
+    }
+    
+    @Override
     public void guardarTodo(RegistroPagoObligaciones registroPagoObligaciones, List<DerechoMineroDto> derechosMineros, Long codigoUsuario) {
         this.create(registroPagoObligaciones);
         System.out.println("registroPagoObligaciones.getCodigoRegistro(): " + registroPagoObligaciones.getCodigoRegistro());
@@ -115,6 +123,7 @@ public class RegistroPagoObligacionesServicioImpl extends GenericServiceImpl<Reg
                 pb.setCodigoPlantaBeneficio(derechoMinero.getId());
                 pago.setCodigoPlantaBeneficio(pb);
             }
+            pago.setEntidadTramite("REGISTRO_PAGO_OBLIGACIONES");
             pago.setFechaCreacion(new Date());
             pago.setUsuarioCreacion(BigInteger.valueOf(codigoUsuario));
             pago.setEstadoRegistro(Boolean.TRUE);
