@@ -288,7 +288,7 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(us.getCodigoUsuario());
         RegistroPagoObligacionesDto registroPagoObligacionesItem = (RegistroPagoObligacionesDto) getExternalContext().getRequestMap().get("reg");
         //if (registroPagoObligacionesItem.getCodigoTipoRegistro() != null) {
-                setUrlReporte(ConstantesEnum.URL_BASE_DESARROLLO.getDescripcion()
+                setUrlReporte(ConstantesEnum.URL_BASE.getDescripcion()
                         + "/birt/frameset?__report=report/ComprobatesPago/Patentes-utilidades-regalias.rptdesign&codigo_registro="
                         + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                         + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf");
