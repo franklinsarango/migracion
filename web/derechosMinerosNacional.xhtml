@@ -139,7 +139,7 @@
                         <h:outputText value="#{reg.fechaSolicitud}" style="font-size: 10px"/>
                     </p:column>
 
-                    <p:column headerText="VER" style="width:37px; text-align: right">
+                    <p:column headerText="DETALLE" style="width:37px; text-align: right">
                         <p:commandButton action="#{derechosMinerosCtrl.verSadminData}" rendered="#{reg.tipoDerechoMinero eq 'S'}" 
                                          icon="ui-button-icon-left ui-icon ui-c ui-icon-search" title="Ver Concesión Minera" ajax="false"></p:commandButton>
                         <p:commandButton action="#{derechosMinerosCtrl.verConcesionMinera}" rendered="#{reg.tipoDerechoMinero eq 'C'}" 
@@ -149,7 +149,23 @@
                         <p:commandButton action="#{derechosMinerosCtrl.verPlantaBeneficio}" rendered="#{reg.tipoDerechoMinero eq 'P'}" 
                                          icon="ui-button-icon-left ui-icon ui-c ui-icon-search" title="Ver Planta Beneficio" ajax="false"></p:commandButton>
                     </p:column>
+                    <p:column headerText="COTITULAR" style="width:65px; text-align: right">
+                        <p:commandButton update=":form" action="#{derechosMinerosCtrl.verCotitulares}" icon="ui-icon-person" title="Cotitulares"
+                                         oncomplete="PF('visorTramite').show();return false;"></p:commandButton>
+                    </p:column>
                 </p:dataTable>
+                
+                <p:dialog id="dlgCotitulares" header="Cotitulares" 
+                          widgetVar="visorTramite" width="95%" height="600px"  
+                          showEffect="fade" draggable="false" 
+                          resizable="false" modal="true" >
+                        <iframe frameborder="0"
+                                src="#{derechosMinerosCtrl.urlCotitulares}"
+                                name="frameTareas" id="frameTareas" scrolling="auto" 
+                                width="100%" height="98%" 
+                                marginheight="0" marginwidth="0">
+                        </iframe>
+                </p:dialog>
             </h:form>
 
             <p:dialog header="Concesión Minera" widgetVar="dlgSadmin" modal="false" 

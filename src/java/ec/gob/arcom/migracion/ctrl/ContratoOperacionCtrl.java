@@ -29,6 +29,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -89,12 +90,29 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     
     private List<CoordenadaCota> coordenadasPorContrato;
     
+    private Boolean usuarioRegistrador;
     private boolean mostrarCoordenadas = false;
     private Secuencia secuenciaContratoOperacion;
     
     private int longitudCoordenadas;
     private ContratoOperacion contratoOperacionAnterior;
     
+    @PostConstruct
+    public void init() {
+        try {
+            Usuario uBd = usuarioDao.obtenerPorLogin(login.getUserName());
+            if (uBd != null) {
+                if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RM")) {
+                    usuarioRegistrador = true;
+                }else{
+                    usuarioRegistrador = false;
+                }
+            }   
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     public ContratoOperacion getContratoOperacion() {
         if (contratoOperacion == null) {
             String contratoId = getHttpServletRequestParam("idItem");
@@ -157,6 +175,12 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         return "contratoform?faces-redirect=true&idItem=" + contratoItem.getCodigoContratoOperacion();
     }
 
+    public String verRegistro() {
+        mostrarCoordenadas = true;
+        ContratoOperacion contratoItem = (ContratoOperacion) getExternalContext().getRequestMap().get("reg");
+        return "contratoview?faces-redirect=true&idItem=" + contratoItem.getCodigoContratoOperacion();
+    }
+    
     public String guardarContrato() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
         /*CatalogoDetalle cd = new CatalogoDetalle();
@@ -593,6 +617,20 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
     public void setContratoOperacionAnterior(ContratoOperacion contratoOperacionAnterior) {
         this.contratoOperacionAnterior = contratoOperacionAnterior;
+    }
+
+    /**
+     * @return the usuarioRegistrador
+     */
+    public Boolean getUsuarioRegistrador() {
+        return usuarioRegistrador;
+    }
+
+    /**
+     * @param usuarioRegistrador the usuarioRegistrador to set
+     */
+    public void setUsuarioRegistrador(Boolean usuarioRegistrador) {
+        this.usuarioRegistrador = usuarioRegistrador;
     }
 
 }

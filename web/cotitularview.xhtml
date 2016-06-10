@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Actualización de Datos"/>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="frmCotitular">
+                
+                <p:growl id="growl" showDetail="true" showSummary="false" life="8000" autoUpdate="true"/>
+                 
+                <p:dataTable id="dtListaCotitulares" var="reg" value="#{cotitularCtrl.contratosOperacion}" rows="10"
+                             paginator="true"
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20" paginatorPosition="bottom" styleClass="texto_tabla_datos" rowIndexVar="rowIndex" emptyMessage="No existen registros" style="width: 95%">
+
+                    <p:column headerText="#" width="25">
+                        <h:outputText value="#{rowIndex + 1}"/>
+                    </p:column>
+
+                    <p:column headerText="CODIGO CONCESION" style="text-align: right">
+                        <h:outputText styleClass="texto_tabla_datos_codigo" 
+                                       value="#{reg.codigoConcesion.codigoArcom}" />
+                    </p:column>
+                    
+                    <p:column headerText="CODIGO CONTRATO" style="text-align: right">
+                        <h:outputText styleClass="texto_tabla_datos_codigo"
+                                      value="#{reg.codigoArcom}"/>
+                    </p:column>
+                    
+                    <p:column headerText="NUM. DOCUMENTO" style="text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" 
+                                       value="#{reg.numeroDocumento}" />
+                    </p:column>
+
+                    <p:column headerText="PORCENTAJE"  
+                              style="text-align: right">
+                        <h:outputText value="#{reg.porcentaje}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Procuración"
+                              style="text-align: center"
+                              rendered="false">
+                        <p:selectBooleanCheckbox rendered="#{reg.procuradorComun}" value="#{reg.procuradorComun}" disabled="true"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo de Procuraciones"
+                              style="text-align: center">
+                        <h:outputText value="#{reg.tipoProcurador.nombre}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Detalle" style="width:37px; text-align: right">
+                        <p:commandButton action="#{cotitularCtrl.editarRegistro}" 
+                                         icon="ui-icon-search" 
+                                         title="Ver"                                          
+                                         update=":frmCotitular"/>
+                    </p:column>
+                    
+                </p:dataTable>
+            
+
+                <p:confirmDialog global="true" showEffect="fade" >
+                    <p:commandButton title="GDelYesButton" value="Si" styleClass="ui-confirmdialog-yes"/>
+                    <p:commandButton title="GDelNoButton" value="No" styleClass="ui-confirmdialog-no" />
+                </p:confirmDialog>
+                
+                <p:panel id="idPanelDatosCotitular" rendered="#{cotitularCtrl.mostrarDatosCotitular}">
+                <h2 class="panel_grid_center" style="width: 55.5%; text-align: center">COTITULARES</h2>
+                <p:panelGrid columns="2"        
+                             styleClass="panel_grid_center"
+                             columnClasses="form-label-width, form-input"
+                             style="width: 55.5%">
+                    <f:facet name="header">
+                        <h:panelGroup style="display:block; text-align:center">
+                            <p:outputLabel value="DATOS COTITULARES"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    
+                    <p:outputLabel value="Porcentaje:" />
+                    <p:outputLabel value="#{cotitularCtrl.contratoOperacion.porcentaje}" />
+
+                    <p:outputLabel value="Procurador Común / Rep. Administrativo - Legal:" />
+                    <p:selectOneRadio id="procuradorComunID" value="#{cotitularCtrl.contratoOperacion.procuradorComun}" disabled="true" requiredMessage="El campo Procurador Común es requerido." >
+                        <f:selectItem itemLabel="Si" itemValue="true" />
+                        <f:selectItem itemLabel="No" itemValue="false" />
+                        <p:ajax event="valueChange" update="panelProcuradorLbl panelProcurador :frmCotitular" />
+                    </p:selectOneRadio>
+                    
+                    
+                    <h:panelGroup id="panelProcuradorLbl">
+                        <p:outputLabel value="Tipo Procuraciones:" rendered="#{cotitularCtrl.contratoOperacion.procuradorComun}"></p:outputLabel>
+                    </h:panelGroup>
+                    <h:panelGroup id="panelProcurador">
+                        <p:outputLabel value="#{cotitularCtrl.contratoOperacion.tipoProcurador.nombre}"
+                                       rendered="#{cotitularCtrl.contratoOperacion.procuradorComun}"></p:outputLabel>
+                    </h:panelGroup>
+                    
+                </p:panelGrid>
+                
+                <p:panelGrid columns="2"   
+                             styleClass="panel_grid_center"
+                             columnClasses="form-label-width, form-input"
+                             style="width: 55.5%">
+                    <f:facet name="header">
+                        <h:panelGroup style="display:block; text-align:center">
+                            <p:outputLabel value="DATOS PERSONA"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <p:outputLabel value="Número Documento:"/>
+                    <p:outputLabel value="#{cotitularCtrl.contratoOperacion.numeroDocumento}"/>
+                    
+                    <p:outputLabel value="Nombre:"/>
+                    <p:outputLabel value="#{cotitularCtrl.contratoOperacion.nombrePersona}" />
+                    
+                    <p:outputLabel value="Apellido:"/>
+                    <p:outputLabel value="#{cotitularCtrl.contratoOperacion.apellidoPersona}" />
+                    
+                    <p:outputLabel value="Email:"/>
+                    <p:outputLabel value="#{cotitularCtrl.contratoOperacion.emailPersona}" />
+                    
+                    <f:facet name="footer">
+                        <h:panelGroup style="display:block; text-align:center; height: 24px">
+                            <p:outputLabel value=""/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:panelGrid>
+                
+                
+                </p:panel>
+            </h:form>
+            
+			<p:dialog header="Búsqueda de Persona" widgetVar="dlgBusqPersona" modal="true" dynamic="true" resizable="false" draggable="true">
+                
+            </p:dialog>
+			
+        </ui:define>
+    </ui:composition>
+</html>
+

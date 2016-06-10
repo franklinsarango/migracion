@@ -40,7 +40,10 @@ public enum ConstantesEnum {
     PATUTIREG_UTILIDAD("TICALUTILIDAD", "UTILIDAD", 363L),
     
     //URL_BASE("", "http://181.211.37.237:8380", null);
-    URL_BASE("", "http://10.10.6.131:8384", null), URL_BASE_DESARROLLO("", "http://181.211.37.237:8380", null);
+    URL_APP_LOCAL("", "http://localhost:8080", null),
+    URL_APP_PROD("", "http://172.16.30.246:8381", null), 
+    URL_BASE("", "http://10.10.6.131:8384", null), 
+    URL_BASE_DESARROLLO("", "http://181.211.37.237:8380", null);
     
     private String nemonico;
     private String descripcion;

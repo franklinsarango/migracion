@@ -5,9 +5,11 @@
  */
 package ec.gob.arcom.migracion.ctrl;
 
+import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
 import ec.gob.arcom.migracion.dao.ConcesionMineraDao;
 import ec.gob.arcom.migracion.dao.SadminDataDao;
+import ec.gob.arcom.migracion.dto.ConcesionMineraDto;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
@@ -74,6 +76,7 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     private String tipoPersona;
     private Date fecha;
     private String numDocumento;
+    private String urlCotitulares;
 
     private boolean mostrarLista = false;
     private List<DerechoMineroDto> listaRegistros;
@@ -259,7 +262,19 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     public void setPlantaBeneficio(PlantaBeneficio plantaBeneficio) {
         this.plantaBeneficio = plantaBeneficio;
     }
-
+    
+    public String verCotitulares() {
+        DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
+        if(derechoMineroDtoItem.getTipoDerechoMinero().equals("C")){
+            urlCotitulares = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/cotitularview.xhtml?idItem=" + derechoMineroDtoItem.getCodigo();
+            System.out.println("urlCotitulares: " + urlCotitulares);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Los Cotitulares solo aplica para Concesiones !!!", null));
+        }
+        return null;
+    }
+      
     public void verSadminData() {
         DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
         sadminData = sadminDataDao.findByPk(derechoMineroDtoItem.getId());
@@ -424,6 +439,20 @@ public class DerechosMinerosCtrl extends BaseCtrl {
 
     public void setNumDocumento(String numDocumento) {
         this.numDocumento = numDocumento;
+    }
+
+    /**
+     * @return the urlCotitulares
+     */
+    public String getUrlCotitulares() {
+        return urlCotitulares;
+    }
+
+    /**
+     * @param urlCotitulares the urlCotitulares to set
+     */
+    public void setUrlCotitulares(String urlCotitulares) {
+        this.urlCotitulares = urlCotitulares;
     }
 
 }
