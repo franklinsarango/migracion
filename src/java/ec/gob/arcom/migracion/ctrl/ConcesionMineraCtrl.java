@@ -229,7 +229,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                 }
                 //solicitud = solicitudServicio.obtenerPorCodigoArcom(concesionMinera.getCodigoArcom());
                 //solicitudAnterior = solicitudServicio.obtenerPorCodigoArcom(concesionMinera.getCodigoArcom());
-                if (concesionMinera.getDocumentoConcesionarioPrincipal() != null
+                /*if (concesionMinera.getDocumentoConcesionarioPrincipal() != null
                         && concesionMinera.getDocumentoConcesionarioPrincipal().length() == 10) {
                     tipoPersona = "N";
                     PersonaNatural personaNatural = personaNaturalServicio
@@ -243,6 +243,21 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                             .findByRuc(concesionMinera.getDocumentoConcesionarioPrincipal());
                     concesionMinera.setPersonaJuridicaTransient(personaJuridica);
                     concesionMinera.getPersonaJuridicaTransient();
+                }*/
+                if (concesionMinera.getDocumentoConcesionarioPrincipal() != null) {
+                    PersonaNatural personaNatural = personaNaturalServicio.findByNumeroDocumento(concesionMinera.getDocumentoConcesionarioPrincipal());
+                    if (personaNatural != null) {
+                        tipoPersona = "N";
+                        concesionMinera.setPersonaNaturalTransient(personaNatural);
+                        concesionMinera.getPersonaNaturalTransient();
+                    } else {
+                        PersonaJuridica personaJuridica = personaJuridicaServicio.findByRuc(concesionMinera.getDocumentoConcesionarioPrincipal());
+                        if (personaJuridica != null) {
+                            tipoPersona = "J";
+                            concesionMinera.setPersonaJuridicaTransient(personaJuridica);
+                            concesionMinera.getPersonaJuridicaTransient();
+                        }
+                    }
                 }
                 if (concesionMinera.getCodigoTipoMaterial() == null) {
                     concesionMinera.setCodigoTipoMaterial(new Catalogo());

@@ -464,6 +464,11 @@
                             <p:selectBooleanCheckbox value="#{derechosMinerosCtrl.concesionMinera.mae}" disabled="true"/>
                             <h:outputText value="SENAGUA:" />
                             <p:selectBooleanCheckbox value="#{derechosMinerosCtrl.concesionMinera.senagua}" disabled="true"/>
+                            <h:outputText value="Fecha Creación Sol.:"/>
+                            <p:inputText value="#{derechosMinerosCtrl.concesionMinera.fechaCreacion}" 
+                                         readonly="true" size="40">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </p:inputText>
                             <h:outputText value="Observaciones generales:" />
                             <p:inputTextarea value="#{derechosMinerosCtrl.concesionMinera.obsActosAdmPrevios}" 
                                              readonly="true"/>
@@ -510,7 +515,7 @@
                             <p:inputText value="#{derechosMinerosCtrl.licenciaComercializacion.estadoLicencia.nombre}" 
                                          readonly="true" size="40"/>
                             <h:outputText value="Fecha Otorgamiento:" />
-                            <p:inputText value="#{derechosMinerosCtrl.licenciaComercializacion.fechaOtorgamientoLicencia}" 
+                            <p:inputText value="#{derechosMinerosCtrl.licenciaComercializacion.fechaOtorga}" 
                                          readonly="true" size="40">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </p:inputText>
