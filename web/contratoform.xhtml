@@ -93,6 +93,14 @@
                                 value="#{contratoOperacionCtrl.contratoOperacion.fechaInscribe}" placeholder="aaaa-mm-dd" navigator="true"
                                 locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" required="true" requiredMessage="Fecha inscribe es requerida"/>
                     
+                    <p:outputLabel for="plazoID" value="Plazo(meses):"></p:outputLabel>
+                    <pe:inputNumber id="plazoID"  required="true" requiredMessage="Plazo es requerido"
+                                        thousandSeparator="," 
+                                        decimalSeparator="." 
+                                        decimalPlaces="0" 
+                                        maxValue="999999" 
+                                        value="#{contratoOperacionCtrl.contratoOperacion.plazo}" />
+                    
                     <h:panelGroup id="panelCotaMinLbl">
                         <p:outputLabel for="cotaMin" 
                                        value="Cota Mínima" />

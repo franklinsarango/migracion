@@ -118,6 +118,8 @@ public class ContratoOperacion implements Serializable {
     @JoinColumn(name = "tipo_procurador", referencedColumnName = "codigo_catalogo_detalle")
     @ManyToOne
     private CatalogoDetalle tipoProcurador;
+    @Column(name = "plazo")
+    private BigInteger plazo;
     
     public ContratoOperacion() {
     }
@@ -374,7 +376,7 @@ public class ContratoOperacion implements Serializable {
                 + (codigoConcesion != null ? codigoConcesion.getCodigoConcesion() : null  )
                 + ", estadoContrato=" + (estadoContrato != null ? estadoContrato.getCodigoCatalogoDetalle() : null) + ", codigoArea=" + (codigoArea != null ? codigoArea.getCodigoAreaMinera() : null) + ", codigoArcom=" + codigoArcom 
                 + ", tipoContrato=" + (tipoContrato != null ? tipoContrato.getCodigoCatalogoDetalle() : null ) + ", porcentaje=" + porcentaje + ", nombrePersona=" + nombrePersona + ", apellidoPersona=" 
-                + apellidoPersona + ", emailPersona=" + emailPersona + ", fechaInscribe=" + fechaInscribe + ", cotaMinima=" + cotaMinima + ", cotaMaxima=" + cotaMaxima + ", procuradorComun=" + procuradorComun 
+                + apellidoPersona + ", emailPersona=" + emailPersona + ", fechaInscribe=" + fechaInscribe + ", cotaMinima=" + cotaMinima + ", cotaMaxima=" + cotaMaxima + ", procuradorComun=" + procuradorComun + ", plazo=" + plazo 
                 + ", tipoProcurador=" + (tipoProcurador != null ? tipoProcurador.getCodigoCatalogoDetalle() : null )+ '}';
     }
 
@@ -432,6 +434,20 @@ public class ContratoOperacion implements Serializable {
      */
     public void setTipoProcurador(CatalogoDetalle tipoProcurador) {
         this.tipoProcurador = tipoProcurador;
+    }
+
+    /**
+     * @return the plazo
+     */
+    public BigInteger getPlazo() {
+        return plazo;
+    }
+
+    /**
+     * @param plazo the plazo to set
+     */
+    public void setPlazo(BigInteger plazo) {
+        this.plazo = plazo;
     }
 
 }
