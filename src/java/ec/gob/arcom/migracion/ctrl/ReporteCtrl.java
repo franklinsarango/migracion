@@ -107,9 +107,9 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReporteConcesionMineraBirt() {
         System.out.println("entra generarReporteConcesionMineraBirt");
-        urlReporte = ConstantesEnum.URL_BASE_DESARROLLO.getDescripcion()
-                        + "/birt/frameset?__report=report/derechosMineros/concesionesMineras.rptdesign&codigoTipoMineria="
-                        + codigoTipoMineria + "&__format=xlsx";
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/concesionesMineras.rptdesign&codigoTipoMineria=" + codigoTipoMineria
+                + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
 
@@ -139,8 +139,9 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReporteLicenciaComercializacionBirt() {
         System.out.println("entra generarReporteLicenciaComercializacionBirt");
-        urlReporte = ConstantesEnum.URL_BASE_DESARROLLO.getDescripcion()
-                        + "/birt/frameset?__report=report/derechosMineros/licenciasComercializacion.rptdesign&__format=xlsx";
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/licenciasComercializacion.rptdesign"
+                + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
 
@@ -170,8 +171,9 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReportePlantasBeneficioBirt() {
         System.out.println("entra generarReportePlantasBeneficioBirt");
-        urlReporte = ConstantesEnum.URL_BASE_DESARROLLO.getDescripcion()
-                        + "/birt/frameset?__report=report/derechosMineros/plantasBeneficio.rptdesign&__format=xlsx";
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/plantasBeneficio.rptdesign"
+                + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
     
@@ -282,7 +284,7 @@ public class ReporteCtrl extends BaseCtrl {
     public List<SelectItem> getTipoSolicitudes() {
         if (tipoSolicitudes == null) {
             tipoSolicitudes = new ArrayList<>();
-            for (ConstantesEnum ce : ConstantesEnum.tipoSolicitudes()) {
+            for (ConstantesEnum ce : ConstantesEnum.values()) {
                 if (ce.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM)

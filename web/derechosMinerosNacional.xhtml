@@ -471,7 +471,11 @@
                             </p:inputText>
                             <h:outputText value="Observaciones generales:" />
                             <p:inputTextarea value="#{derechosMinerosCtrl.concesionMinera.obsActosAdmPrevios}" 
-                                             readonly="true"/>
+                                             readonly="true" style="width: 40;"/>
+                            <h:outputText value="Ver Coordenadas:" />
+                        <p:commandButton update=":formCoordenadas" icon="ui-icon-folder-open" title="Coordenadas"
+                                         oncomplete="PF('dlgCoordenadas').show();return false;"></p:commandButton>
+                    
                         </h:panelGrid>
                     </h:panelGrid>
                 </h:form>
@@ -621,6 +625,25 @@
                     </h:panelGrid>
                 </h:form>
             </p:dialog>
+            
+            <p:dialog header="Coordenadas" widgetVar="dlgCoordenadas" modal="true" dynamic="true" resizable="true" draggable="false" width="951px" height="424px">
+                <h:form id="formCoordenadas">
+                    <p:growl id="message2" showDetail="true" />       
+                    <p:dataTable id="tablaCoordenadas" var="crd" value="#{derechosMinerosCtrl.coordenadasPorArea}" 
+                                 emptyMessage="No existen registros" scrollable="true">
+                        <p:column headerText="Orden">
+                            <h:outputText value="#{crd.numeroCoordenada}" />
+                        </p:column>
+                        <p:column headerText="Coordenada x">
+                            <h:outputText value="#{crd.utmEste}" />
+                        </p:column>
+                        <p:column headerText="Coordenada y">
+                            <h:outputText value="#{crd.utmNorte}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:dialog>
+            
         </ui:define>
     </ui:composition>
 </html>

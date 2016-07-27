@@ -44,7 +44,7 @@ public class CoordenadaAreaDaoEjb extends GenericDaoEjbEl<CoordenadaArea, Long> 
 
     @Override
     public List<CoordenadaArea> findByCodigoArea(Long codigoArea) {
-        String jpql = "select ca from CoordenadaArea ca where ca.codigoArea.codigoAreaMinera = :codigoArea";
+        String jpql = "select ca from CoordenadaArea ca where ca.codigoArea.codigoAreaMinera = :codigoArea order by ca.codigoCoordenada";
             Query query = em.createQuery(jpql);
             query.setParameter("codigoArea", codigoArea);
 

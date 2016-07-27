@@ -107,8 +107,7 @@ public enum ConstantesEnum {
             if (ce.equals(TIPO_SOLICITUD_CONS_MIN) || ce.equals(TIPO_SOLICITUD_LIC_COM)
                     || ce.equals(TIPO_SOLICITUD_PLAN_BEN) || ce.equals(TIPO_SOLICITUD_LIB_APR)
                     || ce.equals(TIPO_SOLICITUD_MIN_ART) || ce.equals(SUJETO_MINERO)
-                    || ce.equals(TIPO_SOLICITUD_NO_APLICA_DERECHO_MINERO)
-                    || ce.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS)) {
+                    || ce.equals(TIPO_SOLICITUD_NO_APLICA_DERECHO_MINERO)) {
                 tipoSolicitudes.add(ce);
             }
         }

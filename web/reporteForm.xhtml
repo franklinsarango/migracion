@@ -51,7 +51,7 @@
                                      style="width: 93%">
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{reporteCtrl.tipoSolicitudes}" />
-                        <f:selectItem itemValue="101" itemLabel="Autogestión" />
+                        <f:selectItem itemValue="101" itemLabel="AUTOGESTIÓN" />
                         <p:ajax update="panelFiltros botones"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
@@ -74,12 +74,12 @@
                                 required="true"
                                 requiredMessage="Fecha Hasta requerida"
                                 rendered="false"/>
-                    <p:outputLabel value="Prefijo regional:" rendered="#{reporteCtrl.codigoTipoMineria == 101}"/>
+                    <p:outputLabel value="Regional:" rendered="#{!(reporteCtrl.codigoTipoMineria == 10000)}"/>
                     <p:selectOneMenu value="#{reporteCtrl.prefijoRegionalFiltro}" 
                                      required="true" 
-                                     requiredMessage="Prefijo regional es requerido" 
+                                     requiredMessage="Regional es requerido" 
                                      style="width: 93%"
-                                     rendered="#{reporteCtrl.codigoTipoMineria == 101 or (reporteCtrl.codigoTipoMineria == 10001)}">
+                                     rendered="#{!(reporteCtrl.codigoTipoMineria == 10000)}">
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{reporteCtrl.regionales}" />
                     </p:selectOneMenu>

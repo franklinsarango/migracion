@@ -11,8 +11,10 @@ import ec.gob.arcom.migracion.dao.ConcesionMineraDao;
 import ec.gob.arcom.migracion.dao.SadminDataDao;
 import ec.gob.arcom.migracion.dto.ConcesionMineraDto;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
+import ec.gob.arcom.migracion.modelo.AreaMinera;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
+import ec.gob.arcom.migracion.modelo.CoordenadaArea;
 import ec.gob.arcom.migracion.modelo.LicenciaComercializacion;
 import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.PersonaJuridica;
@@ -26,6 +28,8 @@ import ec.gob.arcom.migracion.servicio.PersonaJuridicaServicio;
 import ec.gob.arcom.migracion.servicio.PersonaNaturalServicio;
 import ec.gob.arcom.migracion.servicio.PlantaBeneficioServicio;
 import ec.gob.arcom.migracion.servicio.RegimenServicio;
+import ec.gob.arcom.migracion.servicio.AreaMineraServicio;
+import ec.gob.arcom.migracion.servicio.CoordenadaAreaServicio;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,7 +68,11 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     private PersonaJuridicaServicio personaJuridicaServicio;
     @EJB
     private ConcesionMineraDao concesionMineraDao;
-
+    @EJB
+    private AreaMineraServicio areaMineraServicio;
+    @EJB
+    private CoordenadaAreaServicio coordenadaAreaServicio;
+    
     private String codigo;
     private String nombreDerechoMinero;
     private Long codigoRegional;
@@ -87,6 +95,7 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     private ConcesionMinera concesionMinera;
     private LicenciaComercializacion licenciaComercializacion;
     private PlantaBeneficio plantaBeneficio;
+    private List<CoordenadaArea> coordenadasPorArea;
 
     public void buscar() {
         mostrarLista = true;
@@ -433,6 +442,8 @@ public class DerechosMinerosCtrl extends BaseCtrl {
         RequestContext.getCurrentInstance().execute("PF('dlgPlantaBeneficio').show()");
     }
 
+    
+    
     public String getNumDocumento() {
         return numDocumento;
     }
@@ -453,6 +464,26 @@ public class DerechosMinerosCtrl extends BaseCtrl {
      */
     public void setUrlCotitulares(String urlCotitulares) {
         this.urlCotitulares = urlCotitulares;
+    }
+
+    /**
+     * @return the coordenadasPorArea
+     */
+    public List<CoordenadaArea> getCoordenadasPorArea() {
+        if (concesionMinera != null) {
+            AreaMinera areaMinera = areaMineraServicio.obtenerPorConcesionMinera(concesionMinera.getCodigoConcesion());
+            if (areaMinera != null) {
+                System.out.println("codigoAreaMinera: " + areaMinera.getCodigoAreaMinera());
+                coordenadasPorArea = coordenadaAreaServicio.findByCodigoArea(areaMinera.getCodigoAreaMinera());
+            }
+        }
+        return coordenadasPorArea;
+    }
+    /**
+     * @param coordenadasPorArea the coordenadasPorArea to set
+     */
+    public void setCoordenadasPorArea(List<CoordenadaArea> coordenadasPorArea) {
+        this.coordenadasPorArea = coordenadasPorArea;
     }
 
 }
