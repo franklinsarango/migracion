@@ -104,6 +104,10 @@ h2 {
     font-weight: bold;
 }
 
+.texto_tabla_detalle {
+    font-size: 0.8em;
+}
+
 .panel_grid_center_login {
     margin: 0 auto;
     width: 30%;

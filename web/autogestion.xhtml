@@ -28,6 +28,11 @@
                             <p:inputText value="#{registroPagoObligacionesCtrl.numeroComprobanteArcomFiltro}"/>
                             <p:outputLabel value="Código Derecho Minero:"/>
                             <p:inputText value="#{registroPagoObligacionesCtrl.codigoArcomFiltro}"/>
+                            <p:outputLabel value="Número Trámite:" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}"/>
+                            <p:inputMask id="idNumeroTramite" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}"
+                                         value="#{registroPagoObligacionesCtrl.numeroTramite}" 
+                                         maxlength="10" autocomplete="false" mask="9?999999999" placeHolder=""
+                                         />
                         </h:panelGrid>
                         <h:commandButton actionListener="#{registroPagoObligacionesCtrl.buscar}" 
                                          image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar"/>
@@ -69,39 +74,49 @@
                         <h:outputText value="#{rowIndex + 1}"/>
                     </p:column>
 
-                    <p:column headerText="FECHA CREACION" style="width: 85px; text-align: right">
-                        <h:outputText  styleClass="texto_tabla_datos_codigo" value="#{reg.fechaCreacion}" >
+                    <p:column headerText="TIPO TRAMITE" style="width: 85px; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}">
+                        <h:outputText  value="#{reg.entidadTramite}" styleClass="texto_tabla_detalle">
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column headerText="N° TRAMITE" style="width: 5%; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}">
+                        <h:outputText  value="#{reg.numeroTramite}" styleClass="texto_tabla_detalle">
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column headerText="FECHA CREACION" style="width: 5%; text-align: right">
+                        <h:outputText  styleClass="texto_tabla_detalle" value="#{reg.fechaCreacion}" >
                             <f:convertDateTime pattern="yyyy-MM-dd" />
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="FECHA DEPOSITO" style="width: 85px; text-align: right">
-                        <h:outputText value="#{reg.fechaEmisionPago}" >
+                    <p:column headerText="FECHA DEPOSITO" style="width: 5%; text-align: right">
+                        <h:outputText value="#{reg.fechaEmisionPago}" styleClass="texto_tabla_detalle">
                             <f:convertDateTime pattern="yyyy-MM-dd" />
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="No. DEPOSITO" style="width: 85px; text-align: right">
-                        <h:outputText value="#{reg.numeroComprobanteBanco}" />
+                    <p:column headerText="No. DEPOSITO" style="width: 5%; text-align: right">
+                        <h:outputText value="#{reg.numeroComprobanteBanco}" styleClass="texto_tabla_detalle"/>
                     </p:column>
 
                     <p:column headerText="TIPO INGRESO/CONCEPTO" width="150">
                         <h:outputText value="#{reg.codigoConceptoPago.descripcionConceptoPago}" />
                     </p:column>
 
-                    <p:column headerText="ESTADO PAGO" style="width: 85px">
-                        <h:outputText value="#{reg.estadoPago.nombre}" />
+                    <p:column headerText="ESTADO PAGO" style="width: 5%">
+                        <h:outputText value="#{reg.estadoPago.nombre}" styleClass="texto_tabla_detalle"/>
                     </p:column>
 
-                    <p:column headerText="VALOR" style="width: 85px">
-                        <h:outputText value="#{reg.valorPagadoUsuario}" />
+                    <p:column headerText="VALOR" style="width: 5%">
+                        <h:outputText value="#{reg.valorPagadoUsuario}" styleClass="texto_tabla_detalle"/>
                     </p:column>
 
                     <p:column headerText="NUMERO COMPROBANTE INGRESO/RECAUDACION" width="85">
-                        <h:outputText value="#{reg.numeroComprobanteArcom}"/>
+                        <h:outputText value="#{reg.numeroComprobanteArcom}" />
                     </p:column>
 
-                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="false">
+                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}">
                         <p:commandButton action="#{registroPagoObligacionesCtrl.editarRegistro}" icon="ui-icon-pencil" 
                                          title="Editar" ajax="false"></p:commandButton>
                     </p:column>

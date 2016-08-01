@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.dao;
 import com.saviasoft.persistence.util.dao.GenericDao;
 import ec.gob.arcom.migracion.dto.RegistroPagoObligacionesDto;
 import ec.gob.arcom.migracion.modelo.RegistroPagoObligaciones;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -28,7 +29,7 @@ public interface RegistroPagoObligacionesDao extends GenericDao<RegistroPagoObli
 
     List<RegistroPagoObligaciones> obtenerPorCodigoComprobanteArcom(String numeroComprobanteArcom);
 
-    List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom, String cedula, String codigoDerechoMinero, String prefijoRegionalParam);
+    List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom, String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional);
     
     List<RegistroPagoObligacionesDto> obtenerListaPatUtiReg(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom, String cedula, String codigoDerechoMinero, String prefijoRegionalParam);
 

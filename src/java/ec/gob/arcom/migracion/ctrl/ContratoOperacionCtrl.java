@@ -97,6 +97,13 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     private int longitudCoordenadas;
     private ContratoOperacion contratoOperacionAnterior;
     
+    protected int numeroPagina = 0;
+    protected int desplazamiento;
+    protected int totalPaginas;
+    protected static final int tamanoPagina = 10;
+    private Integer paginaSeleccionada;
+    private ArrayList<Integer> listaPaginas;
+    
     @PostConstruct
     public void init() {
         try {
@@ -112,6 +119,8 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        contratosOperacion = new ArrayList<>();
+        mostrarDatos("btn_buscar");
     }
     public ContratoOperacion getContratoOperacion() {
         if (contratoOperacion == null) {
@@ -166,7 +175,8 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
     public void buscar() {
         contratosOperacion = null;
-        getContratosOperacion();
+        //getContratosOperacion();
+        mostrarDatos("btn_buscar");
     }
 
     public String editarRegistro() {
@@ -244,9 +254,9 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     }
 
     public List<ContratoOperacion> getContratosOperacion() {
-        if (contratosOperacion == null) {
+        /*if (contratosOperacion == null) {
             contratosOperacion = contratoOperacionServicio.obtenerContratosOperacion(codigoArcomFiltro, numDocumentoFiltro, login.getUserName());
-        }
+        }*/
         return contratosOperacion;
     }
 
@@ -632,5 +642,129 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     public void setUsuarioRegistrador(Boolean usuarioRegistrador) {
         this.usuarioRegistrador = usuarioRegistrador;
     }
+    
+    /**
+     * PAGINACION LISTA DE CONTRATOS
+     */
+    public void mostrarDatos(String strTipoRecorrido) {
+        if (strTipoRecorrido.equals("siguiente")) {
+            if (numeroPagina < totalPaginas) {
+                numeroPagina = numeroPagina + 1;
+            }
+        }
+        if (strTipoRecorrido.equals("anterior")) {
+            if (numeroPagina == 1) {
+            }
+            if (numeroPagina > 1) {
+                numeroPagina = numeroPagina - 1;
+            }
+        }
+        if (strTipoRecorrido.equals("btn_buscar")) {
+            numeroPagina = 1;
+        }
+        if (strTipoRecorrido.equals("cmb_paginador")) {
+            numeroPagina = getPaginaSeleccionada();
+        }
+        desplazamiento = tamanoPagina * (numeroPagina - 1);
+        setPaginaSeleccionada(numeroPagina);
 
+        if (strTipoRecorrido.equals("btn_buscar")) {
+            cargarListaPaginas();
+        }
+        if (contratoOperacionServicio.countByContratoOperacionTabla(codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento) != null) {
+            contratosOperacion.clear();
+            List<ContratoOperacion> listContratoOperacion = contratoOperacionServicio.countByContratoOperacionTabla(codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento);
+            for (ContratoOperacion contratoOp : listContratoOperacion) {
+                contratosOperacion.add(contratoOp);
+            }
+        } else {
+            //ponerMensajeInfo("", "No existen Contratos de Operacion con código ARCOM ");
+            contratosOperacion.clear();
+        }
+    }
+
+    public void cargarListaPaginas() {
+        if(listaPaginas == null){
+            listaPaginas = new ArrayList<>();
+        }
+        int paginas = contratoOperacionServicio.countByContratoOperacionTablaTotal(codigoArcomFiltro, numDocumentoFiltro);
+        totalPaginas = paginas / tamanoPagina;
+        if (paginas % tamanoPagina != 0) {
+            totalPaginas++;
+        }
+        getListaPaginas().clear();
+        for (int i = 0; i < totalPaginas; i++) {
+            getListaPaginas().add(i + 1);
+        }
+    }
+    
+    /**
+     * @return the paginaSeleccionada
+     */
+    public Integer getPaginaSeleccionada() {
+        return paginaSeleccionada;
+    }
+
+    /**
+     * @param paginaSeleccionada the paginaSeleccionada to set
+     */
+    public void setPaginaSeleccionada(Integer paginaSeleccionada) {
+        this.paginaSeleccionada = paginaSeleccionada;
+    }
+
+    /**
+     * @return the listaPaginas
+     */
+    public ArrayList<Integer> getListaPaginas() {
+        return listaPaginas;
+    }
+
+    /**
+     * @param listaPaginas the listaPaginas to set
+     */
+    public void setListaPaginas(ArrayList<Integer> listaPaginas) {
+        this.listaPaginas = listaPaginas;
+    }
+    
+    /**
+     * @return the numeroPagina
+     */
+    public int getNumeroPagina() {
+        return numeroPagina;
+    }
+
+    /**
+     * @param numeroPagina the numeroPagina to set
+     */
+    public void setNumeroPagina(int numeroPagina) {
+        this.numeroPagina = numeroPagina;
+    }
+
+    /**
+     * @return the desplazamiento
+     */
+    public int getDesplazamiento() {
+        return desplazamiento;
+    }
+
+    /**
+     * @param desplazamiento the desplazamiento to set
+     */
+    public void setDesplazamiento(int desplazamiento) {
+        this.desplazamiento = desplazamiento;
+    }
+
+    /**
+     * @return the totalPaginas
+     */
+    public int getTotalPaginas() {
+        return totalPaginas;
+    }
+
+    /**
+     * @param totalPaginas the totalPaginas to set
+     */
+    public void setTotalPaginas(int totalPaginas) {
+        this.totalPaginas = totalPaginas;
+    }
 }

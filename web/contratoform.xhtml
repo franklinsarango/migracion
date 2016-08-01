@@ -139,7 +139,7 @@
                     </f:facet>
                     <p:outputLabel for="codDerMin" value="Código derecho minero:" />
                     <h:panelGrid columns="2">
-                        <p:inputMask id="codDerMin" mask="9?999999999999" 
+                        <p:inputText id="codDerMin"
                                      value="#{contratoOperacionCtrl.contratoOperacion.codigoConcesion.codigoArcom}"
                                      readonly="#{facesContext.renderResponse}" 
                                      required="true" 

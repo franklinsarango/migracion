@@ -211,6 +211,69 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
     }
 
     @Override
+    public int countByContratoOperacionTablaTotal(String codigoArcom, String numDocumento) {
+        String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoArcom like :codigoArcomCO \n";
+        if (codigoArcom != null && !codigoArcom.isEmpty()) {
+            jpql += "and co.codigoArcom like :codigoArcom \n";
+        }
+        if (numDocumento != null && !numDocumento.isEmpty()) {
+            jpql += "and co.numeroDocumento = :numDocumento \n";
+        }
+
+        jpql += "order by co.fechaCreacion, co.codigoArcom desc ";
+
+        System.out.println("jpql: " + jpql);
+        Query query = em.createQuery(jpql);
+        if (codigoArcom != null && !codigoArcom.isEmpty()) {
+            query.setParameter("codigoArcom", codigoArcom + "%");
+        }
+        if (numDocumento != null && !numDocumento.isEmpty()) {
+            query.setParameter("numDocumento", numDocumento);
+        }
+        query.setParameter("codigoArcomCO", "%" + "CO" + "%");
+
+        int count =  query.getResultList().size();
+        return count;
+
+    }
+    
+    @Override
+    public List<ContratoOperacion> countByContratoOperacionTabla(String codigoArcom, String numDocumento, int paramLimit, int paramOffset) {
+        String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoArcom like :codigoArcomCO \n";
+        if (codigoArcom != null && !codigoArcom.isEmpty()) {
+            jpql += "and co.codigoArcom like :codigoArcom \n";
+        }
+        if (numDocumento != null && !numDocumento.isEmpty()) {
+            jpql += "and co.numeroDocumento = :numDocumento \n";
+        }
+
+        jpql += "order by co.fechaCreacion, co.codigoArcom desc ";
+
+        System.out.println("jpql: " + jpql);
+        Query query = em.createQuery(jpql);
+        if (codigoArcom != null && !codigoArcom.isEmpty()) {
+            query.setParameter("codigoArcom", codigoArcom + "%");
+        }
+        if (numDocumento != null && !numDocumento.isEmpty()) {
+            query.setParameter("numDocumento", numDocumento);
+        }
+        query.setParameter("codigoArcomCO", "%" + "CO" + "%");
+        query.setFirstResult(paramOffset).setMaxResults(paramLimit);
+        try {
+            List<ContratoOperacion> listaFinal = query.getResultList();
+            for (ContratoOperacion cop : listaFinal) {
+                this.refresh(cop);
+            }
+            return listaFinal;
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+
+        //return query.getResultList();
+        return null;
+    }
+    
+    @Override
     public List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera) {
         String jpql = "select co from ContratoOperacion co where 1=1 and co.codigoConcesion = :concesionMinera and co.codigoArcom like :codigoArcom\n";
         jpql += "order by co.codigoArcom desc ";

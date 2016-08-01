@@ -22,7 +22,7 @@
                             <p:inputText value="#{contratoOperacionCtrl.numDocumentoFiltro}"/>
                         </h:panelGrid>
                         <h:commandButton image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar">
-                            <p:ajax listener="#{contratoOperacionCtrl.buscar}" update="@form" process="@form" />
+                            <p:ajax listener='#{contratoOperacionCtrl.mostrarDatos("btn_buscar")}' update="@form" process="@form" />
                         </h:commandButton>
                     </h:panelGrid>
                     <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
@@ -52,12 +52,9 @@
 
                 <h1 class="titulo_centrado">Lista de Contratos</h1>
 
-                <p:dataTable id="amdt" var="reg" value="#{contratoOperacionCtrl.contratosOperacion}" rows="20" 
-                             paginator="true"
-                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" styleClass="texto_tabla_datos" rowIndexVar="rowIndex" emptyMessage="No existen registros" style="width: 95%">
-
+                    <p:dataTable var="reg" id="dtListaDerechosMineros"
+                         value="#{contratoOperacionCtrl.contratosOperacion}" rows="10">
+                        
                     <p:column headerText="#" width="25">
                         <h:outputText value="#{rowIndex + 1}"/>
                     </p:column>
@@ -116,6 +113,32 @@
                                          title="Ver" 
                                          ajax="false"/>
                     </p:column>
+                    
+                    <f:facet name="footer">
+                    <center>
+                        <h:panelGrid columns="5" style="width: 500px;" styleClass="noBorders">
+
+
+                            <p:commandButton value="Atrás" action='#{contratoOperacionCtrl.mostrarDatos("anterior")}'
+                                             update="dtListaDerechosMineros" />
+
+                           
+                            <p:outputLabel value="Página  " style="width: 150px;" />
+
+                            <p:selectOneMenu value="#{contratoOperacionCtrl.paginaSeleccionada}" style="width: 150px;">
+                                <p:ajax listener='#{contratoOperacionCtrl.mostrarDatos("cmb_paginador")}' event="valueChange" update="dtListaDerechosMineros" />
+                                <f:selectItems value="#{contratoOperacionCtrl.listaPaginas}" 
+                                               var="cp" 
+                                               itemLabel="#{cp}" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="  de #{contratoOperacionCtrl.totalPaginas}" style="width: 150px;"/>
+                           
+                            <p:commandButton value="Siguiente" action='#{contratoOperacionCtrl.mostrarDatos("siguiente")}'
+                                             update="dtListaDerechosMineros" />
+                        </h:panelGrid>
+
+                    </center>
+                </f:facet>
                 </p:dataTable>
 
             </h:form>

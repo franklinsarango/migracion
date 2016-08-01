@@ -45,6 +45,10 @@
                         </h:panelGroup>
                     </f:facet>
 
+                    <p:outputLabel for="numTramite" value="Nro. Tramite SGM:" rendered="#{!(registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoRegistro == null)}"></p:outputLabel>
+                    <p:inputText id="numTramite" value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.numeroTramite}"
+                                 readonly="true" rendered="#{!(registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoRegistro == null)}"/>
+                    
                     <p:outputLabel for="tipServ" value="Tipo de servicio:"></p:outputLabel>
                     <p:selectOneMenu id="tipServ" value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.codigoTipoServicio.codigoCatalogoDetalle}" 
                                      required="true" requiredMessage="Tipo servicio es requerido" style="width: 93%">
@@ -90,7 +94,7 @@
                     <p:outputLabel for="numCompPago" value="Nro. comprobante:"></p:outputLabel>
                     <p:inputText id="numCompPago" 
                                  value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.numeroComprobanteArcom}"
-                                 readonly="#{registroPagoObligacionesCtrl.generacionComprobante}"
+                                 readonly="true"
                                  required="true" requiredMessage="Nro. comprobante requerido"/>
 
                     <p:outputLabel value="Aplica cantidad?"/>
@@ -515,12 +519,12 @@
                                                 required="true" requiredMessage="Valor Pago es requerido"
                                                 style="width: 70%"/>
                             </h:panelGrid>
-                            <p:commandButton actionListener="#{registroPagoObligacionesCtrl.seleccionarPlanta}"
+                            <h:commandButton actionListener="#{registroPagoObligacionesCtrl.seleccionarPlanta}"
                                              value="Seleccionar"
                                              title="Seleccionar"
                                              style="position: relative; right: 0px" onclick="PF('dlgBusqCod').hide()">
                                 <f:ajax render=":form:derechosMinerosTable" execute="valorPagoDerMin3"/>
-                            </p:commandButton>
+                            </h:commandButton>
                         </h:panelGrid>
                     </h:panelGroup> 
                 </h:form>

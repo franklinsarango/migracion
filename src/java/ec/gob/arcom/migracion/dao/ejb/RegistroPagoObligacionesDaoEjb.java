@@ -26,7 +26,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import sun.security.util.BigInt;
 
 /**
  *
@@ -235,16 +234,16 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         } else {
             sql += "codigo_concepto_pago = " + null + ", \n";
         }
-        sql += "codigo_tipo_registro = " + registroPagoObligaciones.getCodigoTipoRegistro() + " \n";
+        sql += "codigo_tipo_registro = " + registroPagoObligaciones.getCodigoTipoRegistro() + ", \n";
         if (registroPagoObligaciones.getCodigoPeriodo()!= null) {
             sql += "codigo_periodo = " + registroPagoObligaciones.getCodigoPeriodo().getCodigoParametro()+ ", \n";
         } else {
             sql += "codigo_periodo = " + null + ", \n";
         }
         if (registroPagoObligaciones.getNumeroFormularioPago()!= null) {
-            sql += "numero_formulario_pago = " + registroPagoObligaciones.getNumeroFormularioPago().getCodigoParametro()+ ", \n";
+            sql += "numero_formulario_pago = " + registroPagoObligaciones.getNumeroFormularioPago().getCodigoParametro()+ " \n";
         } else {
-            sql += "numero_formulario_pago = " + null + ", \n";
+            sql += "numero_formulario_pago = " + null + " \n";
         }
         sql += "WHERE codigo_registro = " + registroPagoObligaciones.getCodigoRegistro();
 
@@ -271,7 +270,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
 
     @Override
     public List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom,
-            String cedula, String codigoDerechoMinero, String prefijoRegionalParam) {
+            String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String fechaD = "";
         String fechaH = "";
@@ -299,7 +298,13 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                 codigoDerMin = plantaBeneficio.getCodigoPlantaBeneficio();
             }
         }
-        String jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null";
+        
+        String jpql = "";
+        //if (usuarioEconomicoNacional == false) {
+            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null";
+        /*} else {
+            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite not in ('REGISTRO_PAGO_OBLIGACIONES')";
+        }*/
         if (fechaDesde != null && fechaHasta != null) {
             jpql += " and rpo.fechaCreacion >= '" + fechaD + "' and rpo.fechaCreacion <= '" + fechaH + "'";
         }
@@ -312,12 +317,16 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         if (numeroComprobanteArcom != null && !numeroComprobanteArcom.isEmpty()) {
             jpql += " and rpo.numeroComprobanteArcom = :numeroComprobanteArcom";
         }
+        if (numeroTramite != null) {
+            jpql += " and rpo.numeroTramite = :numeroTramite";
+        }
         if (codigoDerMin != null) {
             jpql += " and (rpo.codigoConcesion.codigoConcesion = :codigoDerMin "
                     + "or rpo.codigoLicenciaComercializacion.codigoLicenciaComercializacion = :codigoDerMin"
                     + " or rpo.codigoPlantaBeneficio.codigoPlantaBeneficio = :codigoDerMin)";
         }
         jpql += " order by rpo.fechaCreacion desc";
+        System.out.println("JPQL: " + jpql);
         Query query = em.createQuery(jpql);
         if (numeroComprobanteArcom != null && !numeroComprobanteArcom.isEmpty()) {
             query.setParameter("numeroComprobanteArcom", numeroComprobanteArcom);
@@ -325,12 +334,24 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         if (codigoDerMin != null) {
             query.setParameter("codigoDerMin", codigoDerMin);
         }
+        if (numeroTramite != null) {
+            query.setParameter("numeroTramite", numeroTramite);
+        }
         List<RegistroPagoObligaciones> listaTmp = query.getResultList();
         List<RegistroPagoObligaciones> listaFinal = new ArrayList<>();
-        for (RegistroPagoObligaciones rpo : listaTmp) {
-            if (rpo.getNumeroComprobanteArcom() != null) {
-                String prefijoRegional = rpo.getNumeroComprobanteArcom().substring(2, 4);
-                if (prefijoRegional.equals(prefijoRegionalParam)) {
+        if (usuarioEconomicoNacional == false) {
+            for (RegistroPagoObligaciones rpo : listaTmp) {
+                if (rpo.getNumeroComprobanteArcom() != null) {
+                    String prefijoRegional = rpo.getNumeroComprobanteArcom().substring(2, 4);
+                    if (prefijoRegional.equals(prefijoRegionalParam)) {
+                        this.refresh(rpo);
+                        listaFinal.add(rpo);
+                    }
+                }
+            }
+        } else {
+            for (RegistroPagoObligaciones rpo : listaTmp) {
+                if (rpo.getNumeroComprobanteArcom() != null) {
                     this.refresh(rpo);
                     listaFinal.add(rpo);
                 }
@@ -460,7 +481,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                 + "                        or\n"
                 + "                        rpd.codigo_licencia_comercializacion = (select codigo_licencia_comercializacion from catmin.licencia_comercializacion where codigo_arcom = '"+codigoDerechoMinero+"')\n"
                 + "                        or\n"
-                + "                        rpd.codigo_planta_beneficio = (select codigo_planta_beneficio from catmin.planta_beneficio where codigo_arcom = '"+codigoDerechoMinero+"'))\n"
+                + "                        rpd.codigo_planta_beneficio in (select codigo_planta_beneficio from catmin.planta_beneficio where codigo_arcom = '"+codigoDerechoMinero+"'))\n"
                 + "    )";
         
         
