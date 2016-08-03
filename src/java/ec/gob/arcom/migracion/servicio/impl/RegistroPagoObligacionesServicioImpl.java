@@ -123,7 +123,7 @@ public class RegistroPagoObligacionesServicioImpl extends GenericServiceImpl<Reg
                 pb.setCodigoPlantaBeneficio(derechoMinero.getId());
                 pago.setCodigoPlantaBeneficio(pb);
             }
-            pago.setEntidadTramite("REGISTRO_PAGO_OBLIGACIONES");
+//            pago.setEntidadTramite("REGISTRO_PAGO_OBLIGACIONES");
             pago.setFechaCreacion(new Date());
             pago.setUsuarioCreacion(BigInteger.valueOf(codigoUsuario));
             pago.setEstadoRegistro(Boolean.TRUE);

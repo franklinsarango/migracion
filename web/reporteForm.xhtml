@@ -51,8 +51,7 @@
                                      style="width: 93%">
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{reporteCtrl.tipoSolicitudes}" />
-                        <f:selectItem itemValue="101" itemLabel="AUTOGESTIÓN" />
-                        <p:ajax update="panelFiltros botones"/>
+                        <p:ajax listener="#{reporteCtrl.cargarOpcionTodasRegionales()}" update="panelFiltros botones"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:panelGrid id="panelFiltros" columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
@@ -87,13 +86,13 @@
                         <h:panelGroup id="botones" style="display:block; text-align:center">
                             <h:commandButton value="Generar" 
                                              actionListener="#{reporteCtrl.generarReporte}" 
-                                             rendered="#{reporteCtrl.codigoTipoMineria != 101}"/>
+                                             rendered="#{reporteCtrl.codigoTipoMineria != 10003}"/>
                             <p:commandButton update="@form"
                                              value="Generar"
                                              title="Comprobante" 
                                              oncomplete="PF('visorTramite').show();return false;"
                                              actionListener="#{reporteCtrl.generarReporteAutogestion}"
-                                             rendered="#{reporteCtrl.codigoTipoMineria == 101}"/>
+                                             rendered="#{reporteCtrl.codigoTipoMineria == 10003}"/>
                             <p:commandButton value="Cancelar" action="index.xhtml?faces-redirect=true" immediate="true"/>
                         </h:panelGroup>
                     </f:facet>

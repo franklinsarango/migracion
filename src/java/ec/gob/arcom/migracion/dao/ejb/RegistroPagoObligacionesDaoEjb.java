@@ -301,7 +301,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         
         String jpql = "";
         //if (usuarioEconomicoNacional == false) {
-            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null";
+            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null ";
         /*} else {
             jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite not in ('REGISTRO_PAGO_OBLIGACIONES')";
         }*/
@@ -470,6 +470,39 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                 + "        when rpd.codigo_licencia_comercializacion is not null then (select codigo_arcom from catmin.licencia_comercializacion where codigo_licencia_comercializacion = rpd.codigo_licencia_comercializacion)\n"
                 + "        when rpd.codigo_planta_beneficio is not null then (select codigo_arcom from catmin.planta_beneficio where codigo_planta_beneficio = rpd.codigo_planta_beneficio) end as codigo_arcom\n"
                 + "  \n"
+                + "from catmin.registro_pago_obligaciones rpo, catmin.personas  p,\n"
+                + "(\n"
+                + "select rpo.codigo_registro, rpd.codigo_concesion, rpd.codigo_licencia_comercializacion, rpd.codigo_planta_beneficio from catmin.registro_pago_obligaciones rpo \n"
+                + "LEFT JOIN catmin.registro_pago_detalle rpd ON ((rpo.codigo_registro = rpd.codigo_registro_pago) or (rpo.numero_tramite = rpd.numero_tramite and rpo.entidad_tramite = rpd.entidad_tramite))  \n"
+                + "where rpo.comprobante_electronico is not null\n"
+                + ") as rpd \n"
+                + "where rpo.estado_pago = 574 and rpo.codigo_registro = rpd.codigo_registro\n"
+                + "and rpo.documento_persona_pago = p.numero_documento\n"
+                + "and ('-1' = '" + numeroComprobanteArcom + "' or rpo.comprobante_electronico = '" + numeroComprobanteArcom + "')\n"
+                + "and ('-1' = '" + cedula + "' or rpo.documento_persona_pago = '" + cedula + "')\n"
+                + "and ('-1' = '" + codigoDerechoMinero + "' or (\n"
+                + "                        rpd.codigo_concesion = (select codigo_concesion from catmin.concesion_minera where codigo_arcom = '" + codigoDerechoMinero + "')\n"
+                + "                        or\n"
+                + "                        rpd.codigo_licencia_comercializacion = (select codigo_licencia_comercializacion from catmin.licencia_comercializacion where codigo_arcom = '" + codigoDerechoMinero + "')\n"
+                + "                        or\n"
+                + "                        rpd.codigo_planta_beneficio in (select codigo_planta_beneficio from catmin.planta_beneficio where codigo_arcom = '" + codigoDerechoMinero + "'))\n"
+                + "    )";
+                
+        /*String sql = "select \n"
+                + "rpo.codigo_registro,\n"
+                + "(select nombre from catmin.catalogo_detalle where codigo_catalogo_detalle = rpo.tipo_pago) as tipo_pago,\n"
+                + "(select valor_parametro || ' '||  descripcion_parametro from catmin.parametro_sistema where codigo_parametro = rpo.codigo_periodo) as periodo,\n"
+                + "rpo.documento_persona_pago,\n"
+                + "case when p.apellido is null then catmin.format_gmadigital(p.nombre) else catmin.format_gmadigital(p.apellido || ' ' || p.nombre) end as nombre,\n"
+                + "rpo.fecha_revision_analista_economico,\n"
+                + "rpo.comprobante_electronico,\n"
+                + "rpo.valor_pagado_usuario,\n"
+                + "rpo.valor_calculado_arcom,\n"
+                + "rpo.fecha_emision_pago,\n"
+                + "case when rpd.codigo_concesion is not null then (select codigo_arcom from catmin.concesion_minera where codigo_concesion = rpd.codigo_concesion)\n"
+                + "        when rpd.codigo_licencia_comercializacion is not null then (select codigo_arcom from catmin.licencia_comercializacion where codigo_licencia_comercializacion = rpd.codigo_licencia_comercializacion)\n"
+                + "        when rpd.codigo_planta_beneficio is not null then (select codigo_arcom from catmin.planta_beneficio where codigo_planta_beneficio = rpd.codigo_planta_beneficio) end as codigo_arcom\n"
+                + "  \n"
                 + "from catmin.registro_pago_obligaciones rpo, catmin.registro_pago_detalle rpd, catmin.personas  p where rpo.estado_pago = 574 \n"
                 + "and rpo.documento_persona_pago = p.numero_documento\n"
                 + "and rpo.entidad_tramite = 'REGISTRO_PAGO_OBLIGACIONES' and rpo.entidad_tramite = rpd.entidad_tramite\n"
@@ -482,7 +515,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                 + "                        rpd.codigo_licencia_comercializacion = (select codigo_licencia_comercializacion from catmin.licencia_comercializacion where codigo_arcom = '"+codigoDerechoMinero+"')\n"
                 + "                        or\n"
                 + "                        rpd.codigo_planta_beneficio in (select codigo_planta_beneficio from catmin.planta_beneficio where codigo_arcom = '"+codigoDerechoMinero+"'))\n"
-                + "    )";
+                + "    )";*/
         
         
         sql += " order by rpo.fecha_creacion desc";

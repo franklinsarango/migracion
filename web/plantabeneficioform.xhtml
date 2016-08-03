@@ -12,7 +12,7 @@
         </ui:define>
 
         <ui:define name="content">
-            
+
             <h:form id="form">
 
                 <p:growl id="growl" showDetail="true" showSummary="false" life="8000" autoUpdate="true"/>
@@ -44,16 +44,16 @@
                             <p:outputLabel value="DATOS DE LA PLANTA"/>
                         </h:panelGroup>
                     </f:facet>
-                    <p:outputLabel for="codArc" value="Código:"></p:outputLabel>
-                    <p:inputMask id="codArc" mask="9?999999999999999999999999999999999" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoArcom}" size="40"
-                                 required="true" requiredMessage="Código requerido" placeHolder="" readonly="#{!plantaBeneficioCtrl.existeCodigoArcom}"
-                                 rendered="#{plantaBeneficioCtrl.plantaBeneficio.codigoPlantaBeneficio == null}" placeholder="" maxlength="9">
+                    <p:outputLabel for="codArc" value="Código:"></p:outputLabel> 
+                    <p:inputText id="codArc" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoArcom}" size="40"
+                                 required="true" requiredMessage="Código requerido" readonly="#{!plantaBeneficioCtrl.existeCodigoArcom}"
+                                 rendered="#{plantaBeneficioCtrl.plantaBeneficio.codigoPlantaBeneficio == null}" maxlength="9">
                         <p:ajax update="panel2 codArc" listener="#{plantaBeneficioCtrl.validarCodigoArcom}"/>
-                    </p:inputMask>
-                    <p:inputMask mask="9?999999999999999999999999999999999" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoArcom}" size="40" readonly="#{!plantaBeneficioCtrl.codigoArcomNull}"
-                                 required="true" requiredMessage="Código requerido" placeHolder="" rendered="#{plantaBeneficioCtrl.plantaBeneficio.codigoPlantaBeneficio != null}" maxlength="9">
+                    </p:inputText>
+                    <p:inputText value="#{plantaBeneficioCtrl.plantaBeneficio.codigoArcom}" size="40" readonly="#{!plantaBeneficioCtrl.codigoArcomNull}"
+                                 required="true" requiredMessage="Código requerido" rendered="#{plantaBeneficioCtrl.plantaBeneficio.codigoPlantaBeneficio != null}" maxlength="9">
                         <p:ajax update="panel2 codArc" listener="#{plantaBeneficioCtrl.validarCodigoArcom}"/>
-                    </p:inputMask>
+                    </p:inputText>
                     <p:selectOneRadio value="#{plantaBeneficioCtrl.tipoMineria}" disabled="#{!plantaBeneficioCtrl.codigoArcomNull}">
                         <f:selectItem itemLabel="Plnt. Ben." itemValue="pb" />
                         <f:selectItem itemLabel="Conc. Min." itemValue="cm" />
@@ -175,26 +175,41 @@
                             <f:selectItems value="#{selectItemCtrl.procedenciaMaterial}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel for="somProvincia01" value="Provincia:"></p:outputLabel>
-                        <p:selectOneMenu id="somProvincia01" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoProvincia}" required="true" requiredMessage="Provincia es requerida" style="width: 93%">
-                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
-                            <f:selectItems value="#{plantaBeneficioCtrl.provincias}"/>
-                            <p:ajax  listener="#{plantaBeneficioCtrl.cargaCantones}" update="somCanton01 somParroquia01" />
-                        </p:selectOneMenu>
+                        <h:panelGroup id="panelProvincia">
+                            <p:outputLabel for="somProvincia01" value="Provincia:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="panelProvincia2">
+                            <p:selectOneMenu id="somProvincia01" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoProvincia}" required="true" requiredMessage="Provincia es requerida" style="width: 93%"
+                                             rendered="#{!plantaBeneficioCtrl.concesionMinera}">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{plantaBeneficioCtrl.provincias}"/>
+                                <p:ajax  listener="#{plantaBeneficioCtrl.cargaCantones}" update="somCanton01 somParroquia01" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
 
-                        <p:outputLabel for="somCanton01" value="Cantón:"></p:outputLabel>
-                        <p:selectOneMenu id="somCanton01" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoCanton}" required="true" requiredMessage="Cantón es requerido" style="width: 93%">
-                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
-                            <f:selectItems value="#{plantaBeneficioCtrl.cantones}"/>
-                            <p:ajax  listener="#{plantaBeneficioCtrl.cargaParroquias}" update="somParroquia01" />
-                        </p:selectOneMenu>
-
-                        <p:outputLabel for="somParroquia01" value="Parroquia:"></p:outputLabel>
-                        <p:selectOneMenu id="somParroquia01" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoParroquida}" required="true" requiredMessage="Parroquia es requerida" style="width: 93%">
+                        <h:panelGroup id="panelCanton">
+                            <p:outputLabel for="somCanton01" value="Cantón:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="panelCanton2">
+                            <p:selectOneMenu id="somCanton01" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoCanton}" required="true" requiredMessage="Cantón es requerido" style="width: 93%"
+                                             rendered="#{!plantaBeneficioCtrl.concesionMinera}">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{plantaBeneficioCtrl.cantones}"/>
+                                <p:ajax  listener="#{plantaBeneficioCtrl.cargaParroquias}" update="somParroquia01" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id="panelParroquia">
+                        <p:outputLabel for="somParroquia01" value="Parroquia:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="panelParroquia2">
+                        <p:selectOneMenu id="somParroquia01" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoParroquida}" required="true" requiredMessage="Parroquia es requerida" style="width: 93%"
+                                         rendered="#{!plantaBeneficioCtrl.concesionMinera}">
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                             <f:selectItems value="#{plantaBeneficioCtrl.parroquias}"/>
                         </p:selectOneMenu>
-
+                        </h:panelGroup>
+                        
                         <h:panelGroup id="mae">
                             <h:outputText value="MAE:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
                         </h:panelGroup>
@@ -210,11 +225,10 @@
                         </h:panelGroup>
 
                         <h:panelGroup id="obsAdm">
-                            <h:outputText value="Observaciones generales:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
+                            <h:outputText value="Observaciones generales:"/>
                         </h:panelGroup>
                         <h:panelGroup id="obsAdm2">
-                            <p:inputTextarea value="#{plantaBeneficioCtrl.plantaBeneficio.obsActoAdministrativo}" cols="52" maxlength="500"
-                                             rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
+                            <p:inputTextarea value="#{plantaBeneficioCtrl.plantaBeneficio.obsActoAdministrativo}" cols="52" maxlength="500"/>
                         </h:panelGroup>
 
                         <f:facet name="footer">

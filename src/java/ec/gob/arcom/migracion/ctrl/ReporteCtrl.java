@@ -192,6 +192,14 @@ public class ReporteCtrl extends BaseCtrl {
         System.out.println("urlReporte: " + urlReporte);
     }
     
+    public void generarReporteContratosOperacionBirt() {
+        System.out.println("entra generarReporteContratosOperacionBirt");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/contratos_operacion.rptdesign"
+                + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
     public LoginCtrl getLogin() {
         return login;
     }
@@ -268,6 +276,8 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteDerechosMinerosConsolidadosBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())) {
             generarReporteObligacionesEconomicasBirt();
+        }  else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())) {
+            generarReporteContratosOperacionBirt();
         }     
     }
 
@@ -281,6 +291,22 @@ public class ReporteCtrl extends BaseCtrl {
         }
     }
 
+    public void cargarOpcionTodasRegionales() {
+        if (codigoTipoMineria != null) {
+            if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())) {
+                regionales.add(new SelectItem("-1", "TODAS"));
+            } else {
+                regionales = null;
+                getRegionales();
+                /*for (SelectItem selectItem : regionales) {
+                    if (selectItem.getValue().equals("-1")) {
+                        regionales.remove(selectItem);
+                    }
+                }*/
+            }
+        }
+    }
+    
     public List<SelectItem> getTipoSolicitudes() {
         if (tipoSolicitudes == null) {
             tipoSolicitudes = new ArrayList<>();
@@ -290,6 +316,8 @@ public class ReporteCtrl extends BaseCtrl {
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN)
+                        || ce.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE)
+                        || ce.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS)) {
                     tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
                 }

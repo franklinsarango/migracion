@@ -203,7 +203,12 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
                 plantaBeneficio.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
                 plantaBeneficio.setMigrada(true);
                 if (tipoMineria.equals("cm")) {
-                    plantaBeneficio.setCodigoArcom(null);
+                    //plantaBeneficio.setCodigoArcom(null);
+                    plantaBeneficio.setCodigoProvincia(cm.getCodigoProvincia());
+                    plantaBeneficio.setCodigoCanton(cm.getCodigoCanton());
+                    plantaBeneficio.setCodigoParroquida(cm.getCodigoParroquia());
+                    plantaBeneficio.setFechaInscribe(cm.getFechaInscribe());
+                    plantaBeneficio.setEstadoPlanta(cm.getEstadoConcesion());
                 }
                 plantaBeneficioServicio.create(plantaBeneficio);
                 if (tipoMineria.equals("cm")) {

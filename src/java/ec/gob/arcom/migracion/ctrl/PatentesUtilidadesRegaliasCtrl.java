@@ -212,8 +212,8 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
             cd.setCodigoCatalogoDetalle(574L);
             patentesRegaliasUtilidades.setEstadoPago(cd);
             
-            if(patentesRegaliasUtilidades.getEntidadTramite() == null)
-                patentesRegaliasUtilidades.setEntidadTramite("REGISTRO_PAGO_OBLIGACIONES");
+//            if(patentesRegaliasUtilidades.getEntidadTramite() == null)
+//                patentesRegaliasUtilidades.setEntidadTramite("REGISTRO_PAGO_OBLIGACIONES");
             
             if (derechosMineros == null || derechosMineros.isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,

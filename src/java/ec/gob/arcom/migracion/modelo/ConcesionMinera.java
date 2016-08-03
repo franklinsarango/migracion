@@ -189,6 +189,8 @@ public class ConcesionMinera implements Serializable {
     private Boolean mae;
     @Column(name = "senagua")
     private Boolean senagua;
+    @Column(name = "litispendencia")
+    private Boolean litispendencia;
     @OneToMany(mappedBy = "codigoConcesion")
     private Collection<MaquinariaConcesion> maquinariaConcesionCollection;
     @Column(name = "migrada")
@@ -750,7 +752,8 @@ public class ConcesionMinera implements Serializable {
                 + ", codigoZona=" + (codigoZona != null ? codigoZona.getCodigoCatalogoDetalle() : null) + ", codigoFormaExplotacion=" + (codigoFormaExplotacion != null ? codigoFormaExplotacion.getCodigoCatalogoDetalle() : null)
                 + ", codigoModalidadTrabajo=" + (codigoModalidadTrabajo != null ? codigoModalidadTrabajo.getCodigoCatalogoDetalle() : null) + ", estadoConcesion=" + (estadoConcesion != null ? estadoConcesion.getCodigoCatalogoDetalle() : null)
                 + ", obsActosAdmPrevios=" + obsActosAdmPrevios + ", sector=" + sector + ", mae=" + mae + ", senagua=" + senagua
-                + ", migrada=" + migrada + ", fechaInforme=" + fechaInforme + ", codigoCasilleroLocalidad=" + (codigoCasilleroLocalidad != null ? codigoCasilleroLocalidad.getCodigoLocalidad() : null) + '}';
+                + ", migrada=" + migrada + ", fechaInforme=" + fechaInforme + ", codigoCasilleroLocalidad=" + (codigoCasilleroLocalidad != null ? codigoCasilleroLocalidad.getCodigoLocalidad() : null) 
+                + ", litispendencia=" + litispendencia+ '}';
     }
 
     public List<Instrumento> getInstrumentoList() {
@@ -967,6 +970,20 @@ public class ConcesionMinera implements Serializable {
 
     public void setParroquiaString(String parroquiaString) {
         this.parroquiaString = parroquiaString;
+    }
+
+    /**
+     * @return the litispendencia
+     */
+    public Boolean getLitispendencia() {
+        return litispendencia;
+    }
+
+    /**
+     * @param litispendencia the litispendencia to set
+     */
+    public void setLitispendencia(Boolean litispendencia) {
+        this.litispendencia = litispendencia;
     }
 
 }
