@@ -10,7 +10,9 @@ import com.novell.ldap.LDAPException;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
 import ec.gob.arcom.migracion.modelo.Usuario;
+import ec.gob.arcom.migracion.modelo.UsuarioRol;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
+import ec.gob.arcom.migracion.servicio.UsuarioRolServicio;
 import ec.gob.arcom.migracion.util.LDAPConexion;
 import ec.gob.arcom.migracion.util.SSHA;
 import ec.gob.arcom.migracionsadmin.utils.FacesUtil;
@@ -33,6 +35,8 @@ public class LoginCtrl extends BaseCtrl {
     private UsuarioDao usuarioDao;
     @EJB
     private RegionalServicio regionalServicio;
+    @EJB
+    private UsuarioRolServicio usuarioRolServicio;
 
     /**
      * Creates a new instance of LoginBean
@@ -41,6 +45,8 @@ public class LoginCtrl extends BaseCtrl {
     }
 
     private String userName;
+    private String nombreUsuario;
+    private String rolUsuario;
     private String userPassword;
     private boolean logged = false;
     private boolean admin = false;
@@ -93,7 +99,9 @@ public class LoginCtrl extends BaseCtrl {
                 session.setAttribute("logged", logged);
                 session.setAttribute("admin", admin);
                 session.setAttribute("regional", regional);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", userName));
+                session.setAttribute("nombreUsuario", nombreUsuario);
+                session.setAttribute("rolUsuario", rolUsuario);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", nombreUsuario));
                 return "index.xhtml?faces-redirect=true";
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -125,6 +133,9 @@ public class LoginCtrl extends BaseCtrl {
             if (usr != null) {
                 if (validarCredenciales(usr.getAttribute("userPassword").getStringValue(), userPassword)) {
                     Usuario uBd = usuarioDao.obtenerPorLogin(userName);
+                    UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(uBd.getCodigoUsuario());
+                    this.nombreUsuario = uBd.getNombre() + " " + uBd.getApellido();
+                    this.rolUsuario = usRol.getRol().getDescripcion();
                     this.logged = true;
                     this.admin = true;
                     this.regional = regionalServicio.findByCedulaRucUsuario(userName)[0];
@@ -242,6 +253,34 @@ public class LoginCtrl extends BaseCtrl {
 
     public void setUsuarioCatastro(boolean usuarioCatastro) {
         this.usuarioCatastro = usuarioCatastro;
+    }
+
+    /**
+     * @return the nombreUsuario
+     */
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    /**
+     * @param nombreUsuario the nombreUsuario to set
+     */
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    /**
+     * @return the rolUsuario
+     */
+    public String getRolUsuario() {
+        return rolUsuario;
+    }
+
+    /**
+     * @param rolUsuario the rolUsuario to set
+     */
+    public void setRolUsuario(String rolUsuario) {
+        this.rolUsuario = rolUsuario;
     }
 
 }

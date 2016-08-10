@@ -14,16 +14,17 @@
             <h:form id="form">
                 <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
                 <h:panelGrid columns="3">
-                    <h:panelGrid columns="3">
-                        <h:panelGrid columns="1" >
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" >
                             <p:outputLabel value="Código:"/>
                             <p:inputText value="#{coordenadaCtrl.codigoFiltro}"/>
-                            <p:spacer height="10"/>
+                            <p:outputLabel value="CI Titular:"/>
+                            <p:inputText value="#{coordenadaCtrl.cedulaTitularFiltro}"/>
+                            <p:outputLabel value="Nombre Área:"/>
+                            <p:inputText value="#{coordenadaCtrl.nombreAreaFiltro}"/>
                         </h:panelGrid>
-                        <p:spacer width="20"/>
                         <h:commandButton actionListener="#{coordenadaCtrl.buscar}" image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar"/>
                     </h:panelGrid>
-                    
                     <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
@@ -32,9 +33,7 @@
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 80%"/>
-                    
                     <h:panelGroup style="text-align: right; right: -93%;">
                         <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
                             <h:panelGrid style="text-align:center">
@@ -44,58 +43,57 @@
                         </h:commandLink>
                     </h:panelGroup>
                 </h:panelGrid>
-                
-                <!--
-                <h1 class="titulo_centrado">Lista de Concesiones Mineras - Regional #{concesionMineraCtrl.login.regional}</h1>
-                -->
-                
-                <h1 class="titulo_centrado">Lista de Concesiones Mineras</h1>
-                
-                <p:dataTable id="amdt" var="reg" value="#{coordenadaCtrl.concesiones}" paginator="true"
+
+                <p:dataTable id="amdt" var="reg" value="#{coordenadaCtrl.listaRegistros}" rows="20" 
+                             paginator="true"
                              currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" rowIndexVar="rowIndex"
-                             emptyMessage="No existen registros" rows="10">
-
-                    <p:column headerText="#" style="width: 25px">
-                        <h:outputText value="#{rowIndex + 1}"/>
-                    </p:column>
+                             rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" styleClass="texto_tabla_datos" rowIndexVar="rowIndex" emptyMessage="No existen registros" style="width: 95%">
 
                     <p:column headerText="CODIGO" style="width: 85px; text-align: right">
                         <h:outputText  styleClass="texto_tabla_datos_codigo" value="#{reg.codigoArcom}" />
+                    </p:column>
+
+                    <p:column headerText="NUMERO DOCUMENTO">
+                        <h:outputText value="#{reg.titularDocumento}" />
                     </p:column>
 
                     <p:column headerText="NOMBRE">
                         <h:outputText value="#{reg.nombreConcesion}" />
                     </p:column>
 
-                    <p:column headerText="CASILLERO JUDICIAL" style="width: 100px; text-align: right">
-                        <h:outputText value="#{reg.casilleroJudicial}" />
+                    <p:column headerText="TIPO">
+                        <h:outputText value="#{reg.tipoSolicitud}" />
+                    </p:column>
+                    
+                    <p:column headerText="FASE">
+                        <h:outputText value="#{reg.fase}"/>
                     </p:column>
 
-                    <p:column headerText="ESTADO" width="200">
-                        <h:outputText value="#{reg.estadoConcesion.descripcion}" />
+                    <p:column headerText="ESTADO" width="95">
+                        <h:outputText value="#{reg.estadoConcesion}" />
                     </p:column>
 
                     <p:column headerText="REGIONAL" style="width: 85px">
-                        <h:outputText value="#{reg.codigoRegional.ciudadRegional}" />
+                        <h:outputText value="#{reg.nombreRegional}" />
                     </p:column>
                     
                     <p:column headerText="PROVINCIA" style="width: 85px">
-                        <h:outputText value="#{coordenadaCtrl.cargarLocalidad(reg.codigoProvincia)}" />
+                        <h:outputText value="#{reg.provincia}" />
                     </p:column>
 
                     <p:column headerText="CANTÓN" style="width: 85px">
-                        <h:outputText value="#{coordenadaCtrl.cargarLocalidad(reg.codigoCanton)}" />
+                        <h:outputText value="#{reg.canton}" />
                     </p:column>
 
                     <p:column headerText="PARROQUIA">
-                        <h:outputText value="#{coordenadaCtrl.cargarLocalidad(reg.codigoParroquia)}" />
+                        <h:outputText value="#{reg.parroquia}" />
                     </p:column>
 
                     <p:column headerText="EDITAR" style="width:37px; text-align: right">
-                        <p:commandButton action="#{coordenadaCtrl.editAction(rowIndex)}" icon="ui-icon-pencil" title="Editar" ajax="false"></p:commandButton>
+                        <p:commandButton action="#{coordenadaCtrl.editAction(reg.codigoArcom)}" icon="ui-icon-pencil" title="Editar" ajax="false"></p:commandButton>
                     </p:column>
+                    
                 </p:dataTable>
 
             </h:form>

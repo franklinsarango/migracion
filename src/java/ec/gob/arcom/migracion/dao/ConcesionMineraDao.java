@@ -23,6 +23,8 @@ public interface ConcesionMineraDao extends GenericDao<ConcesionMinera, Long> {
 
     List<ConcesionMineraDto> obtenerRegistrosPorUsuario(String cedulaRuc, String codigoFiltro, String cedulaTitularFiltro, String nombreAreaFiltro);
 
+    List<ConcesionMineraDto> obtenerRegistrosPorFiltros(String codigoFiltro, String cedulaTitularFiltro, String nombreAreaFiltro);
+    
     Long obtenerSiguienteCodigoConcesion();
 
     ConcesionMinera findByPk(Long codigoConcesion);

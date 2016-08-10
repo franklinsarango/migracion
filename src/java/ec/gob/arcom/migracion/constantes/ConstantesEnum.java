@@ -41,6 +41,10 @@ public enum ConstantesEnum {
     PATUTIREG_REGALIA("TICALREGALIA", "REGALIA", 362L),
     PATUTIREG_UTILIDAD("TICALUTILIDAD", "UTILIDAD", 363L),
     
+    TABLA_CONCESION_MINERA("TBCONCESIONMIN", "concesion_minera",-1L),
+    TABLA_AREA_MINERA("TBAREAMIN", "area_minera",-1L),
+    TABLA_COORDENADA_AREA("TBCOORDAREA", "coordenada_area",-1L),
+    
     //URL_BASE("", "http://181.211.37.237:8380", null);
     URL_APP_LOCAL("", "http://localhost:8080", null),
     URL_APP_PROD("", "http://172.16.30.246:8381", null), 

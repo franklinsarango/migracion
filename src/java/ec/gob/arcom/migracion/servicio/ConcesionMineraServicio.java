@@ -25,6 +25,8 @@ public interface ConcesionMineraServicio extends GenericService<ConcesionMinera,
 
     List<ConcesionMineraDto> obtenerRegistrosPorUsuario(String cedulaRuc, String codigoFiltro, String cedulaTitularFiltro, String nombreAreaFiltro);
 
+    List<ConcesionMineraDto> obtenerRegistrosPorFiltros(String codigoFiltro, String cedulaTitularFiltro, String nombreAreaFiltro);
+    
     Long obtenerSiguienteCodigoConcesion();
 
     void guardarTodo(ConcesionMinera concesionMinera, Solicitud solicitud, AreaMinera areaMinera, Usuario login) throws Exception;

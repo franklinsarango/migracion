@@ -50,7 +50,11 @@ public class Auditoria implements Serializable {
     @Size(max = 100000)
     @Column(name = "detalle_cambios")
     private String detalleCambios;
-
+    @Column(name = "nombre_tabla")
+    private String nombreTabla;
+    @Column(name = "codigo_tabla")
+    private String codigoTabla;
+    
     public Auditoria() {
     }
 
@@ -129,6 +133,34 @@ public class Auditoria implements Serializable {
     @Override
     public String toString() {
         return "ec.gob.arcom.migracion.modelo.Auditoria[ codigoAuditoria=" + codigoAuditoria + " ]";
+    }
+
+    /**
+     * @return the nombreTabla
+     */
+    public String getNombreTabla() {
+        return nombreTabla;
+    }
+
+    /**
+     * @param nombreTabla the nombreTabla to set
+     */
+    public void setNombreTabla(String nombreTabla) {
+        this.nombreTabla = nombreTabla;
+    }
+
+    /**
+     * @return the codigoTabla
+     */
+    public String getCodigoTabla() {
+        return codigoTabla;
+    }
+
+    /**
+     * @param codigoTabla the codigoTabla to set
+     */
+    public void setCodigoTabla(String codigoTabla) {
+        this.codigoTabla = codigoTabla;
     }
     
 }

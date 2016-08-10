@@ -307,6 +307,9 @@ public class AreaMinera implements Serializable {
     }
 
     public Boolean getLimiteFrontera() {
+        if (limiteFrontera == null) {
+            limiteFrontera = false;
+        }
         return limiteFrontera;
     }
 
