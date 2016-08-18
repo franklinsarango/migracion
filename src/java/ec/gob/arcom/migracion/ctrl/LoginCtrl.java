@@ -54,6 +54,7 @@ public class LoginCtrl extends BaseCtrl {
     private String prefijoRegional;
     private boolean usuarioLectura; //UL
     private boolean registroMinero; //RM
+    private boolean registroMineroNacional; //RMN
     private boolean economico;  //UE
     private boolean economicoNacional;  //UEN
     private boolean usuarioCatastro;    //UC
@@ -160,6 +161,11 @@ public class LoginCtrl extends BaseCtrl {
                             this.economicoNacional = true;
                         } else {
                             this.economicoNacional = false;
+                        }
+                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RMN")) {
+                            this.registroMineroNacional = true;
+                        } else {
+                            this.registroMineroNacional = false;
                         }
                         if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UC")) {
                             this.usuarioCatastro = true;
@@ -281,6 +287,20 @@ public class LoginCtrl extends BaseCtrl {
      */
     public void setRolUsuario(String rolUsuario) {
         this.rolUsuario = rolUsuario;
+    }
+
+    /**
+     * @return the registroMineroNacional
+     */
+    public boolean isRegistroMineroNacional() {
+        return registroMineroNacional;
+    }
+
+    /**
+     * @param registroMineroNacional the registroMineroNacional to set
+     */
+    public void setRegistroMineroNacional(boolean registroMineroNacional) {
+        this.registroMineroNacional = registroMineroNacional;
     }
 
 }
