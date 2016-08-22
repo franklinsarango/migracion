@@ -207,6 +207,15 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
 
     public String guardarRegistro() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
+        
+        //CONTRO PARA NO INGRESAR UN COMPROBANTE YA EXISTENTE EN LA LA BASE DE DATOS
+        List<RegistroPagoObligaciones> listComprobantes = registroPagoObligacionesServicio.findByComprobanteElectronico(patentesRegaliasUtilidades.getComprobanteElectronico());
+        if (listComprobantes != null && listComprobantes.size() > 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "El comprobante: " + patentesRegaliasUtilidades.getComprobanteElectronico() + " Ya esta Registrado", null));
+            return null;
+        }
+        
         try {
             CatalogoDetalle cd = new CatalogoDetalle();
             cd.setCodigoCatalogoDetalle(574L);

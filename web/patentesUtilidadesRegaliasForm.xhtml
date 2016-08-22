@@ -63,7 +63,7 @@
                         </p:selectOneMenu>
                         <p:outputLabel value="Código derecho minero:" />
                         <h:panelGrid columns="2">
-                            <p:inputMask id="codDerMin" mask="9?999999999999" 
+                            <p:inputText id="codDerMin" 
                                          value="#{patentesUtilidadesRegaliasCtrl.patentesRegaliasUtilidades.codigoDerechoMinero}"
                                          readonly="true" required="true" requiredMessage="Código derecho minero es requerido"/>
                             <p:commandLink id="botonBusquedaCodigo" onclick="PF('dlgBusqCod').show();" 

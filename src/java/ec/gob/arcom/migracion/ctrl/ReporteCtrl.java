@@ -293,7 +293,8 @@ public class ReporteCtrl extends BaseCtrl {
 
     public void cargarOpcionTodasRegionales() {
         if (codigoTipoMineria != null) {
-            if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())) {
+            if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())||
+                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())    ) {
                 regionales.add(new SelectItem("-1", "TODAS"));
             } else {
                 regionales = null;

@@ -22,6 +22,8 @@ import javax.ejb.Local;
 public interface RegistroPagoObligacionesDao extends GenericDao<RegistroPagoObligaciones, Long> {
 
     RegistroPagoObligaciones obtenerPorCodigoRegistroPagoObligaciones(Long codigoRegistroPagoObligaciones);
+    
+    List<RegistroPagoObligaciones> findByComprobanteElectronico(BigInteger comprobanteElectronico);
 
     void actualizarRegistroPagoObligaciones(RegistroPagoObligaciones registroPagoObligaciones) throws Exception;
 

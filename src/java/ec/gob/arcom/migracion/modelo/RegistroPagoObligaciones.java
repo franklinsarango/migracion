@@ -35,7 +35,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "registro_pago_obligaciones", catalog = "arcom_catmin", schema = "catmin")
 @NamedQueries({
-    @NamedQuery(name = "RegistroPagoObligaciones.findAll", query = "SELECT r FROM RegistroPagoObligaciones r")})
+    @NamedQuery(name = "RegistroPagoObligaciones.findAll", query = "SELECT r FROM RegistroPagoObligaciones r"),
+    @NamedQuery(name = "RegistroPagoObligaciones.findByComprobanteElectronico", query = "SELECT r FROM RegistroPagoObligaciones r where r.comprobanteElectronico = :comprobanteElectronico and r.estadoRegistro = TRUE")})
 public class RegistroPagoObligaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -221,7 +222,7 @@ public class RegistroPagoObligaciones implements Serializable {
     @Transient
     private SujetoMinero codigoSujetoMinero;
     @Transient
-    private Long codigoDerechoMinero;
+    private String codigoDerechoMinero;
     @Transient
     private String nombreDerechoMinero;
     @Transient
@@ -708,7 +709,7 @@ public class RegistroPagoObligaciones implements Serializable {
 
     public ConcesionMinera getCodigoConcesion() {
         if (codigoConcesion != null) {
-            codigoDerechoMinero = Long.valueOf(codigoConcesion.getCodigoArcom());
+            codigoDerechoMinero = codigoConcesion.getCodigoArcom();
             nombreDerechoMinero = codigoConcesion.getNombreConcesion();
             superficie = codigoConcesion.getNumeroHectareasConcesion();
             codigoProvincia = codigoConcesion.getCodigoProvincia();
@@ -792,17 +793,17 @@ public class RegistroPagoObligaciones implements Serializable {
         this.codigoTipoRegistro = codigoTipoRegistro;
     }
 
-    public Long getCodigoDerechoMinero() {
+    public String getCodigoDerechoMinero() {
         return codigoDerechoMinero;
     }
 
-    public void setCodigoDerechoMinero(Long codigoDerechoMinero) {
+    public void setCodigoDerechoMinero(String codigoDerechoMinero) {
         this.codigoDerechoMinero = codigoDerechoMinero;
     }
 
     public LicenciaComercializacion getCodigoLicenciaComercializacion() {
         if (codigoLicenciaComercializacion != null) {
-            codigoDerechoMinero = Long.valueOf(codigoLicenciaComercializacion.getCodigoArcom());
+            codigoDerechoMinero = codigoLicenciaComercializacion.getCodigoArcom();
             nombreDerechoMinero = codigoLicenciaComercializacion.getNombre();
             //superficie = codigoLicenciaComercializacion.get;
             codigoProvincia = codigoLicenciaComercializacion.getCodigoProvincia();
@@ -829,10 +830,10 @@ public class RegistroPagoObligaciones implements Serializable {
 
     public PlantaBeneficio getCodigoPlantaBeneficio() {
         if (codigoPlantaBeneficio != null) {
-            codigoDerechoMinero = Long.valueOf(codigoPlantaBeneficio.getCodigoArcom());
+            codigoDerechoMinero = codigoPlantaBeneficio.getCodigoArcom();
             nombreDerechoMinero = codigoPlantaBeneficio.getNombrePlantaBeneficio();
-            codigoDerechoMinero = Long.valueOf(codigoPlantaBeneficio.getCodigoArcom());
-            nombreDerechoMinero = codigoPlantaBeneficio.getNombrePlantaBeneficio();
+            //codigoDerechoMinero = Long.valueOf(codigoPlantaBeneficio.getCodigoArcom());
+            //nombreDerechoMinero = codigoPlantaBeneficio.getNombrePlantaBeneficio();
             //superficie = codigoLicenciaComercializacion.get;
             codigoProvincia = codigoPlantaBeneficio.getCodigoProvincia();
             codigoCanton = codigoPlantaBeneficio.getCodigoCanton();
@@ -866,7 +867,7 @@ public class RegistroPagoObligaciones implements Serializable {
 
     public SujetoMinero getCodigoSujetoMinero() {
         if (codigoSujetoMinero != null) {
-            codigoDerechoMinero = Long.valueOf(codigoSujetoMinero.getNumeroDocumento());
+            codigoDerechoMinero = codigoSujetoMinero.getNumeroDocumento();
         }
         return codigoSujetoMinero;
     }

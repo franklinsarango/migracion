@@ -23,6 +23,8 @@ public interface RegistroPagoObligacionesServicio extends GenericService<Registr
 
     RegistroPagoObligaciones obtenerPorCodigoRegistroPagoObligaciones(Long codigoRegistroPagoObligaciones);
 
+    List<RegistroPagoObligaciones> findByComprobanteElectronico(BigInteger comprobanteElectronico);
+    
     void actualizarRegistroPagoObligaciones(RegistroPagoObligaciones registroPagoObligaciones) throws Exception;
 
     List<RegistroPagoObligaciones> obtenerPRUNacional();

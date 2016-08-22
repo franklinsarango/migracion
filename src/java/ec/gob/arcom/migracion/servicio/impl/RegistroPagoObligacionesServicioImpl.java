@@ -48,6 +48,11 @@ public class RegistroPagoObligacionesServicioImpl extends GenericServiceImpl<Reg
     }
 
     @Override
+    public List<RegistroPagoObligaciones> findByComprobanteElectronico(BigInteger comprobanteElectronico) {
+        return registroPagoObligacionesDao.findByComprobanteElectronico(comprobanteElectronico);
+    }
+    
+    @Override
     public void actualizarRegistroPagoObligaciones(RegistroPagoObligaciones registroPagoObligaciones) throws Exception {
         registroPagoObligacionesDao.actualizarRegistroPagoObligaciones(registroPagoObligaciones);
     }

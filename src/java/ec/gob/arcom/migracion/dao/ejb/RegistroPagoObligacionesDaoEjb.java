@@ -61,6 +61,24 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
     }
 
     @Override
+    public List<RegistroPagoObligaciones> findByComprobanteElectronico(BigInteger comprobanteElectronico) {
+        List<RegistroPagoObligaciones> listRegistroPagoObligaciones;
+        List<RegistroPagoObligaciones> listRegistroPagoObligacionesFinal = new ArrayList<>();
+        try {
+            Query query = em.createNamedQuery("RegistroPagoObligaciones.findByComprobanteElectronico");
+            query.setParameter("comprobanteElectronico", comprobanteElectronico);
+            listRegistroPagoObligaciones = query.getResultList();
+            for (RegistroPagoObligaciones rpo : listRegistroPagoObligaciones) {
+                this.refresh(rpo);
+                listRegistroPagoObligacionesFinal.add(rpo);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return listRegistroPagoObligacionesFinal;
+    }
+    
+    @Override
     public void actualizarRegistroPagoObligaciones(RegistroPagoObligaciones registroPagoObligaciones) throws Exception {
         String sql = "UPDATE catmin.registro_pago_obligaciones \n"
                 + "SET codigo_registro = " + registroPagoObligaciones.getCodigoRegistro() + ", \n";
