@@ -17,5 +17,6 @@ import javax.ejb.Local;
 public interface UsuarioDao extends GenericDao<Usuario, Long> {
     
     Usuario obtenerPorLogin(String login);
+    void actualizarUsuario(Usuario usuario);
     
 }

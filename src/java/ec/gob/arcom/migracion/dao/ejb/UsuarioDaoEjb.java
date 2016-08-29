@@ -42,4 +42,16 @@ public class UsuarioDaoEjb extends GenericDaoEjbEl<Usuario, Long> implements
         }
     }
 
+    @Override
+    public void actualizarUsuario(Usuario usuario) {
+        String sql = "UPDATE catmin.usuario SET \n";
+        if (usuario.getCampoReservado02() != null) {
+            sql = sql + " campo_reservado_02 = " + usuario.getCampoReservado02() + "\n";
+        }
+        sql = sql +"WHERE numero_documento = '" + usuario.getNumeroDocumento() + "'";
+
+        System.out.println("JSQL:"+sql);
+        Query query = em.createNativeQuery(sql);
+        query.executeUpdate();
+    }
 }

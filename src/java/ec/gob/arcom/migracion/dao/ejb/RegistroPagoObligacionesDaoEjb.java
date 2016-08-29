@@ -318,11 +318,16 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         }
         
         String jpql = "";
-        //if (usuarioEconomicoNacional == false) {
+        if (usuarioEconomicoNacional == false) {
             jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null ";
-        /*} else {
-            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite not in ('REGISTRO_PAGO_OBLIGACIONES')";
-        }*/
+        } else {
+            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 "
+                    + "and ("
+                    + "(rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null)"
+                    + "or"
+                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION'))"
+                    + ")";
+        }
         if (fechaDesde != null && fechaHasta != null) {
             jpql += " and rpo.fechaCreacion >= '" + fechaD + "' and rpo.fechaCreacion <= '" + fechaH + "'";
         }
@@ -369,10 +374,10 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
             }
         } else {
             for (RegistroPagoObligaciones rpo : listaTmp) {
-                if (rpo.getNumeroComprobanteArcom() != null) {
+                //if (rpo.getNumeroComprobanteArcom() != null) {
                     this.refresh(rpo);
                     listaFinal.add(rpo);
-                }
+                //}
             }
         }
         return listaFinal;
@@ -484,6 +489,9 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                 + "rpo.valor_pagado_usuario,\n"
                 + "rpo.valor_calculado_arcom,\n"
                 + "rpo.fecha_emision_pago,\n"
+                + "rpo.numero_tramite,\n"
+                + "rpo.entidad_tramite,\n"
+                + "(select nombre from catmin.catalogo_detalle where codigo_catalogo_detalle = rpo.estado_pago) as estado_pago,\n"
                 + "case when rpd.codigo_concesion is not null then (select codigo_arcom from catmin.concesion_minera where codigo_concesion = rpd.codigo_concesion)\n"
                 + "        when rpd.codigo_licencia_comercializacion is not null then (select codigo_arcom from catmin.licencia_comercializacion where codigo_licencia_comercializacion = rpd.codigo_licencia_comercializacion)\n"
                 + "        when rpd.codigo_planta_beneficio is not null then (select codigo_arcom from catmin.planta_beneficio where codigo_planta_beneficio = rpd.codigo_planta_beneficio) end as codigo_arcom\n"
@@ -494,7 +502,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                 + "LEFT JOIN catmin.registro_pago_detalle rpd ON ((rpo.codigo_registro = rpd.codigo_registro_pago) or (rpo.numero_tramite = rpd.numero_tramite and rpo.entidad_tramite = rpd.entidad_tramite))  \n"
                 + "where rpo.comprobante_electronico is not null\n"
                 + ") as rpd \n"
-                + "where rpo.estado_pago = 574 and rpo.codigo_registro = rpd.codigo_registro\n"
+                + "where rpo.estado_pago in (573,574) and rpo.codigo_registro = rpd.codigo_registro and rpo.estado_registro = true \n"
                 + "and rpo.documento_persona_pago = p.numero_documento\n"
                 + "and ('-1' = '" + numeroComprobanteArcom + "' or rpo.comprobante_electronico = '" + numeroComprobanteArcom + "')\n"
                 + "and ('-1' = '" + cedula + "' or rpo.documento_persona_pago = '" + cedula + "')\n"
@@ -556,7 +564,10 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
             rpoDto.setValorPagadoUsuario(fila[7] != null ? new BigDecimal(fila[7].toString()) : null);
             rpoDto.setValorCalculadoArcom(fila[8] != null ? new BigDecimal(fila[8].toString()) : null);
             rpoDto.setFechaEmisionPago(fila[9] != null ? (Date)fila[9] : null);
-            rpoDto.setCodigoArcom(fila[10] != null ? fila[10].toString() : null);
+            rpoDto.setNumeroTramite(fila[10] != null ? fila[10].toString() : null);
+            rpoDto.setEntidadTramite(fila[11] != null ? fila[11].toString() : null);
+            rpoDto.setEstadoPago(fila[12] != null ? fila[12].toString() : null);
+            rpoDto.setCodigoArcom(fila[13] != null ? fila[13].toString() : null);
             listaFinal.add(rpoDto);
         }
         

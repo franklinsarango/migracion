@@ -25,6 +25,9 @@ public class RegistroPagoObligacionesDto {
     private BigDecimal valorCalculadoArcom;
     private Date fechaEmisionPago;
     private String codigoArcom;
+    private String numeroTramite;
+    private String entidadTramite;
+    private String estadoPago;
 
     /**
      * @return the codigoRegistro
@@ -178,5 +181,47 @@ public class RegistroPagoObligacionesDto {
      */
     public void setCodigoArcom(String codigoArcom) {
         this.codigoArcom = codigoArcom;
+    }
+
+    /**
+     * @return the numeroTramite
+     */
+    public String getNumeroTramite() {
+        return numeroTramite;
+    }
+
+    /**
+     * @param numeroTramite the numeroTramite to set
+     */
+    public void setNumeroTramite(String numeroTramite) {
+        this.numeroTramite = numeroTramite;
+    }
+
+    /**
+     * @return the entidadTramite
+     */
+    public String getEntidadTramite() {
+        return entidadTramite;
+    }
+
+    /**
+     * @param entidadTramite the entidadTramite to set
+     */
+    public void setEntidadTramite(String entidadTramite) {
+        this.entidadTramite = entidadTramite;
+    }
+
+    /**
+     * @return the estadoPago
+     */
+    public String getEstadoPago() {
+        return estadoPago;
+    }
+
+    /**
+     * @param estadoPago the estadoPago to set
+     */
+    public void setEstadoPago(String estadoPago) {
+        this.estadoPago = estadoPago;
     }
 }
