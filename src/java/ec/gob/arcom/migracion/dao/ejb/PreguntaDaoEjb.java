@@ -64,5 +64,21 @@ public class PreguntaDaoEjb extends GenericDaoEjbEl<Pregunta, Long> implements
         }
     }
 
-   
+    @Override
+    public Pregunta findByNemonico(String nemonico) {
+        try {
+            Query query = em.createNamedQuery("Pregunta.findByNemonico");
+            query.setParameter("nemonico", nemonico);
+            List<Pregunta> listaPreguntas = query.getResultList();
+            for (Pregunta p : listaPreguntas) {
+                this.refresh(p);
+            }
+            if (listaPreguntas.size() > 0) {
+                return listaPreguntas.get(0);
+            }
+            return null;
+        } catch (NoResultException nrException) {
+            return null;
+        }
+    }
 }

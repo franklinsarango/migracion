@@ -31,7 +31,8 @@ import javax.persistence.TemporalType;
 @Table(name = "pregunta", catalog = "arcom_catmin", schema = "encmin")
 @NamedQueries({
     @NamedQuery(name = "Pregunta.findAll", query = "SELECT p FROM Pregunta p"),
-    @NamedQuery(name = "Pregunta.findCodigoPregunta", query = "SELECT p FROM Pregunta p WHERE p.codigoPregunta = :codigoPregunta and p.estadoRegistro = TRUE")})
+    @NamedQuery(name = "Pregunta.findCodigoPregunta", query = "SELECT p FROM Pregunta p WHERE p.codigoPregunta = :codigoPregunta and p.estadoRegistro = TRUE"),
+    @NamedQuery(name = "Pregunta.findByNemonico", query = "SELECT p FROM Pregunta p WHERE p.nemonico = :nemonico and p.estadoRegistro = TRUE")})
 public class Pregunta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,6 +42,8 @@ public class Pregunta implements Serializable {
     private Long codigoPregunta;
     @Column(name = "descripcion")
     private String descripcion;
+    @Column(name = "nemonico")
+    private String nemonico;
     @Column(name = "estado_registro")
     private Boolean estadoRegistro;
     @Column(name = "fecha_creacion")
@@ -140,6 +143,20 @@ public class Pregunta implements Serializable {
     @Override
     public String toString() {
         return "ec.gob.arcom.migracion.ctrl.Pregunta[ codigoPregunta=" + codigoPregunta + " ]";
+    }
+
+    /**
+     * @return the nemonico
+     */
+    public String getNemonico() {
+        return nemonico;
+    }
+
+    /**
+     * @param nemonico the nemonico to set
+     */
+    public void setNemonico(String nemonico) {
+        this.nemonico = nemonico;
     }
 
 }

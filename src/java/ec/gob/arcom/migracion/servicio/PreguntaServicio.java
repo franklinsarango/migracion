@@ -24,5 +24,5 @@ public interface PreguntaServicio extends GenericService<Pregunta, Long> {
 
     Pregunta findByCodigoPregunta(Long codigoPregunta);
 
-  
+    Pregunta findByNemonico(String nemonico);
 }

@@ -38,4 +38,9 @@ public class PreguntaServicioImpl extends GenericServiceImpl<Pregunta, Long>
     public Pregunta findByCodigoPregunta(Long codigoPregunta) {
         return preguntaDao.findByCodigoPregunta(codigoPregunta);
     }
+    
+    @Override
+    public Pregunta findByNemonico(String nemonico) {
+        return preguntaDao.findByNemonico(nemonico);
+    }
 }

@@ -24,5 +24,6 @@ public interface PreguntaDao extends GenericDao<Pregunta, Long> {
 
     Pregunta findByCodigoPregunta(Long codigoPregunta);
     
-   
+    Pregunta findByNemonico(String nemonico);
+    
 }

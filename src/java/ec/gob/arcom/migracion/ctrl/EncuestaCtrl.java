@@ -72,6 +72,7 @@ public class EncuestaCtrl extends BaseCtrl {
     private String codigoOpcionPreguntaSelec;
     private Encuesta encuesta;
     private String numeroDocumento;
+    private String sugerencia;
 
     @PostConstruct
     public void init() {
@@ -85,9 +86,12 @@ public class EncuestaCtrl extends BaseCtrl {
             this.encuesta = encuestaServicio.findByCodigoEncuesta(1L);
             List<EncuestaPregunta> listaPreguntas = encuestaPreguntaServicio.findByCodigoEncuesta(encuesta);
             for (EncuestaPregunta pregunta : listaPreguntas) {
-                PreguntaDto preguntaDto = new PreguntaDto();
-                preguntaDto.setPregunta(pregunta.getCodigoPregunta());
-                listaPreguntasDto.add(preguntaDto);
+                //NO SE INSERTAN LAS PREGUNTAS TIPO TEXTO
+                if (!pregunta.getCodigoPregunta().getNemonico().contains("PREGTEXTO")) {
+                    PreguntaDto preguntaDto = new PreguntaDto();
+                    preguntaDto.setPregunta(pregunta.getCodigoPregunta());
+                    listaPreguntasDto.add(preguntaDto);
+                }
             }
 
             //SE CARGA LAS OPCIONES A LAS PREGUNTAS
@@ -147,6 +151,29 @@ public class EncuestaCtrl extends BaseCtrl {
                 respuestaServicio.create(respuesta);
 
                 //}
+            }
+            
+            //SE AGREGA LA PREGUNTA TIPO TEXTO SUGERENCIA
+            Pregunta preguntaSugerencia = preguntaServicio.findByNemonico("PREGTEXTO5");
+            System.out.println("Ingresa 1");
+            if (preguntaSugerencia != null) {
+                System.out.println("Ingresa 2");
+                //SE CARGA LA OPCION DE LA PREGUNTA
+                List<Opcion> listaOpciones = opcionServicio.findByCodigoPregunta(preguntaSugerencia);
+                if (listaOpciones != null && listaOpciones.size() > 0) {
+                    System.out.println("TEXTO SUGERENCIA:" + sugerencia);
+                    System.out.println("TEXTO codigoOpcionPreguntaSelec:" + codigoOpcionPreguntaSelec);
+                    
+                    Respuesta respuesta = new Respuesta();
+                    respuesta.setNumeroDocumento(numeroDocumento);
+                    respuesta.setCodigoEncuesta(encuesta);
+                    respuesta.setCodigoPregunta(preguntaSugerencia);
+                    respuesta.setCodigoOpcion(listaOpciones.get(0));
+                    respuesta.setObservaciones(sugerencia);
+                    respuesta.setEstadoRegistro(true);
+                    respuesta.setFechaCreacion(getCurrentTimeStamp());
+                    respuestaServicio.create(respuesta);
+                }
             }
             
             Usuario usuario = new Usuario();
@@ -249,6 +276,20 @@ public class EncuestaCtrl extends BaseCtrl {
      */
     public void setNumeroDocumento(String numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
+    }
+
+    /**
+     * @return the sugerencia
+     */
+    public String getSugerencia() {
+        return sugerencia;
+    }
+
+    /**
+     * @param sugerencia the sugerencia to set
+     */
+    public void setSugerencia(String sugerencia) {
+        this.sugerencia = sugerencia;
     }
 
 }

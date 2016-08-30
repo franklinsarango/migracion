@@ -129,7 +129,12 @@ h2 {
     background-color: #eee;
     width: 26%;
 }
-
+.form-label-width-sinrelleno {
+    text-align: right;
+    padding: 3px;
+    vertical-align: middle;
+    width: 26%;
+}
 .form-label {
     text-align: right;
     padding: 3px;
