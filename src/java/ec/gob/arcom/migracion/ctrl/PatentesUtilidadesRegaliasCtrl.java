@@ -211,9 +211,19 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         //CONTRO PARA NO INGRESAR UN COMPROBANTE YA EXISTENTE EN LA LA BASE DE DATOS
         List<RegistroPagoObligaciones> listComprobantes = registroPagoObligacionesServicio.findByComprobanteElectronico(patentesRegaliasUtilidades.getComprobanteElectronico());
         if (listComprobantes != null && listComprobantes.size() > 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                    "El comprobante: " + patentesRegaliasUtilidades.getComprobanteElectronico() + " Ya esta Registrado", null));
-            return null;
+            boolean existeComprobante = false;
+            for (RegistroPagoObligaciones rpo : listComprobantes) {
+                if (rpo.getEstadoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.ESTCOMP_APROBADO.getCodigo())
+                        || rpo.getEstadoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getCodigo())) {
+                    existeComprobante = true;
+                }
+            }
+
+            if (existeComprobante) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "El comprobante: " + patentesRegaliasUtilidades.getComprobanteElectronico() + " Ya esta Registrado", null));
+                return null;
+            }
         }
         
         try {
