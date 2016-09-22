@@ -215,7 +215,11 @@ public class PlantaBeneficio implements Serializable {
     private String maeString;
     @Transient
     private String senaguaString;
-
+    @Transient
+    private PersonaNatural personaNaturalTransient;
+    @Transient
+    private PersonaJuridica personaJuridicaTransient;
+    
     public PlantaBeneficio() {
     }
 
@@ -819,6 +823,52 @@ public class PlantaBeneficio implements Serializable {
 
     public void setSenaguaString(String senaguaString) {
         this.senaguaString = senaguaString;
+    }
+
+    /**
+     * @return the personaNaturalTransient
+     */
+    public PersonaNatural getPersonaNaturalTransient() {
+        if (personaNaturalTransient != null) {
+            nombreRepresentanteLegal = personaNaturalTransient.getNombre();
+            apellidoRepresentanteLegal = personaNaturalTransient.getApellido();
+            correoElectronico = personaNaturalTransient.getEmail();
+            telefonoPlanta = personaNaturalTransient.getTelefono();
+            casilleroJudicial = personaNaturalTransient.getCasilleroJudicial();
+            direccionPlanta = personaNaturalTransient.getDireccion();
+        }
+        return personaNaturalTransient;
+    }
+
+    /**
+     * @param personaNaturalTransient the personaNaturalTransient to set
+     */
+    public void setPersonaNaturalTransient(PersonaNatural personaNaturalTransient) {
+        this.personaNaturalTransient = personaNaturalTransient;
+    }
+
+    /**
+     * @return the personaJuridicaTransient
+     */
+    public PersonaJuridica getPersonaJuridicaTransient() {
+        if (personaJuridicaTransient != null) {
+            nombreRepresentanteLegal = personaJuridicaTransient.getNombreLegal();
+            correoElectronico = personaJuridicaTransient.getEmail();
+            telefonoPlanta = personaJuridicaTransient.getTelefono();
+            casilleroJudicial = personaJuridicaTransient.getCasilleroJudicial();
+            direccionPlanta = personaJuridicaTransient.getDireccion();
+            //cedulaRucRepLegal = personaJuridicaTransient.getDocumentoRepresentanteLegal();
+            //nombreRepLegal = personaJuridicaTransient.getNombreRepresentanteLegal();
+            //apellidoRepLegal = personaJuridicaTransient.getApellidoRepresentanteLegal();
+        }
+        return personaJuridicaTransient;
+    }
+
+    /**
+     * @param personaJuridicaTransient the personaJuridicaTransient to set
+     */
+    public void setPersonaJuridicaTransient(PersonaJuridica personaJuridicaTransient) {
+        this.personaJuridicaTransient = personaJuridicaTransient;
     }
 
 }

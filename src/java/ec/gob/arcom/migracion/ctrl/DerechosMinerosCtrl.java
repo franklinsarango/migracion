@@ -411,6 +411,22 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     public void verPlantaBeneficio() {
         DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
         plantaBeneficio = plantaBeneficioServicio.findByPk(derechoMineroDtoItem.getId());
+        
+        //SE FIJA LOS DATOS DE LA PERSONA
+        if (plantaBeneficio != null) {
+            PersonaNatural personaNatural = personaNaturalServicio.findByNumeroDocumento(plantaBeneficio.getNumeroDocumentoRepresentanteLegal());
+            if (personaNatural != null) {
+                plantaBeneficio.setPersonaNaturalTransient(personaNatural);
+                plantaBeneficio.getPersonaNaturalTransient();
+            } else {
+                PersonaJuridica personaJuridica = personaJuridicaServicio.findByRuc(plantaBeneficio.getNumeroDocumentoRepresentanteLegal());
+                if (personaJuridica != null) {
+                    plantaBeneficio.setPersonaJuridicaTransient(personaJuridica);
+                    plantaBeneficio.getPersonaJuridicaTransient();
+                }
+            }
+        }
+        
         if (plantaBeneficio.getCodigoProvincia() != null) {
             Localidad provincia = localidadServicio.findByPk(plantaBeneficio.getCodigoProvincia().longValue());
             if (provincia != null && provincia.getNombre() != null) {

@@ -66,16 +66,16 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
                 + "nombre_planta_beneficio,\n"
                 + "categoria_planta,\n"
                 + "numero_documento_representante_legal,\n"
-                + "nombre_representante_legal,\n"
-                + "apellido_representante_legal,\n"
-                + "telefono_planta,\n"
-                + "direccion_planta,\n"
-                + "casillero_judicial,\n"
-                + "codigo_provincia,\n"
+                + "per.nombre as nombre_representante_legal,\n"
+                + "per.apellido as apellido_representante_legal,\n"
+                + "per.telefono as telefono_planta,\n"
+                + "per.direccion as direccion_planta,\n"
+                + "per.casillero_judicial as casillero_judicial,\n"
+                + "p.codigo_provincia,\n"
                 + "(select nombre from catmin.localidad where codigo_localidad = p.codigo_provincia) as provincia_inec,\n"
-                + "codigo_canton,\n"
+                + "p.codigo_canton,\n"
                 + "(select nombre from catmin.localidad where codigo_localidad = p.codigo_canton) as canton_inec,\n"
-                + "codigo_parroquia,\n"
+                + "p.codigo_parroquia,\n"
                 + "(select nombre from catmin.localidad where codigo_localidad = p.codigo_parroquia) as parroquia_inec,\n"
                 + "material_a_explotar,\n"
                 + "volumen_a_explotar,\n"
@@ -100,9 +100,11 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
                 + "fecha_creacion,\n"
                 + "fecha_otorga,\n"
                 + "fecha_inscribe\n"
-                + "from catmin.planta_beneficio p\n"
-                + "where 1 = 1 and p.codigo_provincia in (select lcr.codigo_localidad from catmin.localidad_regional lcr where lcr.codigo_regional = (select r.codigo_regional from catmin.regional r, catmin.localidad_regional lr, catmin.usuario where numero_documento = '" + usuario +"'\n" +
-"                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia)) and codigo_arcom is not null and estado_registro = true \n";
+                + "from catmin.planta_beneficio p, catmin.personas per\n"
+                + "where 1 = 1 \n"
+                + "and per.numero_documento = p.numero_documento_representante_legal \n"
+                + "and p.codigo_provincia in (select lcr.codigo_localidad from catmin.localidad_regional lcr where lcr.codigo_regional = (select r.codigo_regional from catmin.regional r, catmin.localidad_regional lr, catmin.usuario where numero_documento = '" + usuario +"'\n" +
+"                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia)) and codigo_arcom is not null and p.estado_registro = true \n";
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
             sql = sql + "and codigo_arcom like '%" + codigoArcom + "%'\n";
             //sql.concat("and codigo_arcom like '%").concat(codigoArcom).concat("%'\n");

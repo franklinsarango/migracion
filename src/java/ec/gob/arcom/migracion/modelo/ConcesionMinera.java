@@ -836,7 +836,7 @@ public class ConcesionMinera implements Serializable {
     }
 
     public PersonaJuridica getPersonaJuridicaTransient() {
-        nombreTitular = personaJuridicaTransient.getNombreComercial();
+        nombreTitular = personaJuridicaTransient.getNombreLegal();
         //apellidoTitular = personaNaturalTransient.getApellido();
         correoElectronico = personaJuridicaTransient.getEmail();
         celular = personaJuridicaTransient.getCelular();
