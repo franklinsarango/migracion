@@ -179,7 +179,7 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReporteDerechosMinerosConsolidadosBirt() {
         System.out.println("entra generarReporteDerechosMinerosConsolidados");
-        urlReporte = ConstantesEnum.URL_BASE_DESARROLLO.getDescripcion()
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
                         + "/birt/frameset?__report=report/derechosMineros/consolidadoDerechosMinerosVig.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
@@ -294,16 +294,25 @@ public class ReporteCtrl extends BaseCtrl {
     public void cargarOpcionTodasRegionales() {
         if (codigoTipoMineria != null) {
             if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())||
-                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())    ) {
-                regionales.add(new SelectItem("-1", "TODAS"));
+                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())||
+                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())||
+                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())||
+                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())||
+                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())) {
+                
+                //SE AGREGA LA OPCION TODAS LAS REGIONALES
+                boolean encontrado = false;
+                for (SelectItem selectItem : regionales) {
+                    if (selectItem.getValue().equals("-1")) {
+                        encontrado = true;
+                    }
+                }
+                if (encontrado == false) {
+                    regionales.add(new SelectItem("-1", "TODAS"));
+                }
             } else {
                 regionales = null;
                 getRegionales();
-                /*for (SelectItem selectItem : regionales) {
-                    if (selectItem.getValue().equals("-1")) {
-                        regionales.remove(selectItem);
-                    }
-                }*/
             }
         }
     }
