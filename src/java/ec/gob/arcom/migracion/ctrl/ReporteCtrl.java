@@ -70,40 +70,6 @@ public class ReporteCtrl extends BaseCtrl {
     private String prefijoRegionalFiltro;
     private String urlReporte;
 
-    public void generarReporteConcesionMineraXls() {
-        System.out.println("entra generarReporteConcesionMineraXls");
-        String nombreReporte = null;
-        if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())) {
-            nombreReporte = "Concesiones_Mineras.xlsx";
-            //codigoTipoMineria = Long.valueOf("11L");
-        } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())) {
-            nombreReporte = "Libres_Aprovechamientos.xlsx";
-        } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())) {
-            nombreReporte = "Mineria_Artesanal.xlsx";
-        }
-        System.out.println("codigoTipoMineria: " + codigoTipoMineria);
-        try {
-            String pathReporte = "/reportes/concesionMinera2.jasper";
-            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath(pathReporte);
-            System.out.println("recursoServicio: " + recursoServicio);
-            System.out.println("reportPath: " + reportPath);
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("usuario", login.getUserName());
-            parameters.put("codigoTipoMineria", codigoTipoMineria);
-            jasperPrint = JasperFillManager.fillReport(reportPath, parameters, recursoServicio.obtenerConnection());
-            HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + nombreReporte);
-            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-            JRXlsxExporter docxExporter = new JRXlsxExporter();
-            docxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            docxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
-            docxExporter.exportReport();
-            FacesContext.getCurrentInstance().responseComplete();
-        } catch (SQLException | JRException | IOException sqlEx) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Error al generar el reporte", sqlEx.getMessage()));
-        }
-    }
     
     public void generarReporteConcesionMineraBirt() {
         System.out.println("entra generarReporteConcesionMineraBirt");
@@ -112,30 +78,6 @@ public class ReporteCtrl extends BaseCtrl {
                 + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
-
-    public void generarReporteLicenciaComercializacion() {
-        String nombreReporte = "Licencia_Comercializacion.xlsx";
-        try {
-            String pathReporte = "/reportes/licenciaComercializacion.jasper";
-            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath(pathReporte);
-            System.out.println("recursoServicio: " + recursoServicio);
-            System.out.println("reportPath: " + reportPath);
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("usuario", login.getUserName());
-            jasperPrint = JasperFillManager.fillReport(reportPath, parameters, recursoServicio.obtenerConnection());
-            HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + nombreReporte);
-            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-            JRXlsxExporter docxExporter = new JRXlsxExporter();
-            docxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            docxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
-            docxExporter.exportReport();
-            FacesContext.getCurrentInstance().responseComplete();
-        } catch (SQLException | JRException | IOException sqlEx) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Error al generar el reporte", sqlEx.getMessage()));
-        }
-    }
     
     public void generarReporteLicenciaComercializacionBirt() {
         System.out.println("entra generarReporteLicenciaComercializacionBirt");
@@ -143,30 +85,6 @@ public class ReporteCtrl extends BaseCtrl {
                 + "/birt/frameset?__report=report/derechosMineros/licenciasComercializacion.rptdesign"
                 + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
-    }
-
-    public void generarReportePlantaBeneficio() {
-        String nombreReporte = "Planta_Beneficio.xlsx";
-        try {
-            String pathReporte = "/reportes/plantaBeneficio.jasper";
-            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath(pathReporte);
-            System.out.println("recursoServicio: " + recursoServicio);
-            System.out.println("reportPath: " + reportPath);
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("usuario", login.getUserName());
-            jasperPrint = JasperFillManager.fillReport(reportPath, parameters, recursoServicio.obtenerConnection());
-            HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + nombreReporte);
-            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-            JRXlsxExporter docxExporter = new JRXlsxExporter();
-            docxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            docxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
-            docxExporter.exportReport();
-            FacesContext.getCurrentInstance().responseComplete();
-        } catch (SQLException | JRException | IOException sqlEx) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Error al generar el reporte", sqlEx.getMessage()));
-        }
     }
     
     public void generarReportePlantasBeneficioBirt() {
@@ -264,13 +182,10 @@ public class ReporteCtrl extends BaseCtrl {
         if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())
                 || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())
                 || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())) {
-            //generarReporteConcesionMineraXls();
             generarReporteConcesionMineraBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())) {
-            //generarReporteLicenciaComercializacion();
             generarReporteLicenciaComercializacionBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())) {
-            //generarReportePlantaBeneficio();
             generarReportePlantasBeneficioBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS.getCodigo())) {
             generarReporteDerechosMinerosConsolidadosBirt();
@@ -308,7 +223,7 @@ public class ReporteCtrl extends BaseCtrl {
                     }
                 }
                 if (encontrado == false) {
-                    regionales.add(new SelectItem("-1", "TODAS"));
+                    regionales.add(new SelectItem("-1", "TODAS LAS REGIONALES"));
                 }
             } else {
                 regionales = null;

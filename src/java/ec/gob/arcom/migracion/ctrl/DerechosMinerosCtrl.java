@@ -85,6 +85,7 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     private Date fecha;
     private String numDocumento;
     private String urlCotitulares;
+    private String urlReporte;
 
     private boolean mostrarLista = false;
     private List<DerechoMineroDto> listaRegistros;
@@ -283,7 +284,16 @@ public class DerechosMinerosCtrl extends BaseCtrl {
         }
         return null;
     }
-      
+    
+    public String verListainformes() {
+        DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/informes/lista_informes.rptdesign&codigoArcom=" + derechoMineroDtoItem.getCodigo();
+        System.out.println("urlReporte: " + urlReporte);
+
+        return null;
+    }
+     
     public void verSadminData() {
         DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
         sadminData = sadminDataDao.findByPk(derechoMineroDtoItem.getId());
@@ -500,6 +510,20 @@ public class DerechosMinerosCtrl extends BaseCtrl {
      */
     public void setCoordenadasPorArea(List<CoordenadaArea> coordenadasPorArea) {
         this.coordenadasPorArea = coordenadasPorArea;
+    }
+
+    /**
+     * @return the urlReporte
+     */
+    public String getUrlReporte() {
+        return urlReporte;
+    }
+
+    /**
+     * @param urlReporte the urlReporte to set
+     */
+    public void setUrlReporte(String urlReporte) {
+        this.urlReporte = urlReporte;
     }
 
 }
