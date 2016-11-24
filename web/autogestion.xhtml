@@ -28,8 +28,8 @@
                             <p:inputText value="#{registroPagoObligacionesCtrl.numeroComprobanteArcomFiltro}"/>
                             <p:outputLabel value="Código Derecho Minero:"/>
                             <p:inputText value="#{registroPagoObligacionesCtrl.codigoArcomFiltro}"/>
-                            <p:outputLabel value="Número Trámite:" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}"/>
-                            <p:inputMask id="idNumeroTramite" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}"
+                            <p:outputLabel value="Número Trámite:" rendered="#{registroPagoObligacionesCtrl.login.editarComprobante}"/>
+                            <p:inputMask id="idNumeroTramite" rendered="#{registroPagoObligacionesCtrl.login.editarComprobante}"
                                          value="#{registroPagoObligacionesCtrl.numeroTramite}" 
                                          maxlength="10" autocomplete="false" mask="9?999999999" placeHolder=""
                                          />
@@ -74,12 +74,12 @@
                         <h:outputText value="#{rowIndex + 1}"/>
                     </p:column>
 
-                    <p:column headerText="TIPO TRAMITE" style="width: 85px; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}">
+                    <p:column headerText="TIPO TRAMITE" style="width: 85px; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.editarComprobante}">
                         <h:outputText  value="#{reg.entidadTramite}" styleClass="texto_tabla_detalle">
                         </h:outputText>
                     </p:column>
                     
-                    <p:column headerText="N° TRAMITE" style="width: 5%; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}">
+                    <p:column headerText="N° TRAMITE" style="width: 5%; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.editarComprobante}">
                         <h:outputText  value="#{reg.numeroTramite}" styleClass="texto_tabla_detalle">
                         </h:outputText>
                     </p:column>
@@ -116,7 +116,7 @@
                         <h:outputText value="#{reg.numeroComprobanteArcom}" />
                     </p:column>
 
-                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.economicoNacional}">
+                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.editarComprobante}">
                         <p:commandButton action="#{registroPagoObligacionesCtrl.editarRegistro}" icon="ui-icon-pencil" 
                                          title="Editar" ajax="false"></p:commandButton>
                     </p:column>

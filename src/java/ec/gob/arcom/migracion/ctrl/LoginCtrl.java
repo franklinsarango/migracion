@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.ctrl;
 
 import com.novell.ldap.LDAPEntry;
 import com.novell.ldap.LDAPException;
+import ec.gob.arcom.migracion.constantes.RolEnum;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
 import ec.gob.arcom.migracion.modelo.Usuario;
@@ -55,9 +56,12 @@ public class LoginCtrl extends BaseCtrl {
     private boolean usuarioLectura; //UL
     private boolean registroMinero; //RM
     private boolean registroMineroNacional; //RMN
-    private boolean economico;  //UE
+    private boolean economicoRegional;  //UER
     private boolean economicoNacional;  //UEN
-    private boolean usuarioCatastro;    //UC
+    private boolean usuarioCatastro;    //UC7
+    
+    //PERMISOS
+    private boolean editarComprobante;  //UERR
 
     public String getUserName() {
         return userName;
@@ -141,6 +145,7 @@ public class LoginCtrl extends BaseCtrl {
                     this.admin = true;
                     this.regional = regionalServicio.findByCedulaRucUsuario(userName)[0];
                     this.prefijoRegional = regionalServicio.findByCedulaRucUsuario(userName)[1];
+                    this.editarComprobante = false;
                     if (uBd != null) {
                         if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UL")) {
                             this.usuarioLectura = true;
@@ -152,12 +157,20 @@ public class LoginCtrl extends BaseCtrl {
                         } else {
                             this.registroMinero = false;
                         }
-                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UE")) {
-                            this.economico = true;
+                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("EDITAR_COMPROBANTE")) {
+                            this.editarComprobante = true;
                         } else {
-                            this.economico = false;
+                            this.editarComprobante = false;
                         }
-                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UEN")) {
+//                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UE")) {
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ESPECIALISTA_ECONOMICO_REGIONAL.getNemonico())){
+                            this.economicoRegional = true;
+                            
+                        } else {
+                            this.economicoRegional = false;
+                        }
+//                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UEN")) {
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ESPECIALISTA_ECONOMICO_NACIONAL.getNemonico())){
                             this.economicoNacional = true;
                         } else {
                             this.economicoNacional = false;
@@ -237,12 +250,12 @@ public class LoginCtrl extends BaseCtrl {
         this.registroMinero = registroMinero;
     }
 
-    public boolean isEconomico() {
-        return economico;
+    public boolean isEconomicoRegional() {
+        return economicoRegional;
     }
 
-    public void setEconomico(boolean economico) {
-        this.economico = economico;
+    public void setEconomicoRegional(boolean economicoRegional) {
+        this.economicoRegional = economicoRegional;
     }
 
     public boolean isEconomicoNacional() {
@@ -301,6 +314,20 @@ public class LoginCtrl extends BaseCtrl {
      */
     public void setRegistroMineroNacional(boolean registroMineroNacional) {
         this.registroMineroNacional = registroMineroNacional;
+    }
+
+    /**
+     * @return the editarComprobante
+     */
+    public boolean isEditarComprobante() {
+        return editarComprobante;
+    }
+
+    /**
+     * @param editarComprobante the editarComprobante to set
+     */
+    public void setEditarComprobante(boolean editarComprobante) {
+        this.editarComprobante = editarComprobante;
     }
 
 }

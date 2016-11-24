@@ -29,7 +29,7 @@ public class UsuarioRolDaoEjb extends GenericDaoEjbEl<UsuarioRol, UsuarioRolPK> 
     @Override
     public UsuarioRol obtenerPorCodigoUsuario(Long codigoUsuario) {
         try {
-            String jpql = "select ur from UsuarioRol ur where ur.usuarioRolPK.codigoUsuario = :codigoUsuario and ur.estadoRegistro = true";
+            String jpql = "select ur from UsuarioRol ur where ur.usuarioRolPK.codigoUsuario = :codigoUsuario and ur.estadoRegistro = TRUE";
             Query query = em.createQuery(jpql);
             query.setParameter("codigoUsuario", codigoUsuario);
             UsuarioRol usuarioRol = (UsuarioRol) query.getSingleResult();

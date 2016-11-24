@@ -288,7 +288,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
 
     @Override
     public List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom,
-            String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional) {
+            String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String fechaD = "";
         String fechaH = "";
@@ -318,6 +318,14 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         }
         
         String jpql = "";
+        if (usuarioEconomicoNacional == false && editarComprobante == true) {
+            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 "
+                    + "and ("
+                    + "(rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null)"
+                    + "or"
+                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
+                    + ")";
+        }else{
         if (usuarioEconomicoNacional == false) {
             jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null ";
         } else {
@@ -325,8 +333,9 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                     + "and ("
                     + "(rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null)"
                     + "or"
-                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION'))"
+                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
                     + ")";
+        }
         }
         if (fechaDesde != null && fechaHasta != null) {
             jpql += " and rpo.fechaCreacion >= '" + fechaD + "' and rpo.fechaCreacion <= '" + fechaH + "'";

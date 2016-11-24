@@ -146,14 +146,18 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
                 System.out.println("UserName:"+login.getUserName());
             }*/
             
-            Usuario uBd = usuarioDao.obtenerPorLogin(login.getUserName());
-            if (uBd != null) {
-                if (uBd.getCampoReservado01() != null && (uBd.getCampoReservado01().equals("UE") || uBd.getCampoReservado01().equals("UEN"))) {
-                    usuarioEconomico = true;
-                }else{
-                    usuarioEconomico = false;
-                }
-            }   
+//            Usuario uBd = usuarioDao.obtenerPorLogin(login.getUserName());
+//            if (uBd != null) {
+//                if (uBd.getCampoReservado01() != null && (uBd.getCampoReservado01().equals("UE") || uBd.getCampoReservado01().equals("UEN"))) {
+//                    usuarioEconomico = true;
+//                }else{
+//                    usuarioEconomico = false;
+//                }
+//            }  
+            
+            if (login.isEconomicoRegional()== true || login.isEconomicoNacional()== true) {
+                usuarioEconomico = true;
+            }
             
         } catch (Exception ex) {
             ex.printStackTrace();
