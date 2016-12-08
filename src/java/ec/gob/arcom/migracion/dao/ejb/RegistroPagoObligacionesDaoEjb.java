@@ -333,7 +333,8 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                     + "and ("
                     + "(rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null)"
                     + "or"
-                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
+//                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
+                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573))"
                     + ")";
         }
         }

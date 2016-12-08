@@ -41,7 +41,7 @@
                                 <h:outputText value="Inicio"/>
                             </h:panelGrid>
                         </h:commandLink>
-                        <h:commandLink action="contratoform?faces-redirect=true" title="Nuevo" styleClass="boton_salir" rendered="#{contratoOperacionCtrl.usuarioRegistrador}">
+                        <h:commandLink action="#{contratoOperacionCtrl.nuevoRegistro()}" title="Nuevo" styleClass="boton_salir" rendered="#{contratoOperacionCtrl.usuarioRegistrador}">
                             <h:panelGrid style="text-align:center">
                                 <h:graphicImage value="resources/images/plus.png" title="Nuevo" style="width: 50px; height: 50px"/>
                                 <h:outputText value="Nuevo"/>
@@ -55,8 +55,8 @@
                     <p:dataTable var="reg" id="dtListaDerechosMineros"
                          value="#{contratoOperacionCtrl.contratosOperacion}" rows="10">
                         
-                    <p:column headerText="#" width="25">
-                        <h:outputText value="#{rowIndex + 1}"/>
+                    <p:column headerText="ID. CONTRATO#" width="25">
+                        <h:outputText value="#{reg.codigoContratoOperacion}"/>
                     </p:column>
 
                     <p:column headerText="CODIGO CONCESION" style="text-align: right">
@@ -102,10 +102,9 @@
                     </p:column>
 
                     <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{contratoOperacionCtrl.usuarioRegistrador}">
-                        <p:commandButton action="#{contratoOperacionCtrl.editarRegistro}" 
-                                         icon="ui-icon-pencil" 
-                                         title="Editar" 
-                                         ajax="false"/>
+                        <p:commandButton update=":form" action="#{contratoOperacionCtrl.editarRegistro}" icon="ui-icon-pencil" title="Editar Contrato"
+                                         oncomplete="PF('visorEditarContrato').show();"></p:commandButton>
+                        
                     </p:column>
                     <p:column headerText="Ver" style="width:37px; text-align: right" rendered="#{!contratoOperacionCtrl.usuarioRegistrador}">
                         <p:commandButton action="#{contratoOperacionCtrl.verRegistro}" 
@@ -140,6 +139,18 @@
                     </center>
                 </f:facet>
                 </p:dataTable>
+                
+                <p:dialog id="dlgEditarContrato" header="Contrato" 
+                          widgetVar="visorEditarContrato" width="95%" height="600px"  
+                          showEffect="fade" draggable="false" 
+                          resizable="false" modal="true" >
+                        <iframe frameborder="0"
+                                src="#{contratoOperacionCtrl.urlEditarContrato}"
+                                name="frameTareas" id="frameTareas" scrolling="auto" 
+                                width="100%" height="98%" 
+                                marginheight="0" marginwidth="0">
+                        </iframe>
+                </p:dialog>
 
             </h:form>
         </ui:define>

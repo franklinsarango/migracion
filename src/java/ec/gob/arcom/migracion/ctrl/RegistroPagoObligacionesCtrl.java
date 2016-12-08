@@ -929,9 +929,10 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
         UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(us.getCodigoUsuario());
         RegistroPagoObligaciones registroPagoObligacionesItem = (RegistroPagoObligaciones) getExternalContext().getRequestMap().get("reg");
-        if (registroPagoObligacionesItem.getCodigoTipoRegistro() != null) {
-            if (registroPagoObligacionesItem.getCodigoTipoRegistro().equals(ConstantesEnum.SUJETO_MINERO.getCodigo())
-                    || registroPagoObligacionesItem.getCodigoTipoRegistro().equals(ConstantesEnum.TIPO_SOLICITUD_NO_APLICA_DERECHO_MINERO.getCodigo())) {
+//        if (registroPagoObligacionesItem.getCodigoTipoRegistro() != null) {
+            if (registroPagoObligacionesItem.getCodigoTipoRegistro() != null && 
+                    (registroPagoObligacionesItem.getCodigoTipoRegistro().equals(ConstantesEnum.SUJETO_MINERO.getCodigo()) ||
+                        registroPagoObligacionesItem.getCodigoTipoRegistro().equals(ConstantesEnum.TIPO_SOLICITUD_NO_APLICA_DERECHO_MINERO.getCodigo()))) {
                 urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
                         + "/birt/frameset?__report=report/ComprobatesPago/Comprobante-estandar.rptdesign&codigo_registro="
                         + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
@@ -942,7 +943,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
                         + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                         + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf";
             }
-        }
+//        }
         // nombre_funcionario cargo_funcionario
         /*if (registroPagoObligacionesItem.getComprobanteElectronico() != null) {
          urlReporte = urlBase + "/birt/frameset?__report=report/comprobante-ingreso-recaudacion/comprobante-ingreso-recaudacion.rptdesign&numero_comprobante=" + registroPagoObligacionesItem.getComprobanteElectronico() + "&nombre_funcionario=" + usuarioLogin.getNombreCompleto() + "&cargo_funcionario=" + descripcionUsuarioRol + "&__format=pdf";

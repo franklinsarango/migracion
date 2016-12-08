@@ -103,24 +103,36 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     protected static final int tamanoPagina = 10;
     private Integer paginaSeleccionada;
     private ArrayList<Integer> listaPaginas;
+    private String urlEditarContrato;
     
     @PostConstruct
     public void init() {
         try {
-            Usuario uBd = usuarioDao.obtenerPorLogin(login.getUserName());
-            if (uBd != null) {
-                if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RM")) {
-                    usuarioRegistrador = true;
-                }else{
-                    usuarioRegistrador = false;
-                }
-            }   
+//            Usuario uBd = usuarioDao.obtenerPorLogin(login.getUserName());
+//            if (uBd != null) {
+//                if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RM")) {
+//                    usuarioRegistrador = true;
+//                }else{
+//                    usuarioRegistrador = false;
+//                }
+//            }   
             
+            if(login.isRegistroMinero() == true || login.isRegistroMineroNacional() == true){
+                usuarioRegistrador = true;
+            }else{
+                usuarioRegistrador = false;
+            }
+            
+            String codigo = getHttpServletRequestParam("codigo");
+            System.out.println("CodigoFiltro" + codigo);
+            if(codigo.equals("") == false){
+                codigoArcomFiltro = codigo;
+                buscar();
+            }
+                    
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        contratosOperacion = new ArrayList<>();
-        mostrarDatos("btn_buscar");
+        }        
     }
     public ContratoOperacion getContratoOperacion() {
         if (contratoOperacion == null) {
@@ -179,10 +191,26 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         mostrarDatos("btn_buscar");
     }
 
+//    public String editarRegistro() {
+//        mostrarCoordenadas = true;
+//        ContratoOperacion contratoItem = (ContratoOperacion) getExternalContext().getRequestMap().get("reg");
+//        return "contratoform?faces-redirect=true&idItem=" + contratoItem.getCodigoContratoOperacion();
+//    }
+    
     public String editarRegistro() {
         mostrarCoordenadas = true;
         ContratoOperacion contratoItem = (ContratoOperacion) getExternalContext().getRequestMap().get("reg");
-        return "contratoform?faces-redirect=true&idItem=" + contratoItem.getCodigoContratoOperacion();
+        urlEditarContrato = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratoform.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
+        System.out.println("urlEditarContrato: " + urlEditarContrato);
+        return null;
+    }
+    
+    public String nuevoRegistro() {
+        mostrarCoordenadas = false;
+        urlEditarContrato = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratoform.xhtml?";
+        System.out.println("urlNuevoContrato: " + urlEditarContrato);
+        RequestContext.getCurrentInstance().execute("PF('visorEditarContrato').show();");
+        return null;
     }
 
     public String verRegistro() {
@@ -191,7 +219,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         return "contratoview?faces-redirect=true&idItem=" + contratoItem.getCodigoContratoOperacion();
     }
     
-    public String guardarContrato() {
+    public void guardarContrato() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
         /*CatalogoDetalle cd = new CatalogoDetalle();
         cd.setCodigoCatalogoDetalle(ConversionEstadosEnum.OTORGADO.getCodigo19());
@@ -222,7 +250,6 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                 auditoriaServicio.create(auditoria);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                         "Registro guardado con éxito con código " + contratoOperacion.getCodigoArcom(), null));
-                return null;
             } else {
                 if(contratoOperacionAnterior != null){
                     contratoOperacion.setFechaModificacion(new Date());
@@ -235,20 +262,22 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                     auditoria.setFecha(getCurrentTimeStamp());
                     auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
                     auditoriaServicio.create(auditoria);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Registro actualizado con éxito", null));
-                    return "contratos";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro actualizado con éxito", null));
+                    
+                    String urlPagina = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratos.xhtml?codigo=" + contratoOperacion.getCodigoConcesion().getCodigoArcom();
+                    RequestContext.getCurrentInstance().execute("javascript:window.parent.location.href = '" + urlPagina + "'");
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Registro ya guardado con éxito con código " + contratoOperacion.getCodigoArcom(), null));
-                    return null;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro ya guardado con éxito con código " + contratoOperacion.getCodigoArcom(), null));
+                    
+                    String urlPagina = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratos.xhtml?codigo=" + contratoOperacion.getCodigoConcesion().getCodigoArcom();
+                    RequestContext.getCurrentInstance().execute("javascript:window.parent.location.href = '" + urlPagina + "'");
                 }
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Error: " + ex.getMessage(), ex.getMessage()));
             ex.printStackTrace();
-            return null;
+//            return null;
         }
         //return "contratos";
     }
@@ -672,7 +701,11 @@ public class ContratoOperacionCtrl extends BaseCtrl {
             cargarListaPaginas();
         }
         if (contratoOperacionServicio.countByContratoOperacionTabla(codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento) != null) {
-            contratosOperacion.clear();
+            if (contratosOperacion != null) {
+                contratosOperacion.clear();
+            } else {
+                contratosOperacion = new ArrayList<>();
+            }
             List<ContratoOperacion> listContratoOperacion = contratoOperacionServicio.countByContratoOperacionTabla(codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento);
             for (ContratoOperacion contratoOp : listContratoOperacion) {
                 contratosOperacion.add(contratoOp);
@@ -766,5 +799,19 @@ public class ContratoOperacionCtrl extends BaseCtrl {
      */
     public void setTotalPaginas(int totalPaginas) {
         this.totalPaginas = totalPaginas;
+    }
+
+    /**
+     * @return the urlEditarContrato
+     */
+    public String getUrlEditarContrato() {
+        return urlEditarContrato;
+    }
+
+    /**
+     * @param urlEditarContrato the urlEditarContrato to set
+     */
+    public void setUrlEditarContrato(String urlEditarContrato) {
+        this.urlEditarContrato = urlEditarContrato;
     }
 }
