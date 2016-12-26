@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -63,6 +64,7 @@ public class ReporteCtrl extends BaseCtrl {
     private List<SelectItem> tipoSolicitudesDeConcesionMinera;
     private Long codigoSubtipoMineria;
     private boolean concesionMinera;
+    private boolean mostrarFiltroRegional;
     private List<SelectItem> tipoSolicitudes;
     private Date fechaDesdeFiltro;
     private Date fechaHastaFiltro;
@@ -70,6 +72,14 @@ public class ReporteCtrl extends BaseCtrl {
     private String prefijoRegionalFiltro;
     private String urlReporte;
 
+    @PostConstruct
+    public void init() {
+        try {            
+             getRegionales();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }        
+    }
     
     public void generarReporteConcesionMineraBirt() {
         System.out.println("entra generarReporteConcesionMineraBirt");
@@ -115,6 +125,27 @@ public class ReporteCtrl extends BaseCtrl {
         urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/contratos_operacion.rptdesign"
                 + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
+    public void generarReporteConsolidadoConcesionesBirt() {
+        System.out.println("entra generarReporteConsolidadoConcesionesBirt");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/consolidadoConcesiones.rptdesign&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
+    public void generarReporteConsolidadoMineriaArtesanalBirt() {
+        System.out.println("entra generarReporteConsolidadoMineriaArtesanalBirt");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/consolidadoMineriaArtesanal.rptdesign&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
+    public void generarReporteConsolidadoLicenciasComerBirt() {
+        System.out.println("entra generarReporteConsolidadoLicenciasComerBirt");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/consolidadoLicenciasComercializacion.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
     
@@ -193,7 +224,13 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteObligacionesEconomicasBirt();
         }  else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())) {
             generarReporteContratosOperacionBirt();
-        }     
+        }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_CONCESIONES.getCodigo())) {
+            generarReporteConsolidadoConcesionesBirt();
+        }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_MINERIA_ARTESANAL.getCodigo())) {
+            generarReporteConsolidadoMineriaArtesanalBirt();
+        }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_LICENCIAS_COMERCIALIZACION.getCodigo())) {
+            generarReporteConsolidadoLicenciasComerBirt();
+        }
     }
 
     public void habilitarSubTipoReporte() {
@@ -206,16 +243,20 @@ public class ReporteCtrl extends BaseCtrl {
         }
     }
 
-    public void cargarOpcionTodasRegionales() {
+    public void listenerTipoReporte() {
         if (codigoTipoMineria != null) {
-            if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())||
-                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())||
-                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())||
-                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())||
-                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())||
-                codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())) {
-                
-                //SE AGREGA LA OPCION TODAS LAS REGIONALES
+            if(regionales == null){
+                getRegionales();
+            }
+            
+            //SE AGREGA LA OPCION TODAS LAS REGIONALES
+            if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())) {
+
                 boolean encontrado = false;
                 for (SelectItem selectItem : regionales) {
                     if (selectItem.getValue().equals("-1")) {
@@ -228,6 +269,20 @@ public class ReporteCtrl extends BaseCtrl {
             } else {
                 regionales = null;
                 getRegionales();
+            }
+            
+            //SE MUESTRA LA LISTA DE REGIONALES
+            if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())){
+                setMostrarFiltroRegional(true);
+            }else{
+                setMostrarFiltroRegional(false);
             }
         }
     }
@@ -243,6 +298,13 @@ public class ReporteCtrl extends BaseCtrl {
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN)
                         || ce.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE)
                         || ce.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_CONCESIONES)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_MINERIA_ARTESANAL)
+//                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LIBRE_APROVECHAMIENTO)
+//                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PLANTAS_BENEFICIO)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LICENCIAS_COMERCIALIZACION)
+//                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PROVINCIA)
+//                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_REGIONAL)                
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS)) {
                     tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
                 }
@@ -312,6 +374,20 @@ public class ReporteCtrl extends BaseCtrl {
 
     public void setUrlReporte(String urlReporte) {
         this.urlReporte = urlReporte;
+    }
+
+    /**
+     * @return the mostrarFiltroRegional
+     */
+    public boolean isMostrarFiltroRegional() {
+        return mostrarFiltroRegional;
+    }
+
+    /**
+     * @param mostrarFiltroRegional the mostrarFiltroRegional to set
+     */
+    public void setMostrarFiltroRegional(boolean mostrarFiltroRegional) {
+        this.mostrarFiltroRegional = mostrarFiltroRegional;
     }
 
 }

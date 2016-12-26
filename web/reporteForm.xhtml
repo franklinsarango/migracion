@@ -51,7 +51,7 @@
                                      style="width: 93%">
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{reporteCtrl.tipoSolicitudes}" />
-                        <p:ajax listener="#{reporteCtrl.cargarOpcionTodasRegionales()}" update="panelFiltros botones"/>
+                        <p:ajax listener="#{reporteCtrl.listenerTipoReporte()}" update="panelFiltros botones"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:panelGrid id="panelFiltros" columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
@@ -73,12 +73,12 @@
                                 required="true"
                                 requiredMessage="Fecha Hasta requerida"
                                 rendered="false"/>
-                    <p:outputLabel value="Regional:" rendered="#{!(reporteCtrl.codigoTipoMineria == 10000)}"/>
+                    <p:outputLabel value="Regional:" rendered="#{reporteCtrl.mostrarFiltroRegional}"/>
                     <p:selectOneMenu value="#{reporteCtrl.prefijoRegionalFiltro}" 
                                      required="true" 
                                      requiredMessage="Regional es requerido" 
                                      style="width: 93%"
-                                     rendered="#{!(reporteCtrl.codigoTipoMineria == 10000)}">
+                                     rendered="#{reporteCtrl.mostrarFiltroRegional}">
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{reporteCtrl.regionales}" />
                     </p:selectOneMenu>
