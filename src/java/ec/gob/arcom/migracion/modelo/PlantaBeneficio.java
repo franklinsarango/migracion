@@ -199,6 +199,10 @@ public class PlantaBeneficio implements Serializable {
     private BigInteger plazo;
     @Column(name = "tipo_persona")
     private String tipoPersona;
+    @JoinColumn(name = "codigo_concesion_ubicacion_planta", referencedColumnName = "codigo_concesion")
+    @ManyToOne
+    private ConcesionMinera codigoConcesionUbicacionPlanta;
+    
     @Transient
     private boolean concesionMinera;
     //@OneToOne(cascade = CascadeType.ALL, mappedBy = "plantaBeneficio")
@@ -723,7 +727,8 @@ public class PlantaBeneficio implements Serializable {
                 + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion + ", fechaModificacion=" + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion + ", codigoArcom=" + codigoArcom + ", fechaOtorga="
                 + fechaOtorga + ", fechaInscribe=" + fechaInscribe + ", categoriaPlanta=" + (categoriaPlanta != null ? categoriaPlanta.getCodigoCatalogoDetalle() : null) + ", estadoPlanta=" + (estadoPlanta != null ? estadoPlanta.getCodigoCatalogoDetalle() : null)
                 + ", unidadPeso=" + (unidadPeso != null ? unidadPeso.getCodigoCatalogoDetalle() : null) + ", mae=" + mae + ", senagua=" + senagua + ", obsActoAdministrativo=" + obsActoAdministrativo + ", correoElectronico=" + correoElectronico
-                + ", codigoProcedenciaMaterial=" + (codigoProcedenciaMaterial != null ? codigoProcedenciaMaterial.getCodigoCatalogoDetalle() : null) + ", zona=" + zona + ", plazo=" + plazo + ", tipoPersona=" + tipoPersona + ", migrada=" + migrada + '}';
+                + ", codigoProcedenciaMaterial=" + (codigoProcedenciaMaterial != null ? codigoProcedenciaMaterial.getCodigoCatalogoDetalle() : null) + ", zona=" + zona + ", plazo=" + plazo + ", tipoPersona=" + tipoPersona 
+                + ", codigoConcesionUbicacionPlanta=" + (codigoConcesionUbicacionPlanta != null ? codigoConcesionUbicacionPlanta.getCodigoConcesion(): null) + ", migrada=" + migrada + '}';
     }
 
     /*public Serializable getXmlData() {
@@ -869,6 +874,20 @@ public class PlantaBeneficio implements Serializable {
      */
     public void setPersonaJuridicaTransient(PersonaJuridica personaJuridicaTransient) {
         this.personaJuridicaTransient = personaJuridicaTransient;
+    }
+
+    /**
+     * @return the codigoConcesionUbicacionPlanta
+     */
+    public ConcesionMinera getCodigoConcesionUbicacionPlanta() {
+        return codigoConcesionUbicacionPlanta;
+    }
+
+    /**
+     * @param codigoConcesionUbicacionPlanta the codigoConcesionUbicacionPlanta to set
+     */
+    public void setCodigoConcesionUbicacionPlanta(ConcesionMinera codigoConcesionUbicacionPlanta) {
+        this.codigoConcesionUbicacionPlanta = codigoConcesionUbicacionPlanta;
     }
 
 }

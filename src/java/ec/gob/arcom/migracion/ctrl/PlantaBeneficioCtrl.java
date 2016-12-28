@@ -21,6 +21,7 @@ import ec.gob.arcom.migracion.modelo.PersonaNatural;
 import ec.gob.arcom.migracion.modelo.PlantaBeneficio;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.servicio.AuditoriaServicio;
+import ec.gob.arcom.migracion.servicio.ConcesionMineraServicio;
 import ec.gob.arcom.migracion.servicio.ConcesionPlantaBeneficioServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
 import ec.gob.arcom.migracion.servicio.PersonaJuridicaServicio;
@@ -51,6 +52,8 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
     @EJB
     private PlantaBeneficioServicio plantaBeneficioServicio;
     @EJB
+    private ConcesionMineraServicio concesionMineraServicio;
+    @EJB
     private PlantaBeneficioDao plantaBeneficioDao;
     @EJB
     private LocalidadServicio localidadServicio;
@@ -68,6 +71,7 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
     private LoginCtrl login;
 
     private String codigoFiltro;
+    private String codigoConcesionFiltro;
     private String cedulaTitularFiltro;
     private String nombreAreaFiltro;
 
@@ -75,6 +79,12 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
     private List<SelectItem> cantones;
     private List<SelectItem> parroquias;
 
+    private List<ConcesionMinera> listaConcesiones;
+    private ConcesionMinera concesionMineraPopup;
+    private Localidad concesionProvincia;
+    private Localidad concesionCanton;
+    private Localidad concesionParroquia;
+    
     private PlantaBeneficio plantaBeneficio;
 
     private List<PlantaBeneficioDto> listaRegistros;
@@ -133,6 +143,12 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
                     tipoMineria = "cm";
                 } else {
                     tipoMineria = "pb";
+                }                
+                if (plantaBeneficio.getCodigoConcesionUbicacionPlanta() != null) {
+                    if (listaConcesiones == null) {
+                        listaConcesiones = new ArrayList<>();
+                    }
+                    listaConcesiones.add(plantaBeneficio.getCodigoConcesionUbicacionPlanta());
                 }
                 existeCodigoArcom = false;
                 concesionMinera = false;
@@ -197,11 +213,18 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
             plantaBeneficio.setEstadoPlanta(null);
         }
         try {
+            //SE AGREGA LA CONCESION DONDE ESTA UBICADA LA PLANTA DE BENEFICIO
+            if (listaConcesiones != null && listaConcesiones.size() > 0) {
+                System.out.println("Concesion -----> :" + listaConcesiones.get(0).getCodigoArcom());
+                plantaBeneficio.setCodigoConcesionUbicacionPlanta(listaConcesiones.get(0));
+            }
+
             if (plantaBeneficio.getCodigoPlantaBeneficio() == null) {
                 plantaBeneficio.setEstadoRegistro(true);
                 plantaBeneficio.setFechaCreacion(new Date());
                 plantaBeneficio.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
                 plantaBeneficio.setMigrada(true);
+                
                 if (tipoMineria.equals("cm")) {
                     //plantaBeneficio.setCodigoArcom(null);
                     plantaBeneficio.setCodigoProvincia(cm.getCodigoProvincia());
@@ -466,6 +489,68 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
         return inscrito;
     }
 
+    public void agregarDerechoMinero(ConcesionMinera derechoMineroDto) {
+        if (listaConcesiones == null) {
+            listaConcesiones = new ArrayList<>();
+        }
+        listaConcesiones.add(derechoMineroDto);
+    }
+
+    public void eliminarDerechoMinero() {
+        ConcesionMinera derechoMineroItem = (ConcesionMinera) getExternalContext().getRequestMap().get("reg");
+        System.out.println("derechoMineroItem: " + derechoMineroItem.getCodigoArcom());
+        listaConcesiones.remove(derechoMineroItem);
+    }
+
+    public List<ConcesionMinera> getDerechosMineros() {
+        return listaConcesiones;
+    }
+
+    public void setDerechosMineros(List<ConcesionMinera> listaConcesiones) {
+        this.listaConcesiones = listaConcesiones;
+    }
+    
+    public void agregarConcesion() {
+        if (listaConcesiones != null && listaConcesiones.size() > 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Solo se puede agregar una Concesión ", null));
+            return;
+        }
+        RequestContext.getCurrentInstance().execute("PF('dlgBusqCod').show()");
+        codigoConcesionFiltro = null;
+        concesionMineraPopup = null;
+    }
+    
+    public void seleccionarConcesion() {
+        agregarDerechoMinero(concesionMineraPopup);
+        RequestContext.getCurrentInstance().execute("PF('dlgBusqCod').hide()");
+        concesionMineraPopup = null;
+    }
+    
+    public void buscarRegistro() {
+        concesionMineraPopup = null;
+
+        System.out.println("codigoConcesionFiltro: " + codigoConcesionFiltro);
+        concesionMineraPopup = concesionMineraServicio.obtenerPorCodigoArcom(codigoConcesionFiltro);
+        System.out.println("concesionMineraPopup: " + concesionMineraPopup);
+        if (concesionMineraPopup != null) {
+            concesionProvincia = localidadServicio.findByPk(concesionMineraPopup.getCodigoProvincia().longValue());
+            concesionCanton = localidadServicio.findByPk(concesionMineraPopup.getCodigoCanton().longValue());
+            concesionParroquia = localidadServicio.findByPk(concesionMineraPopup.getCodigoParroquia().longValue());
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "La concesión no existe", null));
+        }
+    }
+    
+    public ConcesionMinera getConcesionMineraPopup() {
+        return concesionMineraPopup;
+    }
+
+    public void setConcesionMineraPopup(ConcesionMinera concesionMineraPopup) {
+        this.concesionMineraPopup = concesionMineraPopup;
+    }
+    
     public void setInscrito(boolean inscrito) {
         this.inscrito = inscrito;
     }
@@ -748,6 +833,62 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
 
     public void setConcesionMinera(boolean concesionMinera) {
         this.concesionMinera = concesionMinera;
+    }
+
+    /**
+     * @return the concesionProvincia
+     */
+    public Localidad getConcesionProvincia() {
+        return concesionProvincia;
+    }
+
+    /**
+     * @param concesionProvincia the concesionProvincia to set
+     */
+    public void setConcesionProvincia(Localidad concesionProvincia) {
+        this.concesionProvincia = concesionProvincia;
+    }
+
+    /**
+     * @return the concesionCanton
+     */
+    public Localidad getConcesionCanton() {
+        return concesionCanton;
+    }
+
+    /**
+     * @param concesionCanton the concesionCanton to set
+     */
+    public void setConcesionCanton(Localidad concesionCanton) {
+        this.concesionCanton = concesionCanton;
+    }
+
+    /**
+     * @return the concesionParroquia
+     */
+    public Localidad getConcesionParroquia() {
+        return concesionParroquia;
+    }
+
+    /**
+     * @param concesionParroquia the concesionParroquia to set
+     */
+    public void setConcesionParroquia(Localidad concesionParroquia) {
+        this.concesionParroquia = concesionParroquia;
+    }
+
+    /**
+     * @return the codigoConcesionFiltro
+     */
+    public String getCodigoConcesionFiltro() {
+        return codigoConcesionFiltro;
+    }
+
+    /**
+     * @param codigoConcesionFiltro the codigoConcesionFiltro to set
+     */
+    public void setCodigoConcesionFiltro(String codigoConcesionFiltro) {
+        this.codigoConcesionFiltro = codigoConcesionFiltro;
     }
 
 }

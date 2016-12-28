@@ -295,6 +295,11 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
         } else {
             sql = sql + "    fecha_inscribe = " + null + ",\n";
         }
+        if (plantaBeneficio.getCodigoConcesionUbicacionPlanta() != null) {
+            sql = sql + "    codigo_concesion_ubicacion_planta = '" + plantaBeneficio.getCodigoConcesionUbicacionPlanta().getCodigoConcesion()+ "',\n";
+        } else {
+            sql = sql + "    codigo_concesion_ubicacion_planta = " + null + ",\n";
+        }
         sql = sql + "    mae = " + plantaBeneficio.getMae() + ",\n";
         sql = sql + "    senagua = " + plantaBeneficio.getSenagua() + " ,\n";
         if (plantaBeneficio.getObsActoAdministrativo() != null) {
@@ -319,6 +324,7 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
                 + "WHERE\n"
                 + "    codigo_planta_beneficio = " + plantaBeneficio.getCodigoPlantaBeneficio();
 
+        System.out.println("sql-->: " + sql);
         Query query = em.createNativeQuery(sql);
         query.executeUpdate();
     }

@@ -210,6 +210,39 @@
                         </p:selectOneMenu>
                         </h:panelGroup>
                         
+                        <h:panelGroup id="panelCodigo">
+                            <p:outputLabel value="Ubicación de Planta de beneficio en Concesión Minera:"/>
+                        </h:panelGroup>
+                        
+                        <h:panelGrid id="panelDerechosMineros" columns="2" width="95%">
+                            <f:facet name="header">
+                                <p:commandButton value="Añadir Conesión"  icon="ui-icon-plusthick" update="growl"
+                                                 action="#{plantaBeneficioCtrl.agregarConcesion}">
+                                </p:commandButton>
+                            </f:facet>                            
+                            
+                            <p:dataTable id="derechosMinerosTable" var="reg" value="#{plantaBeneficioCtrl.derechosMineros}" 
+                                         styleClass="texto_tabla_datos" rowIndexVar="rowIndex" emptyMessage="No existen registros" style="width: 95%" >
+                                <p:column headerText="Código" >
+                                    <h:outputText value="#{reg.codigoArcom}"/>
+                                </p:column>
+                                <p:column headerText="Nombre Concesión" >
+                                    <h:outputText value="#{reg.nombreConcesion}"/>
+                                </p:column>
+                                <p:column headerText="Tipo Derecho Minero" >
+                                    <h:outputText value="#{reg.codigoTipoMineria.nombreTipoMineria}"/>
+                                </p:column>
+                                <p:column headerText="Eliminar" >
+                                    <p:commandLink action="#{plantaBeneficioCtrl.eliminarDerechoMinero}"
+                                                   title="Eliminar" immediate="true" update="derechosMinerosTable">
+                                        <h:panelGrid style="text-align:center">
+                                            <h:graphicImage value="resources/images/delete.png" title="Eliminar" style="width: 25px; height: 25px" />
+                                        </h:panelGrid>
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                        
                         <h:panelGroup id="mae">
                             <h:outputText value="MAE:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
                         </h:panelGroup>
@@ -382,6 +415,56 @@
                     </div>
                 </h:form>
             </p:dialog>
+            
+            <p:dialog header="Búsqueda de código" widgetVar="dlgBusqCod" modal="true" dynamic="true" resizable="false" draggable="true">
+                <h:form id="form6">
+                    <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Código:"/>
+                            <p:inputText id="codFiltro" value="#{plantaBeneficioCtrl.codigoConcesionFiltro}"/>
+                        </h:panelGrid>
+                        <p:commandButton actionListener="#{plantaBeneficioCtrl.buscarRegistro}" value="Buscar" title="Buscar" update="form6"/>
+                    </h:panelGrid>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <h:panelGroup id="panelRespuesta">
+                        <p:outputLabel value="No existen registros" rendered="#{plantaBeneficioCtrl.concesionMineraPopup == null}" />
+                        <h:panelGrid columns="3" rendered="#{plantaBeneficioCtrl.concesionMineraPopup != null}">
+                            <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" style="width: 300px">
+                                <f:facet name="header">
+                                    <h:panelGroup style="display:block; text-align:center">
+                                        <p:outputLabel value="Registro Encontrado"/>
+                                    </h:panelGroup>
+                                </f:facet>
+                                <p:outputLabel value="Código:" />
+                                <p:outputLabel value="#{plantaBeneficioCtrl.concesionMineraPopup.codigoArcom}" />
+                                <p:outputLabel value="Nombre Concecionario Principal:" />
+                                <p:outputLabel value="#{plantaBeneficioCtrl.concesionMineraPopup.nombreConcesionarioPrincipal}" />
+                                <p:outputLabel value="Apellido Concecionario Principal:" />
+                                <p:outputLabel value="#{plantaBeneficioCtrl.concesionMineraPopup.apellidoConcesionarioPrincipal}" />
+                                <p:outputLabel value="Nombre Concesión:" />
+                                <p:outputLabel value="#{plantaBeneficioCtrl.concesionMineraPopup.nombreConcesion}" />
+                                <p:outputLabel value="Casillero Judicial:" />
+                                <p:outputLabel value="#{plantaBeneficioCtrl.concesionMineraPopup.casilleroJudicial}" />
+                                <p:outputLabel value="Provincia:" />
+                                <p:outputLabel value="#{plantaBeneficioCtrl.concesionProvincia.nombre}" />
+                                <p:outputLabel value="Cantón:" />
+                                <p:outputLabel value="#{plantaBeneficioCtrl.concesionCanton.nombre}" />
+                                <p:outputLabel value="Parroquia:" />
+                                <p:outputLabel value="#{plantaBeneficioCtrl.concesionParroquia.nombre}" />
+                            </p:panelGrid>
+                            <h:commandButton actionListener="#{plantaBeneficioCtrl.seleccionarConcesion}"
+                                             value="Seleccionar"
+                                             title="Seleccionar"
+                                             style="position: relative; right: 0px" onclick="PF('dlgBusqCod').hide()">
+                                <f:ajax render=":form:derechosMinerosTable" execute="valorPagoDerMin"/>
+                            </h:commandButton>
+                        </h:panelGrid>
+                    </h:panelGroup> 
+                </h:form>
+            </p:dialog>
+            
         </ui:define>
     </ui:composition>
 </html>
