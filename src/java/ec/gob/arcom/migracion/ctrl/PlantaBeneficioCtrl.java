@@ -214,6 +214,7 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
         }
         try {
             //SE AGREGA LA CONCESION DONDE ESTA UBICADA LA PLANTA DE BENEFICIO
+            plantaBeneficio.setCodigoConcesionUbicacionPlanta(null);
             if (listaConcesiones != null && listaConcesiones.size() > 0) {
                 System.out.println("Concesion -----> :" + listaConcesiones.get(0).getCodigoArcom());
                 plantaBeneficio.setCodigoConcesionUbicacionPlanta(listaConcesiones.get(0));

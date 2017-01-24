@@ -12,7 +12,7 @@
 
         <ui:define name="content">
             <h:form id="form">
-                <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                <p:growl id="growl" showDetail="false" showSummary="true" life="8000" autoUpdate="true"/>
                 <h:panelGrid columns="3">
                     <h:panelGrid columns="2">
                         <h:panelGrid columns="2" >
@@ -34,8 +34,11 @@
                                          maxlength="10" autocomplete="false" mask="9?999999999" placeHolder=""
                                          />
                         </h:panelGrid>
-                        <h:commandButton actionListener="#{registroPagoObligacionesCtrl.buscar}" 
-                                         image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar"/>
+                        
+                        <h:commandButton image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar">
+                            <p:ajax listener="#{registroPagoObligacionesCtrl.buscar}" update="@form" process="@form"/>
+                        </h:commandButton>
+                        
                     </h:panelGrid>
                     <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;

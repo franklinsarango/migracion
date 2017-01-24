@@ -310,13 +310,17 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
         UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(us.getCodigoUsuario());
         RegistroPagoObligacionesDto registroPagoObligacionesItem = (RegistroPagoObligacionesDto) getExternalContext().getRequestMap().get("reg");
-        //if (registroPagoObligacionesItem.getCodigoTipoRegistro() != null) {
+        if (! registroPagoObligacionesItem.getEstadoPago().toUpperCase().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getDescripcion())) {
                 setUrlReporte(ConstantesEnum.URL_BASE.getDescripcion()
                         + "/birt/frameset?__report=report/ComprobatesPago/Patentes-utilidades-regalias.rptdesign&codigo_registro="
                         + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                         + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf");
-        //}
-        System.out.println("URL del Comprobante: " + this.getUrlReporte());
+               System.out.println("URL del Comprobante: " + this.getUrlReporte());
+               RequestContext.getCurrentInstance().execute("PF('visorTramite').show()");
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "El Comprobante debe estar en estado APROBADO para poder mostrarlo !!!", null));
+        }
     }
     
     public void setListaPatentesRegaliasUtilidades(List<RegistroPagoObligacionesDto> listaPatentesRegaliasUtilidades) {

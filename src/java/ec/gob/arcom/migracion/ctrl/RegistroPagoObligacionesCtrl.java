@@ -166,7 +166,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
 
     @PostConstruct
     public void init() {
-        if (login.isEditarComprobante()) {
+//        if (login.isEditarComprobante()) {
             if (login.isEconomicoNacional() == true) {
                 fechaDesdeFiltro = new Date();
             } else {
@@ -176,7 +176,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
                 fechaDesdeFiltro = calendar.getTime();
             }
             buscar();
-        }
+//        }
     }
     
     public void setRegistrarAuditor(boolean registrarAuditor) {
@@ -487,28 +487,41 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
 //            } else { //SI ES ECONOMICO NACIONAL SE PRESENTAN LOS COMPROBANTES EN ESTADO REGISTRADO Y APROBADO SI EXISTE UN FILTRO SELECCIONADO
                 boolean existeFiltro = false;
                 if (fechaDesdeFiltro != null || fechaHastaFiltro != null) {
+                    System.out.println("fechaDesdeFiltro FILTRO ---->" + fechaDesdeFiltro);
                     existeFiltro = true;
                 }
                 if (numeroComprobanteArcomFiltro != null && !numeroComprobanteArcomFiltro.isEmpty()) {
+                    System.out.println("numeroComprobanteArcomFiltro FILTRO ---->" + numeroComprobanteArcomFiltro);
                     existeFiltro = true;
                 }
-                if (codigoArcomFiltro != null) {
+                if (codigoArcomFiltro != null && !codigoArcomFiltro.isEmpty()) {
+                    System.out.println("codigoArcomFiltro FILTRO ---->" + codigoArcomFiltro);
                     existeFiltro = true;
                 }
                 if (numeroTramite != null) {
+                    System.out.println("numeroTramite FILTRO ---->" + numeroTramite);
                     existeFiltro = true;
                 }
-                if(login.isEditarComprobante() == true){
-                if (existeFiltro == true) {
+                
+                System.out.println("existeFiltro FILTRO ---->" + existeFiltro);
+                if (existeFiltro == false) {
+                    System.out.println("NO EXISTE FILTRO ---->");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Debe ingresar por lo menos un filtro para realizar la búsqueda de comprobantes", null));
+                    return null;
+                }
+                System.out.println("BUSCAR REGISTROS ---->: fechaDesdeFiltro" + fechaDesdeFiltro);
+//                if(login.isEditarComprobante() == true){
+//                if (existeFiltro == true) {
                     listaRegistrosAutoGestion = registroPagoObligacionesServicio
                             .obtenerRegistrosAutogestion(fechaDesdeFiltro, fechaHastaFiltro, numeroComprobanteArcomFiltro, null,
                                     codigoArcomFiltro, login.getPrefijoRegional(), numeroTramite, login.isEconomicoNacional(), login.isEditarComprobante());
-                }
-                }else{
-                    listaRegistrosAutoGestion = registroPagoObligacionesServicio
-                        .obtenerRegistrosAutogestion(fechaDesdeFiltro, fechaHastaFiltro, numeroComprobanteArcomFiltro, null,
-                                codigoArcomFiltro, login.getPrefijoRegional(), numeroTramite, login.isEconomicoNacional(), login.isEditarComprobante());
-                }
+//                }
+//                }else{
+//                    listaRegistrosAutoGestion = registroPagoObligacionesServicio
+//                        .obtenerRegistrosAutogestion(fechaDesdeFiltro, fechaHastaFiltro, numeroComprobanteArcomFiltro, null,
+//                                codigoArcomFiltro, login.getPrefijoRegional(), numeroTramite, login.isEconomicoNacional(), login.isEditarComprobante());
+//                }
             }
 //        }
         return listaRegistrosAutoGestion;

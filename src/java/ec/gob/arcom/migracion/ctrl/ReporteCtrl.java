@@ -142,6 +142,20 @@ public class ReporteCtrl extends BaseCtrl {
         System.out.println("urlReporte: " + urlReporte);
     }
     
+    public void generarReporteConsolidadoLibreAprovBirt() {
+        System.out.println("entra generarReporteConsolidadoLibreAprovBirt");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/consolidadoLibreAprovechamiento.rptdesign&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
+    public void generarReporteConsolidadoPlantaBeneficioBirt() {
+        System.out.println("entra generarReporteConsolidadoPlantaBeneficioBirt");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/consolidadoPlantasBeneficio.rptdesign&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
     public void generarReporteConsolidadoLicenciasComerBirt() {
         System.out.println("entra generarReporteConsolidadoLicenciasComerBirt");
         urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
@@ -228,6 +242,10 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteConsolidadoConcesionesBirt();
         }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_MINERIA_ARTESANAL.getCodigo())) {
             generarReporteConsolidadoMineriaArtesanalBirt();
+            }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_LIBRE_APROVECHAMIENTO.getCodigo())) {
+            generarReporteConsolidadoLibreAprovBirt();
+        }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_PLANTAS_BENEFICIO.getCodigo())) {
+            generarReporteConsolidadoPlantaBeneficioBirt();
         }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_LICENCIAS_COMERCIALIZACION.getCodigo())) {
             generarReporteConsolidadoLicenciasComerBirt();
         }
@@ -300,8 +318,8 @@ public class ReporteCtrl extends BaseCtrl {
                         || ce.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE)
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_CONCESIONES)
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_MINERIA_ARTESANAL)
-//                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LIBRE_APROVECHAMIENTO)
-//                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PLANTAS_BENEFICIO)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LIBRE_APROVECHAMIENTO)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PLANTAS_BENEFICIO)
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LICENCIAS_COMERCIALIZACION)
 //                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PROVINCIA)
 //                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_REGIONAL)                

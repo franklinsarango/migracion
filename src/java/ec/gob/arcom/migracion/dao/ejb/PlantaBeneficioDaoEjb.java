@@ -45,7 +45,7 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
     @Override
     public PlantaBeneficio findByCodigoArcom(String codigoArcom) {
         try {
-            String hql = "select pb from PlantaBeneficio pb where pb.codigoArcom = :codigoArcom";
+            String hql = "select pb from PlantaBeneficio pb where pb.codigoArcom = :codigoArcom and pb.codigoArcom not in (select cm.codigoArcom from ConcesionMinera cm where cm.estadoRegistro = true)";
             Query query = em.createQuery(hql);
             query.setParameter("codigoArcom", codigoArcom);
             PlantaBeneficio pb = (PlantaBeneficio) query.getSingleResult();

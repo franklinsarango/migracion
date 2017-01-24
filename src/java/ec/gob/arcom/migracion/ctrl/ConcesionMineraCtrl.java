@@ -522,7 +522,6 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         concesionMinera.setFechaModificacion(new Date());
         concesionMinera.setUsuarioCreacion(BigInteger.valueOf(-1));
         concesionMinera.setUsuarioModificacion(BigInteger.valueOf(us.getCodigoUsuario()));
-        concesionMinera.setMigrada(true);
         //solicitud.setTipoMaterial(concesionMinera.getTipoMaterial());
         //solicitud.setMaterialInteres(concesionMinera.getMaterialInteres());
         //solicitud.setCodigoProvincia(concesionMinera.getCodigoProvincia());
@@ -570,10 +569,11 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         areaMinera.setFechaModificacion(new Date());
         areaMinera.setFechaOtorga(concesionMinera.getFechaOtorga());
         areaMinera.setFechaInscribe(concesionMinera.getFechaInscribe());
-        areaMinera.setMigrada(true);
 
         try {
             if (concesionMinera.getCodigoConcesion() == null) {
+                concesionMinera.setMigrada(true);
+                areaMinera.setMigrada(true);
                 areaMinera.setEstadoRegistro(true);
                 concesionMinera.setEstadoRegistro(true);
                 //Long codigoConcesionSiguiente = concesionMineraServicio.obtenerSiguienteCodigoConcesion();
