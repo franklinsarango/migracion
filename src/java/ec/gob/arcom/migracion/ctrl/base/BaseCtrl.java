@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.ctrl.base;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -47,4 +48,11 @@ public class BaseCtrl implements Serializable {
         return fechaHora;
     }
 
+    protected void ponerMensajeInfo(final String summary, final String detail) {
+        FacesMessage infoMessage = new FacesMessage();
+        infoMessage.setSummary(summary);
+        infoMessage.setDetail(detail);
+        infoMessage.setSeverity(FacesMessage.SEVERITY_INFO);
+        FacesContext.getCurrentInstance().addMessage(null, infoMessage);
+    }
 }

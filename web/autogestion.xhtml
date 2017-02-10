@@ -26,6 +26,8 @@
                                         locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" />
                             <p:outputLabel value="Número Comprobante:"/>
                             <p:inputText value="#{registroPagoObligacionesCtrl.numeroComprobanteArcomFiltro}"/>
+                            <p:outputLabel value="Número Depósito Banco:"/>
+                            <p:inputText value="#{registroPagoObligacionesCtrl.numeroComprobanteBancoFiltro}"/>
                             <p:outputLabel value="Código Derecho Minero:"/>
                             <p:inputText value="#{registroPagoObligacionesCtrl.codigoArcomFiltro}"/>
                             <p:outputLabel value="Número Trámite:" rendered="#{registroPagoObligacionesCtrl.login.editarComprobante}"/>

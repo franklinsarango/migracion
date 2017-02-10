@@ -55,7 +55,7 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:panelGrid id="panelFiltros" columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
-                    <p:outputLabel value="Fecha Desde:" rendered="false"/>
+                    <p:outputLabel value="Fecha Desde:" rendered="#{reporteCtrl.mostrarFiltroFecha}"/>
                     <p:calendar placeholder="aaaa-mm-dd" navigator="true"
                                 value="#{reporteCtrl.fechaDesdeFiltro}"  
                                 locale="es" pattern="yyyy-MM-dd"  
@@ -63,8 +63,8 @@
                                 style="width: 93%" 
                                 required="true"
                                 requiredMessage="Fecha Desde requerida"
-                                rendered="false"/>
-                    <p:outputLabel value="Fecha Hasta:" rendered="false"/>
+                                rendered="#{reporteCtrl.mostrarFiltroFecha}"/>
+                    <p:outputLabel value="Fecha Hasta:" rendered="#{reporteCtrl.mostrarFiltroFecha}"/>
                     <p:calendar placeholder="aaaa-mm-dd" navigator="true"
                                 value="#{reporteCtrl.fechaHastaFiltro}"  
                                 locale="es" pattern="yyyy-MM-dd" 
@@ -72,7 +72,7 @@
                                 style="width: 93%" 
                                 required="true"
                                 requiredMessage="Fecha Hasta requerida"
-                                rendered="false"/>
+                                rendered="#{reporteCtrl.mostrarFiltroFecha}"/>
                     <p:outputLabel value="Regional:" rendered="#{reporteCtrl.mostrarFiltroRegional}"/>
                     <p:selectOneMenu value="#{reporteCtrl.prefijoRegionalFiltro}" 
                                      required="true" 

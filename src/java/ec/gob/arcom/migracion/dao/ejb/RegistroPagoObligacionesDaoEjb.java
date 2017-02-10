@@ -287,7 +287,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
     }
 
     @Override
-    public List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom,
+    public List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom, String numeroComprobanteBanco,
             String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String fechaD = "";
@@ -350,6 +350,9 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         if (numeroComprobanteArcom != null && !numeroComprobanteArcom.isEmpty()) {
             jpql += " and rpo.numeroComprobanteArcom = :numeroComprobanteArcom";
         }
+        if (numeroComprobanteBanco != null && !numeroComprobanteBanco.isEmpty()) {
+            jpql += " and rpo.numeroComprobanteBanco = :numeroComprobanteBanco";
+        }
         if (numeroTramite != null) {
             jpql += " and rpo.numeroTramite = :numeroTramite";
         }
@@ -363,6 +366,9 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         Query query = em.createQuery(jpql);
         if (numeroComprobanteArcom != null && !numeroComprobanteArcom.isEmpty()) {
             query.setParameter("numeroComprobanteArcom", numeroComprobanteArcom);
+        }
+        if (numeroComprobanteBanco != null && !numeroComprobanteBanco.isEmpty()) {
+            query.setParameter("numeroComprobanteBanco", numeroComprobanteBanco);
         }
         if (codigoDerMin != null) {
             query.setParameter("codigoDerMin", codigoDerMin);

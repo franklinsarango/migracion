@@ -68,9 +68,9 @@ public class RegistroPagoObligacionesServicioImpl extends GenericServiceImpl<Reg
     }
 
     @Override
-    public List<RegistroPagoObligaciones> obtenerRegistrosAutogestion(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, 
+    public List<RegistroPagoObligaciones> obtenerRegistrosAutogestion(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, String numeroComprobanteBanco,
             String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante) {
-        return registroPagoObligacionesDao.obtenerListaAutogestion(fechaInicio, fechaFin, numeroComprobanteArcom, 
+        return registroPagoObligacionesDao.obtenerListaAutogestion(fechaInicio, fechaFin, numeroComprobanteArcom, numeroComprobanteBanco,
                 cedula, codigoDerechoMinero, prefijoRegionalParam, numeroTramite, usuarioEconomicoNacional, editarComprobante);
     }
 

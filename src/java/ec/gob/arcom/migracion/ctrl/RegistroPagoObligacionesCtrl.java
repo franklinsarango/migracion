@@ -144,6 +144,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     private Date fechaDesdeFiltro;
     private Date fechaHastaFiltro;
     private String numeroComprobanteArcomFiltro;
+    private String numeroComprobanteBancoFiltro;
     private String codigoArcomFiltro;
 
     private String urlReporte;
@@ -494,6 +495,10 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
                     System.out.println("numeroComprobanteArcomFiltro FILTRO ---->" + numeroComprobanteArcomFiltro);
                     existeFiltro = true;
                 }
+                if (numeroComprobanteBancoFiltro != null && !numeroComprobanteBancoFiltro.isEmpty()) {
+                    System.out.println("numeroComprobanteBancoFiltro FILTRO ---->" + numeroComprobanteBancoFiltro);
+                    existeFiltro = true;
+                }
                 if (codigoArcomFiltro != null && !codigoArcomFiltro.isEmpty()) {
                     System.out.println("codigoArcomFiltro FILTRO ---->" + codigoArcomFiltro);
                     existeFiltro = true;
@@ -514,7 +519,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
 //                if(login.isEditarComprobante() == true){
 //                if (existeFiltro == true) {
                     listaRegistrosAutoGestion = registroPagoObligacionesServicio
-                            .obtenerRegistrosAutogestion(fechaDesdeFiltro, fechaHastaFiltro, numeroComprobanteArcomFiltro, null,
+                            .obtenerRegistrosAutogestion(fechaDesdeFiltro, fechaHastaFiltro, numeroComprobanteArcomFiltro, numeroComprobanteBancoFiltro, null,
                                     codigoArcomFiltro, login.getPrefijoRegional(), numeroTramite, login.isEconomicoNacional(), login.isEditarComprobante());
 //                }
 //                }else{
@@ -1150,6 +1155,20 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
      */
     public void setNumeroTramite(BigInteger numeroTramite) {
         this.numeroTramite = numeroTramite;
+    }
+
+    /**
+     * @return the numeroComprobanteBancoFiltro
+     */
+    public String getNumeroComprobanteBancoFiltro() {
+        return numeroComprobanteBancoFiltro;
+    }
+
+    /**
+     * @param numeroComprobanteBancoFiltro the numeroComprobanteBancoFiltro to set
+     */
+    public void setNumeroComprobanteBancoFiltro(String numeroComprobanteBancoFiltro) {
+        this.numeroComprobanteBancoFiltro = numeroComprobanteBancoFiltro;
     }
 
 }

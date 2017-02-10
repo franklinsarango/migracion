@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,7 @@ public class ReporteCtrl extends BaseCtrl {
     private Long codigoSubtipoMineria;
     private boolean concesionMinera;
     private boolean mostrarFiltroRegional;
+    private boolean mostrarFiltroFecha;
     private List<SelectItem> tipoSolicitudes;
     private Date fechaDesdeFiltro;
     private Date fechaHastaFiltro;
@@ -74,6 +76,12 @@ public class ReporteCtrl extends BaseCtrl {
 
     @PostConstruct
     public void init() {
+        fechaHastaFiltro = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR, -30);
+        fechaDesdeFiltro = calendar.getTime();
+
         try {            
              getRegionales();
         } catch (Exception ex) {
@@ -288,20 +296,26 @@ public class ReporteCtrl extends BaseCtrl {
                 regionales = null;
                 getRegionales();
             }
-            
-            //SE MUESTRA LA LISTA DE REGIONALES
-            if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())
-                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())
-                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())
-                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())
-                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())
-                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())
-                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE.getCodigo())
-                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())){
-                setMostrarFiltroRegional(true);
-            }else{
-                setMostrarFiltroRegional(false);
-            }
+        }
+        //SE MUESTRA LA LISTA DE REGIONALES
+        if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())) {
+            setMostrarFiltroRegional(true);
+        } else {
+            setMostrarFiltroRegional(false);
+        }
+
+        //SE MUESTRA EL FILTRO FECHA DESDE HASTA
+        if (codigoTipoMineria.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE.getCodigo())) {
+            setMostrarFiltroFecha(true);
+        } else {
+            setMostrarFiltroFecha(false);
         }
     }
     
@@ -332,6 +346,26 @@ public class ReporteCtrl extends BaseCtrl {
         return tipoSolicitudes;
     }
 
+    public boolean validarFechas(Date fechaDesde_, Date fechaHasta_){
+        if ((fechaDesde_ == null) && (fechaHasta_ == null)) {
+            ponerMensajeInfo("", "Debe ingresar los campos Fecha desde y Fceha hasta");
+            return false;
+        }
+        if ((fechaDesde_ != null) && (fechaHasta_ == null)) {
+            ponerMensajeInfo("", "Ingrese el campo de fecha hasta.");
+            return false;
+        }
+        if ((fechaDesde_ == null) && (fechaHasta_ != null)) {
+            ponerMensajeInfo("", "Ingrese el campo de fecha desde.");
+            return false;
+        }
+        if (fechaDesde_.after(fechaHasta_)) {
+            ponerMensajeInfo("", "La fecha desde debe ser menor.");
+            return false;
+        }
+        return true;
+    }
+    
     public void setTipoSolicitudes(List<SelectItem> tipoSolicitudes) {
         this.tipoSolicitudes = tipoSolicitudes;
     }
@@ -377,13 +411,13 @@ public class ReporteCtrl extends BaseCtrl {
 
     public void generarReporteAutogestion() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        fechaDesdeFiltro = new Date();
-        fechaHastaFiltro = new Date();
+        if (validarFechas(this.fechaDesdeFiltro, this.fechaHastaFiltro)){
         urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
                 + "/birt/frameset?__report=report/ComprobatesPago/Rpt-autogestion.rptdesign&fecha_desde="
                 + sdf.format(fechaDesdeFiltro) + "&fecha_hasta=" + sdf.format(fechaHastaFiltro)
                 + "&regional=" + prefijoRegionalFiltro + "&__format=html";
         System.out.println("URL del Comprobante: " + this.urlReporte);
+        }
     }
 
     public String getUrlReporte() {
@@ -406,6 +440,14 @@ public class ReporteCtrl extends BaseCtrl {
      */
     public void setMostrarFiltroRegional(boolean mostrarFiltroRegional) {
         this.mostrarFiltroRegional = mostrarFiltroRegional;
+    }
+
+    public boolean isMostrarFiltroFecha() {
+        return mostrarFiltroFecha;
+    }
+
+    public void setMostrarFiltroFecha(boolean mostrarFiltroFecha) {
+        this.mostrarFiltroFecha = mostrarFiltroFecha;
     }
 
 }
