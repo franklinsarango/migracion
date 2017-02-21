@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Consultas al SRI"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+            
+            <h:form id="consultafrm">
+                <p:panelGrid columns="3" styleClass="panelSinBorde">
+                    <p:selectOneMenu value="#{dinardapSriController.consulta}">
+                        <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="CATEGORIA RISE" itemValue="625"/>
+                        <f:selectItem itemLabel="FORMULARIO 113" itemValue="626"/>
+                        <f:selectItem itemLabel="FORMULARIO 117" itemValue="627"/>
+                        <f:selectItem itemLabel="RAZON SOCIAL" itemValue="628"/>
+                    </p:selectOneMenu>
+                    <p:inputText value="#{dinardapSriController.valorBuscar}"/>
+                    <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultar()}" update=":tablePanel :entityname :consulta625 :consulta626 :consulta627 :consulta628"/>
+                </p:panelGrid>
+            </h:form>
+            <p:separator/>
+            
+            <center>
+                <p:outputLabel id="entityname" value="#{dinardapSriController.nombreEntidad}" style="font-weight: bolder; font-size: large"/>
+            </center>
+            
+            <p:panelGrid id="tablePanel" columns="1">
+                <p:dataTable id="consulta625" emptyMessage="No hay resultados..."
+                         var="fila625" value="#{dinardapSriController.filas}"
+                         scrollable="true" scrollWidth="95%" rendered="#{dinardapSriController.tabla625}"
+                         styleClass="consulta625">
+                    <p:column headerText="Código" style="width: 30px; text-align: right">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila625.columnas.columna.get(0))}"/>
+                    </p:column>
+
+                    <p:column headerText="Descripción" style="width: 100px; text-align: center">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila625.columnas.columna.get(1))}"/>
+                    </p:column>
+
+                    <p:column headerText="Monto inferior" style="width: 50px; text-align: right">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila625.columnas.columna.get(2))}"/>
+                    </p:column>
+
+                    <p:column headerText="Monto superior" style="width: 55px; text-align: right">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila625.columnas.columna.get(3))}"/>
+                    </p:column>
+
+                    <p:column headerText="Valor cuota" style="width: 50px; text-align: right">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila625.columnas.columna.get(4))}"/>
+                    </p:column>
+
+                    <p:column headerText="Número meses" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila625.columnas.columna.get(5))}"/>
+                    </p:column>
+                </p:dataTable>
+                
+                <p:dataTable id="consulta626" emptyMessage="No hay resultados..."
+                             var="fila626" value="#{dinardapSriController.filas}"
+                             scrollable="true" scrollWidth="45%" rendered="#{dinardapSriController.tabla626}"
+                             styleClass="consulta626">
+                    <p:column headerText="Número formulario" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(0))}"/>
+                    </p:column>
+
+                    <p:column headerText="Código formulario" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(1))}"/>
+                    </p:column>
+
+                    <p:column headerText="Número secuencial" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(2))}"/>
+                    </p:column>
+
+                    <p:column headerText="Número identificación" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(3))}"/>
+                    </p:column>
+
+                    <p:column headerText="Razón social" style="width: 200px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(4))}"/>
+                    </p:column>
+
+                    <p:column headerText="Año fiscal" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(5))}"/>
+                    </p:column>
+
+                    <p:column headerText="Mes fiscal" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(6))}"/>
+                    </p:column>
+
+                    <p:column headerText="Código ARCOM" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(7))}"/>
+                    </p:column>
+
+                    <p:column headerText="Mineria gran escala" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(8))}"/>
+                    </p:column>
+
+                    <p:column headerText="Mediana mineria" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(9))}"/>
+                    </p:column>
+
+                    <p:column headerText="Pequeña mineria" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(10))}"/>
+                    </p:column>
+
+                    <p:column headerText="Mineral principal metálico" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(11))}"/>
+                    </p:column>
+
+                    <p:column headerText="Mineral principal no metálico" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(12))}"/>
+                    </p:column>
+
+                    <p:column headerText="Mineral principal materiales de construcción" style="width: 100px">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(13))}"/>
+                    </p:column>
+
+                    <p:column headerText="Ventas brutas mineral principal" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(14))}"/>
+                    </p:column>
+
+                    <p:column headerText="Ventas brutas minerales secundarios" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(15))}"/>
+                    </p:column>
+
+                    <p:column headerText="Regalías generadas ventas mineral principal" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(16))}"/>
+                    </p:column>
+
+                    <p:column headerText="Regalías generadas ventas minerales secundarios" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(17))}"/>
+                    </p:column>
+
+                    <p:column headerText="Base de cálculo para regalías costos producción de calizas" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(18))}"/>
+                    </p:column>
+
+                    <p:column headerText="Base de cálculo para regalías costos producción demas minerales" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(19))}"/>
+                    </p:column>
+
+                    <p:column headerText="Tarifa de regalías costos producción de calizas" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(20))}"/>
+                    </p:column>
+
+                    <p:column headerText="Tarifa de regalías costos producción demas minerales" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(21))}"/>
+                    </p:column>
+                </p:dataTable>
+            
+                <p:dataTable id="consulta627" emptyMessage="No hay resultados..."
+                             var="fila627" value="#{dinardapSriController.filas}"
+                             scrollable="true" scrollWidth="65%" rendered="#{dinardapSriController.tabla627}"
+                             styleClass="consulta627">
+                    <p:column headerText="Número formulario" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(0))}"/>
+                    </p:column>
+
+                    <p:column headerText="Código formulario" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(1))}"/>
+                    </p:column>
+
+                    <p:column headerText="Número secuencial" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(2))}"/>
+                    </p:column>
+
+                    <p:column headerText="Número identificación" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(3))}"/>
+                    </p:column>
+
+                    <p:column headerText="Razón social" style="width: 200px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(4))}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha recaudación" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(5))}"/>
+                    </p:column>
+
+                    <p:column headerText="Año fiscal" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(6))}"/>
+                    </p:column>
+
+                    <p:column headerText="Código ARCOM" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(7))}"/>
+                    </p:column>
+
+                    <p:column headerText="Denominación área minera" style="width: 200px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(8))}"/>
+                    </p:column>
+
+                    <p:column headerText="Mineria gran escala" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(9))}"/>
+                    </p:column>
+
+                    <p:column headerText="Mediana mineria" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(10))}"/>
+                    </p:column>
+
+                    <p:column headerText="Pequeña mineria" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(11))}"/>
+                    </p:column>
+
+                    <p:column headerText="Valor patente anual" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(12))}"/>
+                    </p:column>
+
+                    <p:column headerText="Valor patente a pagar primer año" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(13))}"/>
+                    </p:column>
+                </p:dataTable>
+            
+                <p:dataTable id="consulta628" emptyMessage="No hay resultados..."
+                             var="fila628" value="#{dinardapSriController.filas}"
+                             rendered="#{dinardapSriController.tabla628}"
+                             styleClass="consulta628">
+                    <p:column headerText="Razón social">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila628.columnas.columna.get(0))}"/>
+                    </p:column>
+
+                    <p:column headerText="RUC">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila628.columnas.columna.get(1))}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panelGrid>
+        </ui:define>
+    </ui:composition>
+</html>
+
