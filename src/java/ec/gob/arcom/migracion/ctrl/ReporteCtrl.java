@@ -171,6 +171,13 @@ public class ReporteCtrl extends BaseCtrl {
         System.out.println("urlReporte: " + urlReporte);
     }
     
+    public void generarReporteMedianaGranMineriaCoordenadasBirt() {
+        System.out.println("entra generarReporteMedianaGranMineriaCoordenadasBirt");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt_v4.5/frameset?__report=report/derechosMineros/mediana_gran_mineria_con_coordenadas.rptdesign&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
     public LoginCtrl getLogin() {
         return login;
     }
@@ -256,6 +263,8 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteConsolidadoPlantaBeneficioBirt();
         }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_LICENCIAS_COMERCIALIZACION.getCodigo())) {
             generarReporteConsolidadoLicenciasComerBirt();
+        }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_MEDIANA_GRAN_MINERIA_COORDENADAS.getCodigo())) {
+            generarReporteMedianaGranMineriaCoordenadasBirt();
         }
     }
 
@@ -324,6 +333,7 @@ public class ReporteCtrl extends BaseCtrl {
             tipoSolicitudes = new ArrayList<>();
             for (ConstantesEnum ce : ConstantesEnum.values()) {
                 if (ce.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN)
+                        || ce.equals(ConstantesEnum.RPT_MEDIANA_GRAN_MINERIA_COORDENADAS)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART)

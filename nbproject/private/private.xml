@@ -4,5 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="SuperAdministrador"/>
         <group/>
+        <group name="SGM">
+            <file>file:/D:/Frank/SGM/proyectos/migracion/src/java/ec/gob/arcom/migracion/ctrl/ReporteCtrl.java</file>
+            <file>file:/D:/Frank/SGM/proyectos/migracion/web/reporteForm.xhtml</file>
+            <file>file:/D:/Frank/SGM/proyectos/migracion/src/java/ec/gob/arcom/migracion/constantes/ConstantesEnum.java</file>
+            <file>file:/D:/Frank/SGM/proyectos/migracion/src/java/ec/gob/arcom/migracion/ctrl/DinardapSriController.java</file>
+            <file>file:/D:/Frank/SGM/proyectos/migracion/nbproject/build-impl.xml</file>
+        </group>
     </open-files>
 </project-private>

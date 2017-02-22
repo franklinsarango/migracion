@@ -129,6 +129,14 @@
                         </h:panelGrid>
                     </h:commandLink>
                     
+                    <h:commandLink action="web/consultasri?faces-redirect=true" title="Consulta SRI"
+                                   rendered="#{loginCtrl.economicoRegional or loginCtrl.economicoNacional}">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/consulta_sri.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Consulta SRI"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+                    
                     <h:commandLink action="web/reporteForm?faces-redirect=true" title="Generar Reporte">
                         <h:panelGrid class="botonHome">
                             <h:graphicImage value="web/resources/images/report.png" style="width: 95px; height: 95px"/>
