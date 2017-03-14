@@ -125,7 +125,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
             
             String codigo = getHttpServletRequestParam("codigo");
             System.out.println("CodigoFiltro" + codigo);
-            if(codigo.equals("") == false){
+            if(codigo != null && codigo.equals("") == false){
                 codigoArcomFiltro = codigo;
                 buscar();
             }

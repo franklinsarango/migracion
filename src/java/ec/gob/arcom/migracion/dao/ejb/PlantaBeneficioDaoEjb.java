@@ -305,6 +305,9 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
         if (plantaBeneficio.getObsActoAdministrativo() != null) {
             sql = sql + "    obs_acto_administrativo = '" + plantaBeneficio.getObsActoAdministrativo() + "',\n";
         }
+        if (plantaBeneficio.getObservacionGeneral()!= null) {
+            sql = sql + "    observacion_general = '" + plantaBeneficio.getObservacionGeneral()+ "',\n";
+        }
         if (plantaBeneficio.getCorreoElectronico() != null) {
             sql = sql + "    correo_electronico = '" + plantaBeneficio.getCorreoElectronico() + "',\n";
         }

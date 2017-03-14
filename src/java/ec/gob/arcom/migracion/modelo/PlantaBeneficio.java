@@ -188,6 +188,8 @@ public class PlantaBeneficio implements Serializable {
     private CatalogoDetalle unidadPeso;
     @Column(name = "obs_acto_administrativo")
     private String obsActoAdministrativo;
+    @Column(name = "observacion_general")
+    private String observacionGeneral;
     @Column(name = "correo_electronico")
     private String correoElectronico;
     @JoinColumn(name = "codigo_procedencia_material", referencedColumnName = "codigo_catalogo_detalle")
@@ -202,6 +204,8 @@ public class PlantaBeneficio implements Serializable {
     @JoinColumn(name = "codigo_concesion_ubicacion_planta", referencedColumnName = "codigo_concesion")
     @ManyToOne
     private ConcesionMinera codigoConcesionUbicacionPlanta;
+    @Column(name = "tiene_autorizacion")
+    private Boolean tieneAutorizacion;
     
     @Transient
     private boolean concesionMinera;
@@ -726,7 +730,8 @@ public class PlantaBeneficio implements Serializable {
                 + ", campoReservado03=" + campoReservado03 + ", campoReservado02=" + campoReservado02 + ", campoReservado01=" + campoReservado01 + ", estadoRegistro=" + estadoRegistro + ", fechaCreacion="
                 + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion + ", fechaModificacion=" + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion + ", codigoArcom=" + codigoArcom + ", fechaOtorga="
                 + fechaOtorga + ", fechaInscribe=" + fechaInscribe + ", categoriaPlanta=" + (categoriaPlanta != null ? categoriaPlanta.getCodigoCatalogoDetalle() : null) + ", estadoPlanta=" + (estadoPlanta != null ? estadoPlanta.getCodigoCatalogoDetalle() : null)
-                + ", unidadPeso=" + (unidadPeso != null ? unidadPeso.getCodigoCatalogoDetalle() : null) + ", mae=" + mae + ", senagua=" + senagua + ", obsActoAdministrativo=" + obsActoAdministrativo + ", correoElectronico=" + correoElectronico
+                + ", unidadPeso=" + (unidadPeso != null ? unidadPeso.getCodigoCatalogoDetalle() : null) + ", mae=" + mae + ", senagua=" + senagua + ", obsActoAdministrativo=" + obsActoAdministrativo 
+                + ", observacionGeneral=" + observacionGeneral + ", correoElectronico=" + correoElectronico
                 + ", codigoProcedenciaMaterial=" + (codigoProcedenciaMaterial != null ? codigoProcedenciaMaterial.getCodigoCatalogoDetalle() : null) + ", zona=" + zona + ", plazo=" + plazo + ", tipoPersona=" + tipoPersona 
                 + ", codigoConcesionUbicacionPlanta=" + (codigoConcesionUbicacionPlanta != null ? codigoConcesionUbicacionPlanta.getCodigoConcesion(): null) + ", migrada=" + migrada + '}';
     }
@@ -771,7 +776,7 @@ public class PlantaBeneficio implements Serializable {
     }
 
     public boolean isConcesionMinera() {
-        if (codigoArcom != null) {
+        if (tieneAutorizacion == true) {
             concesionMinera = false;
         } else {
             concesionMinera = true;
@@ -888,6 +893,34 @@ public class PlantaBeneficio implements Serializable {
      */
     public void setCodigoConcesionUbicacionPlanta(ConcesionMinera codigoConcesionUbicacionPlanta) {
         this.codigoConcesionUbicacionPlanta = codigoConcesionUbicacionPlanta;
+    }
+
+    /**
+     * @return the tieneAutorizacion
+     */
+    public Boolean getTieneAutorizacion() {
+        return tieneAutorizacion;
+    }
+
+    /**
+     * @param tieneAutorizacion the tieneAutorizacion to set
+     */
+    public void setTieneAutorizacion(Boolean tieneAutorizacion) {
+        this.tieneAutorizacion = tieneAutorizacion;
+    }
+
+    /**
+     * @return the observacionGeneral
+     */
+    public String getObservacionGeneral() {
+        return observacionGeneral;
+    }
+
+    /**
+     * @param observacionGeneral the observacionGeneral to set
+     */
+    public void setObservacionGeneral(String observacionGeneral) {
+        this.observacionGeneral = observacionGeneral;
     }
 
 }

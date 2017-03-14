@@ -38,7 +38,7 @@
                     </h:panelGroup>
                 </h:panelGrid>
                 <h2 class="titulo_centrado" style="width: 55.5%;position: relative;right: -299px;">PLANTAS BENEFICIO</h2>
-                <p:panelGrid columns="3" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                <p:panelGrid columns="4" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
                     <f:facet name="header">
                         <h:panelGroup style="display:block; text-align:center">
                             <p:outputLabel value="DATOS DE LA PLANTA"/>
@@ -46,23 +46,20 @@
                     </f:facet>
                     <p:outputLabel for="codArc" value="Código:"></p:outputLabel> 
                     <p:inputText id="codArc" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoArcom}" size="40"
-                                 required="true" requiredMessage="Código requerido" readonly="#{!plantaBeneficioCtrl.existeCodigoArcom}"
-                                 rendered="#{plantaBeneficioCtrl.plantaBeneficio.codigoPlantaBeneficio == null}" maxlength="9">
-                        <p:ajax update="panel2 codArc" listener="#{plantaBeneficioCtrl.validarCodigoArcom}"/>
+                                 required="true" requiredMessage="Código requerido" readonly="#{!plantaBeneficioCtrl.accionNuevaPB}" maxlength="9">
+                        
                     </p:inputText>
-                    <p:inputText value="#{plantaBeneficioCtrl.plantaBeneficio.codigoArcom}" size="40" readonly="#{!plantaBeneficioCtrl.codigoArcomNull}"
-                                 required="true" requiredMessage="Código requerido" rendered="#{plantaBeneficioCtrl.plantaBeneficio.codigoPlantaBeneficio != null}" maxlength="9">
-                        <p:ajax update="panel2 codArc" listener="#{plantaBeneficioCtrl.validarCodigoArcom}"/>
-                    </p:inputText>
-                    <p:selectOneRadio value="#{plantaBeneficioCtrl.tipoMineria}" disabled="#{!plantaBeneficioCtrl.codigoArcomNull}">
+                    <p:selectOneRadio value="#{plantaBeneficioCtrl.tipoMineria}" disabled="#{!plantaBeneficioCtrl.accionNuevaPB}">
                         <f:selectItem itemLabel="Plnt. Ben." itemValue="pb" />
                         <f:selectItem itemLabel="Conc. Min." itemValue="cm" />
-                        <p:ajax update="@form" listener="#{plantaBeneficioCtrl.validarCodigoArcom}"/>
+                       
                     </p:selectOneRadio>
+                    <p:commandButton value="CREAR" action="#{plantaBeneficioCtrl.validarCodigoArcom}" update="@form" disabled="#{!plantaBeneficioCtrl.accionNuevaPB}">
+                    </p:commandButton>
                 </p:panelGrid>
 
                 <h:panelGroup id="panel2">
-                    <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" rendered="#{!plantaBeneficioCtrl.existeCodigoArcom}">
+                    <p:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input" rendered="#{plantaBeneficioCtrl.mostrarPanelDatosPB}">
                         <p:outputLabel for="tipoPersona" value="Tipo de Persona:"></p:outputLabel>
                         <p:selectOneRadio id="tipoPersona" value="#{plantaBeneficioCtrl.plantaBeneficio.tipoPersona}" required="true" requiredMessage="Tipo persona es requerido">
                             <f:selectItem itemLabel="Natural" itemValue="PNA" />
@@ -119,7 +116,7 @@
                         <p:inputText id="dircc" size="50" value="#{plantaBeneficioCtrl.plantaBeneficio.direccionPlanta}" required="true" requiredMessage="Dirección es requerida" maxlength="90"></p:inputText>
 
                         <p:outputLabel for="nombrePlan" value="Nombre planta beneficio:"></p:outputLabel>
-                        <p:inputText id="nombrePlan" value="#{plantaBeneficioCtrl.plantaBeneficio.nombrePlantaBeneficio}" size="50" maxlength="60"/>
+                        <p:inputText id="nombrePlan" value="#{plantaBeneficioCtrl.plantaBeneficio.nombrePlantaBeneficio}" size="50" maxlength="60" required="true" requiredMessage="Nombre planta beneficio es requerido" />
 
                         <p:outputLabel for="console" value="Zona:"></p:outputLabel>
                         <p:selectOneRadio id="console" value="#{plantaBeneficioCtrl.plantaBeneficio.zona}" required="true" requiredMessage="Zona es requerida">
@@ -233,7 +230,7 @@
                                     <h:outputText value="#{reg.codigoTipoMineria.nombreTipoMineria}"/>
                                 </p:column>
                                 <p:column headerText="Eliminar" >
-                                    <p:commandLink action="#{plantaBeneficioCtrl.eliminarDerechoMinero}"
+                                    <p:commandLink action="#{plantaBeneficioCtrl.eliminarDerechoMinero}" rendered="#{!plantaBeneficioCtrl.concesionMinera}"
                                                    title="Eliminar" immediate="true" update="derechosMinerosTable">
                                         <h:panelGrid style="text-align:center">
                                             <h:graphicImage value="resources/images/delete.png" title="Eliminar" style="width: 25px; height: 25px" />
@@ -261,7 +258,7 @@
                             <h:outputText value="Observaciones generales:"/>
                         </h:panelGroup>
                         <h:panelGroup id="obsAdm2">
-                            <p:inputTextarea value="#{plantaBeneficioCtrl.plantaBeneficio.obsActoAdministrativo}" cols="52" maxlength="500"/>
+                            <p:inputTextarea value="#{plantaBeneficioCtrl.plantaBeneficio.observacionGeneral}" cols="52" maxlength="500"/>
                         </h:panelGroup>
 
                         <f:facet name="footer">

@@ -499,7 +499,7 @@
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </p:inputText>
                             <h:outputText value="Observaciones generales:" />
-                            <p:inputTextarea value="#{derechosMinerosCtrl.concesionMinera.obsActosAdmPrevios}" 
+                            <p:inputTextarea value="#{derechosMinerosCtrl.concesionMinera.observacionGeneral}" 
                                              readonly="true" style="width: 40;"/>
                             <h:outputText value="Ver Coordenadas:" />
                         <p:commandButton update=":formCoordenadas" icon="ui-icon-folder-open" title="Coordenadas"
@@ -648,7 +648,7 @@
                             <h:outputText value="SENAGUA:" />
                             <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.senaguaString}" readonly="true"/>
                             <h:outputText value="Observaciones generales:" />
-                            <p:inputTextarea value="#{derechosMinerosCtrl.plantaBeneficio.obsActoAdministrativo}" cols="47" maxlength="200"
+                            <p:inputTextarea value="#{derechosMinerosCtrl.plantaBeneficio.observacionGeneral}" cols="47" maxlength="200"
                                              readonly="true"/>
                         </h:panelGrid>
                     </h:panelGrid>

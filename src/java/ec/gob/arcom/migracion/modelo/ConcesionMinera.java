@@ -183,6 +183,8 @@ public class ConcesionMinera implements Serializable {
     private CatalogoDetalle estadoConcesion;
     @Column(name = "obs_actos_adm_previos")
     private String obsActosAdmPrevios;
+    @Column(name = "observacion_general")
+    private String observacionGeneral;
     @Column(name = "sector")
     private String sector;
     @Column(name = "mae")
@@ -751,7 +753,7 @@ public class ConcesionMinera implements Serializable {
                 + ", codigoRegimen=" + (codigoRegimen != null ? codigoRegimen.getCodigoRegimen() : null) + ", codigoFase=" + (codigoFase != null ? codigoFase.getCodigoFase() : null)
                 + ", codigoZona=" + (codigoZona != null ? codigoZona.getCodigoCatalogoDetalle() : null) + ", codigoFormaExplotacion=" + (codigoFormaExplotacion != null ? codigoFormaExplotacion.getCodigoCatalogoDetalle() : null)
                 + ", codigoModalidadTrabajo=" + (codigoModalidadTrabajo != null ? codigoModalidadTrabajo.getCodigoCatalogoDetalle() : null) + ", estadoConcesion=" + (estadoConcesion != null ? estadoConcesion.getCodigoCatalogoDetalle() : null)
-                + ", obsActosAdmPrevios=" + obsActosAdmPrevios + ", sector=" + sector + ", mae=" + mae + ", senagua=" + senagua
+                + ", obsActosAdmPrevios=" + obsActosAdmPrevios + ", observacionGeneral=" + observacionGeneral + ", sector=" + sector + ", mae=" + mae + ", senagua=" + senagua
                 + ", migrada=" + migrada + ", fechaInforme=" + fechaInforme + ", codigoCasilleroLocalidad=" + (codigoCasilleroLocalidad != null ? codigoCasilleroLocalidad.getCodigoLocalidad() : null) 
                 + ", litispendencia=" + litispendencia+ '}';
     }
@@ -984,6 +986,20 @@ public class ConcesionMinera implements Serializable {
      */
     public void setLitispendencia(Boolean litispendencia) {
         this.litispendencia = litispendencia;
+    }
+
+    /**
+     * @return the observacionGeneral
+     */
+    public String getObservacionGeneral() {
+        return observacionGeneral;
+    }
+
+    /**
+     * @param observacionGeneral the observacionGeneral to set
+     */
+    public void setObservacionGeneral(String observacionGeneral) {
+        this.observacionGeneral = observacionGeneral;
     }
 
 }
