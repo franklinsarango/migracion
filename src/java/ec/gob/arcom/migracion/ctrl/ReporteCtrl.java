@@ -178,6 +178,13 @@ public class ReporteCtrl extends BaseCtrl {
         System.out.println("urlReporte: " + urlReporte);
     }
     
+    public void generarReporteUsuariosSGMBirt() {
+        System.out.println("entra generarReporteUsuariosSGMBirt");
+        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+                + "/birt/frameset?__report=report/derechosMineros/usuarios_sgm.rptdesign&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
     public LoginCtrl getLogin() {
         return login;
     }
@@ -265,6 +272,8 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteConsolidadoLicenciasComerBirt();
         }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_MEDIANA_GRAN_MINERIA_COORDENADAS.getCodigo())) {
             generarReporteMedianaGranMineriaCoordenadasBirt();
+        }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_USUARIOS_SGM.getCodigo())) {
+            generarReporteUsuariosSGMBirt();
         }
     }
 
@@ -340,6 +349,7 @@ public class ReporteCtrl extends BaseCtrl {
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN)
                         || ce.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE)
                         || ce.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE)
+                        || ce.equals(ConstantesEnum.RPT_USUARIOS_SGM)
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_CONCESIONES)
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_MINERIA_ARTESANAL)
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LIBRE_APROVECHAMIENTO)

@@ -172,79 +172,68 @@
                         </f:facet>
                         <h:panelGrid columns="2" columnClasses="form-label, form-input_ancho" style="width: 500px">
                             <h:outputText value="Código:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoArcom}"
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoArcom}"/>
                             <h:outputText value="Nombre concesión:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.nombreConcesion}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.nombreConcesion}"/>
                             <h:outputText value="Nro. Documento Titular:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.documentoConcesionarioPrincipal}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.documentoConcesionarioPrincipal}"/>
                             <h:outputText value="Nombre Titular:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.nombreTitular}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.nombreTitular}"/>
                             <h:outputText value="Apellido Titular:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.apellidoTitular}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.apellidoTitular}"/>
                             <h:outputText value="Plazo:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.plazoConcesion}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.plazoConcesion}"/>
                             <h:outputText value="Fecha Otorga:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaOtorga}" 
-                                         readonly="true" size="40">
-                                <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </p:inputText>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaOtorga}" >
+                                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                                </h:outputText>
                             <h:outputText value="Fecha Inscribe:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaInscribe}" 
-                                         readonly="true" size="40">
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaInscribe}" >
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </p:inputText>
+                            </h:outputText>
                             <h:outputText value="Fecha Sustitución:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaSustitucion}" 
-                                         readonly="true" size="40">
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaSustitucion}" >
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </p:inputText>
+                            </h:outputText>
                             <h:outputText value="Fecha Inscripción Sustitución:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaInscripcionSustitucion}" 
-                                         readonly="true" size="40">
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaInscripcionSustitucion}" >
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </p:inputText>
+                            </h:outputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" columnClasses="form-label, form-input">
                             <p:outputLabel value="Zona:"></p:outputLabel>
                             <p:selectOneRadio value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoZona.codigoCatalogoDetalle}"
                                               disabled="true">
                                 <f:selectItems value="#{selectItemCtrl.zonas}"/>
                             </p:selectOneRadio>  
                             <h:outputText value="Estado:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.estadoConcesion.nombre}" readonly="true"/>
-                        </h:panelGrid>
-                        <h:panelGrid columns="2" columnClasses="form-label, form-input">
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.estadoConcesion.nombre}"/>
                             <h:outputText value="Tipo Solicitud:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoTipoMineria.nombreTipoMineria}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoTipoMineria.nombreTipoMineria}"/>
                             <h:outputText value="Régimen:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoRegimen.nombre}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoRegimen.nombre}"/>
                             <h:outputText value="Provincia:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.provinciaString}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.provinciaString}"/>
                             <h:outputText value="Cantón:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.cantonString}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.cantonString}"/>
                             <h:outputText value="Parroquia:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.parroquiaString}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.parroquiaString}"/>
                             <h:outputText value="Mineral:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoTipoMaterial.nombre}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoTipoMaterial.nombre}"/>
                             <h:outputText value="Mineral Interés:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoMaterialInteres.nombre}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.codigoMaterialInteres.nombre}"/>
                             <h:outputText value="Fecha Creación Sol.:"/>
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaCreacion}" 
-                                         readonly="true" size="40">
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.concesionMinera.fechaCreacion}" >
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </p:inputText>
-                            <h:outputText value="Observaciones generales:" />
-                            <p:inputTextarea value="#{actualizacionActosAdministrativosCtrl.concesionMinera.observacionGeneral}" 
-                                             readonly="true" cols="47" rows="5" maxlength="200"/>
-                    
+                            </h:outputText>
+                            
                         </h:panelGrid>
                         <p:separator></p:separator>
-                        <f:facet name="footer">
+                        <p:separator></p:separator>                        
+                        <f:facet name="footer">                            
                             <div align="center" style="width: 100%">	
+                            <p:outputLabel value="ACTOS ADMINISTRATIVOS"/>
+                            <p:separator></p:separator>
                             <h:panelGrid columns="2" columnClasses="form-label, form-input">
                             <h:outputText value="MAE:" />
                             <p:selectBooleanCheckbox value="#{actualizacionActosAdministrativosCtrl.concesionMinera.mae}"/>
@@ -273,68 +262,59 @@
                         </f:facet>
                         <h:panelGrid columns="2" columnClasses="form-label, form-input" style="width: 500px">
                             <h:outputText value="Código:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.codigoArcom}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.codigoArcom}"/>
                             <h:outputText value="Número Documento:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.numeroDocumentoRepresentanteLegal}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.numeroDocumentoRepresentanteLegal}"/>
                             <h:outputText value="Nombre:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.nombreRepresentanteLegal}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.nombreRepresentanteLegal}"/>
                             <h:outputText value="Apellido:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.apellidoRepresentanteLegal}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.apellidoRepresentanteLegal}"/>
                             <h:outputText value="Correo Electrónico:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.correoElectronico}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.correoElectronico}"/>
                             <h:outputText value="Dirección:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.direccionPlanta}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.direccionPlanta}"/>
                             <h:outputText value="Teléfono:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.telefonoPlanta}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.telefonoPlanta}"/>
                             <h:outputText value="Casillero Judicial:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.casilleroJudicial}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.casilleroJudicial}"/>
                             <h:outputText value="Nombre Planta Beneficio:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.nombrePlantaBeneficio}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.nombrePlantaBeneficio}"/>
                             <h:outputText value="Zona:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.zona}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.zona}"/>
                             <h:outputText value="Plazo:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.plazo}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.plazo}"/>
                             <h:outputText value="Capacidad Instalada:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.capacidadInstalada}" 
-                                         readonly="true" size="40"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.capacidadInstalada}"/>
                         </h:panelGrid>
                         <h:panelGrid columns="2" columnClasses="form-label, form-input">
                             <h:outputText value="Fecha Otorgamiento:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.fechaOtorga}" 
-                                         readonly="true" size="40">
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.fechaOtorga}" >
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </p:inputText>
+                            </h:outputText>
                             <h:outputText value="Fecha Inscribe:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.fechaInscribe}" readonly="true">
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.fechaInscribe}" >
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </p:inputText>
+                            </h:outputText>
                             <h:outputText value="Estado:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.estadoPlanta.nombre}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.estadoPlanta.nombre}"/>
                             <h:outputText value="Procedencia Material:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.codigoProcedenciaMaterial.nombre}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.codigoProcedenciaMaterial.nombre}"/>
                             <h:outputText value="Provincia:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.provinciaString}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.provinciaString}"/>
                             <h:outputText value="Cantón:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.cantonString}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.cantonString}"/>
                             <h:outputText value="Parroquia:" />
-                            <p:inputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.parroquiaString}" readonly="true"/>
+                            <h:outputText value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.parroquiaString}"/>
                             <h:outputText value="Observaciones generales:" />
                             <p:inputTextarea value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.observacionGeneral}" cols="47" maxlength="200"
-                                             readonly="true"/>
+                                             readonly="true" disabled="true"/>
                         </h:panelGrid>
+                        <p:separator></p:separator>
+                        <p:separator></p:separator>
                         <f:facet name="footer">
-                            <div align="center" style="width: 100%">	
+                            <div align="center" style="width: 100%">
+                            <p:outputLabel value="ACTOS ADMINISTRATIVOS"/>
+                            <p:separator></p:separator>
                             <h:panelGrid columns="2" columnClasses="form-label, form-input">
                             <h:outputText value="MAE:" />
                             <p:selectBooleanCheckbox value="#{actualizacionActosAdministrativosCtrl.plantaBeneficio.mae}"/>
