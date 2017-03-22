@@ -976,16 +976,28 @@ public class RegistroPagoObligaciones implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "ec.gob.arcom.migracion.modelo.RegistroPagoObligaciones[ codigoRegistro=" + codigoRegistro + " ]";
-    }
-
+  
     /**
      * @return the numeroFormularioPago
      */
     public ParametroSistema getNumeroFormularioPago() {
         return numeroFormularioPago;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistroPagoObligaciones{" + "codigoRegistro=" + codigoRegistro + ", codigoInforme=" + codigoInforme + ", fechaEmisionPago=" + fechaEmisionPago + ", valorPago=" + valorPago + ", numeroComprobanteBanco=" + numeroComprobanteBanco + ", documentoPersonaPago=" + documentoPersonaPago 
+                + ", numeroComprobanteArcom=" + numeroComprobanteArcom + ", codigoSolicitud=" + codigoSolicitud + ", numeroTramite=" + numeroTramite + ", entidadTramite=" + entidadTramite + ", campoReservado05=" + campoReservado05 
+                + ", campoReservado04=" + campoReservado04 + ", campoReservado03=" + campoReservado03 + ", campoReservado02=" + campoReservado02 + ", campoReservado01=" + campoReservado01 + ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion 
+                + ", fechaModificacion=" + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion + ", cantidad=" + cantidad + ", costo=" + costo + ", observacionAnalistaEconomico=" + observacionAnalistaEconomico + ", fechaRevisionAnalistaEconomico=" + fechaRevisionAnalistaEconomico 
+                + ", aprobadoAnalistaEconomico=" + aprobadoAnalistaEconomico + ", observacionCoordinadorRegional=" + observacionCoordinadorRegional + ", fechaRevisionCoordinadorRegional=" + fechaRevisionCoordinadorRegional + ", aprobadoCoordinadorRegional=" + aprobadoCoordinadorRegional + ", valorAdicional=" + valorAdicional 
+                + ", descripcionMotivoValorAdicional=" + descripcionMotivoValorAdicional + ", valorTotalPago=" + valorTotalPago + ", valorPagadoUsuario=" + valorPagadoUsuario + ", valorConceptoPago=" + valorConceptoPago + ", subsanarPago=" + subsanarPago + ", presentaDocumentos=" + presentaDocumentos 
+                + ", codigosConcesiones=" + codigosConcesiones + ", recaudacionSri=" + recaudacionSri + ", valorSubsanar=" + valorSubsanar + ", comprobanteElectronico=" + comprobanteElectronico + ", codigoImpuesto=" + codigoImpuesto + ", observacionRecepcionista=" + observacionRecepcionista + ", numeroFormulario=" + numeroFormulario 
+                + ", codigosPlantas=" + codigosPlantas + ", codigosLicencias=" + codigosLicencias + ", fechaPresentacion=" + fechaPresentacion + ", valorCalculadoArcom=" + valorCalculadoArcom + ", tieneDerechoMinero=" + tieneDerechoMinero + ", codigoUsuarioDelegado=" + codigoUsuarioDelegado 
+                + ", pagoPadre=" + pagoPadre + ", codigoPeriodo=" + codigoPeriodo + ", lugarEmisionPago=" + lugarEmisionPago + ", codigoConcesion=" + codigoConcesion + ", codigoConceptoPago=" + codigoConceptoPago + ", codigoTipoServicio=" + codigoTipoServicio 
+                + ", estadoPago=" + estadoPago + ", tipoPago=" + tipoPago + ", codigoBanco=" + codigoBanco + ", codigoArea=" + codigoArea + ", codigoTipoRegistro=" + codigoTipoRegistro + ", codigoLicenciaComercializacion=" + codigoLicenciaComercializacion + ", codigoPlantaBeneficio=" + codigoPlantaBeneficio 
+                + ", numeroFormularioPago=" + numeroFormularioPago + ", codigoSujetoMinero=" + codigoSujetoMinero + ", codigoDerechoMinero=" + codigoDerechoMinero + ", nombreDerechoMinero=" + nombreDerechoMinero + ", superficie=" + superficie + ", codigoProvincia=" + codigoProvincia + ", codigoCanton=" + codigoCanton 
+                + ", codigoParroquia=" + codigoParroquia + ", codigoRegimen=" + codigoRegimen + ", codigoFase=" + codigoFase + ", codigoTipoMineral=" + codigoTipoMineral + ", numeroRuc=" + numeroRuc + ", concesionario=" + concesionario + ", valorReferenciaEntregaImpresa=" + valorReferenciaEntregaImpresa + '}';
     }
 
     /**

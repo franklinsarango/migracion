@@ -227,6 +227,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         }
         sql += "valor_total_pago = " + registroPagoObligaciones.getValorTotalPago() + ", \n";
         sql += "valor_pagado_usuario = " + registroPagoObligaciones.getValorPagadoUsuario() + ", \n";
+        sql += "valor_calculado_arcom = " + registroPagoObligaciones.getValorCalculadoArcom()+ ", \n";
         sql += "valor_concepto_pago = " + registroPagoObligaciones.getValorConceptoPago() + ", \n";
         sql += "subsanar_pago = " + registroPagoObligaciones.getSubsanarPago() + ", \n";
         sql += "presenta_documentos = " + registroPagoObligaciones.getPresentaDocumentos() + ", \n";
@@ -494,7 +495,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         cedula = cedula == null || cedula.isEmpty()? "-1" : cedula;
         codigoDerechoMinero = codigoDerechoMinero == null || codigoDerechoMinero.isEmpty() ? "-1" : codigoDerechoMinero;
         
-        String sql = "select \n"
+        String sql = "select distinct \n"
                 + "rpo.codigo_registro,\n"
                 + "(select nombre from catmin.catalogo_detalle where codigo_catalogo_detalle = rpo.tipo_pago) as tipo_pago,\n"
                 + "(select valor_parametro || ' '||  descripcion_parametro from catmin.parametro_sistema where codigo_parametro = rpo.codigo_periodo) as periodo,\n"
@@ -508,9 +509,8 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                 + "rpo.numero_tramite,\n"
                 + "rpo.entidad_tramite,\n"
                 + "(select nombre from catmin.catalogo_detalle where codigo_catalogo_detalle = rpo.estado_pago) as estado_pago,\n"
-                + "case when rpd.codigo_concesion is not null then (select codigo_arcom from catmin.concesion_minera where codigo_concesion = rpd.codigo_concesion)\n"
-                + "        when rpd.codigo_licencia_comercializacion is not null then (select codigo_arcom from catmin.licencia_comercializacion where codigo_licencia_comercializacion = rpd.codigo_licencia_comercializacion)\n"
-                + "        when rpd.codigo_planta_beneficio is not null then (select codigo_arcom from catmin.planta_beneficio where codigo_planta_beneficio = rpd.codigo_planta_beneficio) end as codigo_arcom\n"
+                + "catmin.regpagobl_der_min_codigo(rpo.codigo_registro),\n"
+                + "rpo.fecha_creacion\n"
                 + "  \n"
                 + "from catmin.registro_pago_obligaciones rpo, catmin.personas  p,\n"
                 + "(\n"
@@ -559,7 +559,15 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
                 + "                        rpd.codigo_planta_beneficio in (select codigo_planta_beneficio from catmin.planta_beneficio where codigo_arcom = '"+codigoDerechoMinero+"'))\n"
                 + "    )";*/
         
-        
+        if (fechaDesde != null && fechaHasta != null) {
+            sql += " and rpo.fecha_creacion >= '" + fechaD + "' and rpo.fecha_creacion <= '" + fechaH + "'";
+        }
+        if (fechaDesde != null && fechaHasta == null) {
+            sql += " and rpo.fecha_creacion >= '" + fechaD + "'";
+        }
+        if (fechaDesde == null && fechaHasta != null) {
+            sql += " and rpo.fecha_creacion <= '" + fechaH + "'";
+        }
         sql += " order by rpo.fecha_creacion desc";
         
         System.out.println("sql: "+ sql);

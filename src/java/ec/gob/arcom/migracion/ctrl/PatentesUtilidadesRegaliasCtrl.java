@@ -18,6 +18,7 @@ import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.LocalidadRegional;
 import ec.gob.arcom.migracion.modelo.ParametroSistema;
 import ec.gob.arcom.migracion.modelo.PlantaBeneficio;
+import ec.gob.arcom.migracion.modelo.RegistroPagoDetalle;
 import ec.gob.arcom.migracion.modelo.RegistroPagoObligaciones;
 import ec.gob.arcom.migracion.modelo.SujetoMinero;
 import ec.gob.arcom.migracion.modelo.Usuario;
@@ -31,9 +32,12 @@ import ec.gob.arcom.migracion.servicio.PlantaBeneficioServicio;
 import ec.gob.arcom.migracion.servicio.RegistroPagoObligacionesServicio;
 import ec.gob.arcom.migracion.servicio.SujetoMineroServicio;
 import ec.gob.arcom.migracion.servicio.ParametroSistemaServicio;
+import ec.gob.arcom.migracion.servicio.RegistroPagoDetalleServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioRolServicio;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -56,6 +60,8 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
 
     @EJB
     private RegistroPagoObligacionesServicio registroPagoObligacionesServicio;
+    @EJB
+    private RegistroPagoDetalleServicio registroPagoDetalleServicio;
     @EJB
     private LocalidadServicio localidadServicio;
     @EJB
@@ -82,7 +88,10 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     private RegistroPagoObligaciones patentesRegaliasUtilidadesAnterior;
     private List<RegistroPagoObligacionesDto> listaPatentesRegaliasUtilidades;
     private String codigoFiltro;
+    private Date fechaDesdeFiltro;
+    private Date fechaHastaFiltro;
     private Boolean usuarioEconomico;
+    private Long codigoTipoPagoUtilidades = ConstantesEnum.PATUTIREG_UTILIDAD.getCodigo();
 
     private boolean sujetoMinero;
 
@@ -106,10 +115,11 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     private List<SelectItem> provincias;
     private List<SelectItem> cantones;
     private List<SelectItem> parroquias;
-    
+
     private List<SelectItem> periodosList;
     private List<SelectItem> tipoSolicitudList;
     private List<DerechoMineroDto> derechosMineros;
+    private BigDecimal valorPagoDerechoMinero;
 
     private BigInteger codigoImpuestoPatente;
     private BigInteger codigoImpuestoUtilidad;
@@ -117,13 +127,13 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     private BigInteger numeroFormularioPatente;
     private BigInteger numeroFormularioUtilidad;
     private BigInteger numeroFormularioRegalia;
-    
+
     private String nemonicoPatenteUtilidadRegalia;
     private String comprobanteElectronicoFiltro;
     private String documentoPersonaPagoFiltro;
     private String codigoArcomFiltro;
     private String urlReporte;
-    
+
     @PostConstruct
     public void init() {
         try {
@@ -135,17 +145,21 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
             numeroFormularioUtilidad = new BigInteger(parametroSistemaServicio.findByNemonico("NUMFORUTILIDAD").getValorParametro());
             numeroFormularioRegalia = new BigInteger(parametroSistemaServicio.findByNemonico("NUMFORREGALIA").getValorParametro());
 
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DAY_OF_YEAR, -100);
+            fechaDesdeFiltro = calendar.getTime();
+
             /*String userName = "1104212624001";
-            if(login == null){                
-                //Usuario uBd = usuarioDao.obtenerPorLogin(userName);
-                login = new LoginCtrl();
-                login.setUserName(userName);
-                System.out.println("UserName:"+login.getUserName());
-            }else{
-                login.setUserName(userName);
-                System.out.println("UserName:"+login.getUserName());
-            }*/
-            
+             if(login == null){                
+             //Usuario uBd = usuarioDao.obtenerPorLogin(userName);
+             login = new LoginCtrl();
+             login.setUserName(userName);
+             System.out.println("UserName:"+login.getUserName());
+             }else{
+             login.setUserName(userName);
+             System.out.println("UserName:"+login.getUserName());
+             }*/
 //            Usuario uBd = usuarioDao.obtenerPorLogin(login.getUserName());
 //            if (uBd != null) {
 //                if (uBd.getCampoReservado01() != null && (uBd.getCampoReservado01().equals("UE") || uBd.getCampoReservado01().equals("UEN"))) {
@@ -154,16 +168,15 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
 //                    usuarioEconomico = false;
 //                }
 //            }  
-            
-            if (login.isEconomicoRegional()== true || login.isEconomicoNacional()== true) {
+            if (login.isEconomicoRegional() == true || login.isEconomicoNacional() == true) {
                 usuarioEconomico = true;
             }
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     public RegistroPagoObligaciones getPatentesRegaliasUtilidades() {
         if (patentesRegaliasUtilidades == null) {
             String registroPagoObligacionesId = getHttpServletRequestParam("idItem");
@@ -181,11 +194,46 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
             } else {
                 patentesRegaliasUtilidades = registroPagoObligacionesServicio.obtenerPorCodigoRegistroPagoObligaciones(idRegistroPagoObligaciones);
                 patentesRegaliasUtilidadesAnterior = registroPagoObligacionesServicio.obtenerPorCodigoRegistroPagoObligaciones(idRegistroPagoObligaciones);
+                patentesRegaliasUtilidades.setCodigoTipoRegistro(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo());
                 patentesRegaliasUtilidades.getCodigoConcesion();
                 patentesRegaliasUtilidades.getCodigoLicenciaComercializacion();
-                patentesRegaliasUtilidades.getCodigoPlantaBeneficio();
+                patentesRegaliasUtilidades.getCodigoPlantaBeneficio();                
                 if (patentesRegaliasUtilidades.getTipoPago() == null) {
                     patentesRegaliasUtilidades.setTipoPago(new CatalogoDetalle());
+                }
+                if(patentesRegaliasUtilidades.getNumeroFormularioPago() == null){
+                    patentesRegaliasUtilidades.setNumeroFormularioPago(new ParametroSistema());
+                }
+                eventChangeTipoPago();
+
+                List<RegistroPagoDetalle> lista = registroPagoDetalleServicio.obtenerPorCodigoRegistroPago(idRegistroPagoObligaciones);
+                for (RegistroPagoDetalle r : lista) {
+                    DerechoMineroDto derechoMineroDto = new DerechoMineroDto();
+                    if (r.getCodigoConcesion() != null) {
+                        derechoMineroDto.setId(r.getCodigoConcesion().getCodigoConcesion());
+                        derechoMineroDto.setCodigo(r.getCodigoConcesion().getCodigoArcom());
+                        derechoMineroDto.setTipoDerechoMinero(r.getCodigoConcesion().getCodigoTipoMineria().getNombreTipoMineria());
+                        derechoMineroDto.setCodigoTipoSolicitud(r.getCodigoConcesion().getCodigoTipoMineria().getCodigoTipoMineria());
+                    }
+                    if (r.getCodigoLicenciaComercializacion() != null) {
+                        derechoMineroDto.setId(r.getCodigoLicenciaComercializacion().getCodigoLicenciaComercializacion());
+                        derechoMineroDto.setCodigo(r.getCodigoLicenciaComercializacion().getCodigoArcom());
+                        derechoMineroDto.setTipoDerechoMinero(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getDescripcion());
+                        derechoMineroDto.setCodigoTipoSolicitud(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo());
+                    }
+                    if (r.getCodigoPlantaBeneficio() != null) {
+                        derechoMineroDto.setId(r.getCodigoPlantaBeneficio().getCodigoPlantaBeneficio());
+                        derechoMineroDto.setCodigo(r.getCodigoPlantaBeneficio().getCodigoArcom());
+                        derechoMineroDto.setTipoDerechoMinero(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getDescripcion());
+                        derechoMineroDto.setCodigoTipoSolicitud(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo());
+                    }
+                    if (r.getValorPagado() != null) {
+                        derechoMineroDto.setValorPagoDerechoMinero(r.getValorPagado());
+                    }
+                    if (derechosMineros == null) {
+                        derechosMineros = new ArrayList<>();
+                    }
+                    derechosMineros.add(derechoMineroDto);
                 }
             }
         }
@@ -211,33 +259,12 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
 
     public String guardarRegistro() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
-        
-        //CONTRO PARA NO INGRESAR UN COMPROBANTE YA EXISTENTE EN LA LA BASE DE DATOS
-        List<RegistroPagoObligaciones> listComprobantes = registroPagoObligacionesServicio.findByComprobanteElectronico(patentesRegaliasUtilidades.getComprobanteElectronico());
-        if (listComprobantes != null && listComprobantes.size() > 0) {
-            boolean existeComprobante = false;
-            for (RegistroPagoObligaciones rpo : listComprobantes) {
-                if (rpo.getEstadoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.ESTCOMP_APROBADO.getCodigo())
-                        || rpo.getEstadoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getCodigo())) {
-                    existeComprobante = true;
-                }
-            }
 
-            if (existeComprobante) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "El comprobante: " + patentesRegaliasUtilidades.getComprobanteElectronico() + " Ya esta Registrado", null));
-                return null;
-            }
-        }
-        
         try {
             CatalogoDetalle cd = new CatalogoDetalle();
             cd.setCodigoCatalogoDetalle(574L);
             patentesRegaliasUtilidades.setEstadoPago(cd);
-            
-//            if(patentesRegaliasUtilidades.getEntidadTramite() == null)
-//                patentesRegaliasUtilidades.setEntidadTramite("REGISTRO_PAGO_OBLIGACIONES");
-            
+
             if (derechosMineros == null || derechosMineros.isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "Ingrese al menos un derecho minero: ", null));
@@ -249,8 +276,26 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
             patentesRegaliasUtilidades.setCodigoPlantaBeneficio(null);
             patentesRegaliasUtilidades.setCodigoSujetoMinero(null);
             patentesRegaliasUtilidades.setCodigoTipoRegistro(null);
-           
+
             if (patentesRegaliasUtilidades.getCodigoRegistro() == null) {
+                //CONTRO PARA NO INGRESAR UN COMPROBANTE YA EXISTENTE EN LA LA BASE DE DATOS
+                List<RegistroPagoObligaciones> listComprobantes = registroPagoObligacionesServicio.findByComprobanteElectronico(patentesRegaliasUtilidades.getComprobanteElectronico());
+                if (listComprobantes != null && listComprobantes.size() > 0) {
+                    boolean existeComprobante = false;
+                    for (RegistroPagoObligaciones rpo : listComprobantes) {
+                        if (rpo.getEstadoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.ESTCOMP_APROBADO.getCodigo())
+                                || rpo.getEstadoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getCodigo())) {
+                            existeComprobante = true;
+                        }
+                    }
+
+                    if (existeComprobante) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                                "El comprobante: " + patentesRegaliasUtilidades.getComprobanteElectronico() + " Ya esta Registrado", null));
+                        return null;
+                    }
+                }
+
                 System.out.println("entra create");
                 patentesRegaliasUtilidades.setEstadoRegistro(true);
                 patentesRegaliasUtilidades.setFechaCreacion(new Date());
@@ -271,7 +316,7 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
                 System.out.println("entra update");
                 patentesRegaliasUtilidades.setFechaModificacion(new Date());
                 patentesRegaliasUtilidades.setUsuarioModificacion(BigInteger.valueOf(us.getCodigoUsuario()));
-                registroPagoObligacionesServicio.actualizarRegistroPagoObligaciones(patentesRegaliasUtilidades);
+                registroPagoObligacionesServicio.actualizarTodo(patentesRegaliasUtilidades, derechosMineros, us.getCodigoUsuario());
                 Auditoria auditoria = new Auditoria();
                 auditoria.setAccion("UPDATE");
                 auditoria.setDetalleAnterior(patentesRegaliasUtilidadesAnterior.toString());
@@ -294,12 +339,37 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         listaPatentesRegaliasUtilidades = null;
         getListaPatentesRegaliasUtilidades();
     }
-    
+
     public List<RegistroPagoObligacionesDto> getListaPatentesRegaliasUtilidades() {
         if (listaPatentesRegaliasUtilidades == null) {
-            //listaPatentesRegaliasUtilidades = registroPagoObligacionesServicio.findAll();
-            Date fechaDesdeFiltro = null;
-            Date fechaHastaFiltro = null;            
+            boolean existeFiltro = false;
+            if (fechaDesdeFiltro != null || fechaHastaFiltro != null) {
+                System.out.println("fechaDesdeFiltro FILTRO ---->" + fechaDesdeFiltro);
+                existeFiltro = true;
+            }
+            if (comprobanteElectronicoFiltro != null && !comprobanteElectronicoFiltro.isEmpty()) {
+                System.out.println("comprobanteElectronicoFiltro FILTRO ---->" + comprobanteElectronicoFiltro);
+                existeFiltro = true;
+            }
+            if (documentoPersonaPagoFiltro != null && !documentoPersonaPagoFiltro.isEmpty()) {
+                System.out.println("documentoPersonaPagoFiltro FILTRO ---->" + documentoPersonaPagoFiltro);
+                existeFiltro = true;
+            }
+            if (codigoArcomFiltro != null && !codigoArcomFiltro.isEmpty()) {
+                System.out.println("codigoArcomFiltro FILTRO ---->" + codigoArcomFiltro);
+                existeFiltro = true;
+            }
+
+            System.out.println("existeFiltro FILTRO ---->" + existeFiltro);
+            if (existeFiltro == false) {
+                System.out.println("NO EXISTE FILTRO ---->");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Debe ingresar por lo menos un filtro para realizar la búsqueda de comprobantes", null));
+                return null;
+            }
+
+//            Date fechaDesdeFiltro = null;
+//            Date fechaHastaFiltro = null;            
             listaPatentesRegaliasUtilidades = registroPagoObligacionesServicio
                     .obtenerRegistrosPatUtiReg(fechaDesdeFiltro, fechaHastaFiltro, comprobanteElectronicoFiltro, documentoPersonaPagoFiltro, getCodigoArcomFiltro(), null);
         }
@@ -310,19 +380,19 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
         UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(us.getCodigoUsuario());
         RegistroPagoObligacionesDto registroPagoObligacionesItem = (RegistroPagoObligacionesDto) getExternalContext().getRequestMap().get("reg");
-        if (! registroPagoObligacionesItem.getEstadoPago().toUpperCase().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getDescripcion())) {
-                setUrlReporte(ConstantesEnum.URL_BASE.getDescripcion()
-                        + "/birt/frameset?__report=report/ComprobatesPago/Patentes-utilidades-regalias.rptdesign&codigo_registro="
-                        + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
-                        + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf");
-               System.out.println("URL del Comprobante: " + this.getUrlReporte());
-               RequestContext.getCurrentInstance().execute("PF('visorTramite').show()");
-        }else{
+        if (!registroPagoObligacionesItem.getEstadoPago().toUpperCase().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getDescripcion())) {
+            setUrlReporte(ConstantesEnum.URL_BASE.getDescripcion()
+                    + "/birt/frameset?__report=report/ComprobatesPago/Patentes-utilidades-regalias.rptdesign&codigo_registro="
+                    + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
+                    + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf");
+            System.out.println("URL del Comprobante: " + this.getUrlReporte());
+            RequestContext.getCurrentInstance().execute("PF('visorTramite').show()");
+        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "El Comprobante debe estar en estado APROBADO para poder mostrarlo !!!", null));
         }
     }
-    
+
     public void setListaPatentesRegaliasUtilidades(List<RegistroPagoObligacionesDto> listaPatentesRegaliasUtilidades) {
         this.listaPatentesRegaliasUtilidades = listaPatentesRegaliasUtilidades;
     }
@@ -332,9 +402,14 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         licenciaComercializacionPopup = null;
         plantaBeneficioPopup = null;
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
+        if (patentesRegaliasUtilidades.getTipoPago()== null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Antes de buscar por código debe elegir un Tipo de pago", null));
+            return;
+        }
         if (patentesRegaliasUtilidades.getCodigoTipoRegistro() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "Antes de buscar por código debe elegir un tipo de registro", null));
+                    "Antes de buscar por código debe elegir un Tipo de registro", null));
             return;
         }
         if (patentesRegaliasUtilidades.getCodigoTipoRegistro().equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())
@@ -345,15 +420,15 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
             concesionMineraPopupAnterior = concesionMineraServicio.obtenerPorCodigoArcom(codigoFiltro);
             if (concesionMineraPopup != null) {
                 /*if (localidadRegionalConcesion.getRegional().getCodigoRegional()
-                        .equals(localidadRegionalUsuario.getRegional().getCodigoRegional())) {*/
-                    provincia = localidadServicio.findByPk(concesionMineraPopup.getCodigoProvincia().longValue());
-                    canton = localidadServicio.findByPk(concesionMineraPopup.getCodigoCanton().longValue());
-                    parroquia = localidadServicio.findByPk(concesionMineraPopup.getCodigoParroquia().longValue());
+                 .equals(localidadRegionalUsuario.getRegional().getCodigoRegional())) {*/
+                provincia = localidadServicio.findByPk(concesionMineraPopup.getCodigoProvincia().longValue());
+                canton = localidadServicio.findByPk(concesionMineraPopup.getCodigoCanton().longValue());
+                parroquia = localidadServicio.findByPk(concesionMineraPopup.getCodigoParroquia().longValue());
                 /*} else {
-                    concesionMineraPopup = null;
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "La concesión existe pero no pertenece a su regional", null));
-                }*/
+                 concesionMineraPopup = null;
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                 "La concesión existe pero no pertenece a su regional", null));
+                 }*/
             }
         } else if (patentesRegaliasUtilidades.getCodigoTipoRegistro().equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())) {
             licenciaComercializacionPopup = licenciaComercializacionServicio.obtenerPorCodigoArcom(codigoFiltro);
@@ -364,19 +439,19 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
                 LocalidadRegional localidadRegionalUsuario = localidadRegionalServicio
                         .obtenerPorCodigoLocalidad(us.getCodigoProvincia().longValue());
                 /*if (localidadRegionalLicencia.getRegional().getCodigoRegional()
-                        .equals(localidadRegionalUsuario.getRegional().getCodigoRegional())) {*/
-                    provincia = localidadServicio.findByPk(licenciaComercializacionPopup.getCodigoProvincia().longValue());
-                    canton = localidadServicio.findByPk(licenciaComercializacionPopup.getCodigoCanton().longValue());
-                    if (licenciaComercializacionPopup.getCodigoParroquida() != null) {
-                        parroquia = localidadServicio.findByPk(licenciaComercializacionPopup.getCodigoParroquida().longValue());
-                    } else {
-                        parroquia = new Localidad();
-                    }
+                 .equals(localidadRegionalUsuario.getRegional().getCodigoRegional())) {*/
+                provincia = localidadServicio.findByPk(licenciaComercializacionPopup.getCodigoProvincia().longValue());
+                canton = localidadServicio.findByPk(licenciaComercializacionPopup.getCodigoCanton().longValue());
+                if (licenciaComercializacionPopup.getCodigoParroquida() != null) {
+                    parroquia = localidadServicio.findByPk(licenciaComercializacionPopup.getCodigoParroquida().longValue());
+                } else {
+                    parroquia = new Localidad();
+                }
                 /*} else {
-                    licenciaComercializacionPopup = null;
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "La licencia existe pero no pertenece a su regional", null));
-                }*/
+                 licenciaComercializacionPopup = null;
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                 "La licencia existe pero no pertenece a su regional", null));
+                 }*/
             }
         } else if (patentesRegaliasUtilidades.getCodigoTipoRegistro().equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo())) {
             plantaBeneficioPopup = plantaBeneficioServicio.obtenerPorCodigoArcom(codigoFiltro);
@@ -387,28 +462,29 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
                 LocalidadRegional localidadRegionalUsuario = localidadRegionalServicio
                         .obtenerPorCodigoLocalidad(us.getCodigoProvincia().longValue());
                 /*if (localidadRegionalPlanta.getRegional().getCodigoRegional()
-                        .equals(localidadRegionalUsuario.getRegional().getCodigoRegional())) {*/
-                    provincia = localidadServicio.findByPk(plantaBeneficioPopup.getCodigoProvincia().longValue());
-                    canton = localidadServicio.findByPk(plantaBeneficioPopup.getCodigoCanton().longValue());
-                    if (plantaBeneficioPopup.getCodigoParroquida() != null) {
-                        parroquia = localidadServicio.findByPk(plantaBeneficioPopup.getCodigoParroquida().longValue());
-                    } else {
-                        parroquia = new Localidad();
-                    }
+                 .equals(localidadRegionalUsuario.getRegional().getCodigoRegional())) {*/
+                provincia = localidadServicio.findByPk(plantaBeneficioPopup.getCodigoProvincia().longValue());
+                canton = localidadServicio.findByPk(plantaBeneficioPopup.getCodigoCanton().longValue());
+                if (plantaBeneficioPopup.getCodigoParroquida() != null) {
+                    parroquia = localidadServicio.findByPk(plantaBeneficioPopup.getCodigoParroquida().longValue());
+                } else {
+                    parroquia = new Localidad();
+                }
                 /*} else {
-                    plantaBeneficioPopup = null;
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "La planta existe pero no pertenece a su regional", null));
-                }*/
+                 plantaBeneficioPopup = null;
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                 "La planta existe pero no pertenece a su regional", null));
+                 }*/
             }
         }
     }
 
-    public void eventChangeTipoRegistro() { 
+    public void eventChangeTipoRegistro() {
         //Se resetea los campos para volver a buscar el Derecho Minero
         patentesRegaliasUtilidades.setCodigoDerechoMinero(null);
-        derechosMineros = null;
-        
+        limpiarTablaDerechosMineros();
+//        derechosMineros = null;
+
         if (patentesRegaliasUtilidades.getCodigoTipoRegistro() != null) {
             if (patentesRegaliasUtilidades.getCodigoTipoRegistro().equals(ConstantesEnum.SUJETO_MINERO.getCodigo())) {
                 sujetoMinero = true;
@@ -418,25 +494,34 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         }
     }
 
-    public void cargarPopupBusqueda() { 
+    public void abrirBusquedaDerechoMinero() {
+        codigoFiltro = null;
+        concesionMineraPopup = null;
+        licenciaComercializacionPopup = null;
+        plantaBeneficioPopup = null;
+        valorPagoDerechoMinero = null;
+        RequestContext.getCurrentInstance().execute("PF('dlgBusqCod').show()");
+    }
+
+    public void cargarPopupBusqueda() {
         codigoFiltro = null;
         concesionMineraPopup = null;
         licenciaComercializacionPopup = null;
         plantaBeneficioPopup = null;
     }
-    
+
     public void eventChangeTipoPago() {
         //Se resetea los campos para volver a buscar el Derecho Minero
         patentesRegaliasUtilidades.setCodigoDerechoMinero(null);
         derechosMineros = null;
-        
+
         patentesRegaliasUtilidades.setCodigoDerechoMinero(null);
-        if (patentesRegaliasUtilidades.getTipoPago()!= null) {
+        if (patentesRegaliasUtilidades.getTipoPago() != null) {
             //Patente
-            if (patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_PATENTE.getCodigo())){
+            if (patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_PATENTE.getCodigo())) {
                 patentesRegaliasUtilidades.setCodigoImpuesto(codigoImpuestoPatente);
                 patentesRegaliasUtilidades.setNumeroFormulario(numeroFormularioPatente);
-                
+
                 this.nemonicoPatenteUtilidadRegalia = "PERPAT";
                 periodosList = null;
                 tipoSolicitudList = null;
@@ -444,10 +529,10 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
                 this.getTipoSolicitudList();
                 //patentesRegaliasUtilidades.setc(patentesRegaliasUtilidades.getPeriodosPatente());
             } //Regalia
-            else if (patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_REGALIA.getCodigo())){
+            else if (patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_REGALIA.getCodigo())) {
                 patentesRegaliasUtilidades.setCodigoImpuesto(codigoImpuestoRegalia);
                 patentesRegaliasUtilidades.setNumeroFormulario(numeroFormularioRegalia);
-                
+
                 this.nemonicoPatenteUtilidadRegalia = "PERREG";
                 periodosList = null;
                 tipoSolicitudList = null;
@@ -455,10 +540,10 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
                 this.getTipoSolicitudList();
                 //patentesRegaliasUtilidades.setListaPeriodo(patentesRegaliasUtilidades.getPeriodosRegalia());
             } //Utilidad
-            else if (patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_UTILIDAD.getCodigo())){
+            else if (patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_UTILIDAD.getCodigo())) {
                 patentesRegaliasUtilidades.setCodigoImpuesto(codigoImpuestoUtilidad);
                 patentesRegaliasUtilidades.setNumeroFormulario(numeroFormularioUtilidad);
-                
+
                 this.nemonicoPatenteUtilidadRegalia = "PERUTIL";
                 periodosList = null;
                 tipoSolicitudList = null;
@@ -468,7 +553,7 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
             }
         }
     }
-    
+
     public boolean isSujetoMinero() {
         return sujetoMinero;
     }
@@ -534,17 +619,17 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     }
 
     public void seleccionarConcesion() {
-        derechosMineros = null;
+//        derechosMineros = null;
         patentesRegaliasUtilidades.setCodigoConcesion(concesionMineraPopup);
         patentesRegaliasUtilidades.getCodigoConcesion();
-              
+
         DerechoMineroDto derechoMineroDto = new DerechoMineroDto();
         derechoMineroDto.setId(concesionMineraPopup.getCodigoConcesion());
         derechoMineroDto.setCodigo(concesionMineraPopup.getCodigoArcom());
         derechoMineroDto.setTipoDerechoMinero(concesionMineraPopup.getCodigoTipoMineria().getNombreTipoMineria());
         derechoMineroDto.setCodigoTipoSolicitud(concesionMineraPopup.getCodigoTipoMineria().getCodigoTipoMineria());
-        //-->System.out.println("valorPagoDerechoMinero: " + valorPagoDerechoMinero);
-        //-->derechoMineroDto.setValorPagoDerechoMinero(valorPagoDerechoMinero);
+        System.out.println("valorPagoDerechoMinero: " + valorPagoDerechoMinero);
+        derechoMineroDto.setValorPagoDerechoMinero(valorPagoDerechoMinero);
         agregarDerechoMinero(derechoMineroDto);
         RequestContext.getCurrentInstance().execute("PF('dlgBusqCod').hide()");
         concesionMineraPopup = null;
@@ -553,16 +638,16 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     }
 
     public void seleccionarLicencia() {
-        derechosMineros = null;
+//        derechosMineros = null;
         patentesRegaliasUtilidades.setCodigoLicenciaComercializacion(licenciaComercializacionPopup);
         patentesRegaliasUtilidades.getCodigoLicenciaComercializacion();
-        
+
         DerechoMineroDto derechoMineroDto = new DerechoMineroDto();
         derechoMineroDto.setId(licenciaComercializacionPopup.getCodigoLicenciaComercializacion());
         derechoMineroDto.setCodigo(licenciaComercializacionPopup.getCodigoArcom());
         derechoMineroDto.setTipoDerechoMinero(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getDescripcion());
         derechoMineroDto.setCodigoTipoSolicitud(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo());
-        //-->derechoMineroDto.setValorPagoDerechoMinero(valorPagoDerechoMinero);
+        derechoMineroDto.setValorPagoDerechoMinero(valorPagoDerechoMinero);
         agregarDerechoMinero(derechoMineroDto);
         RequestContext.getCurrentInstance().execute("PF('dlgBusqCod').hide()");
         concesionMineraPopup = null;
@@ -571,16 +656,16 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     }
 
     public void seleccionarPlanta() {
-        derechosMineros = null;
+//        derechosMineros = null;
         patentesRegaliasUtilidades.setCodigoPlantaBeneficio(plantaBeneficioPopup);
         patentesRegaliasUtilidades.getCodigoPlantaBeneficio();
-        
+
         DerechoMineroDto derechoMineroDto = new DerechoMineroDto();
         derechoMineroDto.setId(plantaBeneficioPopup.getCodigoPlantaBeneficio());
         derechoMineroDto.setCodigo(plantaBeneficioPopup.getCodigoArcom());
         derechoMineroDto.setTipoDerechoMinero(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getDescripcion());
         derechoMineroDto.setCodigoTipoSolicitud(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN.getCodigo());
-        //-->derechoMineroDto.setValorPagoDerechoMinero(valorPagoDerechoMinero);
+        derechoMineroDto.setValorPagoDerechoMinero(valorPagoDerechoMinero);
         agregarDerechoMinero(derechoMineroDto);
         RequestContext.getCurrentInstance().execute("PF('dlgBusqCod').hide()");
         concesionMineraPopup = null;
@@ -589,12 +674,29 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     }
 
     public void agregarDerechoMinero(DerechoMineroDto derechoMineroDto) {
+        limpiarTablaDerechosMineros();
         if (derechosMineros == null) {
             derechosMineros = new ArrayList<>();
         }
         derechosMineros.add(derechoMineroDto);
     }
-    
+
+    public void limpiarTablaDerechosMineros() {
+        if (patentesRegaliasUtilidades.getTipoPago() != null) {
+            //Patente o Regalia
+            if (patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_PATENTE.getCodigo())
+                    || patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_REGALIA.getCodigo())) {
+                derechosMineros = null;
+            }
+        }
+    }
+
+    public void eliminarDerechoMinero() {
+        DerechoMineroDto derechoMineraItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
+        System.out.println("derechoMineraItem: " + derechoMineraItem.getCodigo());
+        derechosMineros.remove(derechoMineraItem);
+    }
+
     public SujetoMinero getSujetoMineroPopUp() {
         return sujetoMineroPopUp;
     }
@@ -739,7 +841,7 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         parroquias = null;
         getParroquias();
     }
-    
+
     /**
      * @return the periodosList
      */
@@ -748,9 +850,9 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
             periodosList = new ArrayList<>();
             List<ParametroSistema> parSistList = parametroSistemaServicio.findByNemonicoLike(nemonicoPatenteUtilidadRegalia);
             for (ParametroSistema parSist : parSistList) {
-                periodosList.add(new SelectItem(parSist.getCodigoParametro(), parSist.getValorParametro() + " " +parSist.getDescripcionParametro()));
+                periodosList.add(new SelectItem(parSist.getCodigoParametro(), parSist.getValorParametro() + " " + parSist.getDescripcionParametro()));
             }
-            
+
         }
         return periodosList;
     }
@@ -770,7 +872,8 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     }
 
     /**
-     * @param comprobanteElectronicoFiltro the comprobanteElectronicoFiltro to set
+     * @param comprobanteElectronicoFiltro the comprobanteElectronicoFiltro to
+     * set
      */
     public void setComprobanteElectronicoFiltro(String comprobanteElectronicoFiltro) {
         this.comprobanteElectronicoFiltro = comprobanteElectronicoFiltro;
@@ -810,7 +913,7 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
     public List<SelectItem> getTipoSolicitudList() {
         if (tipoSolicitudList == null) {
             tipoSolicitudList = new ArrayList<>();
-            if (patentesRegaliasUtilidades != null && patentesRegaliasUtilidades.getTipoPago()!= null && patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle() != null) {
+            if (patentesRegaliasUtilidades != null && patentesRegaliasUtilidades.getTipoPago() != null && patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle() != null) {
                 //Patente
                 if (patentesRegaliasUtilidades.getTipoPago().getCodigoCatalogoDetalle().equals(ConstantesEnum.PATUTIREG_PATENTE.getCodigo())) {
                     tipoSolicitudList.add(new SelectItem(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo(), ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getDescripcion()));
@@ -880,5 +983,61 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
      */
     public void setUsuarioEconomico(Boolean usuarioEconomico) {
         this.usuarioEconomico = usuarioEconomico;
+    }
+
+    /**
+     * @return the valorPagoDerechoMinero
+     */
+    public BigDecimal getValorPagoDerechoMinero() {
+        return valorPagoDerechoMinero;
+    }
+
+    /**
+     * @param valorPagoDerechoMinero the valorPagoDerechoMinero to set
+     */
+    public void setValorPagoDerechoMinero(BigDecimal valorPagoDerechoMinero) {
+        this.valorPagoDerechoMinero = valorPagoDerechoMinero;
+    }
+
+    /**
+     * @return the fechaDesdeFiltro
+     */
+    public Date getFechaDesdeFiltro() {
+        return fechaDesdeFiltro;
+    }
+
+    /**
+     * @param fechaDesdeFiltro the fechaDesdeFiltro to set
+     */
+    public void setFechaDesdeFiltro(Date fechaDesdeFiltro) {
+        this.fechaDesdeFiltro = fechaDesdeFiltro;
+    }
+
+    /**
+     * @return the fechaHastaFiltro
+     */
+    public Date getFechaHastaFiltro() {
+        return fechaHastaFiltro;
+    }
+
+    /**
+     * @param fechaHastaFiltro the fechaHastaFiltro to set
+     */
+    public void setFechaHastaFiltro(Date fechaHastaFiltro) {
+        this.fechaHastaFiltro = fechaHastaFiltro;
+    }
+
+    /**
+     * @return the codigoTipoPagoUtilidades
+     */
+    public Long getCodigoTipoPagoUtilidades() {
+        return codigoTipoPagoUtilidades;
+    }
+
+    /**
+     * @param codigoTipoPagoUtilidades the codigoTipoPagoUtilidades to set
+     */
+    public void setCodigoTipoPagoUtilidades(Long codigoTipoPagoUtilidades) {
+        this.codigoTipoPagoUtilidades = codigoTipoPagoUtilidades;
     }
 }
