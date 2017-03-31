@@ -226,7 +226,7 @@
                                          required="true" requiredMessage="Tipo solicitud es requerido" style="width: 93%">
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                             <f:selectItems value="#{selectItemCtrl.tiposMineriaCodigo}" />
-                            <p:ajax listener="#{concesionMineraCtrl.validarRegimenFase}" update="reg1 reg2 fas1 fas2 modTrab modTrab2"/>
+                            <p:ajax listener="#{concesionMineraCtrl.validarRegimenFase}" update="reg1 reg2 fas1 fas2 modTrab modTrab2 numResolCambioRegimen1 numResolCambioRegimen2 fechaOtorgCambioRegimen1 fechaOtorgCambioRegimen2 fechaInscripCambioRegimen1 fechaInscripCambioRegimen2"/>
                         </p:selectOneMenu>
 
                         <h:panelGroup id="reg1">
@@ -250,6 +250,32 @@
                                 <f:selectItem itemValue="1000" itemLabel="--Seleccione una opción--" />
                                 <f:selectItems value="#{concesionMineraCtrl.fasesCodigoCatalogo}" />
                             </p:selectOneMenu>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id="numResolCambioRegimen1">
+                            <p:outputLabel for="numeroResolucionCambioRegimen" value="Número Resolución Cambio de Regimen:" rendered="#{concesionMineraCtrl.tipSolConcMin}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="numResolCambioRegimen2">
+                            <p:inputText id="numeroResolucionCambioRegimen" size="50" value="#{concesionMineraCtrl.concesionMinera.numeroResolucionCambioRegimen}" required="true" requiredMessage="Número Resolución Cambio de Regimen es requerido" maxlength="50"
+                                         rendered="#{concesionMineraCtrl.tipSolConcMin}"></p:inputText>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id="fechaOtorgCambioRegimen1">
+                        <p:outputLabel for="fechaOtorgamientoCambioRegimen" value="Fecha Otorgamiento Cambio Regimen:" rendered="#{concesionMineraCtrl.tipSolConcMin}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fechaOtorgCambioRegimen2">
+                        <p:calendar id="fechaOtorgamientoCambioRegimen" rendered="#{concesionMineraCtrl.tipSolConcMin}"
+                                    value="#{concesionMineraCtrl.concesionMinera.fechaOtorgamientoCambioRegimen}" placeholder="aaaa-mm-dd" navigator="true"
+                                    locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" />
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id="fechaInscripCambioRegimen1">
+                        <p:outputLabel for="fechaInscripcionCambioRegimen" value="Fecha Inscripcion Cambio Regimen:" rendered="#{concesionMineraCtrl.tipSolConcMin}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fechaInscripCambioRegimen2">
+                        <p:calendar id="fechaInscripcionCambioRegimen" rendered="#{concesionMineraCtrl.tipSolConcMin}"
+                                    value="#{concesionMineraCtrl.concesionMinera.fechaInscripcionCambioRegimen}" placeholder="aaaa-mm-dd" navigator="true"
+                                    locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" />
                         </h:panelGroup>
 
                         <h:panelGroup id="modTrab">

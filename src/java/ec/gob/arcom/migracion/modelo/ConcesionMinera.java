@@ -213,6 +213,15 @@ public class ConcesionMinera implements Serializable {
     private Date fechaInscripcionSustitucion;
     @Column(name = "plazo_dias")
     private Integer dias;
+    @Size(max = 100)
+    @Column(name = "numero_resolucion_cambio_regimen")
+    private String numeroResolucionCambioRegimen;
+    @Column(name = "fecha_otorgamiento_cambio_regimen")
+    @Temporal(TemporalType.DATE)
+    private Date fechaOtorgamientoCambioRegimen;
+    @Column(name = "fecha_inscripcion_cambio_regimen")
+    @Temporal(TemporalType.DATE)
+    private Date fechaInscripcionCambioRegimen;
     @Transient
     private PersonaNatural personaNaturalTransient;
     @Transient
@@ -755,7 +764,7 @@ public class ConcesionMinera implements Serializable {
                 + ", codigoModalidadTrabajo=" + (codigoModalidadTrabajo != null ? codigoModalidadTrabajo.getCodigoCatalogoDetalle() : null) + ", estadoConcesion=" + (estadoConcesion != null ? estadoConcesion.getCodigoCatalogoDetalle() : null)
                 + ", obsActosAdmPrevios=" + obsActosAdmPrevios + ", observacionGeneral=" + observacionGeneral + ", sector=" + sector + ", mae=" + mae + ", senagua=" + senagua
                 + ", migrada=" + migrada + ", fechaInforme=" + fechaInforme + ", codigoCasilleroLocalidad=" + (codigoCasilleroLocalidad != null ? codigoCasilleroLocalidad.getCodigoLocalidad() : null) 
-                + ", litispendencia=" + litispendencia+ '}';
+                + ", numeroResolucionCambioRegimen=" + numeroResolucionCambioRegimen +", fechaOtorgamientoCambioRegimen=" + fechaOtorgamientoCambioRegimen +", fechaInscripcionCambioRegimen=" + fechaInscripcionCambioRegimen +", litispendencia=" + litispendencia+ '}';
     }
 
     public List<Instrumento> getInstrumentoList() {
@@ -1000,6 +1009,48 @@ public class ConcesionMinera implements Serializable {
      */
     public void setObservacionGeneral(String observacionGeneral) {
         this.observacionGeneral = observacionGeneral;
+    }
+
+    /**
+     * @return the fechaOtorgamientoCambioRegimen
+     */
+    public Date getFechaOtorgamientoCambioRegimen() {
+        return fechaOtorgamientoCambioRegimen;
+    }
+
+    /**
+     * @param fechaOtorgamientoCambioRegimen the fechaOtorgamientoCambioRegimen to set
+     */
+    public void setFechaOtorgamientoCambioRegimen(Date fechaOtorgamientoCambioRegimen) {
+        this.fechaOtorgamientoCambioRegimen = fechaOtorgamientoCambioRegimen;
+    }
+
+    /**
+     * @return the fechaInscripcionCambioRegimen
+     */
+    public Date getFechaInscripcionCambioRegimen() {
+        return fechaInscripcionCambioRegimen;
+    }
+
+    /**
+     * @param fechaInscripcionCambioRegimen the fechaInscripcionCambioRegimen to set
+     */
+    public void setFechaInscripcionCambioRegimen(Date fechaInscripcionCambioRegimen) {
+        this.fechaInscripcionCambioRegimen = fechaInscripcionCambioRegimen;
+    }
+
+    /**
+     * @return the numeroResolucionCambioRegimen
+     */
+    public String getNumeroResolucionCambioRegimen() {
+        return numeroResolucionCambioRegimen;
+    }
+
+    /**
+     * @param numeroResolucionCambioRegimen the numeroResolucionCambioRegimen to set
+     */
+    public void setNumeroResolucionCambioRegimen(String numeroResolucionCambioRegimen) {
+        this.numeroResolucionCambioRegimen = numeroResolucionCambioRegimen;
     }
 
 }

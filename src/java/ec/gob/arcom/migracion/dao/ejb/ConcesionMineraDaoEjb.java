@@ -488,6 +488,21 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
         if (concesionMinera.getCodigoMaterialInteres() != null) {
             sql += "    codigo_material_interes = " + concesionMinera.getCodigoMaterialInteres().getCodigoCatalogoDetalle() + ",\n";
         }
+        if (concesionMinera.getNumeroResolucionCambioRegimen()!= null) {
+            sql = sql + "    numero_resolucion_cambio_regimen = '" + concesionMinera.getNumeroResolucionCambioRegimen()+ "',\n";
+        }
+        if (concesionMinera.getFechaOtorgamientoCambioRegimen()!= null) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_otorgamiento_cambio_regimen = '" + formatoDelTexto.format(concesionMinera.getFechaOtorgamientoCambioRegimen()) + "',\n";
+        } else {
+            sql = sql + "    fecha_otorgamiento_cambio_regimen = null ,\n";
+        }
+        if (concesionMinera.getFechaInscripcionCambioRegimen()!= null) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_inscripcion_cambio_regimen = '" + formatoDelTexto.format(concesionMinera.getFechaInscripcionCambioRegimen()) + "',\n";
+        } else {
+            sql = sql + "    fecha_inscripcion_cambio_regimen = null ,\n";
+        }
         sql = sql + "    plazo_dias = " + concesionMinera.getDias() + ",\n";
         sql = sql + "    migrada = " + concesionMinera.getMigrada() + "\n";
         sql = sql + "WHERE\n";
