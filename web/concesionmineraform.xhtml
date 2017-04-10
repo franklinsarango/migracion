@@ -203,8 +203,8 @@
                         </p:selectOneRadio>
 
                         <p:outputLabel for="superficieConc" value="Superficie (Hectáreas):"></p:outputLabel>
-                        <pe:inputNumber id="superficieConc" thousandSeparator="," decimalSeparator="." decimalPlaces="2" 
-                                        maxValue="99999.99" value="#{concesionMineraCtrl.concesionMinera.numeroHectareasConcesion}" 
+                        <pe:inputNumber id="superficieConc" thousandSeparator="," decimalSeparator="." decimalPlaces="6" 
+                                        maxValue="99999.999999" value="#{concesionMineraCtrl.concesionMinera.numeroHectareasConcesion}" 
                                         required="true" requiredMessage="Superficie es requerida" style="width: 93%"/>
 
                         <p:outputLabel value="Volumen total (m3):"></p:outputLabel>
@@ -256,7 +256,7 @@
                             <p:outputLabel for="numeroResolucionCambioRegimen" value="Número Resolución Cambio de Regimen:" rendered="#{concesionMineraCtrl.tipSolConcMin}"></p:outputLabel>
                         </h:panelGroup>
                         <h:panelGroup id="numResolCambioRegimen2">
-                            <p:inputText id="numeroResolucionCambioRegimen" size="50" value="#{concesionMineraCtrl.concesionMinera.numeroResolucionCambioRegimen}" required="true" requiredMessage="Número Resolución Cambio de Regimen es requerido" maxlength="50"
+                            <p:inputText id="numeroResolucionCambioRegimen" size="50" value="#{concesionMineraCtrl.concesionMinera.numeroResolucionCambioRegimen}" required="false" requiredMessage="Número Resolución Cambio de Regimen es requerido" maxlength="50"
                                          rendered="#{concesionMineraCtrl.tipSolConcMin}"></p:inputText>
                         </h:panelGroup>
                         

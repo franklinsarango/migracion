@@ -163,6 +163,11 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         } else {
             sql += "plazo=" + null + ", \n";
         }
+        if (contratoOperacion.getObservacionGeneral()!= null) {
+            sql += "observacion_general='" + contratoOperacion.getObservacionGeneral() + "', \n";
+        } else {
+            sql += "observacion_general=" + null + ", \n";
+        }
         if (contratoOperacion.getCodigoArcom() != null) {
             sql += "codigo_arcom='" + contratoOperacion.getCodigoArcom() + "' \n";
         } else {

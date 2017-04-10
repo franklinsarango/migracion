@@ -120,6 +120,9 @@ public class ContratoOperacion implements Serializable {
     private CatalogoDetalle tipoProcurador;
     @Column(name = "plazo")
     private BigInteger plazo;
+    @Size(max = 1500)
+    @Column(name = "observacion_general")
+    private String observacionGeneral;
     
     public ContratoOperacion() {
     }
@@ -377,7 +380,7 @@ public class ContratoOperacion implements Serializable {
                 + ", estadoContrato=" + (estadoContrato != null ? estadoContrato.getCodigoCatalogoDetalle() : null) + ", codigoArea=" + (codigoArea != null ? codigoArea.getCodigoAreaMinera() : null) + ", codigoArcom=" + codigoArcom 
                 + ", tipoContrato=" + (tipoContrato != null ? tipoContrato.getCodigoCatalogoDetalle() : null ) + ", porcentaje=" + porcentaje + ", nombrePersona=" + nombrePersona + ", apellidoPersona=" 
                 + apellidoPersona + ", emailPersona=" + emailPersona + ", fechaInscribe=" + fechaInscribe + ", cotaMinima=" + cotaMinima + ", cotaMaxima=" + cotaMaxima + ", procuradorComun=" + procuradorComun + ", plazo=" + plazo 
-                + ", tipoProcurador=" + (tipoProcurador != null ? tipoProcurador.getCodigoCatalogoDetalle() : null )+ '}';
+                + ", observacionGeneral=" + observacionGeneral + ", tipoProcurador=" + (tipoProcurador != null ? tipoProcurador.getCodigoCatalogoDetalle() : null )+ '}';
     }
 
     /**
@@ -448,6 +451,20 @@ public class ContratoOperacion implements Serializable {
      */
     public void setPlazo(BigInteger plazo) {
         this.plazo = plazo;
+    }
+
+    /**
+     * @return the observacionGeneral
+     */
+    public String getObservacionGeneral() {
+        return observacionGeneral;
+    }
+
+    /**
+     * @param observacionGeneral the observacionGeneral to set
+     */
+    public void setObservacionGeneral(String observacionGeneral) {
+        this.observacionGeneral = observacionGeneral;
     }
 
 }
