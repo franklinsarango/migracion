@@ -160,6 +160,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     private BigInteger numeroTramite;
     
     private boolean registrarAuditor;
+    private boolean mostrarAnioPago;
 
     public boolean isRegistrarAuditor() {
         return registrarAuditor;
@@ -884,6 +885,8 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
             CostoServicios costoServicios = costoServiciosServicio
                     .obtenerPorCodigoConceptoPago(registroPagoObligacionesAutoGestion.getCodigoConceptoPago().getCodigoConceptoPago());
             registroPagoObligacionesAutoGestion.setValorReferenciaEntregaImpresa(costoServicios.getValorReferenciaEntregaImpresa());
+            mostrarAnioPago = costoServicios.getCodigoConceptoPago().getNemonicoConceptoPago().equals("LICOM");
+            System.out.println("mostrarAnioPago:" + mostrarAnioPago);
         }
     }
 
@@ -1169,6 +1172,20 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
      */
     public void setNumeroComprobanteBancoFiltro(String numeroComprobanteBancoFiltro) {
         this.numeroComprobanteBancoFiltro = numeroComprobanteBancoFiltro;
+    }
+
+    /**
+     * @return the mostrarAnioPago
+     */
+    public boolean isMostrarAnioPago() {
+        return mostrarAnioPago;
+    }
+
+    /**
+     * @param mostrarAnioPago the mostrarAnioPago to set
+     */
+    public void setMostrarAnioPago(boolean mostrarAnioPago) {
+        this.mostrarAnioPago = mostrarAnioPago;
     }
 
 }

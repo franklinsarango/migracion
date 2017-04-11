@@ -232,6 +232,7 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         sql += "subsanar_pago = " + registroPagoObligaciones.getSubsanarPago() + ", \n";
         sql += "presenta_documentos = " + registroPagoObligaciones.getPresentaDocumentos() + ", \n";
         sql += "comprobante_electronico = " + registroPagoObligaciones.getComprobanteElectronico()+ ", \n";
+        sql += "anio_pago = " + registroPagoObligaciones.getAnioPago()+ ", \n";
         if (registroPagoObligaciones.getFechaPresentacion() != null) {
             sql += "fecha_presentacion = '" + registroPagoObligaciones.getFechaPresentacion() + "', \n";
         } else {

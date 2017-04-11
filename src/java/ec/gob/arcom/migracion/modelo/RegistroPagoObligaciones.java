@@ -219,6 +219,9 @@ public class RegistroPagoObligaciones implements Serializable {
     private ParametroSistema numeroFormularioPago;
     //@JoinColumn(name = "codigo_sujeto_minero", referencedColumnName = "codigo_sujeto_minero")
     //@ManyToOne
+    @Size(max = 4)
+    @Column(name = "anio_pago")
+    private String anioPago;
     @Transient
     private SujetoMinero codigoSujetoMinero;
     @Transient
@@ -997,7 +1000,8 @@ public class RegistroPagoObligaciones implements Serializable {
                 + ", pagoPadre=" + pagoPadre + ", codigoPeriodo=" + codigoPeriodo + ", lugarEmisionPago=" + lugarEmisionPago + ", codigoConcesion=" + codigoConcesion + ", codigoConceptoPago=" + codigoConceptoPago + ", codigoTipoServicio=" + codigoTipoServicio 
                 + ", estadoPago=" + estadoPago + ", tipoPago=" + tipoPago + ", codigoBanco=" + codigoBanco + ", codigoArea=" + codigoArea + ", codigoTipoRegistro=" + codigoTipoRegistro + ", codigoLicenciaComercializacion=" + codigoLicenciaComercializacion + ", codigoPlantaBeneficio=" + codigoPlantaBeneficio 
                 + ", numeroFormularioPago=" + numeroFormularioPago + ", codigoSujetoMinero=" + codigoSujetoMinero + ", codigoDerechoMinero=" + codigoDerechoMinero + ", nombreDerechoMinero=" + nombreDerechoMinero + ", superficie=" + superficie + ", codigoProvincia=" + codigoProvincia + ", codigoCanton=" + codigoCanton 
-                + ", codigoParroquia=" + codigoParroquia + ", codigoRegimen=" + codigoRegimen + ", codigoFase=" + codigoFase + ", codigoTipoMineral=" + codigoTipoMineral + ", numeroRuc=" + numeroRuc + ", concesionario=" + concesionario + ", valorReferenciaEntregaImpresa=" + valorReferenciaEntregaImpresa + '}';
+                + ", codigoParroquia=" + codigoParroquia + ", codigoRegimen=" + codigoRegimen + ", codigoFase=" + codigoFase + ", codigoTipoMineral=" + codigoTipoMineral + ", numeroRuc=" + numeroRuc + ", concesionario=" + concesionario + ", valorReferenciaEntregaImpresa=" + valorReferenciaEntregaImpresa 
+                + ", anio_pago=" + anioPago + '}';
     }
 
     /**
@@ -1005,6 +1009,20 @@ public class RegistroPagoObligaciones implements Serializable {
      */
     public void setNumeroFormularioPago(ParametroSistema numeroFormularioPago) {
         this.numeroFormularioPago = numeroFormularioPago;
+    }
+
+    /**
+     * @return the anioPago
+     */
+    public String getAnioPago() {
+        return anioPago;
+    }
+
+    /**
+     * @param anioPago the anioPago to set
+     */
+    public void setAnioPago(String anioPago) {
+        this.anioPago = anioPago;
     }
 
 }

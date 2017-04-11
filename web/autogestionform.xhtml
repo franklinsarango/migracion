@@ -4,6 +4,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions"
       xmlns:pe="http://primefaces.org/ui/extensions">
 
     <ui:composition template="/templates/page-template_pf.xhtml">
@@ -64,8 +65,19 @@
                                      required="true" requiredMessage="Concepto pago es requerido" style="width: 93%">
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{registroPagoObligacionesCtrl.conceptosPago}" />
-                        <f:ajax listener="#{registroPagoObligacionesCtrl.obtenerValorConceptoPago}" render="valorRef"/>
+                        <p:ajax listener="#{registroPagoObligacionesCtrl.obtenerValorConceptoPago}" update="valorRef idAnioPago1 idAnioPago2"/>
                     </p:selectOneMenu>
+                    <h:panelGroup id="idAnioPago1">
+                        <p:outputLabel for="idAnioPago" value="Año Pago:" rendered="#{registroPagoObligacionesCtrl.mostrarAnioPago}"></p:outputLabel>
+                    </h:panelGroup>
+                    <h:panelGroup id="idAnioPago2">
+                        <p:selectOneMenu id="idAnioPago" value="#{registroPagoObligacionesCtrl.registroPagoObligacionesAutoGestion.anioPago}" 
+                                         required="true" requiredMessage="Año pago es requerido" style="width: 40%"
+                                         rendered="#{registroPagoObligacionesCtrl.mostrarAnioPago}">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{of:createIntegerArray(of:formatDate(now,'yyyy'),2010)}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
 
                     <p:outputLabel for="valorRef" value="Valor concepto pago:"></p:outputLabel>
                     <p:inputText id="valorRef" 
