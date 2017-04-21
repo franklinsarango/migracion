@@ -174,4 +174,23 @@ public class ConcesionMineraServicioImpl extends GenericServiceImpl<ConcesionMin
                 tipoSolicitud, beneficiarioPrincipal, tipoPersona, fecha, fecha, numDocumento);
     }
 
+    @Override
+    public String obtenerNombreConcesion(Long codigo) {
+        return concesionMineraDao.obtenerNombreConcesion(codigo);
+    }
+    
+    @Override
+    public String obtenerDocumentoConcesionario(Long codigo) {
+        return concesionMineraDao.obtenerDocumentoConcesionario(codigo);
+    }
+
+    @Override
+    public String obtenerCodigoArcom(Long codigoConcesion) {
+        return concesionMineraDao.obtenerCodigoArcom(codigoConcesion);
+    }
+
+    @Override
+    public String obtenerRegionalConcesion(Long codigo) {
+        return concesionMineraDao.obtenerRegionalConcesion(codigo);
+    }
 }

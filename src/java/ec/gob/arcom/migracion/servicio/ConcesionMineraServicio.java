@@ -56,4 +56,11 @@ public interface ConcesionMineraServicio extends GenericService<ConcesionMinera,
      */
     List<DerechoMineroDto> obtenerDerechosMinerosNacional(String codigo, String nombreDerechoMinero, Long codigoRegional, Long codigoProvincia, Long codigoFase, Long codigoEstado, String tipoSolicitud, String beneficiarioPrincipal, String tipoPersona, Date fecha, String numDocumento);
     
+    String obtenerNombreConcesion(Long codigo);
+    
+    String obtenerRegionalConcesion(Long codigo);
+
+    String obtenerDocumentoConcesionario(Long codigoConcesion);
+
+    public String obtenerCodigoArcom(Long codigoConcesion);
 }

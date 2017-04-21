@@ -8,13 +8,24 @@ package ec.gob.arcom.migracion.ctrl;
 
 import ec.gob.arcom.dinardap_sri.client.DinardapClient;
 import ec.gob.arcom.dinardap_sri.client.RequestFactory;
+import ec.gob.arcom.migracion.modelo.ConcesionMinera;
+import ec.gob.arcom.migracion.modelo.ConcesionPagoSri;
+import ec.gob.arcom.migracion.servicio.ConcesionMineraServicio;
+import ec.gob.arcom.migracion.servicio.ConcesionPagoSriServicio;
 import ec.gob.dinardap.interoperabilidad.interoperador.Columna;
 import ec.gob.dinardap.interoperabilidad.interoperador.Entidad;
 import ec.gob.dinardap.interoperabilidad.interoperador.Fila;
+import ec.gob.dinardap.interoperabilidad.interoperador.Paquete;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 /**
@@ -22,8 +33,15 @@ import javax.faces.context.FacesContext;
  * @author mejiaw
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class DinardapSriController {
+    @EJB
+    private ConcesionPagoSriServicio concesionPagoSriServicio;
+    @EJB
+    private ConcesionMineraServicio concesionMineraServicio;
+    
+    private List<ConcesionPagoSri> pagos;
+    
     private List<Entidad> entidades;
     private List<Fila> filas;
     private List<Columna> columnas;
@@ -36,11 +54,71 @@ public class DinardapSriController {
     private boolean tabla627= false;
     private boolean tabla628= false;
     
+    
+    private String anioFiscal;
     /**
      * Creates a new instance of DinardapSriController
      */
+    
     public DinardapSriController() {
         
+    }
+    
+    @PostConstruct
+    public void inicializar() {
+        pagos= concesionPagoSriServicio.findAll();
+    }
+    
+    public void consultarPatentes() {
+        Integer result= concesionPagoSriServicio.ejecutarFuncion(anioFiscal);
+        if(result==1) {
+            pagos= concesionPagoSriServicio.findAll();
+            consultarPagos();
+        } else if(result==0) {
+            System.out.println("Ocurrio un error al llenar la tabla");
+        } else {
+            System.out.println("No se logro conectar a la base");
+        }
+    }
+    
+    private void consultarPagos() {
+        for(ConcesionPagoSri pago : pagos) {
+            Paquete p= null;
+            String ruc= obtenerDocumentoConcesionario(pago.getCodigoConcesion());
+            String codigoArcom= obtenerCodigoArcom(pago.getCodigoConcesion());
+            if(ruc!=null && ruc.length()>0) {
+                try {
+                    p= DinardapClient.consultar(RequestFactory.generarConsulta627(ruc), "627");
+                } catch(Exception ex) {
+                    System.out.println("Ocurrio un error al consultar la concesion: " + codigoArcom);
+                }
+                
+                if(p!=null) {
+                    entidades= p.getEntidades().getEntidad();
+                    if(entidades.size()>0) {
+                        filas= entidades.get(0).getFilas().getFila();
+                        for(Fila f : filas) {
+                            if(codigoArcom.equals(obtenerValor(f.getColumnas().getColumna().get(7)))) {
+                                if(anioFiscal.equals(obtenerValor(f.getColumnas().getColumna().get(6)))) {
+                                    String valor= f.getColumnas().getColumna().get(12).getValor();
+                                    if(valor!=null) {
+                                        System.out.println("valor: " + valor);
+                                        BigDecimal valorPatente= new BigDecimal(valor);
+                                        System.out.println("valor patente: " + valorPatente);
+                                        pago.setValorPagoSri(valorPatente);
+                                    }
+                                    String comprobante= f.getColumnas().getColumna().get(0).getValor();
+                                    if(comprobante!=null) {
+                                        pago.setComprobanteElectronicoSri(comprobante);
+                                    }
+                                    concesionPagoSriServicio.update(pago);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     public void consultar() {
@@ -191,5 +269,71 @@ public class DinardapSriController {
 
     public void setTabla628(boolean tabla628) {
         this.tabla628 = tabla628;
+    }
+
+    public String getAnioFiscal() {
+        return anioFiscal;
+    }
+
+    public void setAnioFiscal(String anioFiscal) {
+        this.anioFiscal = anioFiscal;
+    }
+
+    public List<ConcesionPagoSri> getPagos() {
+        return pagos;
+    }
+
+    public void setPagos(List<ConcesionPagoSri> pagos) {
+        this.pagos = pagos;
+    }
+    
+    public ConcesionMinera obtenerConcesionMinera(Long codigo) {
+        return concesionMineraServicio.findByPk(codigo);
+    }
+    
+    public String obtenerNombreConcesion(Long codigoConcesion) {
+        String nombre= concesionMineraServicio.obtenerNombreConcesion(codigoConcesion);
+        if(nombre!=null) {
+            return nombre;
+        }
+        return "";
+    }
+    
+    public String obtenerRegionalConcesion(Long codigoConcesion) {
+        String regional= concesionMineraServicio.obtenerRegionalConcesion(codigoConcesion);
+        if(regional!=null) {
+            return regional;
+        }
+        return "";
+    }
+    
+    public String obtenerDocumentoConcesionario(Long codigoConcesion) {
+        String documento= concesionMineraServicio.obtenerDocumentoConcesionario(codigoConcesion);
+        if(documento!=null) {
+            return documento;
+        }
+        return "";
+    }
+
+    private String obtenerCodigoArcom(Long codigoConcesion) {
+        String codigoArcom= concesionMineraServicio.obtenerCodigoArcom(codigoConcesion);
+        if(codigoArcom!=null) {
+            return codigoArcom;
+        }
+        return "";
+    }
+    
+    public String obtenerValorConFormato(BigDecimal valor) {
+        return obtenerValorConFormato("##0.00", valor);
+    }
+    
+    public String obtenerValorConFormato(String formato, BigDecimal valor) {
+        DecimalFormat df= new DecimalFormat(formato);
+        Double dv;
+        if(valor!=null) {
+            dv= valor.doubleValue();
+            return df.format(dv);
+        }
+        return "";
     }
 }

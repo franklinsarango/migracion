@@ -38,4 +38,12 @@ public interface ConcesionMineraDao extends GenericDao<ConcesionMinera, Long> {
     List<ConcesionMinera> list();
     
     public List<ConcesionMinera> findByCodigo(String codigo);
+    
+    String obtenerNombreConcesion(Long codigo);
+
+    String obtenerDocumentoConcesionario(Long codigo);
+
+    public String obtenerCodigoArcom(Long codigoConcesion);
+
+    public String obtenerRegionalConcesion(Long codigo);
 }

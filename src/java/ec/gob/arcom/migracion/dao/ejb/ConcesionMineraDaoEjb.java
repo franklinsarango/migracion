@@ -11,6 +11,7 @@ import ec.gob.arcom.migracion.dao.ConcesionMineraDao;
 import ec.gob.arcom.migracion.dto.ConcesionMineraDto;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
+import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
 import ec.gob.arcom.migracion.servicio.FaseServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
@@ -786,6 +787,55 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             return listaFinal;
         } catch (Exception ex) {
             System.out.println(ex.toString());
+        }
+        return null;
+    }
+    
+    @Override
+    public String obtenerNombreConcesion(Long codigo) {
+        try {
+            Query query = em.createQuery("Select c.nombreConcesion from ConcesionMinera c where c.codigoConcesion= :codigo");
+            query.setParameter("codigo", codigo);
+            return query.getSingleResult().toString();
+        } catch (Exception ex) {
+            System.out.println("Ocurrio un error al obtener el nombre de la concesión: " + ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public String obtenerDocumentoConcesionario(Long codigo) {
+        try {
+            Query query = em.createQuery("Select c.documentoConcesionarioPrincipal from ConcesionMinera c where c.codigoConcesion= :codigo");
+            query.setParameter("codigo", codigo);
+            return query.getSingleResult().toString();
+        } catch (Exception ex) {
+            System.out.println("Ocurrio un error al obtener el documento del concesionario: " + ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public String obtenerCodigoArcom(Long codigoConcesion) {
+        try {
+            Query query = em.createQuery("Select c.codigoArcom from ConcesionMinera c where c.codigoConcesion= :codigo");
+            query.setParameter("codigo", codigoConcesion);
+            return query.getSingleResult().toString();
+        } catch (Exception ex) {
+            System.out.println("Ocurrio un error al obtener el codigoArcom de la concesion: " + ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public String obtenerRegionalConcesion(Long codigo) {
+        try {
+            Query query = em.createQuery("Select c.codigoRegional from ConcesionMinera c where c.codigoConcesion= :codigo");
+            query.setParameter("codigo", codigo);
+            Regional r= (Regional) query.getSingleResult();
+            return r.getNombreRegional();
+        } catch (Exception ex) {
+            System.out.println("Ocurrio un error al obtener la regional de la concesion: " + ex.toString());
         }
         return null;
     }
