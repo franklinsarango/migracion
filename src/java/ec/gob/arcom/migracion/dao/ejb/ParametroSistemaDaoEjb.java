@@ -55,7 +55,7 @@ public class ParametroSistemaDaoEjb extends GenericDaoEjbEl<ParametroSistema, Lo
 */
     @Override
     public List<ParametroSistema> findByNemonicoLike(String nemonico) {
-        String jpql = "select p from ParametroSistema p where 1=1 and p.nemonicoParametro like :nemonicoParametro \n";
+        String jpql = "select p from ParametroSistema p where 1=1 and p.nemonicoParametro like :nemonicoParametro order by p.descripcionParametro desc \n";
         System.out.println("jpql: " + jpql + "Parametro" + nemonico);
         Query query = em.createQuery(jpql);
         query.setParameter("nemonicoParametro", "%" + nemonico + "%");

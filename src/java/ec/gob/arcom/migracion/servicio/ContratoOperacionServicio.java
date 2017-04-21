@@ -25,8 +25,8 @@ public interface ContratoOperacionServicio extends GenericService<ContratoOperac
     void actualizarContratoOperacion(ContratoOperacion contratoOperacion);
 
     List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento, String loginDocumento);
-    List<ContratoOperacion> countByContratoOperacionTabla(String codigoArcom, String numDocumento, int paramLimit, int paramOffset);
-    int countByContratoOperacionTablaTotal(String codigoArcom, String numDocumento);
+    List<ContratoOperacion> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, int paramLimit, int paramOffset);
+    int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento);
     
     List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera);
 

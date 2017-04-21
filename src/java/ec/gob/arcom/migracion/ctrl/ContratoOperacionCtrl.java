@@ -700,13 +700,13 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         if (strTipoRecorrido.equals("btn_buscar")) {
             cargarListaPaginas();
         }
-        if (contratoOperacionServicio.countByContratoOperacionTabla(codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento) != null) {
+        if (contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento) != null) {
             if (contratosOperacion != null) {
                 contratosOperacion.clear();
             } else {
                 contratosOperacion = new ArrayList<>();
             }
-            List<ContratoOperacion> listContratoOperacion = contratoOperacionServicio.countByContratoOperacionTabla(codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento);
+            List<ContratoOperacion> listContratoOperacion = contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento);
             for (ContratoOperacion contratoOp : listContratoOperacion) {
                 contratosOperacion.add(contratoOp);
             }
@@ -720,7 +720,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         if(listaPaginas == null){
             listaPaginas = new ArrayList<>();
         }
-        int paginas = contratoOperacionServicio.countByContratoOperacionTablaTotal(codigoArcomFiltro, numDocumentoFiltro);
+        int paginas = contratoOperacionServicio.countByContratoOperacionTablaTotal(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro);
         totalPaginas = paginas / tamanoPagina;
         if (paginas % tamanoPagina != 0) {
             totalPaginas++;
