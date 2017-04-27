@@ -60,18 +60,19 @@
                 
                 <p:dataTable id="consultapatentes" emptyMessage="No hay resultados..."
                              var="pago" value="#{dinardapSriController.pagos}"
-                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                             styleClass="consulta626" paginator="true">
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="5,10,15" rows="10" styleClass="consulta626" paginator="true">
                     <p:column headerText="CODIGO ARCOM" style="width: 100px;">
-                        <h:outputText value="#{pago.codigoConcesion}"/>
+                        <h:outputText value="#{pago.concesionMinera.codigoArcom}"/>
                     </p:column>
 
                     <p:column headerText="NOMBRE" style="width: 100px;">
-                        <h:outputText value="#{dinardapSriController.obtenerNombreConcesion(pago.codigoConcesion)}"/>
+                        <h:outputText value="#{pago.concesionMinera.nombreConcesion}"/>
                     </p:column>
                     
                     <p:column headerText="REGIONAL" style="width: 100px;">
-                        <h:outputText value="#{dinardapSriController.obtenerRegionalConcesion(pago.codigoConcesion)}"/>
+                        <h:outputText value="#{pago.concesionMinera.codigoRegional.nombreRegional}"/>
                     </p:column>
 
                     <p:column headerText="VALOR CALCULADO ARCOM" style="width: 100px;">

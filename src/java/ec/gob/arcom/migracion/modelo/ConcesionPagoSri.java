@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -27,8 +29,9 @@ public class ConcesionPagoSri implements Serializable {
     @Column(name = "codigo_concesion_pago_sri")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "codigo_concesion")
-    private Long codigoConcesion;
+    @JoinColumn(name = "codigo_concesion", referencedColumnName = "codigo_concesion")
+    @ManyToOne
+    private ConcesionMinera concesionMinera;
     @Column(name = "valor_calculado_arcom")
     private BigDecimal valorCalculadoArcom;
     @Column(name = "valor_pago_arcom")
@@ -53,12 +56,12 @@ public class ConcesionPagoSri implements Serializable {
         this.id = id;
     }
 
-    public Long getCodigoConcesion() {
-        return codigoConcesion;
+    public ConcesionMinera getConcesionMinera() {
+        return concesionMinera;
     }
 
-    public void setCodigoConcesion(Long codigoConcesion) {
-        this.codigoConcesion = codigoConcesion;
+    public void setConcesionMinera(ConcesionMinera concesionMinera) {
+        this.concesionMinera = concesionMinera;
     }
 
     public BigDecimal getValorCalculadoArcom() {

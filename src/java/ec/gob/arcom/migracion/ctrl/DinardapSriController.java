@@ -84,8 +84,9 @@ public class DinardapSriController {
     private void consultarPagos() {
         for(ConcesionPagoSri pago : pagos) {
             Paquete p= null;
-            String ruc= obtenerDocumentoConcesionario(pago.getCodigoConcesion());
-            String codigoArcom= obtenerCodigoArcom(pago.getCodigoConcesion());
+            Long idConcesion= pago.getConcesionMinera().getCodigoConcesion();
+            String ruc= pago.getConcesionMinera().getDocumentoConcesionarioPrincipal();
+            String codigoArcom= pago.getConcesionMinera().getCodigoArcom();
             if(ruc!=null && ruc.length()>0) {
                 try {
                     p= DinardapClient.consultar(RequestFactory.generarConsulta627(ruc), "627");
@@ -102,9 +103,7 @@ public class DinardapSriController {
                                 if(anioFiscal.equals(obtenerValor(f.getColumnas().getColumna().get(6)))) {
                                     String valor= f.getColumnas().getColumna().get(12).getValor();
                                     if(valor!=null) {
-                                        System.out.println("valor: " + valor);
                                         BigDecimal valorPatente= new BigDecimal(valor);
-                                        System.out.println("valor patente: " + valorPatente);
                                         pago.setValorPagoSri(valorPatente);
                                     }
                                     String comprobante= f.getColumnas().getColumna().get(0).getValor();
@@ -285,42 +284,6 @@ public class DinardapSriController {
 
     public void setPagos(List<ConcesionPagoSri> pagos) {
         this.pagos = pagos;
-    }
-    
-    public ConcesionMinera obtenerConcesionMinera(Long codigo) {
-        return concesionMineraServicio.findByPk(codigo);
-    }
-    
-    public String obtenerNombreConcesion(Long codigoConcesion) {
-        String nombre= concesionMineraServicio.obtenerNombreConcesion(codigoConcesion);
-        if(nombre!=null) {
-            return nombre;
-        }
-        return "";
-    }
-    
-    public String obtenerRegionalConcesion(Long codigoConcesion) {
-        String regional= concesionMineraServicio.obtenerRegionalConcesion(codigoConcesion);
-        if(regional!=null) {
-            return regional;
-        }
-        return "";
-    }
-    
-    public String obtenerDocumentoConcesionario(Long codigoConcesion) {
-        String documento= concesionMineraServicio.obtenerDocumentoConcesionario(codigoConcesion);
-        if(documento!=null) {
-            return documento;
-        }
-        return "";
-    }
-
-    private String obtenerCodigoArcom(Long codigoConcesion) {
-        String codigoArcom= concesionMineraServicio.obtenerCodigoArcom(codigoConcesion);
-        if(codigoArcom!=null) {
-            return codigoArcom;
-        }
-        return "";
     }
     
     public String obtenerValorConFormato(BigDecimal valor) {
