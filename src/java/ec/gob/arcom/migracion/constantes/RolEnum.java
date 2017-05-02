@@ -23,6 +23,7 @@ public enum RolEnum
     ROL_SUBSECRETARIA_REGIONAL_MINAS("SUBSECREGION","Subsecretaria Regional de Minas","INT",9L),
     ROL_TECNICO("TECNICO","Tecnico","INT",10L),
     ROL_TECNICO_CATASTRO("TECNICOCAT","Técnico de Catastro","INT",11L),
+    ROL_TECNICO_CATASTRO_NACIONAL("TECCATNAC","Tecnico de Catastro Nacional","INT",29L),
     ROL_REGISTRADOR_REGIONAL("RGRGNL","Registrador Regional","INT",24L),
     ROL_ABOGADO_NACIONAL("ABOGNACIO","Abogado Nacional","INT",25L),
     ROL_DIRECTOR_EJECUTIVO("DIRECEJECUT","Director Ejecutivo","INT",26L),

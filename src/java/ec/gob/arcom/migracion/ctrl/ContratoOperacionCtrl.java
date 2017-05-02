@@ -104,7 +104,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     private Integer paginaSeleccionada;
     private ArrayList<Integer> listaPaginas;
     private String urlEditarContrato;
-    
+    private boolean registrosPorRegional;
     @PostConstruct
     public void init() {
         try {
@@ -119,8 +119,10 @@ public class ContratoOperacionCtrl extends BaseCtrl {
             
             if(login.isRegistroMinero() == true || login.isRegistroMineroNacional() == true){
                 usuarioRegistrador = true;
+                setRegistrosPorRegional(true);
             }else{
                 usuarioRegistrador = false;
+                setRegistrosPorRegional(false);
             }
             
             String codigo = getHttpServletRequestParam("codigo");
@@ -700,13 +702,14 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         if (strTipoRecorrido.equals("btn_buscar")) {
             cargarListaPaginas();
         }
-        if (contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento) != null) {
+        
+        if (contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento) != null) {
             if (contratosOperacion != null) {
                 contratosOperacion.clear();
             } else {
                 contratosOperacion = new ArrayList<>();
             }
-            List<ContratoOperacion> listContratoOperacion = contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, tamanoPagina, desplazamiento);
+            List<ContratoOperacion> listContratoOperacion = contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento);
             for (ContratoOperacion contratoOp : listContratoOperacion) {
                 contratosOperacion.add(contratoOp);
             }
@@ -720,7 +723,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         if(listaPaginas == null){
             listaPaginas = new ArrayList<>();
         }
-        int paginas = contratoOperacionServicio.countByContratoOperacionTablaTotal(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro);
+        int paginas = contratoOperacionServicio.countByContratoOperacionTablaTotal(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional());
         totalPaginas = paginas / tamanoPagina;
         if (paginas % tamanoPagina != 0) {
             totalPaginas++;
@@ -813,5 +816,19 @@ public class ContratoOperacionCtrl extends BaseCtrl {
      */
     public void setUrlEditarContrato(String urlEditarContrato) {
         this.urlEditarContrato = urlEditarContrato;
+    }
+
+    /**
+     * @return the registrosPorRegional
+     */
+    public boolean isRegistrosPorRegional() {
+        return registrosPorRegional;
+    }
+
+    /**
+     * @param registrosPorRegional the registrosPorRegional to set
+     */
+    public void setRegistrosPorRegional(boolean registrosPorRegional) {
+        this.registrosPorRegional = registrosPorRegional;
     }
 }

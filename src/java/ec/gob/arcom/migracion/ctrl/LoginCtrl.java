@@ -152,7 +152,7 @@ public class LoginCtrl extends BaseCtrl {
                         } else {
                             this.usuarioLectura = false;
                         }
-                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RM")) {
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_REGISTRADOR_REGIONAL.getNemonico())){
                             this.registroMinero = true;
                         } else {
                             this.registroMinero = false;
@@ -162,14 +162,12 @@ public class LoginCtrl extends BaseCtrl {
                         } else {
                             this.editarComprobante = false;
                         }
-//                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UE")) {
                         if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ESPECIALISTA_ECONOMICO_REGIONAL.getNemonico())){
                             this.economicoRegional = true;
                             
                         } else {
                             this.economicoRegional = false;
                         }
-//                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UEN")) {
                         if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ESPECIALISTA_ECONOMICO_NACIONAL.getNemonico())){
                             this.economicoNacional = true;
                         } else {
@@ -180,7 +178,9 @@ public class LoginCtrl extends BaseCtrl {
                         } else {
                             this.registroMineroNacional = false;
                         }
-                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UC")) {
+//                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("UC")) {
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_TECNICO_CATASTRO.getNemonico()) ||
+                               usRol.getRol().getNemonico().equals(RolEnum.ROL_TECNICO_CATASTRO_NACIONAL.getNemonico())){
                             this.usuarioCatastro = true;
                         } else {
                             this.usuarioCatastro = false;
