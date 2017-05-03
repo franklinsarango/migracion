@@ -10,6 +10,7 @@ import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.ConcesionPagoSriDao;
 import ec.gob.arcom.migracion.modelo.ConcesionPagoSri;
 import ec.gob.arcom.migracion.servicio.ConcesionPagoSriServicio;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -30,5 +31,10 @@ public class ConcesionPagoSriServicioImpl extends GenericServiceImpl<ConcesionPa
     @Override
     public Integer ejecutarFuncion(String anio) {
         return concesionPagoSriDao.ejecutarFuncion(anio);
+    }
+
+    @Override
+    public List<ConcesionPagoSri> findByAnio(String anioFiscal) {
+        return concesionPagoSriDao.findByAnio(anioFiscal);
     }
 }

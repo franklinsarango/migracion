@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -46,6 +48,9 @@ public class ConcesionPagoSri implements Serializable {
     private String comprobanteElectronicoSri;
     @Column(name = "estado_registro")
     private boolean estadoRegistro;
+    @Column(name = "fecha_hora")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaHora;
     
     
     public Long getId() {
@@ -119,7 +124,14 @@ public class ConcesionPagoSri implements Serializable {
     public void setEstadoRegistro(boolean estadoRegistro) {
         this.estadoRegistro = estadoRegistro;
     }
-    
+
+    public Date getFechaHora() {
+        return fechaHora;
+    }
+
+    public void setFechaHora(Date fechaHora) {
+        this.fechaHora = fechaHora;
+    }
     
     @Override
     public int hashCode() {

@@ -14,15 +14,13 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="consultafrm">
-                <p:panelGrid columns="5" styleClass="panelSinBorde">
+                <p:panelGrid columns="6" styleClass="panelSinBorde">
                     <p:outputLabel value="Seleccione el año fiscal: "/>
                     <p:selectOneMenu value="#{dinardapSriController.anioFiscal}">
-                        <f:selectItem itemLabel="2017" itemValue="2017"/>
-                        <f:selectItem itemLabel="2016" itemValue="2016"/>
-                        <f:selectItem itemLabel="2015" itemValue="2015"/>
-                        <f:selectItem itemLabel="2014" itemValue="2014"/>
+                        <f:selectItems value="#{dinardapSriController.aniosFiscales}"/>
                     </p:selectOneMenu>
-                    <p:commandButton value="Consultar pagos" actionListener="#{dinardapSriController.consultarPatentes()}" update="tablePanel consultapatentes"/>
+                    <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultarPatentes()}" update="tablePanel consultapatentes"/>
+                    <p:commandButton value="Actualizar pagos" oncomplete="PF('updatedlgwg').show()" update=":dlgform"/>
                     
                     <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
@@ -32,8 +30,7 @@
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
                     <h:panelGroup style="text-align: right; right: -93%;">
                         <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
                             <h:panelGrid style="text-align:center">
@@ -54,6 +51,7 @@
                 <p:panelGrid columns="2">
                     <h:commandLink>
                         <h:graphicImage value="resources/images/excel.png" width="24"/>
+                        <h:outputLabel value="Exportar"/>
                         <p:dataExporter type="xls" target="consultapatentes" fileName="pagos" />
                     </h:commandLink>
                 </p:panelGrid>
@@ -62,7 +60,7 @@
                              var="pago" value="#{dinardapSriController.pagos}"
                              currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                             rowsPerPageTemplate="5,10,15" rows="10" styleClass="consulta626" paginator="true">
+                             rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
                     <p:column headerText="CODIGO ARCOM" style="width: 100px;">
                         <h:outputText value="#{pago.concesionMinera.codigoArcom}"/>
                     </p:column>
@@ -98,8 +96,21 @@
                     <p:column headerText="VALOR PAGO SRI" style="width: 100px;">
                         <h:outputText value="#{dinardapSriController.obtenerValorConFormato(pago.valorPagoSri)}"/>
                     </p:column>
+                    
+                    <p:column headerText="FECHA CONSULTA" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerFechaConFormato(pago.fechaHora)}"/>
+                    </p:column>
                 </p:dataTable>
             </p:panelGrid>
+            </h:form>
+            
+            <h:form id="dlgform">
+                <p:confirmDialog id="updatedlg" showEffect="fade" hideEffect="fade" widgetVar="updatedlgwg" header="Confirmar actualizar"
+                                 message="#{dinardapSriController.mensaje}">
+                    <p:commandButton value="Aceptar" icon="ui-icon-check" oncomplete="PF('updatedlgwg').hide()"
+                                     actionListener="#{dinardapSriController.actualizarPagos()}" update=":consultafrm:tablePanel :consultafrm:consultapatentes"/>
+                    <p:commandButton value="Cancelar" icon="ui-icon-close" oncomplete="PF('updatedlgwg').hide()"/>
+                </p:confirmDialog>
             </h:form>
         </ui:define>
     </ui:composition>

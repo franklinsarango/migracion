@@ -286,3 +286,8 @@ h2 {
 .consulta628 table tbody .alt td { background: #E1EEF4; color: #00496B; }
 .consulta628 table tbody td:nth-child(1) {text-align: left;}
 .consulta628 table tbody td:nth-child(1) {text-align: left;}
+
+/*Centrar los botones del dialogo de confirmacion*/
+.ui-dialog-buttonpane {
+    text-align: center !important;
+}

@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
 import ec.gob.arcom.migracion.modelo.ConcesionPagoSri;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -16,4 +17,6 @@ import javax.ejb.Local;
 @Local
 public interface ConcesionPagoSriServicio extends GenericService<ConcesionPagoSri, Long>{
     Integer ejecutarFuncion(String anio);
+
+    public List<ConcesionPagoSri> findByAnio(String anioFiscal);
 }

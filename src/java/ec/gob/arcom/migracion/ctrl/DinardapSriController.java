@@ -8,7 +8,6 @@ package ec.gob.arcom.migracion.ctrl;
 
 import ec.gob.arcom.dinardap_sri.client.DinardapClient;
 import ec.gob.arcom.dinardap_sri.client.RequestFactory;
-import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ConcesionPagoSri;
 import ec.gob.arcom.migracion.servicio.ConcesionMineraServicio;
 import ec.gob.arcom.migracion.servicio.ConcesionPagoSriServicio;
@@ -17,16 +16,18 @@ import ec.gob.dinardap.interoperabilidad.interoperador.Entidad;
 import ec.gob.dinardap.interoperabilidad.interoperador.Fila;
 import ec.gob.dinardap.interoperabilidad.interoperador.Paquete;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -54,8 +55,9 @@ public class DinardapSriController {
     private boolean tabla627= false;
     private boolean tabla628= false;
     
-    
+    private SelectItem[] aniosFiscales;
     private String anioFiscal;
+    private String mensaje;
     /**
      * Creates a new instance of DinardapSriController
      */
@@ -66,13 +68,17 @@ public class DinardapSriController {
     
     @PostConstruct
     public void inicializar() {
-        pagos= concesionPagoSriServicio.findAll();
+        
     }
     
     public void consultarPatentes() {
+        pagos= concesionPagoSriServicio.findByAnio(anioFiscal);
+    }
+    
+    public void actualizarPagos() {
         Integer result= concesionPagoSriServicio.ejecutarFuncion(anioFiscal);
         if(result==1) {
-            pagos= concesionPagoSriServicio.findAll();
+            pagos= concesionPagoSriServicio.findByAnio(anioFiscal);
             consultarPagos();
         } else if(result==0) {
             System.out.println("Ocurrio un error al llenar la tabla");
@@ -278,6 +284,26 @@ public class DinardapSriController {
         this.anioFiscal = anioFiscal;
     }
 
+    public SelectItem[] getAniosFiscales() {
+        aniosFiscales= getAnios();
+        return aniosFiscales;
+    }
+
+    public void setAniosFiscales(SelectItem[] aniosFiscales) {
+        this.aniosFiscales = aniosFiscales;
+    }
+
+    public String getMensaje() {
+        mensaje= "Se eliminaran los datos del año " + anioFiscal + 
+                " y se volveran a consultar al SRI, este proceso tardará varios minutos "
+                + "¿Desea continuar?";
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
     public List<ConcesionPagoSri> getPagos() {
         return pagos;
     }
@@ -298,5 +324,29 @@ public class DinardapSriController {
             return df.format(dv);
         }
         return "";
+    }
+    
+    public String obtenerFechaConFormato(Date fecha) {
+        return obtenerFechaConFormato("dd-MM-yyyy", fecha);
+    }
+    
+    public String obtenerFechaConFormato(String formato, Date fecha) {
+        SimpleDateFormat sdf= new SimpleDateFormat(formato);
+        if(fecha!=null) {
+            return sdf.format(fecha);
+        }
+        return "";
+    }
+    
+    private SelectItem[] getAnios() {
+        int count= 4;
+        SelectItem[] anios= new SelectItem[count];
+        int anioActual= Calendar.getInstance().get(Calendar.YEAR);
+        
+        for (int i=0; i<count; i++) {
+            anios[i]= new SelectItem(String.valueOf(anioActual),String.valueOf(anioActual));
+            anioActual--;
+        }
+        return anios;
     }
 }

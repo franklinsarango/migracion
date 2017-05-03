@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
 import ec.gob.arcom.migracion.modelo.ConcesionPagoSri;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -16,4 +17,6 @@ import javax.ejb.Local;
 @Local
 public interface ConcesionPagoSriDao extends GenericDao<ConcesionPagoSri, Long> {
     Integer ejecutarFuncion(String anio);
+
+    public List<ConcesionPagoSri> findByAnio(String anioFiscal);
 }

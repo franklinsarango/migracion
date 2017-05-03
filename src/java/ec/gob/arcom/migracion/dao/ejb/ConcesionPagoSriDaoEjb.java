@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.modelo.ConcesionPagoSri;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.dao.ConcesionPagoSriDao;
+import java.util.List;
 import javax.persistence.Query;
 
 /**
@@ -30,5 +31,18 @@ public class ConcesionPagoSriDaoEjb extends GenericDaoEjbEl<ConcesionPagoSri, Lo
            System.out.println(ex.toString());
         }
         return -1;
+    }
+
+    @Override
+    public List<ConcesionPagoSri> findByAnio(String anioFiscal) {
+        try {
+            Query query= em.createQuery("Select cps from ConcesionPagoSri cps where cps.estadoRegistro= :estado and cps.anioFiscal= :anio order by cps.fechaHora DESC");
+            query.setParameter("estado", true);
+            query.setParameter("anio", anioFiscal);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
     }
 }
