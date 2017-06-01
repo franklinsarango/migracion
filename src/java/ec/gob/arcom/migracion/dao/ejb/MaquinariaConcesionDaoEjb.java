@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.dao.ejb;
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.MaquinariaConcesionDao;
 import ec.gob.arcom.migracion.modelo.MaquinariaConcesion;
+import ec.gob.arcom.migracion.modelo.Operativo;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -31,6 +32,19 @@ public class MaquinariaConcesionDaoEjb extends GenericDaoEjbEl<MaquinariaConcesi
         query.setParameter("codigoConcesion", codigoConcesion);
         List<MaquinariaConcesion> maquinariasPorConcesion = query.getResultList();
         return maquinariasPorConcesion;
+    }
+
+    @Override
+    public List<MaquinariaConcesion> obtenerMaquinariasPorOperativo(Operativo operativo) {
+        try {
+            Query query= em.createQuery("Select maq from MaquinariaConcesion maq where maq.estadoRegistro= :estado and maq.operativo= :operativo");
+            query.setParameter("estado", true);
+            query.setParameter("operativo", operativo);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
     }
 
 }

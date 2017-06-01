@@ -6,17 +6,18 @@
 package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
-import ec.gob.arcom.migracion.modelo.Rol;
+import ec.gob.arcom.migracion.modelo.DetalleOperativo;
+import ec.gob.arcom.migracion.modelo.Operativo;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Javier Coronel
+ * @author mejiaw
  */
-
 @Local
-public interface RolDao extends GenericDao<Rol, Long> {
+public interface DetalleOperativoDao extends GenericDao<DetalleOperativo, Long> {
 
-    public Rol findByNemonico(String nemonico);
-
+    public List<DetalleOperativo> listarPorOperativo(Operativo operativo);
+    
 }

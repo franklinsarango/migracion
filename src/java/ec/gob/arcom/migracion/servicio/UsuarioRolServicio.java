@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
+import ec.gob.arcom.migracion.modelo.Rol;
 import ec.gob.arcom.migracion.modelo.UsuarioRol;
 import ec.gob.arcom.migracion.modelo.UsuarioRolPK;
 import java.util.List;
@@ -19,5 +20,7 @@ import javax.ejb.Local;
 public interface UsuarioRolServicio extends GenericService<UsuarioRol, UsuarioRolPK> {
 
     UsuarioRol obtenerPorCodigoUsuuario(Long codigoUsuario);
+
+    public List<UsuarioRol> listByRol(Rol rol);
 
 }

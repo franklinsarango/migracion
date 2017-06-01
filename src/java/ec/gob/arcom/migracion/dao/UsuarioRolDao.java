@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
+import ec.gob.arcom.migracion.modelo.Rol;
 import ec.gob.arcom.migracion.modelo.UsuarioRol;
 import ec.gob.arcom.migracion.modelo.UsuarioRolPK;
 import java.util.List;
@@ -20,5 +21,7 @@ import javax.ejb.Local;
 public interface UsuarioRolDao extends GenericDao<UsuarioRol, UsuarioRolPK> {
 
     UsuarioRol obtenerPorCodigoUsuario(Long codigoUsuario);
+
+    public List<UsuarioRol> listByRol(Rol rol);
 
 }

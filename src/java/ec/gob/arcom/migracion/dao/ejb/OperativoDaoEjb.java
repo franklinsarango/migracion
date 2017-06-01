@@ -6,30 +6,28 @@
 package ec.gob.arcom.migracion.dao.ejb;
 
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
-import ec.gob.arcom.migracion.dao.RolDao;
-import ec.gob.arcom.migracion.modelo.Rol;
+import ec.gob.arcom.migracion.modelo.Operativo;
 import javax.ejb.Stateless;
+import ec.gob.arcom.migracion.dao.OperativoDao;
+import java.util.List;
 import javax.persistence.Query;
 
 /**
  *
- * @author Javier Coronel
+ * @author mejiaw
  */
-@Stateless(name = "RolDao")
-public class RolDaoEjb extends GenericDaoEjbEl<Rol, Long> implements
-        RolDao {
-
-    public RolDaoEjb() {
-        super(Rol.class);
+@Stateless
+public class OperativoDaoEjb extends GenericDaoEjbEl<Operativo, Long> implements OperativoDao {
+    public OperativoDaoEjb() {
+        super(Operativo.class);
     }
 
     @Override
-    public Rol findByNemonico(String nemonico) {
+    public List<Operativo> list() {
         try {
-            Query query= em.createQuery("Select r from Rol r where r.estadoRegistro= :estado and r.nemonico= :nemonico");
+            Query query= em.createQuery("Select op from Operativo op where op.estadoRegistro= :estado order by op.fechaCreacion ASC");
             query.setParameter("estado", true);
-            query.setParameter("nemonico", nemonico);
-            return (Rol) query.getResultList().get(0);
+            return query.getResultList();
         } catch(Exception ex) {
            System.out.println(ex.toString());
         }

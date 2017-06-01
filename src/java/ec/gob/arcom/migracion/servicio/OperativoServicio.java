@@ -6,16 +6,17 @@
 package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
-import ec.gob.arcom.migracion.modelo.Rol;
+import ec.gob.arcom.migracion.modelo.Operativo;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author Javier Coronel
+ * @author mejiaw
  */
 @Local
-public interface RolServicio extends GenericService<Rol, Long> {
+public interface OperativoServicio extends GenericService<Operativo, Long> {
 
-    public Rol findByNemonico(String nemonico);
-
+    public List<Operativo> listar();
+    
 }

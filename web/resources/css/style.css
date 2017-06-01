@@ -291,3 +291,46 @@ h2 {
 .ui-dialog-buttonpane {
     text-align: center !important;
 }
+
+.pg-center {
+    margin: 0 auto;
+}
+
+/*Sirve para quitar el borde del panel grid*/
+.pg-center.ui-panelgrid>*>tr,
+.pg-center.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.pg-center-02 {
+    margin: 0 auto;
+    width: 999px;
+}
+
+/*Sirve para quitar el borde del panel grid*/
+.pg-center-02.ui-panelgrid>*>tr,
+.pg-center-02.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.inputtext-form {
+    width: 270px !important;
+}
+
+.inputtextarea-form {
+    width: 270px !important;
+    height: 85px !important;
+}
+
+/*Cambiar el tamaño del input del calendar*/
+.calendar-form {
+    
+}
+.calendar-form input {
+    width: 270px !important;
+}
+
+/*Cambiar el tamaño del select one menu*/
+.onemenu-form {
+    width: 278px !important;
+}

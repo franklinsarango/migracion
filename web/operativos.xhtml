@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Operativos de Mineria Ilegal"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+            
+            <h:form id="listaoperativosfrm">
+                <p:panelGrid columns="2" styleClass="panelSinBorde">
+                    
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
+                                <h:outputText value="Inicio"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </p:panelGrid>
+            
+                <p:separator/>
+
+                <center>
+                    <p:outputLabel id="entityname" value="Operativos de Mineria Ilegal" style="font-weight: bolder; font-size: large"/>
+                </center>
+
+                <p:panelGrid id="tablePanel" columns="1">
+                    <p:panelGrid columns="3" styleClass="panelSinBorde">
+                        <p:commandButton icon="ui-icon-plusthick" title="Nuevo operativo" actionListener="#{operativoCtrl.newOperativoAction()}"
+                                         oncomplete="PF('operativofrmwg').show();" update=":operativofrm"/>
+                    </p:panelGrid>
+
+                    <p:dataTable id="operativosdt" emptyMessage="No hay resultados..."
+                                 var="operativo" value="#{operativoCtrl.operativos}" rowIndexVar="row"
+                                 currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
+
+                        <p:column headerText="Fecha operativo" style="width: 100px;">
+                            <h:outputText value="#{operativoCtrl.obtenerFechaConFormato(operativo.fechaOperativo)}"/>
+                        </p:column>
+
+                        <p:column headerText="Tipo operativo" style="width: 100px;">
+                            <h:outputText value="#{operativo.tipoOperativo.nombre}"/>
+                        </p:column>
+
+                         <p:column headerText="Regional" style="width: 100px;">
+                            <h:outputText value="#{operativo.regional.nombreRegional}"/>
+                        </p:column>
+
+                        <p:column headerText="Provincia" style="width: 100px;">
+                            <h:outputText value="#{operativo.provincia.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Cantón" style="width: 100px;">
+                            <h:outputText value="#{operativo.canton.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Parroquia" style="width: 100px;">
+                            <h:outputText value="#{operativo.parroquia.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Sector" style="width: 100px;">
+                            <h:outputText value="#{operativo.sector}"/>
+                        </p:column>
+
+                        <p:column headerText="Tipo sello" style="width: 100px;">
+                            <h:outputText value="#{operativo.tipoSello.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Tipo material" style="width: 100px;">
+                            <h:outputText value="#{operativo.tipoMaterial.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Editar" style="width:60px;text-align: center">
+                            <p:commandButton icon="ui-icon-newwin" title="Editar operativo"
+                                             actionListener="#{operativoCtrl.editOperativoAction(row)}"
+                                             oncomplete="PF('operativofrmwg').show();" update=":operativofrm"/>
+                        </p:column>
+
+                        <p:column headerText="Eliminar" style="width:45px;text-align: center">
+                            <p:commandButton icon="ui-icon-trash" title="Eliminar"
+                                             actionListener="#{operativoCtrl.setOperativoEliminarAction(row)}"
+                                             update="" oncomplete="PF('deloperativodlgwg').show()"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+            </h:form>
+            
+            <!-- FORMULARIO OPERATIVO -->
+            <p:dialog id="operativofrm" widgetVar="operativofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Operativo" style="">
+                <ui:include src="operativofrm.xhtml"/>
+            </p:dialog>
+            
+            <!-- FORMULARIO INSTITUCION PARTICIPANTE -->
+            <p:dialog id="institucionfrm" widgetVar="institucionfrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Institucion participante" style="">
+                <h:form id="institucionform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="tipoInstitucion" value="Tipo institución:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="tipoInstitucion" styleClass="onemenu-form" required="true"
+                                             requiredMessage="Debe seleccionar un tipo institución" converter="#{catalogoDetalleConverter}"
+                                             value="#{operativoCtrl.detalleOperativo.tipoInstitucion}">
+                                    <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{operativoCtrl.tiposInstitucion}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="numPersonas" value="No. personas:"/></p:column>
+                            <p:column style="text-align: left">
+                                <pe:inputNumber id="numPersonas" thousandSeparator="," decimalSeparator="." decimalPlaces="0" maxValue="99" 
+                                                value="#{operativoCtrl.detalleOperativo.numeroPersonas}" style="width: 270px" required="true"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="descripcion" value="Descripción:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputTextarea id="descripcion" value="#{operativoCtrl.detalleOperativo.descripcionInstitucion}"
+                                                 maxlength="100" styleClass="inputtextarea-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:commandButton value="Aceptar" title="Aceptar" actionListener="#{operativoCtrl.addInstitucionAction()}"
+                                                 oncomplete="PF('institucionfrmwg').hide();"
+                                                 update=":operativoform:instdt :operativoform:detenidosdt :operativoform:depositariosdt"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- FORMULARIO DETENIDO -->
+            <p:dialog id="detenidofrm" widgetVar="detenidofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Detenido" style="">
+                <h:form id="detenidoform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="numCedula" value="No. cédula:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="numCedula" value="#{operativoCtrl.detalleOperativo.numeroDocumento}" required="true"
+                                             requiredMessage="Debe ingresar el número de cédula" styleClass="inputtext-form"
+                                             validatorMessage="El número de cédula ingresado no es válido">
+                                    <f:validateLength minimum="10" maximum="13"/>
+                                    <f:validateRegex pattern="[0-9]*"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="nombre" value="Nombres:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="nombre" value="#{operativoCtrl.detalleOperativo.nombre}" required="true"
+                                             maxlength="60" requiredMessage="Debe ingresar el nombre" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="apellido" value="Apellidos:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="apellido" value="#{operativoCtrl.detalleOperativo.apellido}" required="true"
+                                             maxlength="60" requiredMessage="Debe ingresar el apellido" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:commandButton value="Aceptar" title="Aceptar" actionListener="#{operativoCtrl.addDetenidoAction()}"
+                                                 oncomplete="PF('detenidofrmwg').hide();"
+                                                 update=":operativoform:instdt :operativoform:detenidosdt :operativoform:depositariosdt"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- FORMULARIO MAQUINARIA -->
+            <p:dialog id="maquinariafrm" widgetVar="maquinariafrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Maquinaria" style="">
+                <h:form id="maquinariaform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="tipoMaquinaria" value="Tipo maquinaria:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="tipoMaquinaria" styleClass="onemenu-form" required="true"
+                                             requiredMessage="Debe seleccionar un tipo maquinaria" converter="#{tipoMaquinariaConverter}"
+                                             value="#{operativoCtrl.maquinaria.codigoTipoMaquinaria}">
+                                    <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{operativoCtrl.tiposMaquinaria}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row> 
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="marca" value="Marca:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="marca" value="#{operativoCtrl.maquinaria.marcaMaquinaria}"
+                                         requiredMessage="Debe ingresar la marca" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="modelo" value="Modelo:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="modelo" value="#{operativoCtrl.maquinaria.modelo}"
+                                         requiredMessage="Debe ingresar el modelo" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="serie" value="Serie:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="serie" value="#{operativoCtrl.maquinaria.numeroSerie}" required="true"
+                                         requiredMessage="Debe ingresar la serie" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="motor" value="Motor:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="motor" value="#{operativoCtrl.maquinaria.motor}"
+                                         requiredMessage="Debe ingresar el motor" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="placa" value="Placa:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="placa" value="#{operativoCtrl.maquinaria.placa}"
+                                         requiredMessage="Debe ingresar la placa" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="matricula" value="Matricula:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="matricula" value="#{operativoCtrl.maquinaria.matricula}"
+                                         requiredMessage="Debe ingresar la matricula" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="estadoMaquinaria" value="Estado maquinaria:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="estadoMaquinaria" styleClass="onemenu-form" required="true"
+                                             requiredMessage="Debe seleccionar un estado maquinaria"
+                                             value="#{operativoCtrl.maquinaria.estadoMaquinaria}">
+                                    <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{operativoCtrl.estadosMaquinaria}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:commandButton value="Aceptar" title="Aceptar" actionListener="#{operativoCtrl.addMaquinariaAction()}"
+                                                 oncomplete="PF('maquinariafrmwg').hide();" update=":operativoform:maquinariadt"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- FORMULARIO DEPOSITARIO -->
+            <p:dialog id="depositariofrm" widgetVar="depositariofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Depositario" style="">
+                <h:form id="depositarioform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="tipoDepositario" value="Tipo depositario:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="tipoDepositario" styleClass="onemenu-form" required="true"
+                                             requiredMessage="Debe seleccionar un tipo depositario" converter="#{catalogoDetalleConverter}"
+                                             value="#{operativoCtrl.detalleOperativo.tipoDepositario}">
+                                    <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{operativoCtrl.tiposDepositario}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="descripcionDepositario" value="Descripción:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputTextarea id="descripcionDepositario" value="#{operativoCtrl.detalleOperativo.descripcionDepositario}"
+                                                 maxlength="200" styleClass="inputtextarea-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:commandButton value="Aceptar" title="Aceptar" actionListener="#{operativoCtrl.addDepositarioAction()}"
+                                                 oncomplete="PF('depositariofrmwg').hide();"
+                                                 update=":operativoform:instdt :operativoform:detenidosdt :operativoform:depositariosdt"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- CONFIRMAR ELIMINAR OPERATIVO -->
+            <h:form>
+                <p:confirmDialog id="deloperativodlg" showEffect="fade" hideEffect="fade" widgetVar="deloperativodlgwg" header="Confirmar eliminar operativo"
+                                 message="¿Esta seguro de eliminar el operativo?">
+                    <p:commandButton value="Si" icon="ui-icon-check" oncomplete="PF('deloperativodlgwg').hide()"
+                                     actionListener="#{operativoCtrl.deleteOperativoAction()}" update=":growl :listaoperativosfrm:operativosdt"/>
+                    <p:commandButton value="No" icon="ui-icon-close" oncomplete="PF('deloperativodlgwg').hide()"/>
+                </p:confirmDialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

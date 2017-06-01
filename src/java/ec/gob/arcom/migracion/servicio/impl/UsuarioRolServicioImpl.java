@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.servicio.impl;
 import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.UsuarioRolDao;
+import ec.gob.arcom.migracion.modelo.Rol;
 import ec.gob.arcom.migracion.modelo.UsuarioRol;
 import ec.gob.arcom.migracion.modelo.UsuarioRolPK;
 import ec.gob.arcom.migracion.servicio.UsuarioRolServicio;
@@ -34,6 +35,11 @@ public class UsuarioRolServicioImpl extends GenericServiceImpl<UsuarioRol, Usuar
     @Override
     public UsuarioRol obtenerPorCodigoUsuuario(Long codigoUsuario) {
         return usuarioRolDao.obtenerPorCodigoUsuario(codigoUsuario);
+    }
+
+    @Override
+    public List<UsuarioRol> listByRol(Rol rol) {
+        return usuarioRolDao.listByRol(rol);
     }
 
 }

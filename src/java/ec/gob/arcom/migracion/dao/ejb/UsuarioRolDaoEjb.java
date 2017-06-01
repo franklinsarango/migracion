@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.dao.ejb;
 
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.UsuarioRolDao;
+import ec.gob.arcom.migracion.modelo.Rol;
 import ec.gob.arcom.migracion.modelo.UsuarioRol;
 import ec.gob.arcom.migracion.modelo.UsuarioRolPK;
 import java.util.List;
@@ -37,6 +38,19 @@ public class UsuarioRolDaoEjb extends GenericDaoEjbEl<UsuarioRol, UsuarioRolPK> 
         } catch (NoResultException nrEx) {
             return null;
         }
+    }
+
+    @Override
+    public List<UsuarioRol> listByRol(Rol rol) {
+        try {
+            Query query= em.createQuery("Select ur from UsuarioRol ur where ur.estadoRegistro= :estado and ur.rol= :rol");
+            query.setParameter("estado", true);
+            query.setParameter("rol", rol);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
     }
 
 }

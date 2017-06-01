@@ -95,6 +95,9 @@ public class MaquinariaConcesion implements Serializable {
     private ConcesionMinera codigoConcesion;
     @Column(name = "cantidad_maquinaria")
     private int cantidadMaquinaria;
+    @JoinColumn(name = "codigo_operativo", referencedColumnName = "codigo_operativo")
+    @ManyToOne
+    private Operativo operativo;
 
     public MaquinariaConcesion() {
     }
@@ -266,29 +269,17 @@ public class MaquinariaConcesion implements Serializable {
     public int getCantidadMaquinaria() {
         return cantidadMaquinaria;
     }
-
+    
     public void setCantidadMaquinaria(int cantidadMaquinaria) {
         this.cantidadMaquinaria = cantidadMaquinaria;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (codigoMaquinaria != null ? codigoMaquinaria.hashCode() : 0);
-        return hash;
+    
+    public Operativo getOperativo() {
+        return operativo;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MaquinariaConcesion)) {
-            return false;
-        }
-        MaquinariaConcesion other = (MaquinariaConcesion) object;
-        if ((this.codigoMaquinaria == null && other.codigoMaquinaria != null) || (this.codigoMaquinaria != null && !this.codigoMaquinaria.equals(other.codigoMaquinaria))) {
-            return false;
-        }
-        return true;
+    public void setOperativo(Operativo operativo) {
+        this.operativo = operativo;
     }
 
     @Override

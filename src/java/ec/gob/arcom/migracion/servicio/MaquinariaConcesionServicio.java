@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
 import ec.gob.arcom.migracion.modelo.MaquinariaConcesion;
+import ec.gob.arcom.migracion.modelo.Operativo;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,5 +19,7 @@ import javax.ejb.Local;
 public interface MaquinariaConcesionServicio extends GenericService<MaquinariaConcesion, Long> {
 
     List<MaquinariaConcesion> obtenerMaquinariasPorConcesion(Long codigoConcesion);
+
+    public List<MaquinariaConcesion> obtenerMaquinariasPorOperativo(Operativo operativo);
 
 }

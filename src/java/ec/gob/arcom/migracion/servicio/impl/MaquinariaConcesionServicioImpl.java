@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.MaquinariaConcesionDao;
 import ec.gob.arcom.migracion.modelo.MaquinariaConcesion;
+import ec.gob.arcom.migracion.modelo.Operativo;
 import ec.gob.arcom.migracion.servicio.MaquinariaConcesionServicio;
 import java.util.List;
 import javax.ejb.EJB;
@@ -33,6 +34,11 @@ public class MaquinariaConcesionServicioImpl extends GenericServiceImpl<Maquinar
     @Override
     public List<MaquinariaConcesion> obtenerMaquinariasPorConcesion(Long codigoConcesion) {
         return maquinariaConcesionDao.obtenerMaquinariasPorConcesion(codigoConcesion);
+    }
+
+    @Override
+    public List<MaquinariaConcesion> obtenerMaquinariasPorOperativo(Operativo operativo) {
+        return maquinariaConcesionDao.obtenerMaquinariasPorOperativo(operativo);
     }
 
 }

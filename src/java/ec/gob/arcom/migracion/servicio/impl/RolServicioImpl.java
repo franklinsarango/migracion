@@ -30,4 +30,9 @@ public class RolServicioImpl extends GenericServiceImpl<Rol, Long>
         return rolDao;
     }
 
+    @Override
+    public Rol findByNemonico(String nemonico) {
+        return rolDao.findByNemonico(nemonico);
+    }
+
 }
