@@ -6,11 +6,11 @@
 package ec.gob.arcom.migracion.converters;
 
 import ec.gob.arcom.migracion.modelo.Catalogo;
-import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.servicio.CatalogoServicio;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -19,6 +19,7 @@ import javax.faces.convert.Converter;
  *
  * @author mejiaw
  */
+@ManagedBean
 @Named(value = "catalogoConverter")
 @RequestScoped
 public class CatalogoConverter implements Converter{

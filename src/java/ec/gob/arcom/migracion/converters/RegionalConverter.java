@@ -8,8 +8,9 @@ package ec.gob.arcom.migracion.converters;
 import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -18,6 +19,7 @@ import javax.faces.convert.Converter;
  *
  * @author mejiaw
  */
+@ManagedBean
 @Named(value = "regionalConverter")
 @RequestScoped
 public class RegionalConverter implements Converter{

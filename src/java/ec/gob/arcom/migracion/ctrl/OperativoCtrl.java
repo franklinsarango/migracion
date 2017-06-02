@@ -105,11 +105,8 @@ public class OperativoCtrl {
     private List<SelectItem> tiposSello;
     private List<SelectItem> estadosProcedimiento;
     
-    /*private List<DetalleOperativo> institucionesParticipantes;
-    private List<DetalleOperativo> detenidos;
-    private List<DetalleOperativo> depositarios;*/
-    
     private boolean edit= false;
+    
     /**
      * Creates a new instance of OperativoCtrl
      */
@@ -117,6 +114,7 @@ public class OperativoCtrl {
     public OperativoCtrl() {
         operativo= new Operativo();
         detallesOperativo= new ArrayList<>();
+        detalleOperativo= new DetalleOperativo();
         //operativo.setDetallesOperativo(new ArrayList<DetalleOperativo>());
         maquinaria= new MaquinariaConcesion();
         maquinaria.setEstadoMaquinaria(BigInteger.ZERO);
@@ -166,41 +164,6 @@ public class OperativoCtrl {
     public void setMaquinarias(List<MaquinariaConcesion> maquinarias) {
         this.maquinarias = maquinarias;
     }
-    
-//    public List<MaquinariaConcesion> getMaquinariasGuardar() {
-//        return maquinariasGuardar;
-//    }
-//
-//    public void setMaquinariasGuardar(List<MaquinariaConcesion> maquinariasGuardar) {
-//        this.maquinariasGuardar = maquinariasGuardar;
-//    }
-
-//    public List<DetalleOperativo> getInstitucionesParticipantes() {
-//        //institucionesParticipantes= obtenerInformacionInstituciones();
-//        //return institucionesParticipantes;
-//    }
-//
-//    public void setInstitucionesParticipantes(List<DetalleOperativo> institucionesParticipantes) {
-//        this.institucionesParticipantes = institucionesParticipantes;
-//    }
-//
-//    public List<DetalleOperativo> getDetenidos() {
-//        //detenidos= obtenerInformacionDetenidos();
-//        return detenidos;
-//    }
-//
-//    public void setDetenidos(List<DetalleOperativo> detenidos) {
-//        this.detenidos = detenidos;
-//    }
-//
-//    public List<DetalleOperativo> getDepositarios() {
-//        //depositarios= obtenerInformacionDepositarios();
-//        return depositarios;
-//    }
-//
-//    public void setDepositarios(List<DetalleOperativo> depositarios) {
-//        this.depositarios = depositarios;
-//    }
     
     ////////////////////////
     public void obtenerOperativos() {
@@ -490,11 +453,8 @@ public class OperativoCtrl {
     public void newOperativoAction() {
         operativo= new Operativo();
         detallesOperativo= new ArrayList<>();
-        //operativo.setDetallesOperativo(new ArrayList<DetalleOperativo>());
+        detalleOperativo= new DetalleOperativo();
         maquinarias= new ArrayList<>();
-        //institucionesParticipantes= new ArrayList<>();
-        //detenidos= new ArrayList<>();
-        //depositarios= new ArrayList<>();
     }
     
     public void setOperativoEliminarAction(Integer row) {
@@ -512,9 +472,6 @@ public class OperativoCtrl {
         operativo= operativos.get(row);
         detallesOperativo= detalleOperativoServicio.listarPorOperativo(operativo);
         maquinarias= maquinariaConcesionServicio.obtenerMaquinariasPorOperativo(operativo);
-        /*institucionesParticipantes= obtenerInformacionInstituciones();
-        detenidos= obtenerInformacionDetenidos();
-        depositarios= obtenerInformacionDepositarios();*/
     }
     
     public void newInstitucionAction() {
@@ -524,13 +481,13 @@ public class OperativoCtrl {
     public void addInstitucionAction() {
         detalleOperativo.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico(TIPOINSTITUCION).get(0));
         this.detallesOperativo.add(detalleOperativo);
-        //this.institucionesParticipantes.add(detalleOperativo);
     }
     
     public void deleteInstitucionAction(DetalleOperativo detalle) {
         detallesOperativo.remove(detalle);
-        detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
-        //institucionesParticipantes.remove(detalle);
+        if(detalle.getCodigoDetalleOperativo()!=null) {
+            detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
+        }
     }
     
     public void newDetenidoAction() {
@@ -540,13 +497,13 @@ public class OperativoCtrl {
     public void addDetenidoAction() {
         detalleOperativo.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico(TIPODETENIDO).get(0));
         this.detallesOperativo.add(detalleOperativo);
-        //this.detenidos.add(detalleOperativo);
     }
     
     public void deleteDetenidoAction(DetalleOperativo detalle) {
         detallesOperativo.remove(detalle);
-        detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
-        //detenidos.remove(detalle);
+        if(detalle.getCodigoDetalleOperativo()!=null) {
+            detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
+        }
     }
     
     public void newMaquinariaAction() {
@@ -561,7 +518,9 @@ public class OperativoCtrl {
     
     public void deleteMaquinariaAction(MaquinariaConcesion maq) {
         maquinarias.remove(maq);
-        maquinariaConcesionServicio.delete(maq.getCodigoMaquinaria());
+        if(maq.getCodigoMaquinaria()!=null) {
+            maquinariaConcesionServicio.delete(maq.getCodigoMaquinaria());
+        }
     }
     
     public void newDepositarioAction() {
@@ -571,13 +530,13 @@ public class OperativoCtrl {
     public void addDepositarioAction() {
         detalleOperativo.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico(TIPODEPOSITARIO).get(0));
         this.detallesOperativo.add(detalleOperativo);
-        //this.depositarios.add(detalleOperativo);
     }
     
     public void deleteDepositarioAction(DetalleOperativo detalle) {
         detallesOperativo.remove(detalle);
-        detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
-        //depositarios.remove(detalle);
+        if(detalle.getCodigoDetalleOperativo()!=null) {
+            detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
+        }
     }
     
     public String obtenerNombreCatalogoDetalle(Long pk) {
@@ -613,15 +572,6 @@ public class OperativoCtrl {
         operativo.setEstadoRegistro(Boolean.TRUE);
         operativo.setFechaCreacion(Calendar.getInstance().getTime());
         operativoServicio.create(operativo);
-        /*for(DetalleOperativo detope : institucionesParticipantes) {
-            this.operativo.getDetallesOperativo().add(detope);
-        }
-        for(DetalleOperativo detope : detenidos) {
-            this.operativo.getDetallesOperativo().add(detope);
-        }
-        for(DetalleOperativo detope : depositarios) {
-            this.operativo.getDetallesOperativo().add(detope);
-        }*/
         for(DetalleOperativo detope : detallesOperativo) {
             detope.setOperativo(operativo);
             detope.setEstadoRegistro(Boolean.TRUE);
@@ -652,16 +602,6 @@ public class OperativoCtrl {
         operativo.setEstadoRegistro(Boolean.TRUE);
         operativo.setFechaModificacion(Calendar.getInstance().getTime());
         operativoServicio.update(operativo);
-        //operativo.setDetallesOperativo(new ArrayList<DetalleOperativo>());
-        /*for(DetalleOperativo detope : institucionesParticipantes) {
-            this.operativo.getDetallesOperativo().add(detope);
-        }
-        for(DetalleOperativo detope : detenidos) {
-            this.operativo.getDetallesOperativo().add(detope);
-        }
-        for(DetalleOperativo detope : depositarios) {
-            this.operativo.getDetallesOperativo().add(detope);
-        }*/
         for(DetalleOperativo detope : detallesOperativo) {
             detope.setOperativo(operativo);
             detope.setEstadoRegistro(Boolean.TRUE);

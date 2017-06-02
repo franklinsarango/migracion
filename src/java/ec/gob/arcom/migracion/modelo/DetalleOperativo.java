@@ -220,9 +220,9 @@ public class DetalleOperativo implements Serializable {
 //        return true;
 //    }
 //
-//    @Override
-//    public String toString() {
-//        return "ec.gob.arcom.migracion.modelo.DetalleOperativo[ id=" + codigoDetalleOperativo + " ]";
-//    }
+    @Override
+    public String toString() {
+        return "ec.gob.arcom.migracion.modelo.DetalleOperativo[ id=" + codigoDetalleOperativo + " ]";
+    }
     
 }

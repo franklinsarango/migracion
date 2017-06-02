@@ -5,12 +5,12 @@
  */
 package ec.gob.arcom.migracion.converters;
 
-import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -19,6 +19,7 @@ import javax.faces.convert.Converter;
  *
  * @author mejiaw
  */
+@ManagedBean
 @Named(value = "usuarioConverter")
 @RequestScoped
 public class UsuarioConverter implements Converter {

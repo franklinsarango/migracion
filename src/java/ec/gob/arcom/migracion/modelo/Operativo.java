@@ -377,5 +377,4 @@ public class Operativo implements Serializable {
     public String toString() {
         return "ec.gob.arcom.migracion.modelo.Operativo[ id=" + codigoOperativo + " ]";
     }
-    
 }
