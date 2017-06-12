@@ -8,8 +8,6 @@ package ec.gob.arcom.migracion.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -375,6 +372,31 @@ public class Operativo implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.gob.arcom.migracion.modelo.Operativo[ id=" + codigoOperativo + " ]";
+        String response;
+        response= "Operativo{" + 
+                "codigoOperativo=" + codigoOperativo + ", tipoOperativo=" + tipoOperativo.getCodigoCatalogoDetalle() + 
+                ", regional=" + regional.getCodigoRegional() + ", provincia=" + provincia.getCodigoLocalidad() + ", canton=" + canton.getCodigoLocalidad() + 
+                ", parroquia=" + parroquia.getCodigoLocalidad() + ", sector=" + sector + ", utmEste=" + utmEste + ", utmNorte=" + utmNorte + 
+                ", tipoSello=" + tipoSello.getCodigoCatalogoDetalle() + ", numeroSello=" + numeroSello + ", fechaInformeMae=" + fechaInformeMae + 
+                ", numeroDocumentoInformeMae=" + numeroDocumentoInformeMae + ", responsableTecnico=" + responsableTecnico.getNumeroDocumento() +
+                ", responsableLegal=" + responsableLegal.getNumeroDocumento() + ", numeroInformeTecnico=" + numeroInformeTecnico +
+                ", observacionesOperativo=" + observacionesOperativo + ", fechaOperativo=" + fechaOperativo + ", tipoMaterial=" + tipoMaterial.getCodigoCatalogo() + 
+                ", formaExplotacion=" + formaExplotacion.getCodigoCatalogoDetalle() + ", descripcionAccionesRealizadas=" + descripcionAccionesRealizadas +
+                ", multaProcesoAdministrativo=" + multaProcesoAdministrativo + ", accionesRealizar=" + accionesRealizar + ", expedienteAdministrativo=" + expedienteAdministrativo + 
+                ", estadoAdministrativo=" + estadoAdministrativo.getCodigoCatalogoDetalle() + ", numeroResolucionAdministrativo=" + numeroResolucionAdministrativo +
+                ", fechaResolucionAdministrativo=" + fechaResolucionAdministrativo + ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + 
+                ", usuarioCreacion=" + usuarioCreacion + 
+                ", fechaModificacion=" + fechaModificacion + 
+                ", usuarioModificacion=" + obtenerUsuarioModificacion() +
+                 "}";
+        return response;
+    }
+    
+    private String obtenerUsuarioModificacion() {
+        if(usuarioModificacion==null) {
+            return "";
+        } else {
+            return usuarioModificacion.getNumeroDocumento();
+        }
     }
 }

@@ -8,7 +8,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions">
     
-    <h:form id="operativoform">
+    <h:form id="operativoform" enctype="multipart/form-data">
         
         <p:wizard id="operativowiz" widgetVar="operativowizwg" nextLabel="Siguiente" backLabel="Anterior">
             <p:tab id="tab01" title="Datos Generales">
@@ -463,22 +463,36 @@
                                         value="#{operativoCtrl.operativo.fechaResolucionAdministrativo}"/>
                         </p:column>
                     </p:row>
-                    
-                    <p:row>
-                        <p:column colspan="2" style="text-align: center">
-                            <p:spacer width="10" height="10"/>
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column colspan="2" style="text-align: center">
-                            <p:commandButton value="Finalizar" title="Finalizar" actionListener="#{operativoCtrl.saveOperativoAction()}"
-                                             update=":listaoperativosfrm:operativosdt :operativoform"/>
-                        </p:column>
-                    </p:row>
                 </p:panelGrid>
             </p:tab>
             
+            <p:tab id="tab06" title="Adjuntos">
+                <p:panelGrid styleClass="pg-center-02" columns="1">
+                    <p:outputLabel value="Archivos adjuntos"/>
+                    
+                    <p:dataList id="filelist" value="#{operativoCtrl.archivosCargados}" var="file" type="ordered" styleClass="size_uploadfiles" 
+                            emptyMessage="No se encontraron archivos">
+                        <p:link value="#{file.nombreAdjunto}" href="#{file.urlDocumento}" styleClass="lnkadjuntos"/>
+                    </p:dataList>
+                    
+                    <p:fileUpload id="fuadjuntos" mode="advanced" sizeLimit="8388608" allowTypes="/(\.|\/)(pdf|PDF)$/"
+                        invalidSizeMessage="Su archivo excede el tamaño permitido de 8MB" 
+                            invalidFileMessage="Solo puede subir archivos PDF" 
+                            cancelLabel="Cancelar" uploadLabel="Subir" label="Examinar" 
+                            fileUploadListener="#{operativoCtrl.addArchivos}" style="width: 600px"
+                            update="operativoform filelistUpload :growl"/>
+                    
+                    <p:dataList id="filelistUpload" value="#{operativoCtrl.archivosParaCargar}" var="newfile" type="ordered" styleClass="size_uploadfiles"
+                            emptyMessage="No se encontraron archivos" rendered="#{operativoCtrl.showUploadPanel}">
+                        <p:outputLabel value="#{newfile.fileName}"/>
+                    </p:dataList>
+                    
+                    <h:commandButton value="Finalizar" title="Finalizar" actionListener="#{operativoCtrl.saveOperativoAction()}"
+                                     styleClass="endbutton">
+                                 <p:ajax update=":listaoperativosfrm:operativosdt :operativoform"/>
+                    </h:commandButton>
+                </p:panelGrid> 
+            </p:tab>
         </p:wizard>
     </h:form>
 </ui:composition>

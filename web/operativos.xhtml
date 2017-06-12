@@ -14,7 +14,7 @@
         <ui:define name="content">
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
-            <h:form id="listaoperativosfrm">
+            <h:form id="listaoperativosfrm" enctype="multipart/form-data">
                 <p:panelGrid columns="2" styleClass="panelSinBorde">
                     
                     <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
@@ -51,7 +51,7 @@
                 <p:panelGrid id="tablePanel" columns="1">
                     <p:panelGrid columns="3" styleClass="panelSinBorde">
                         <p:commandButton icon="ui-icon-plusthick" title="Nuevo operativo" actionListener="#{operativoCtrl.newOperativoAction()}"
-                                         oncomplete="PF('operativofrmwg').show();" update=":operativofrm"/>
+                                         oncomplete="PF('operativofrmwg').show();" update=":operativoform"/>
                     </p:panelGrid>
 
                     <p:dataTable id="operativosdt" emptyMessage="No hay resultados..."
@@ -99,7 +99,7 @@
                         <p:column headerText="Editar" style="width:60px;text-align: center">
                             <p:commandButton icon="ui-icon-newwin" title="Editar operativo"
                                              actionListener="#{operativoCtrl.editOperativoAction(row)}"
-                                             oncomplete="PF('operativofrmwg').show();" update=":operativofrm"/>
+                                             oncomplete="PF('operativofrmwg').show();" update=":operativoform"/>
                         </p:column>
 
                         <p:column headerText="Eliminar" style="width:45px;text-align: center">
@@ -113,7 +113,7 @@
             
             <!-- FORMULARIO OPERATIVO -->
             <p:dialog id="operativofrm" widgetVar="operativofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
-                      header="Operativo" style="">
+                      header="Operativo">
                 <ui:include src="operativofrm.xhtml"/>
             </p:dialog>
             

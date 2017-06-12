@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class DetalleOperativo implements Serializable {
     private Long codigoDetalleOperativo;
     
     @JoinColumn(name = "codigo_operativo", referencedColumnName = "codigo_operativo")
-    @ManyToOne
+    @ManyToOne()
     private Operativo operativo;
     
     @JoinColumn(name = "codigo_tipo_informacion_registro", referencedColumnName = "codigo_catalogo_detalle")
@@ -200,29 +201,49 @@ public class DetalleOperativo implements Serializable {
         this.operativo = operativo;
     }
     
-//    @Override
-//    public int hashCode() {
-//        int hash = 0;
-//        hash += (codigoDetalleOperativo != null ? codigoDetalleOperativo.hashCode() : 0);
-//        return hash;
-//    }
-//    
-//    @Override
-//    public boolean equals(Object object) {
-//        // TODO: Warning - this method won't work in the case the id fields are not set
-//        if (!(object instanceof DetalleOperativo)) {
-//            return false;
-//        }
-//        DetalleOperativo other = (DetalleOperativo) object;
-//        if ((this.codigoDetalleOperativo == null && other.codigoDetalleOperativo != null) || (this.codigoDetalleOperativo != null && !this.codigoDetalleOperativo.equals(other.codigoDetalleOperativo))) {
-//            return false;
-//        }
-//        return true;
-//    }
-//
     @Override
     public String toString() {
-        return "ec.gob.arcom.migracion.modelo.DetalleOperativo[ id=" + codigoDetalleOperativo + " ]";
+        String response;
+        response= "DetalleOperativo{" + 
+                "codigoDetalleOperativo=" + codigoDetalleOperativo + ", operativo=" + operativo.getCodigoOperativo() +
+                ", tipoInformacionRegistro=" + tipoInformacionRegistro.getCodigoCatalogoDetalle() + ", tipoInstitucion=" + obtenerTipoInstitucion() +
+                ", numeroPersonas=" + numeroPersonas + ", descripcionInstitucion=" + descripcionInstitucion + ", nombre" + nombre + ", apellido=" + apellido + 
+                ", numeroDocumento=" + numeroDocumento + ", tipoDepositario=" + obtenerTipoDepositario() + ", descripcionDepositario=" + descripcionDepositario +
+                ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion + 
+                ", fechaModificacion=" + obtenerFechaModificacion() + ", usuarioModificacion=" + obtenerUsuarioModificacion() +
+                 "}";
+        return response;
     }
     
+    private String obtenerTipoInstitucion() {
+        if(tipoInstitucion==null) {
+            return "";
+        } else {
+            return tipoInstitucion.getCodigoCatalogoDetalle() + "";
+        }
+    }
+    
+    private String obtenerTipoDepositario() {
+        if(tipoDepositario==null) {
+            return "";
+        } else {
+            return tipoDepositario.getCodigoCatalogoDetalle() + "";
+        }
+    }
+    
+    private String obtenerFechaModificacion() {
+        if(fechaModificacion==null) {
+            return "";
+        } else {
+            return fechaModificacion.toString();
+        }
+    }
+    
+    private String obtenerUsuarioModificacion() {
+        if(usuarioModificacion==null) {
+            return "";
+        } else {
+            return usuarioModificacion.getNumeroDocumento();
+        }
+    }
 }

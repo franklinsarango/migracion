@@ -44,7 +44,8 @@ public class LoginCtrl extends BaseCtrl {
      */
     public LoginCtrl() {
     }
-
+    
+    private Long codigoUsuario;
     private String userName;
     private String nombreUsuario;
     private String rolUsuario;
@@ -79,6 +80,15 @@ public class LoginCtrl extends BaseCtrl {
         this.userPassword = userPassword;
     }
 
+    public Long getCodigoUsuario() {
+        return codigoUsuario;
+    }
+
+    public void setCodigoUsuario(Long codigoUsuario) {
+        this.codigoUsuario = codigoUsuario;
+    }
+    
+
     public boolean isLogged() {
         return logged;
     }
@@ -100,6 +110,7 @@ public class LoginCtrl extends BaseCtrl {
             result = this.obtenerUsuario(userName, userPassword);
             if (result) {
                 HttpSession session = FacesUtil.getSession();
+                session.setAttribute("codigoUsuario", codigoUsuario);
                 session.setAttribute("username", userName);
                 session.setAttribute("logged", logged);
                 session.setAttribute("admin", admin);
@@ -140,6 +151,7 @@ public class LoginCtrl extends BaseCtrl {
                     Usuario uBd = usuarioDao.obtenerPorLogin(userName);
                     UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(uBd.getCodigoUsuario());
                     this.nombreUsuario = uBd.getNombre() + " " + uBd.getApellido();
+                    this.codigoUsuario= uBd.getCodigoUsuario();
                     this.rolUsuario = usRol.getRol().getDescripcion();
                     this.logged = true;
                     this.admin = true;

@@ -334,3 +334,29 @@ h2 {
 .onemenu-form {
     width: 278px !important;
 }
+
+/* link */
+.lnkadjuntos {
+    text-decoration: none;
+}
+a.lnkadjuntos:link {
+    color: #000000;
+}
+/* visited link */
+a.lnkadjuntos:visited {
+    color: #000000;
+}
+/* mouse over link */
+a.lnkadjuntos:hover {
+    color: #FF6600;
+}
+/* selected link */
+a.lnkadjuntos:active {
+    color: buttonface;
+}
+
+.endbutton {
+    margin: 0 auto;
+    width: 150px;
+    height: 35px;
+}

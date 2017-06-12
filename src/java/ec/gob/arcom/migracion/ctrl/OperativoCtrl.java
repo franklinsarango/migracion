@@ -1,5 +1,13 @@
 package ec.gob.arcom.migracion.ctrl;
 
+import ec.gob.arcom.migracion.alfresco.bean.AlfrescoDocumentBean;
+import ec.gob.arcom.migracion.alfresco.bean.AlfrescoFileBean;
+import ec.gob.arcom.migracion.alfresco.util.AlfrescoFileUtil;
+import ec.gob.arcom.migracion.alfresco.AlfrescoMimeType;
+import ec.gob.arcom.migracion.alfresco.service.AlfrescoService;
+import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
+import ec.gob.arcom.migracion.modelo.Adjunto;
+import ec.gob.arcom.migracion.modelo.Auditoria;
 import ec.gob.arcom.migracion.modelo.Catalogo;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.DetalleOperativo;
@@ -8,9 +16,12 @@ import ec.gob.arcom.migracion.modelo.MaquinariaConcesion;
 import ec.gob.arcom.migracion.modelo.Operativo;
 import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.Rol;
+import ec.gob.arcom.migracion.modelo.Secuencia;
 import ec.gob.arcom.migracion.modelo.TipoMaquinaria;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.modelo.UsuarioRol;
+import ec.gob.arcom.migracion.servicio.AdjuntoServicio;
+import ec.gob.arcom.migracion.servicio.AuditoriaServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoServicio;
 import ec.gob.arcom.migracion.servicio.DetalleOperativoServicio;
@@ -19,9 +30,11 @@ import ec.gob.arcom.migracion.servicio.MaquinariaConcesionServicio;
 import ec.gob.arcom.migracion.servicio.OperativoServicio;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
 import ec.gob.arcom.migracion.servicio.RolServicio;
+import ec.gob.arcom.migracion.servicio.SecuenciaServicio;
 import ec.gob.arcom.migracion.servicio.TipoMaquinariaServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioRolServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
+import java.io.File;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,10 +46,14 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.wizard.Wizard;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -50,10 +67,13 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @ViewScoped
-public class OperativoCtrl {
+public class OperativoCtrl extends BaseCtrl {
     public static final String TIPOINSTITUCION= "TIPOINFINSTPART";
     public static final String TIPODETENIDO= "TIPOINFDETOPE";
     public static final String TIPODEPOSITARIO= "TIPOINFDEPMAQ";
+    public static final String INSERT= "INSERT";
+    public static final String UPDATE=  "UPDATE";
+    public static final String DELETE= "DELETE";
     
     
     @EJB
@@ -78,6 +98,12 @@ public class OperativoCtrl {
     private TipoMaquinariaServicio tipoMaquinariaServicio;
     @EJB
     private MaquinariaConcesionServicio maquinariaConcesionServicio;
+    @EJB
+    private AuditoriaServicio auditoriaServicio;
+    @EJB
+    private AdjuntoServicio adjuntoServicio;
+    @EJB
+    private SecuenciaServicio secuenciaServicio;
     
     private Date fechaMaxima;
     
@@ -107,10 +133,17 @@ public class OperativoCtrl {
     
     private boolean edit= false;
     
+    
+    private List<Adjunto> archivosCargados;
+    private List<UploadedFile> archivosParaCargar;
+    private boolean showUploadPanel= false;
+    
+    @ManagedProperty(value = "#{loginCtrl}")
+    private LoginCtrl login;
+    
     /**
      * Creates a new instance of OperativoCtrl
      */
-    
     public OperativoCtrl() {
         operativo= new Operativo();
         detallesOperativo= new ArrayList<>();
@@ -123,6 +156,7 @@ public class OperativoCtrl {
     @PostConstruct
     private void inicializar() {
         obtenerOperativos();
+        login.setCodigoUsuario((long) 1689);
     }
 
     public List<Operativo> getOperativos() {
@@ -163,6 +197,14 @@ public class OperativoCtrl {
 
     public void setMaquinarias(List<MaquinariaConcesion> maquinarias) {
         this.maquinarias = maquinarias;
+    }
+
+    public LoginCtrl getLogin() {
+        return login;
+    }
+
+    public void setLogin(LoginCtrl login) {
+        this.login = login;
     }
     
     ////////////////////////
@@ -455,6 +497,11 @@ public class OperativoCtrl {
         detallesOperativo= new ArrayList<>();
         detalleOperativo= new DetalleOperativo();
         maquinarias= new ArrayList<>();
+        archivosParaCargar= new ArrayList<>();
+        
+        Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("operativoform:operativowiz");
+        wizard.setStep("tab01");
+        RequestContext.getCurrentInstance().update("operativoform");
     }
     
     public void setOperativoEliminarAction(Integer row) {
@@ -462,9 +509,21 @@ public class OperativoCtrl {
     }
     
     public void deleteOperativoAction() {
-        operativoServicio.delete(operativo.getCodigoOperativo());
-        obtenerOperativos();
-        mostrarMensaje(FacesMessage.SEVERITY_INFO, "Operativo eliminado correctamente");
+        if(operativo!=null) {
+            deleteDetalles(operativo);
+            operativoServicio.delete(operativo.getCodigoOperativo());
+            saveAuditoria(DELETE, operativo, new Operativo());
+            obtenerOperativos();
+            mostrarMensaje(FacesMessage.SEVERITY_INFO, "Operativo eliminado correctamente");
+        }
+    }
+    
+    private void deleteDetalles(Operativo o) {
+        List<DetalleOperativo> detalles= detalleOperativoServicio.listarPorOperativo(o);
+        for(DetalleOperativo detop : detalles) {
+            System.out.println("Detalle operativo= " + detop.getCodigoDetalleOperativo());
+            detalleOperativoServicio.delete(detop.getCodigoDetalleOperativo());
+        }
     }
     
     public void editOperativoAction(Integer row) {
@@ -472,6 +531,12 @@ public class OperativoCtrl {
         operativo= operativos.get(row);
         detallesOperativo= detalleOperativoServicio.listarPorOperativo(operativo);
         maquinarias= maquinariaConcesionServicio.obtenerMaquinariasPorOperativo(operativo);
+        archivosCargados= obtenerArchivosCargados(operativo);
+        archivosParaCargar= new ArrayList<>();
+        
+        Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("operativoform:operativowiz");
+        wizard.setStep("tab01");
+        RequestContext.getCurrentInstance().update("operativoform");
     }
     
     public void newInstitucionAction() {
@@ -487,6 +552,7 @@ public class OperativoCtrl {
         detallesOperativo.remove(detalle);
         if(detalle.getCodigoDetalleOperativo()!=null) {
             detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
+            saveAuditoria(DELETE, detalle, new DetalleOperativo());
         }
     }
     
@@ -503,6 +569,7 @@ public class OperativoCtrl {
         detallesOperativo.remove(detalle);
         if(detalle.getCodigoDetalleOperativo()!=null) {
             detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
+            saveAuditoria(DELETE, detalle, new DetalleOperativo());
         }
     }
     
@@ -520,6 +587,7 @@ public class OperativoCtrl {
         maquinarias.remove(maq);
         if(maq.getCodigoMaquinaria()!=null) {
             maquinariaConcesionServicio.delete(maq.getCodigoMaquinaria());
+            saveAuditoria(DELETE, maq, new MaquinariaConcesion());
         }
     }
     
@@ -536,6 +604,7 @@ public class OperativoCtrl {
         detallesOperativo.remove(detalle);
         if(detalle.getCodigoDetalleOperativo()!=null) {
             detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
+            saveAuditoria(DELETE, detalle, new DetalleOperativo());
         }
     }
     
@@ -546,6 +615,9 @@ public class OperativoCtrl {
     public void saveOperativoAction() {
         if(edit) {
             if(actualizar()) {
+                if(archivosParaCargar!=null && archivosParaCargar.size()>0) {
+                    guardarAdjuntos();
+                }
                 finalizarGuardado();
                 mostrarMensaje(FacesMessage.SEVERITY_INFO, "Operativo actualizado correctamente");
             } else {
@@ -553,6 +625,9 @@ public class OperativoCtrl {
             }
         } else {
             if(guardar()) {
+                if(archivosParaCargar!=null && archivosParaCargar.size()>0) {
+                    guardarAdjuntos();
+                }
                 finalizarGuardado();
                 mostrarMensaje(FacesMessage.SEVERITY_INFO, "Operativo guardado correctamente");
             } else {
@@ -567,16 +642,22 @@ public class OperativoCtrl {
         }
         return false;
     }
-    
+                
     private boolean guardarOperativo() {
+        Usuario usrCreacion= usuarioServicio.findByPk(login.getCodigoUsuario());
         operativo.setEstadoRegistro(Boolean.TRUE);
         operativo.setFechaCreacion(Calendar.getInstance().getTime());
+        operativo.setUsuarioCreacion(usrCreacion);
         operativoServicio.create(operativo);
+        saveAuditoria(INSERT, operativo, new Operativo());
+        
         for(DetalleOperativo detope : detallesOperativo) {
             detope.setOperativo(operativo);
             detope.setEstadoRegistro(Boolean.TRUE);
             detope.setFechaCreacion(Calendar.getInstance().getTime());
+            detope.setUsuarioCreacion(usrCreacion);
             detalleOperativoServicio.create(detope);
+            saveAuditoria(INSERT, detope, new DetalleOperativo());
         }
         return true;
     }
@@ -585,8 +666,10 @@ public class OperativoCtrl {
         for(MaquinariaConcesion mc : maquinarias) {
             mc.setEstadoRegistro(Boolean.TRUE);
             mc.setFechaCreacion(Calendar.getInstance().getTime());
+            mc.setUsuarioCreacion(BigInteger.valueOf(login.getCodigoUsuario()));
             mc.setOperativo(operativo);
             maquinariaConcesionServicio.create(mc);
+            saveAuditoria(INSERT, mc, new MaquinariaConcesion());
         }
         return true;
     }
@@ -599,18 +682,27 @@ public class OperativoCtrl {
     }
     
     private boolean actualizarOperativo() {
-        operativo.setEstadoRegistro(Boolean.TRUE);
+        Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
+        Operativo anterior= operativoServicio.findByPk(operativo.getCodigoOperativo());
         operativo.setFechaModificacion(Calendar.getInstance().getTime());
+        operativo.setUsuarioModificacion(usr);
         operativoServicio.update(operativo);
+        saveAuditoria(UPDATE, operativo, anterior);
+        
         for(DetalleOperativo detope : detallesOperativo) {
             detope.setOperativo(operativo);
             detope.setEstadoRegistro(Boolean.TRUE);
             if(detope.getFechaCreacion()!=null) {
+                DetalleOperativo detopeAnterior= detalleOperativoServicio.findByPk(detope.getCodigoDetalleOperativo());
                 detope.setFechaModificacion(Calendar.getInstance().getTime());
+                detope.setUsuarioModificacion(usr);
                 detalleOperativoServicio.update(detope);
+                saveAuditoria(UPDATE, detope, detopeAnterior);
             } else {
                 detope.setFechaCreacion(Calendar.getInstance().getTime());
+                detope.setUsuarioCreacion(usr);
                 detalleOperativoServicio.create(detope);
+                saveAuditoria(INSERT, detope, new DetalleOperativo());
             }
         }
         return true;
@@ -621,19 +713,66 @@ public class OperativoCtrl {
             mc.setEstadoRegistro(Boolean.TRUE);
             mc.setOperativo(operativo);
             if(mc.getFechaCreacion()!=null) {
+                MaquinariaConcesion mcAnterior= maquinariaConcesionServicio.findByPk(mc.getCodigoMaquinaria());
                 mc.setFechaModificacion(Calendar.getInstance().getTime());
+                mc.setUsuarioModificacion(BigInteger.valueOf(login.getCodigoUsuario()));
                 maquinariaConcesionServicio.update(mc);
+                saveAuditoria(UPDATE, mc, mcAnterior);
             } else {
                 mc.setFechaCreacion(Calendar.getInstance().getTime());
+                mc.setUsuarioCreacion(BigInteger.valueOf(login.getCodigoUsuario()));
                 maquinariaConcesionServicio.create(mc);
+                saveAuditoria(INSERT, mc, new MaquinariaConcesion());
             }
         }
         return true;
     }
     
+    private void saveAuditoria(String accion, Operativo nuevo, Operativo anterior) {
+        Auditoria auditoria = new Auditoria();
+        auditoria.setAccion(accion);
+        auditoria.setFecha(Calendar.getInstance().getTime());
+        auditoria.setUsuario(BigInteger.valueOf(login.getCodigoUsuario()));
+        auditoria.setDetalleAnterior(nuevo.toString());
+        if(accion.equals(UPDATE)) {
+            auditoria.setDetalleCambios(anterior.toString());
+        } else {
+            auditoria.setDetalleCambios("");
+        }
+        auditoriaServicio.create(auditoria);
+    }
+    
+    private void saveAuditoria(String accion, DetalleOperativo nuevo, DetalleOperativo anterior) {
+        Auditoria auditoria = new Auditoria();
+        auditoria.setAccion(accion);
+        auditoria.setFecha(Calendar.getInstance().getTime());
+        auditoria.setUsuario(BigInteger.valueOf(login.getCodigoUsuario()));
+        auditoria.setDetalleAnterior(nuevo.toString());
+        if(accion.equals(UPDATE)) {
+            auditoria.setDetalleCambios(anterior.toString());
+        } else {
+            auditoria.setDetalleCambios("");
+        }
+        auditoriaServicio.create(auditoria);
+    }
+    
+    private void saveAuditoria(String accion, MaquinariaConcesion nuevo, MaquinariaConcesion anterior) {
+        Auditoria auditoria = new Auditoria();
+        auditoria.setAccion(accion);
+        auditoria.setFecha(Calendar.getInstance().getTime());
+        auditoria.setUsuario(BigInteger.valueOf(login.getCodigoUsuario()));
+        auditoria.setDetalleAnterior(nuevo.toString());
+        if(accion.equals(UPDATE)) {
+            auditoria.setDetalleCambios(anterior.toString());
+        } else {
+            auditoria.setDetalleCambios("");
+        }
+        auditoriaServicio.create(auditoria);
+    }
     
     private void finalizarGuardado() {
         RequestContext.getCurrentInstance().execute("PF('operativofrmwg').hide();");
+        showUploadPanel= false;
         obtenerOperativos();
     }
     
@@ -651,5 +790,112 @@ public class OperativoCtrl {
             return sdf.format(fecha);
         }
         return "";
+    }
+
+    public List<Adjunto> getArchivosCargados() {
+        return archivosCargados;
+    }
+
+    public void setArchivosCargados(List<Adjunto> archivosCargados) {
+        this.archivosCargados = archivosCargados;
+    }
+
+    public List<UploadedFile> getArchivosParaCargar() {
+        return archivosParaCargar;
+    }
+
+    public void setArchivosParaCargar(List<UploadedFile> archivosParaCargar) {
+        this.archivosParaCargar = archivosParaCargar;
+    }
+
+    public boolean isShowUploadPanel() {
+        return showUploadPanel;
+    }
+
+    public void setShowUploadPanel(boolean showUploadPanel) {
+        this.showUploadPanel = showUploadPanel;
+    }
+    
+    //Show hide carga de archivos
+    public void changeFileUploadState() {
+        showUploadPanel= !showUploadPanel;
+    }
+    
+    public void addArchivos(FileUploadEvent event) {
+        showUploadPanel= true;
+        boolean existe= false;
+        for(UploadedFile f : archivosParaCargar) {
+            if(f.getFileName().equals(event.getFile().getFileName())) {
+                existe= true;
+            }
+        }
+        if(!existe) {
+            archivosParaCargar.add(event.getFile());
+        }
+    }
+    
+    private void guardarAdjuntos() {
+        List<Adjunto> filesForSave= new ArrayList();
+        for(UploadedFile f : archivosParaCargar) {
+            Adjunto adj= subirArchivoRepositorio(f, "OPERATIVO", String.valueOf(operativo.getCodigoOperativo()), "OPERATIVO");
+            if(adj!=null) {
+                filesForSave.add(adj);
+            }
+        }
+        
+        if(filesForSave.size()>0) {
+            for(Adjunto a : filesForSave) {
+                Secuencia secuenciaAdjunto= secuenciaServicio.obtenerPorTabla("ADJUNTO");
+                Long value= secuenciaAdjunto.getValor();
+                a.setCodigoAdjunto(value);
+                adjuntoServicio.create(a);
+                secuenciaAdjunto.setValor(value + 1);
+                secuenciaServicio.update(secuenciaAdjunto);
+            }
+        }
+    } 
+    
+    public Adjunto subirArchivoRepositorio(UploadedFile upFile, String tipoTramite, String idTramite, String tramite) {
+        Adjunto adjunto = null;
+        if (upFile != null) {
+            try {
+                //Invocar a Alfresco                
+                List<String> carpetas = new ArrayList<>();
+                carpetas.add(tipoTramite);
+                carpetas.add(idTramite);
+
+                AlfrescoMimeType mt = AlfrescoFileUtil.getAlfrescoMimeType(upFile.getContentType());
+
+                AlfrescoFileBean afb = new AlfrescoFileBean();
+                File f = AlfrescoFileUtil.streamToFile(upFile.getInputstream(), upFile.getFileName(), mt.getCode());
+                afb.setStream(upFile.getInputstream());
+                afb.setMimeType(upFile.getContentType());
+                afb.setName(upFile.getFileName().replace("%", ""));
+                afb.setFullName(upFile.getFileName().replace("%", ""));
+                afb.setFile(f);
+
+                AlfrescoDocumentBean adb = AlfrescoService.uploadDocument(carpetas, afb);
+
+                adjunto = new Adjunto();
+                adjunto.setFechaCreacion(Calendar.getInstance().getTime());
+                adjunto.setUsuarioCreacion(login.getCodigoUsuario());
+                adjunto.setEstadoRegistro(Boolean.TRUE);
+                adjunto.setExtensionAdjunto(mt.getCode());
+                adjunto.setNombreAdjunto(upFile.getFileName().replace("%", ""));
+                adjunto.setUrlDocumento(adb.getDocumentUrl());
+                adjunto.setIdDocumento(adb.getDocumentId());
+                adjunto.setTipoDocumento(tipoTramite);
+                adjunto.setCodigoTramite(new Long(idTramite));
+                adjunto.setTramite(tramite);
+            } catch (Exception ex) {
+                System.out.println("Ocurrio un error: ");
+                System.out.println(ex.toString());
+            }
+        }
+        return adjunto;
+    }
+    
+    private List<Adjunto> obtenerArchivosCargados(Operativo o) {
+        return adjuntoServicio.findByOperativo(o);
     }
 }

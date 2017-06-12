@@ -11,14 +11,13 @@
             <file>file:/D:/Frank/SGM/proyectos/migracion/nbproject/build-impl.xml</file>
         </group>
         <group>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/plantabeneficioform.xhtml</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/ctrl/PlantaBeneficioCtrl.java</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/converters/RegionalConverter.java</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/resources/css/style.css</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/converters/LocalidadConverter.java</file>
+            <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/modelo/DetalleOperativo.java</file>
+            <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/modelo/Resolucion.java</file>
             <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/modelo/Operativo.java</file>
             <file>file:/D:/infarc/Documents/GitHub/migracion/web/operativos.xhtml</file>
+            <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/modelo/CatalogoDetalle.java</file>
             <file>file:/D:/infarc/Documents/GitHub/migracion/web/operativofrm.xhtml</file>
+            <file>file:/D:/infarc/Documents/GitHub/migracion/web/operativoadjuntosfrm.xhtml</file>
             <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/ctrl/OperativoCtrl.java</file>
         </group>
     </open-files>
