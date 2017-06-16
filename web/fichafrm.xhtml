@@ -1,0 +1,837 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Operativos de Mineria Ilegal"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+            
+            <h:form id="fichaform" >
+                <p:panelGrid columns="2" styleClass="panelSinBorde">
+                    
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
+                                <h:outputText value="Inicio"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </p:panelGrid>
+            
+                <p:separator/>
+
+                <center>
+                    <p:outputLabel value="Actualización de Informacion de Actividades Mineras" style="font-weight: bolder; font-size: large"/>
+                </center>
+
+                <p:panelGrid id="fichaPanel" styleClass="pg-center">
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel value="Realizado por: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText value="#{actividadMineraCtrl.fichaTecnica.usuarioElaboracion}" readonly="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="fechaVisita" value="Fecha visita: "/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="fechaVisita" styleClass="calendar-form" required="true"
+                                        readonlyInput="true" requiredMessage="El campo fecha de visita es requerido"
+                                        maxdate="#{actividadMineraCtrl.fechaMaxima}"
+                                        value="#{actividadMineraCtrl.fichaTecnica.fechaVisita}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="IDENTIFICACIÓN Y UBICACIÓN DE LA LABOR MINERA" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="razonSocial" value="Nombre o razón social de la labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="razonSocial" value="#{actividadMineraCtrl.fichaTecnica.rasonSocialLaborMinera}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="cedulaRepres" value="Cédula representante labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="cedulaRepres" value="#{actividadMineraCtrl.fichaTecnica.documentoRepresentanteLaborMinera}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="nombreRepres" value="Nombre representante labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="nombreRepres" value="#{actividadMineraCtrl.fichaTecnica.nombreRepresentanteLaborMinera}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="apellidoRepres" value="Apellido representante labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="apellidoRepres" value="#{actividadMineraCtrl.fichaTecnica.apellidoRepresentanteLaborMinera}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="etnia" value="Etnia:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="etnia" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                             value="#{actividadMineraCtrl.fichaTecnica.etnia}" requiredMessage="Debe seleccionar una zona">
+                                <f:selectItem itemLabel="Seleccione una zona..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraCtrl.etnias}"
+                                               var="etnia"
+                                               itemLabel="#{etnia.nombre}"
+                                               itemValue="#{etnia}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="telefonoRepres" value="Teléfono:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="telefonoRepres" value="#{actividadMineraCtrl.fichaTecnica.telefono}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="celularRepres" value="Celular:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="celularRepres" value="#{actividadMineraCtrl.fichaTecnica.celular}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="emailRepres" value="Correo electrónico"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="emailRepres" value="#{actividadMineraCtrl.fichaTecnica.correoElectronico}" required="true"
+                                         styleClass="inputtext-form" validatorMessage="El correo ingresado no es válido">
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                            </p:inputText>
+                        </p:column>
+                    </p:row>
+                    
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="utmNorte" value="UTM Norte:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="utmNorte" value="#{actividadMineraCtrl.fichaTecnica.utmNorte}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="utmEste" value="UTM Este:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="utmEste" value="#{actividadMineraCtrl.fichaTecnica.utmEste}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="cota" value="Cota:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="cota" value="#{actividadMineraCtrl.fichaTecnica.cota}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="zona" value="Zona:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="zona" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                             value="#{actividadMineraCtrl.fichaTecnica.zona}" requiredMessage="Debe seleccionar una zona">
+                                <f:selectItem itemLabel="Seleccione una zona..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraCtrl.zonas}"
+                                               var="zonageografica"
+                                               itemLabel="#{zonageografica.nombre}"
+                                               itemValue="#{zonageografica}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="provincia" value="Provincia:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="provincia" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
+                                             value="#{actividadMineraCtrl.fichaTecnica.provincia}">
+                                <f:selectItem itemLabel="Seleccione una provincia..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraCtrl.provincias}"
+                                               var="prov"
+                                               itemLabel="#{prov.nombre}"
+                                               itemValue="#{prov}"/>
+                                <p:ajax  listener="#{actividadMineraCtrl.cargarCantones()}" update="canton parroquia"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="canton" value="Cantón:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="canton" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
+                                             value="#{actividadMineraCtrl.fichaTecnica.canton}">
+                                <f:selectItem itemLabel="Seleccione un cantón..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraCtrl.cantones}"
+                                               var="cant"
+                                               itemLabel="#{cant.nombre}"
+                                               itemValue="#{cant}"/>
+                                <p:ajax  listener="#{actividadMineraCtrl.cargarParroquias}" update="parroquia"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="parroquia" value="Parroquia:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="parroquia" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
+                                             value="#{actividadMineraCtrl.fichaTecnica.parroquia}">
+                                <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraCtrl.parroquias}"
+                                               var="parroq"
+                                               itemLabel="#{parroq.nombre}"
+                                               itemValue="#{parroq}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="sector" value="Sector:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="sector" value="#{actividadMineraCtrl.fichaTecnica.sector}" required="true"
+                                         styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="estadoterreno" value="El terreno de la labor minera es:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="estadoterreno" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                             value="#{actividadMineraCtrl.fichaTecnica.tipoTerreno}" requiredMessage="Debe seleccionar una opción">
+                                <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraCtrl.tiposTerreno}"
+                                               var="tipoTerreno"
+                                               itemLabel="#{tipoTerreno.nombre}"
+                                               itemValue="#{tipoTerreno}"/>
+                                <p:ajax  listener="#{actividadMineraCtrl.changeShowDetalleTipoTerreno()}" update="detallePanel detalleTerrenoLbl detalleTerreno"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="detallePanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel id="detalleTerrenoLbl" for="detalleTerreno"
+                                                       value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       Detalle:"
+                                                       rendered="#{actividadMineraCtrl.showDetalleTipoTerreno}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="detalleTerreno" value="#{actividadMineraCtrl.fichaTecnica.detalleTipoTerreno}" required="true"
+                                                     styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showDetalleTipoTerreno}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="tiempoTrabajo" value="Tiempo de trabajo en la labor (meses):"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="tiempoTrabajo" value="#{actividadMineraCtrl.fichaTecnica.tiempoLaborMinera}" required="true"
+                                         styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="condicionLabor" value="Condición labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="condicionLabor" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                             value="#{actividadMineraCtrl.fichaTecnica.condicionLaborMinera}" requiredMessage="Debe seleccionar una opción">
+                                <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraCtrl.condicionesLaborMinera}"
+                                               var="condicion"
+                                               itemLabel="#{condicion.nombre}"
+                                               itemValue="#{condicion}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="isCodigoCensal" value="Tiene código censal:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneRadio id="isCodigoCensal" value="#{actividadMineraCtrl.codigoCensal}" required="true">
+                                <f:selectItem itemLabel="SI" itemValue="true" />
+                                <f:selectItem itemLabel="NO" itemValue="false" />
+                                <p:ajax  update="codigoCensalPanel codigoCensalLbl codigoCensal"/>
+                            </p:selectOneRadio>
+                        </p:column>
+                    </p:row>
+                    
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="codigoCensalPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel id="codigoCensalLbl" for="codigoCensal"
+                                                       value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       No. código censal:"
+                                                       rendered="#{actividadMineraCtrl.codigoCensal}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="codigoCensal" value="#{actividadMineraCtrl.fichaTecnica.codigoCensal}" required="true"
+                                                     styleClass="inputtext-form" rendered="#{actividadMineraCtrl.codigoCensal}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="zonaRiesgo" value="Zona de riesgo:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneRadio id="zonaRiesgo" value="#{actividadMineraCtrl.fichaTecnica.zonaRiesgo}" required="true">
+                                <f:selectItem itemLabel="SI" itemValue="true" />
+                                <f:selectItem itemLabel="NO" itemValue="false" />
+                            </p:selectOneRadio>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="dentroTitulo" value="Esta dentro de un titulo minero o permiso artesanal:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneRadio id="dentroTitulo" value="#{actividadMineraCtrl.derechoMinero}" required="true">
+                                <f:selectItem itemLabel="SI" itemValue="true" />
+                                <f:selectItem itemLabel="NO" itemValue="false" />
+                                <p:ajax  update="derechoMineroPanel"/>
+                            </p:selectOneRadio>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="derechoMineroPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column style="text-align: right" colspan="2">
+                                        <p:outputLabel id="codigoDerechoLbl" for="codigoDerecho"
+                                                       value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       Ingrese código del derecho minero:" rendered="#{actividadMineraCtrl.derechoMinero}"/></p:column>
+                                    <p:column style="text-align: left" colspan="2">
+                                        <p:inputText id="codigoDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.codigoArcom}" required="true"
+                                                     styleClass="inputtext-form" rendered="#{actividadMineraCtrl.derechoMinero}">
+                                            <p:ajax  update="codigoCensalPanel codigoCensalLbl codigoCensal"/>
+                                        </p:inputText>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel for="estadoDerecho" value="Estado:" rendered="#{actividadMineraCtrl.derechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="estadoDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.estadoConcesion.nombre}"
+                                                     readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.derechoMinero}"/>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel for="hectareasDerecho" value="Hectareas:" rendered="#{actividadMineraCtrl.derechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="hectareasDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.numeroHectareasConcesion}"
+                                                     readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.derechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel for="titularDerecho" value="Titular:" rendered="#{actividadMineraCtrl.derechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="titularDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.nombreConcesionarioPrincipal}"
+                                                     readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.derechoMinero}"/>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel for="representanteDerecho" value="Representante legal:" rendered="#{actividadMineraCtrl.derechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="representanteDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.nombreRepLegal}"
+                                                     readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.derechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel for="telefonoDerecho" value="Teléfono:" rendered="#{actividadMineraCtrl.derechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="telefonoDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.convencional}"
+                                                     readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.derechoMinero}"/>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel for="celularDerecho" value="Celular:" rendered="#{actividadMineraCtrl.derechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="celularDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.celular}"
+                                                     readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.derechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: center" colspan="4">
+                                        <p:outputLabel value="Coordenadas derecho minero" rendered="#{actividadMineraCtrl.derechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: center" colspan="4">
+                                        <p:dataTable value="#{actividadMineraCtrl.coordenadas}" var="coor" style="width: 800px"
+                                                     emptyMessage="No se encontraron resultados" rendered="#{actividadMineraCtrl.derechoMinero}">
+                                            <p:column headerText="UTM Este">
+                                                <p:outputLabel value="#{coor.utmEste}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="UTM Norte">
+                                                <p:outputLabel value="#{coor.utmNorte}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: center" colspan="4">
+                                        <p:outputLabel value="Contratos de operación" rendered="#{actividadMineraCtrl.derechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: center" colspan="4">
+                                        <p:dataTable value="#{actividadMineraCtrl.contratos}" var="contract" style="width: 800px"
+                                                     emptyMessage="No se encontraron resultados" rendered="#{actividadMineraCtrl.derechoMinero}">
+                                            <p:column headerText="No documento">
+                                                <p:outputLabel value="#{contract.numeroDocumento}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Nombre">
+                                                <p:outputLabel value="#{contract.nombrePersona}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Apellido">
+                                                <p:outputLabel value="#{contract.apellidoPersona}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Estado">
+                                                <p:outputLabel value="#{contract.estadoContrato}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="MODALIDAD DE TRABAJO Y PERSONAL" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="modalidad" value="Modalidad de trabajo:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="modalidad" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                             value="#{actividadMineraCtrl.fichaTecnica.modalidadTrabajo}" requiredMessage="Debe seleccionar una opción">
+                                <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraCtrl.modalidadesTrabajo}"
+                                               var="modal"
+                                               itemLabel="#{modal.nombre}"
+                                               itemValue="#{modal}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="socios" value="Cuál esl el número de socios de esta organización:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="socios" value="#{actividadMineraCtrl.fichaTecnica.numeroSocios}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="numTrabajadores" value="Cuántas personas trabajan en esta labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="numTrabajadores" value="#{actividadMineraCtrl.fichaTecnica.numeroPersonasLaborMinera}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="mayorEdad" value="Trabajadores permanentes son mayor de edad:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="mayorEdad" value="#{actividadMineraCtrl.fichaTecnica.numeroPersonasMayorEdad}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="diasAlMes" value="Cuántos días trabaja en el mes:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="diasAlMes" value="#{actividadMineraCtrl.fichaTecnica.diasTrabajoMes}" required="true" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="asegurados" value="Los trabajadores son asegurados:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneRadio id="asegurados" value="#{actividadMineraCtrl.fichaTecnica.trabajadoresAsegurados}" required="true">
+                                <f:selectItem itemLabel="SI" itemValue="true" />
+                                <f:selectItem itemLabel="NO" itemValue="false" />
+                            </p:selectOneRadio>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="INFRAESTRUCTURA COMPLEMENTARIA PARA REALIZAR LA ACTIVIDAD MINERA" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="infraestructuraPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column rowspan="6">
+                                        <p:dataTable value="#{actividadMineraCtrl.infraestruturasWrapper}" var="infraes" style="width: 300px">
+                                            <p:column>
+                                                <p:outputLabel value="#{infraes.catalogoDetalle.nombre}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:selectOneRadio id="infraes01" required="true" value="#{infraes.opcion}">
+                                                    <f:selectItem itemLabel="SI" itemValue="true" />
+                                                    <f:selectItem itemLabel="NO" itemValue="false" />
+                                                </p:selectOneRadio>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel for="electricidad" value="La energía eléctrica proviene de:"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:selectOneMenu id="electricidad" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                         value="#{actividadMineraCtrl.fichaTecnica.tipoEnergia}" requiredMessage="Debe seleccionar una opción">
+                                            <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{actividadMineraCtrl.tiposEnergia}"
+                                                           var="tipoEnergia"
+                                                           itemLabel="#{tipoEnergia.nombre}"
+                                                           itemValue="#{tipoEnergia}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel for="agua" value="El agua que utiliza es:"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:selectOneMenu id="agua" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                         value="#{actividadMineraCtrl.fichaTecnica.tipoAguaUtiliza}" requiredMessage="Debe seleccionar una opción">
+                                            <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{actividadMineraCtrl.tiposAgua}"
+                                                           var="agua"
+                                                           itemLabel="#{agua.nombre}"
+                                                           itemValue="#{agua}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel for="galones" value="Cantidad de combustible (galones):"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:inputText id="galones" value="#{actividadMineraCtrl.fichaTecnica.cantidadCombustible}" required="true" styleClass="inputtext-form"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="ASPECTOS ECONÓMICOS Y TÉCNICOS" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="aspectosPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column rowspan="10">
+                                        <p:dataTable value="#{actividadMineraCtrl.maquinariasWrapper}" var="maq" style="width: 380px">
+                                            <p:column>
+                                                <p:outputLabel value="#{maq.catalogoDetalle.nombre}"/>
+                                            </p:column>
+                                            <p:column style="width: 125px">
+                                                <p:selectOneRadio id="infraes01" required="true" value="#{maq.opcion}">
+                                                    <f:selectItem itemLabel="SI" itemValue="true" />
+                                                    <f:selectItem itemLabel="NO" itemValue="false" />
+                                                </p:selectOneRadio>
+                                            </p:column>
+                                            <p:column style="width: 50px">
+                                                <p:outputLabel value="Cantidad:"/>
+                                                <p:inputText value="#{maq.cantidad}" style="width: 25px" required="true"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel for="material" value="Mineral o material:"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:selectOneMenu id="material" styleClass="onemenu-form" required="true" converter="#{catalogoConverter}"
+                                                         value="#{actividadMineraCtrl.fichaTecnica.tipoMaterial}" requiredMessage="Debe seleccionar una opción">
+                                            <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{actividadMineraCtrl.tiposMaterial}"
+                                                           var="material"
+                                                           itemLabel="#{material.nombre}"
+                                                           itemValue="#{material}"/>
+                                            <p:ajax  listener="#{actividadMineraCtrl.cargarMinerales()}" update="mineral"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:selectOneMenu id="mineral" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                         value="#{actividadMineraCtrl.fichaTecnica.materialInteres}" requiredMessage="Debe seleccionar una opción">
+                                            <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{actividadMineraCtrl.mineralesInteres}"
+                                                           var="mineral"
+                                                           itemLabel="#{mineral.nombre}"
+                                                           itemValue="#{mineral}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel for="forma" value="Sistema de explotación:"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:selectOneMenu id="forma" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                         value="#{actividadMineraCtrl.fichaTecnica.formaExplotacion}" requiredMessage="Debe seleccionar una opción">
+                                            <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{actividadMineraCtrl.formasExplotacion}"
+                                                           var="formaExplotacion"
+                                                           itemLabel="#{formaExplotacion.nombre}"
+                                                           itemValue="#{formaExplotacion}"/>
+                                            <p:ajax  listener="#{actividadMineraCtrl.cargarSistemasExplotacion()}" update="sistema dimensionsSubPanel dimensionsCiePanel"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:selectOneMenu id="sistema" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                         value="#{actividadMineraCtrl.fichaTecnica.sistemaExplotacion}" requiredMessage="Debe seleccionar una opción">
+                                            <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{actividadMineraCtrl.sistemasExplotacion}"
+                                                           var="sistemaExplotacion"
+                                                           itemLabel="#{sistemaExplotacion.nombre.toUpperCase()}"
+                                                           itemValue="#{sistemaExplotacion}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:panelGrid id="dimensionsSubPanel" styleClass="pg-center">
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="longsublbl" for="longsub" value="Longitud:" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:inputText id="longsub" value="#{actividadMineraCtrl.fichaTecnica.longitudSubterranea}" required="true"
+                                                                 styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="anchosublbl" for="anchosub" value="Ancho:" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:inputText id="anchosub" value="#{actividadMineraCtrl.fichaTecnica.anchoSubterranea}" required="true"
+                                                                 styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="altosublbl" for="altosub" value="Alto:" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:inputText id="altosub" value="#{actividadMineraCtrl.fichaTecnica.altoSubterranea}" required="true"
+                                                                 styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="rumbosublbl" for="rumbosub" value="Rumbo:" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:inputText id="rumbosub" value="#{actividadMineraCtrl.fichaTecnica.rumboSubterranea}" required="true"
+                                                                 styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        
+                                        <p:panelGrid id="dimensionsCiePanel" styleClass="pg-center">
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="longcielbl" for="longcie" value="Longitud:" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:inputText id="longcie" value="#{actividadMineraCtrl.fichaTecnica.longitudCieloAbierto}" required="true"
+                                                                 styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="anchocielbl" for="anchocie" value="Ancho:" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:inputText id="anchocie" value="#{actividadMineraCtrl.fichaTecnica.anchoCieloAbierto}" required="true"
+                                                                 styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="altocielbl" for="altocie" value="Alto:" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:inputText id="altocie" value="#{actividadMineraCtrl.fichaTecnica.altoCieloAbierto}" required="true"
+                                                                 styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="OPERACIONES MINERAS" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:dataTable value="#{actividadMineraCtrl.operacionesMinerasWrapper}" var="operacion" style="width: 700px; margin: 0 auto">
+                                <p:column>
+                                    <p:outputLabel value="#{operacion.catalogoDetalle.nombre}"/>
+                                </p:column>
+                                <p:column style="width: 125px">
+                                    <p:selectOneRadio id="infraes01" required="true" value="#{operacion.opcion}">
+                                        <f:selectItem itemLabel="SI" itemValue="true" />
+                                        <f:selectItem itemLabel="NO" itemValue="false" />
+                                    </p:selectOneRadio>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="OBSERVACIONES" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:inputTextarea value="#{actividadMineraCtrl.fichaTecnica.observacionesFichaTecnica}" styleClass="inputtextarea-form-02"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:commandButton value="Aceptar"/>
+                        </p:column>
+                        
+                        <p:column style="text-align: left">
+                            <p:commandButton value="Cancelar" immediate="true"/>
+                        </p:column>
+                    </p:row>
+                    
+                </p:panelGrid>
+            </h:form>
+            
+        </ui:define>
+    </ui:composition>
+</html>

@@ -313,6 +313,10 @@ h2 {
     border: none;
 }
 
+.pg-center-03 {
+    margin: 0 auto;
+}
+
 .inputtext-form {
     width: 270px !important;
 }
@@ -320,6 +324,11 @@ h2 {
 .inputtextarea-form {
     width: 270px !important;
     height: 85px !important;
+}
+
+.inputtextarea-form-02 {
+    width: 700px !important;
+    height: 100px !important;
 }
 
 /*Cambiar el tamaño del input del calendar*/

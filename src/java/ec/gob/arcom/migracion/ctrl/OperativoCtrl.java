@@ -148,7 +148,6 @@ public class OperativoCtrl extends BaseCtrl {
         operativo= new Operativo();
         detallesOperativo= new ArrayList<>();
         detalleOperativo= new DetalleOperativo();
-        //operativo.setDetallesOperativo(new ArrayList<DetalleOperativo>());
         maquinaria= new MaquinariaConcesion();
         maquinaria.setEstadoMaquinaria(BigInteger.ZERO);
     }
@@ -373,15 +372,11 @@ public class OperativoCtrl extends BaseCtrl {
     }
     
     public List<SelectItem> getCantones() {
-        System.out.println("0");
         if (cantones == null) {
             cantones = new ArrayList<>();
-            System.out.println("01");
             if (operativo.getProvincia() == null) {
-                System.out.println("02");
                 return cantones;
             }
-            System.out.println("03");
             Localidad catalogoCanton = localidadServicio.findByPk(Long.valueOf(operativo.getProvincia().getCodigoLocalidad().toString()));
             if (catalogoCanton == null || (catalogoCanton != null && catalogoCanton.getCodigoLocalidad() == null)) {
                 return cantones;
