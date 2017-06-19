@@ -346,14 +346,23 @@
                             <p:selectOneRadio id="dentroTitulo" value="#{actividadMineraCtrl.showDerechoMinero}" required="true">
                                 <f:selectItem itemLabel="SI" itemValue="true" />
                                 <f:selectItem itemLabel="NO" itemValue="false" />
-                                <p:ajax  update="derechoMineroPanel"/>
+                                <p:ajax  update="derechoMineroPanel" process="derechoMineroPanel @this"/>
                             </p:selectOneRadio>
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column colspan="2" style="text-align: center">
-                            <p:panelGrid id="derechoMineroPanel" styleClass="pg-center">
+                            <p:panelGrid id="derechoMineroPanel" styleClass="pg-center" rendered="#{actividadMineraCtrl.showDerechoMinero}">
+                                <p:row>
+                                    <p:column colspan="4"> <p:separator/> </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="4" style="text-align: center">
+                                        <p:outputLabel value="Datos del derecho minero" style="font-weight: bolder"/>
+                                    </p:column>
+                                </p:row>
+                                
                                 <p:row>
                                     <p:column style="text-align: right" colspan="2">
                                         <p:outputLabel id="codigoDerechoLbl" for="codigoDerecho"
@@ -420,7 +429,7 @@
                                 
                                 <p:row>
                                     <p:column style="text-align: center" colspan="4">
-                                        <p:outputLabel value="Coordenadas derecho minero" rendered="#{actividadMineraCtrl.showDerechoMinero}"/>
+                                        <p:outputLabel value="Coordenadas derecho minero" rendered="#{actividadMineraCtrl.showDerechoMinero}" style="font-weight: bolder"/>
                                     </p:column>
                                 </p:row>
                                 
@@ -441,7 +450,7 @@
                                 
                                 <p:row>
                                     <p:column style="text-align: center" colspan="4">
-                                        <p:outputLabel value="Contratos de operación" rendered="#{actividadMineraCtrl.showDerechoMinero}"/>
+                                        <p:outputLabel value="Contratos de operación" rendered="#{actividadMineraCtrl.showDerechoMinero}" style="font-weight: bolder"/>
                                     </p:column>
                                 </p:row>
                                 

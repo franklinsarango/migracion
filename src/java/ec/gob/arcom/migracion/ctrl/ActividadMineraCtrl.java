@@ -135,8 +135,6 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     @PostConstruct
     private void inicializar() {
-        //Esta línea es para pruebas, se debe quitar para poner en producción
-        login.setCodigoUsuario((long) 1689);
         cargarFichasTecnicas();
     }
     
@@ -316,7 +314,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     public List<CatalogoDetalle> getCondicionesLaborMinera() {
         if (condicionesLaborMinera == null) {
             condicionesLaborMinera = new ArrayList<>();
-            Catalogo catalogo = catalogoServicio.findByNemonico("TIPOTERR");
+            Catalogo catalogo = catalogoServicio.findByNemonico("TIPOCON");
             if (catalogo != null) {
                 List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
                 for (CatalogoDetalle catDet : tipoServCat) {
@@ -569,6 +567,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     ///////////////////////////////////////////////////////
     
     public String newFichaTecnicaAction() {
+        edit= false;
         this.fichaTecnica= new FichaTecnica();
         resetAction();
         Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
@@ -623,6 +622,10 @@ public class ActividadMineraCtrl extends BaseCtrl {
         edit= true;
         resetAction();
         this.fichaTecnica= ft;
+        getCantones();
+        getParroquias();
+        getMineralesInteres();
+        getSistemasExplotacion();
         if(fichaTecnica.getCodigoCensal()!=null && fichaTecnica.getCodigoCensal().length()>0) {
             this.codigoCensal= true;
         }
@@ -724,6 +727,11 @@ public class ActividadMineraCtrl extends BaseCtrl {
         this.codigoArcom= "";
         this.coordenadas= new ArrayList<>();
         this.contratos= new ArrayList<>();
+        this.provincias= null;
+        this.cantones= null;
+        this.parroquias= null;
+        this.mineralesInteres= null;
+        this.sistemasExplotacion= null;
     }
     
     private String endAction() {
@@ -742,7 +750,20 @@ public class ActividadMineraCtrl extends BaseCtrl {
         return guardarFichaTecnica() && guardarInfraestructuras() && guardarMaquinarias() && guardarOperacionesMineras() && guardarSocios();
     }
     
+    private void comprobarCondicionales() {
+        if(!isShowDerechoMinero()) {
+            fichaTecnica.setConcesionMinera(null);
+        }
+        if(!isCodigoCensal()) {
+            fichaTecnica.setCodigoCensal("");
+        }
+        if(!fichaTecnica.getTipoTerreno().getNombre().equals("OTRO")) {
+            fichaTecnica.setDetalleTipoTerreno("");
+        }
+    }
+    
     private boolean guardarFichaTecnica() {
+        comprobarCondicionales();
         fichaTecnica.setEstadoRegistro(Boolean.TRUE);
         fichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
         fichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
@@ -815,11 +836,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     }
     
     public void buscarDerechoMinero() {
-        System.out.println("######### Codigo Arcom: " + codigoArcom);
         if(codigoArcom.length()>0) {
-            System.out.println("######");
-            System.out.println("Buscando concesion");
-            System.out.println("######");
             ConcesionMinera cm= concesionMineraServicio.obtenerPorCodigoArcom(codigoArcom);
             if(cm!=null) {
                 fichaTecnica.setConcesionMinera(cm);
@@ -836,7 +853,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     }
     
     private boolean actualizarFichaTecnica() {
-        //fichaTecnica.setEstadoRegistro(Boolean.TRUE);
+        comprobarCondicionales();
         fichaTecnica.setFechaModificacion(Calendar.getInstance().getTime());
         fichaTecnica.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
         fichaTecnicaServicio.update(fichaTecnica);
