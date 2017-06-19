@@ -104,6 +104,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     private Integer paginaSeleccionada;
     private ArrayList<Integer> listaPaginas;
     private String urlEditarContrato;
+    private String urlVerContrato;
     private boolean registrosPorRegional;
     @PostConstruct
     public void init() {
@@ -202,6 +203,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     public String editarRegistro() {
         mostrarCoordenadas = true;
         ContratoOperacion contratoItem = (ContratoOperacion) getExternalContext().getRequestMap().get("reg");
+//        if(contratoItem.getCodigoConcesion().getCodigoRegional().getPrefijoCodigo().equals(login.getPrefijoRegional()))
         urlEditarContrato = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratoform.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
         System.out.println("urlEditarContrato: " + urlEditarContrato);
         return null;
@@ -218,7 +220,10 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     public String verRegistro() {
         mostrarCoordenadas = true;
         ContratoOperacion contratoItem = (ContratoOperacion) getExternalContext().getRequestMap().get("reg");
-        return "contratoview?faces-redirect=true&idItem=" + contratoItem.getCodigoContratoOperacion();
+        urlVerContrato = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratoview.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
+        System.out.println("urlVerContrato: " + urlVerContrato);
+        RequestContext.getCurrentInstance().execute("PF('visorVerContrato').show();");
+        return null;
     }
     
     public void guardarContrato() {
@@ -830,5 +835,19 @@ public class ContratoOperacionCtrl extends BaseCtrl {
      */
     public void setRegistrosPorRegional(boolean registrosPorRegional) {
         this.registrosPorRegional = registrosPorRegional;
+    }
+
+    /**
+     * @return the urlVerContrato
+     */
+    public String getUrlVerContrato() {
+        return urlVerContrato;
+    }
+
+    /**
+     * @param urlVerContrato the urlVerContrato to set
+     */
+    public void setUrlVerContrato(String urlVerContrato) {
+        this.urlVerContrato = urlVerContrato;
     }
 }

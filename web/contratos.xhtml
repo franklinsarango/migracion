@@ -101,14 +101,14 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{contratoOperacionCtrl.usuarioRegistrador}">
+                        <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{contratoOperacionCtrl.usuarioRegistrador}">
                         <p:commandButton update=":form" action="#{contratoOperacionCtrl.editarRegistro}" icon="ui-icon-pencil" title="Editar Contrato"
-                                         oncomplete="PF('visorEditarContrato').show();"></p:commandButton>
+                                         oncomplete="PF('visorEditarContrato').show();" rendered="#{reg.codigoConcesion.codigoRegional.prefijoCodigo eq contratoOperacionCtrl.login.prefijoRegional}"></p:commandButton>
                         
                     </p:column>
-                    <p:column headerText="Ver" style="width:37px; text-align: right" rendered="#{!contratoOperacionCtrl.usuarioRegistrador}">
+                    <p:column headerText="Ver" style="width:37px; text-align: right">
                         <p:commandButton action="#{contratoOperacionCtrl.verRegistro}" 
-                                         icon="ui-icon-search" 
+                                         icon="ui-icon-search" oncomplete="PF('visorVerContrato').show();"
                                          title="Ver" 
                                          ajax="false"/>
                     </p:column>
@@ -147,6 +147,18 @@
                         <iframe frameborder="0"
                                 src="#{contratoOperacionCtrl.urlEditarContrato}"
                                 name="frameTareas" id="frameTareas" scrolling="auto" 
+                                width="100%" height="98%" 
+                                marginheight="0" marginwidth="0">
+                        </iframe>
+                </p:dialog>
+                
+                <p:dialog id="dlgVerContrato" header="Contrato" 
+                          widgetVar="visorVerContrato" width="95%" height="600px"  
+                          showEffect="fade" draggable="false" 
+                          resizable="false" modal="true" >
+                        <iframe frameborder="0"
+                                src="#{contratoOperacionCtrl.urlVerContrato}"
+                                name="frameTareasVer" id="frameTareasVer" scrolling="auto" 
                                 width="100%" height="98%" 
                                 marginheight="0" marginwidth="0">
                         </iframe>

@@ -219,11 +219,11 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
     public int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento, boolean registrosPorRegional) {
         String jpql = "select co from ContratoOperacion co, ConcesionMinera cm where co.codigoConcesion.codigoConcesion = cm.codigoConcesion \n"
                 + " and 1=1 and co.codigoArcom like :codigoArcomCO \n";
-        if (registrosPorRegional == true) {
-            jpql += "and cm.codigoProvincia in (select lcr.localidad.codigoLocalidad from LocalidadRegional lcr where lcr.regional.codigoRegional = \n"
-                    + " (select r.codigoRegional from Regional r, LocalidadRegional lr, Usuario u where u.numeroDocumento = '" + cedulaRuc + "'\n"
-                    + " and r.codigoRegional = lr.regional.codigoRegional and lr.localidad.codigoLocalidad = u.codigoProvincia)) \n";
-        }
+//        if (registrosPorRegional == true) {
+//            jpql += "and cm.codigoProvincia in (select lcr.localidad.codigoLocalidad from LocalidadRegional lcr where lcr.regional.codigoRegional = \n"
+//                    + " (select r.codigoRegional from Regional r, LocalidadRegional lr, Usuario u where u.numeroDocumento = '" + cedulaRuc + "'\n"
+//                    + " and r.codigoRegional = lr.regional.codigoRegional and lr.localidad.codigoLocalidad = u.codigoProvincia)) \n";
+//        }
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
             jpql += "and co.codigoArcom like :codigoArcom \n";
         }
@@ -252,11 +252,11 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
     public List<ContratoOperacion> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean registrosPorRegional, int paramLimit, int paramOffset) {
         String jpql = "select co from ContratoOperacion co, ConcesionMinera cm where co.codigoConcesion.codigoConcesion = cm.codigoConcesion \n"
                 + " and 1=1 and co.codigoArcom like :codigoArcomCO \n";
-        if (registrosPorRegional == true) {
-            jpql += "and cm.codigoProvincia in (select lcr.localidad.codigoLocalidad from LocalidadRegional lcr where lcr.regional.codigoRegional = \n"
-                    + " (select r.codigoRegional from Regional r, LocalidadRegional lr, Usuario u where u.numeroDocumento = '" + cedulaRuc + "'\n"
-                    + " and r.codigoRegional = lr.regional.codigoRegional and lr.localidad.codigoLocalidad = u.codigoProvincia)) \n";
-        }
+//        if (registrosPorRegional == true) {
+//            jpql += "and cm.codigoProvincia in (select lcr.localidad.codigoLocalidad from LocalidadRegional lcr where lcr.regional.codigoRegional = \n"
+//                    + " (select r.codigoRegional from Regional r, LocalidadRegional lr, Usuario u where u.numeroDocumento = '" + cedulaRuc + "'\n"
+//                    + " and r.codigoRegional = lr.regional.codigoRegional and lr.localidad.codigoLocalidad = u.codigoProvincia)) \n";
+//        }
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
             jpql += "and co.codigoArcom like :codigoArcom \n";
         }

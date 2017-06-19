@@ -135,6 +135,12 @@
                                          
                                          actionListener="#{patentesUtilidadesRegaliasCtrl.descargaPDF}"/>
                     </p:column>
+                    <p:column headerText="Imp. Comp. Usuario Responsable" style="width:37px; text-align: right">
+                        <p:commandButton update="@form" rendered="#{(patentesUtilidadesRegaliasCtrl.login.economicoNacional or patentesUtilidadesRegaliasCtrl.login.economicoRegional) and (reg.tipoPago eq 'Utilidades')}"
+                                         icon="ui-icon-arrowthickstop-1-s"
+                                         title="Descargar comprobante" 
+                                         actionListener="#{patentesUtilidadesRegaliasCtrl.descargaPDFUsuarioResponsable}"/>
+                    </p:column>
                 </p:dataTable>
 
                 <p:dialog id="dialoVisorTareas" header="Comprobante de Pago" 

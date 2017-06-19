@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
 
-    <ui:composition template="/templates/page-template_pf.xhtml">
+    <ui:composition template="/templates/page-template_pf_sin_banner.xhtml">
         <ui:define name="title">
             <h:outputText value="Actualización de Datos"/>
         </ui:define>
@@ -16,27 +16,6 @@
             <h:form id="form">
 
                 <p:growl id="growl" showDetail="true" showSummary="false" life="8000" autoUpdate="true"/>
-                <h:panelGrid columns="2">
-                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 80%"/>
-                    <h:panelGroup style="text-align: right; right: -93%;">
-                        <h:commandLink action="contratos?faces-redirect=true" title="Volver" styleClass="boton_salir" immediate="true">
-                            <h:panelGrid style="text-align:center">
-                                <h:graphicImage value="resources/images/back57.png" title="Volver" style="width: 50px; height: 50px"/>
-                                <h:outputText value="Volver"/>
-                            </h:panelGrid>
-                        </h:commandLink>
-                    </h:panelGroup>
-                </h:panelGrid>
                 <h2 class="panel_grid_center" style="width: 55.5%; text-align: center">CONTRATO</h2>
                 <p:panelGrid columns="2"        
                              styleClass="panel_grid_center"
@@ -51,6 +30,9 @@
                     <p:outputLabel  value="Tipo Contrato:"></p:outputLabel>
                     <p:outputLabel  value="#{contratoOperacionCtrl.contratoOperacion.tipoContrato.nombre}" ></p:outputLabel>
                     
+                    <p:outputLabel value="Código de Contrato"></p:outputLabel>
+                    <p:outputLabel value="#{contratoOperacionCtrl.contratoOperacion.codigoArcom}"></p:outputLabel>
+                    
                     <h:panelGroup id="panelPorc">
                         <p:outputLabel for="porc" 
                                        value="Porcentaje:" 
@@ -63,7 +45,7 @@
                     
                     <p:outputLabel value="Sector:"></p:outputLabel>
                     <p:outputLabel value="#{contratoOperacionCtrl.contratoOperacion.sector}"></p:outputLabel>
-
+     
                     <p:outputLabel value="Estado:"></p:outputLabel>
                     <p:outputLabel value="#{contratoOperacionCtrl.contratoOperacion.estadoContrato.nombre}"></p:outputLabel>
                     
@@ -71,6 +53,9 @@
                     <h:outputText value="#{contratoOperacionCtrl.contratoOperacion.fechaInscribe}" >
                             <f:convertDateTime pattern="yyyy-MM-dd"/>
                         </h:outputText>
+                    
+                    <p:outputLabel value="Plazo(meses):"></p:outputLabel>
+                    <p:outputLabel value="#{contratoOperacionCtrl.contratoOperacion.plazo}"></p:outputLabel>
                     
                     <h:panelGroup id="panelCotaMinLbl">
                         <p:outputLabel value="Cota Mínima" />
