@@ -60,6 +60,10 @@ public class LoginCtrl extends BaseCtrl {
     private boolean economicoRegional;  //UER
     private boolean economicoNacional;  //UEN
     private boolean usuarioCatastro;    //UC7
+    private boolean usuarioInterno;
+    private boolean tecnico;
+    private boolean tecnicoCatastro;
+    private boolean usuarioEnami;
     
     //PERMISOS
     private boolean editarComprobante;  //UERR
@@ -185,6 +189,21 @@ public class LoginCtrl extends BaseCtrl {
                         } else {
                             this.economicoNacional = false;
                         }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_USUARIO_INTERNO.getNemonico())){
+                            this.usuarioInterno = true;
+                        } else {
+                            this.usuarioInterno = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_TECNICO.getNemonico())){
+                            this.tecnico = true;
+                        } else {
+                            this.tecnico = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_TECNICO_CATASTRO.getNemonico())){
+                            this.tecnicoCatastro = true;
+                        } else {
+                            this.tecnicoCatastro = false;
+                        }
                         if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RMN")) {
                             this.registroMineroNacional = true;
                         } else {
@@ -196,6 +215,12 @@ public class LoginCtrl extends BaseCtrl {
                             this.usuarioCatastro = true;
                         } else {
                             this.usuarioCatastro = false;
+                        }
+                        
+                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("USUENAMI")) {
+                            this.usuarioEnami = true;
+                        } else {
+                            this.usuarioEnami = false;
                         }
                     }
                     return true;
@@ -340,6 +365,62 @@ public class LoginCtrl extends BaseCtrl {
      */
     public void setEditarComprobante(boolean editarComprobante) {
         this.editarComprobante = editarComprobante;
+    }
+
+    /**
+     * @return the usuarioInterno
+     */
+    public boolean isUsuarioInterno() {
+        return usuarioInterno;
+    }
+
+    /**
+     * @param usuarioInterno the usuarioInterno to set
+     */
+    public void setUsuarioInterno(boolean usuarioInterno) {
+        this.usuarioInterno = usuarioInterno;
+    }
+
+    /**
+     * @return the tecnico
+     */
+    public boolean isTecnico() {
+        return tecnico;
+    }
+
+    /**
+     * @param tecnico the tecnico to set
+     */
+    public void setTecnico(boolean tecnico) {
+        this.tecnico = tecnico;
+    }
+
+    /**
+     * @return the tecnicoCatastro
+     */
+    public boolean isTecnicoCatastro() {
+        return tecnicoCatastro;
+    }
+
+    /**
+     * @param tecnicoCatastro the tecnicoCatastro to set
+     */
+    public void setTecnicoCatastro(boolean tecnicoCatastro) {
+        this.tecnicoCatastro = tecnicoCatastro;
+    }
+
+    /**
+     * @return the usuarioEnami
+     */
+    public boolean isUsuarioEnami() {
+        return usuarioEnami;
+    }
+
+    /**
+     * @param usuarioEnami the usuarioEnami to set
+     */
+    public void setUsuarioEnami(boolean usuarioEnami) {
+        this.usuarioEnami = usuarioEnami;
     }
 
 }
