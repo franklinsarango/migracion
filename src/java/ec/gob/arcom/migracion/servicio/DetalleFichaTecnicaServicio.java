@@ -6,7 +6,7 @@
 package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
-import ec.gob.arcom.migracion.modelo.FichaTecnica;
+import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -15,10 +15,12 @@ import javax.ejb.Local;
  * @author mejiaw
  */
 @Local
-public interface FichaTecnicaServicio extends GenericService<FichaTecnica, Long> {
+public interface DetalleFichaTecnicaServicio extends GenericService<DetalleFichaTecnica, Long> {
 
-    public List<FichaTecnica> listar();
+    public List<DetalleFichaTecnica> listar();
 
-    public List<FichaTecnica> listarPorUsuarioCreacion(Long codigoUsuario);
+    public List listarPorFichaTecnica(Long codigoFichaTecnica);
+
+    public List<DetalleFichaTecnica> listarSociosPorFichaTecnica(Long codigoFichaTecnica);
     
 }

@@ -67,4 +67,9 @@ public class ContratoOperacionServicioImpl extends GenericServiceImpl<ContratoOp
     public List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera) {
         return contratoOperacionDao.obtenerCotitulares(concesionMinera);
     }
+
+    @Override
+    public List<ContratoOperacion> listarPorCodigoConcesion(Long codigoConcesion) {
+        return contratoOperacionDao.listarPorCodigoConcesion(codigoConcesion);
+    }
 }

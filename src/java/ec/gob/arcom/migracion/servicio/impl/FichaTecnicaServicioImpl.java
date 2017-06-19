@@ -32,4 +32,9 @@ public class FichaTecnicaServicioImpl extends GenericServiceImpl<FichaTecnica, L
     public List<FichaTecnica> listar() {
         return fichaTecnicaDao.listar();
     }
+
+    @Override
+    public List<FichaTecnica> listarPorUsuarioCreacion(Long codigoUsuario) {
+        return fichaTecnicaDao.listarPorUsuarioCreacion(codigoUsuario);
+    }
 }

@@ -155,7 +155,6 @@ public class OperativoCtrl extends BaseCtrl {
     @PostConstruct
     private void inicializar() {
         obtenerOperativos();
-        login.setCodigoUsuario((long) 1689);
     }
 
     public List<Operativo> getOperativos() {

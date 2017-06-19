@@ -30,4 +30,6 @@ public interface ContratoOperacionServicio extends GenericService<ContratoOperac
     
     List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera);
 
+    public List<ContratoOperacion> listarPorCodigoConcesion(Long codigoConcesion);
+
 }

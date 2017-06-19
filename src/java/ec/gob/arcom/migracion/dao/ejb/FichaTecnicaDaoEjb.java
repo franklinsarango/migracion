@@ -34,4 +34,18 @@ public class FichaTecnicaDaoEjb extends GenericDaoEjbEl<FichaTecnica, Long> impl
         }
         return null;
     }
+
+    @Override
+    public List<FichaTecnica> listarPorUsuarioCreacion(Long codigoUsuario) {
+        try {
+            Query query= em.createQuery("Select ficha from FichaTecnica ficha where ficha.estadoRegistro= :estado and ficha.usuarioCreacion.codigoUsuario= :codigo order by ficha.fechaCreacion ASC");
+            query.setParameter("estado", true);
+            query.setParameter("codigo", codigoUsuario);
+            return query.getResultList();
+        } catch(Exception ex) {
+            System.out.println("Ocurrio un error:");
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
 }

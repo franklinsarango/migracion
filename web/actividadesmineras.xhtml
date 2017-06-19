@@ -50,7 +50,7 @@
 
                 <p:panelGrid id="tablePanel" columns="1">
                     <p:panelGrid columns="3" styleClass="panelSinBorde">
-                        <p:commandButton icon="ui-icon-plusthick" title="Nueva ficha técnica" actionListener="#{actividadMineraCtrl.newFichaTecnicaAction}"/>
+                        <p:commandButton icon="ui-icon-plusthick" title="Nueva ficha técnica" action="#{actividadMineraCtrl.newFichaTecnicaAction}"/>
                     </p:panelGrid>
 
                     <p:dataTable id="fichasdt" emptyMessage="No hay resultados..."
@@ -62,12 +62,29 @@
                         <p:column headerText="Nombre labor minera" style="width: 100px;">
                             <h:outputText value="#{ficha.rasonSocialLaborMinera}"/>
                         </p:column>
-
-                        <p:column headerText="Editar" style="width:60px;text-align: center">
-                            <p:commandButton icon="ui-icon-newwin" title="Editar ficha técnica"/>
+                        
+                        <p:column headerText="Elaborado por" style="width: 100px;">
+                            <h:outputText value="#{ficha.usuarioCreacion.nombresCompletos}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Fecha visita" style="width: 100px;">
+                            <h:outputText value="#{actividadMineraCtrl.obtenerFechaConFormato(ficha.fechaVisita)}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Correo electrónico" style="width: 100px;">
+                            <h:outputText value="#{ficha.correoElectronico}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Provincia" style="width: 100px;">
+                            <h:outputText value="#{ficha.provincia.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Eliminar" style="width:45px;text-align: center">
+                        <p:column headerText="Editar" style="width:60px;text-align: center">
+                            <p:commandButton icon="ui-icon-newwin" title="Editar ficha técnica"
+                                             action="#{actividadMineraCtrl.editAction(ficha)}"/>
+                        </p:column>
+
+                        <p:column headerText="Eliminar" style="width:45px;text-align: center" rendered="false">
                             <p:commandButton icon="ui-icon-trash" title="Eliminar"/>
                         </p:column>
                     </p:dataTable>

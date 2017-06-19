@@ -7,10 +7,6 @@ package ec.gob.arcom.migracion.dao.ejb;
 
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.ContratoOperacionDao;
-import ec.gob.arcom.migracion.modelo.LocalidadRegional;
-import ec.gob.arcom.migracion.modelo.Regional;
-import ec.gob.arcom.migracion.modelo.Localidad;
-import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import java.util.List;
@@ -316,6 +312,22 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         }
 
         //return query.getResultList();
+        return null;
+    }
+
+    @Override
+    public List<ContratoOperacion> listarPorCodigoConcesion(Long codigoConcesion) {
+        try {
+            Query query= em.createQuery("Select contrato from ContratoOperacion contrato where contrato.estadoRegistro= :estado and contrato.codigoConcesion.codigoConcesion= :codigo");
+            query.setParameter("estado", true);
+            query.setParameter("codigo", codigoConcesion);
+            return query.getResultList();
+        } catch(Exception ex) {
+            System.out.println("######");
+            System.out.println("### Ocurrio un error al listar los contratos por codigoConcesion:");
+            System.out.println("######");
+            System.out.println(ex.toString());
+        }
         return null;
     }
 }

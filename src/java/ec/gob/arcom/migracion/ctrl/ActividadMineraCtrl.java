@@ -1,29 +1,42 @@
 package ec.gob.arcom.migracion.ctrl;
 
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
+import ec.gob.arcom.migracion.modelo.AreaMinera;
 import ec.gob.arcom.migracion.modelo.Catalogo;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
+import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import ec.gob.arcom.migracion.modelo.CoordenadaArea;
 import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Localidad;
+import ec.gob.arcom.migracion.modelo.Usuario;
+import ec.gob.arcom.migracion.servicio.AreaMineraServicio;
 import ec.gob.arcom.migracion.servicio.AuditoriaServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoServicio;
+import ec.gob.arcom.migracion.servicio.ConcesionMineraServicio;
+import ec.gob.arcom.migracion.servicio.ContratoOperacionServicio;
+import ec.gob.arcom.migracion.servicio.CoordenadaAreaServicio;
+import ec.gob.arcom.migracion.servicio.DetalleFichaTecnicaServicio;
 import ec.gob.arcom.migracion.servicio.FichaTecnicaServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
-import ec.gob.arcom.migracion.util.CatalogoWrapper;
+import ec.gob.arcom.migracion.util.DetalleFichaTecnicaWrapper;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,7 +49,7 @@ import javax.faces.bean.ViewScoped;
  * @author mejiaw
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ActividadMineraCtrl extends BaseCtrl {
     public static final String TIPOINSTITUCION= "TIPOINFINSTPART";
     public static final String TIPODETENIDO= "TIPOINFDETOPE";
@@ -57,14 +70,23 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private AuditoriaServicio auditoriaServicio;
     @EJB
     private FichaTecnicaServicio fichaTecnicaServicio;
+    @EJB
+    private DetalleFichaTecnicaServicio detalleFichaTecnicaServicio;
+    @EJB
+    private ConcesionMineraServicio concesionMineraServicio;
+    @EJB
+    private CoordenadaAreaServicio coordenadaAreaServicio;
+    @EJB
+    private AreaMineraServicio areaMineraServicio;
+    @EJB
+    private ContratoOperacionServicio contratoOperacionServicio;
     
     private Date fechaMaxima;
     
     private List<FichaTecnica> fichasTecnicas;
     private FichaTecnica fichaTecnica;
     
-    private List<DetalleFichaTecnica> detallesFichaTecnica;
-    private DetalleFichaTecnica detalleFichaTecnica;
+    //private List<DetalleFichaTecnica> detallesFichaTecnica;
     
     private List<CatalogoDetalle> zonasGeograficas;
     private List<CatalogoDetalle> etnias;
@@ -79,22 +101,25 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private List<CatalogoDetalle> infraestructuras;
     private List<CatalogoDetalle> tiposEnergia;
     private List<CatalogoDetalle> tiposAgua;
-    private List<CatalogoWrapper> infraestruturasWrapper;
+    private List<DetalleFichaTecnicaWrapper> infraestruturasWrapper;
     private List<CatalogoDetalle> maquinarias;
-    private List<CatalogoWrapper> maquinariasWrapper;
+    private List<DetalleFichaTecnicaWrapper> maquinariasWrapper;
     private List<Catalogo> tiposMaterial;
     private List<CatalogoDetalle> mineralesInteres;
     private List<CatalogoDetalle> formasExplotacion;
     private List<CatalogoDetalle> sistemasExplotacion;
     private List<CatalogoDetalle> operacionesMineras;
-    private List<CatalogoWrapper> operacionesMinerasWrapper;
+    private List<DetalleFichaTecnicaWrapper> operacionesMinerasWrapper;
+    private List<DetalleFichaTecnica> sociosLaborMinera;
     
     private boolean edit= false;
     private boolean showDetalleTipoTerreno= false;
     private boolean codigoCensal= false;
-    private boolean derechoMinero= false;
+    private boolean showDerechoMinero= false;
     private boolean showSubterraneo= false;
     private boolean showCieloAbierto= false;
+    
+    private String codigoArcom= "";
     
     @ManagedProperty(value = "#{loginCtrl}")
     private LoginCtrl login;
@@ -110,14 +135,15 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     @PostConstruct
     private void inicializar() {
-        cargarFichasTecnicas();
         //Esta línea es para pruebas, se debe quitar para poner en producción
         login.setCodigoUsuario((long) 1689);
+        cargarFichasTecnicas();
     }
     
     ///////////////////////////////////////////////////////
 
     public Date getFechaMaxima() {
+        fechaMaxima= Calendar.getInstance().getTime();
         return fechaMaxima;
     }
 
@@ -181,14 +207,14 @@ public class ActividadMineraCtrl extends BaseCtrl {
         this.contratos = contratos;
     }
 
-    public boolean isDerechoMinero() {
-        return derechoMinero;
+    public boolean isShowDerechoMinero() {
+        return showDerechoMinero;
     }
 
-    public void setDerechoMinero(boolean derechoMinero) {
-        this.derechoMinero = derechoMinero;
+    public void setShowDerechoMinero(boolean showDerechoMinero) {
+        this.showDerechoMinero = showDerechoMinero;
     }
-
+    
     public boolean isShowSubterraneo() {
         return showSubterraneo;
     }
@@ -203,6 +229,14 @@ public class ActividadMineraCtrl extends BaseCtrl {
 
     public void setShowCieloAbierto(boolean showCieloAbierto) {
         this.showCieloAbierto = showCieloAbierto;
+    }
+
+    public String getCodigoArcom() {
+        return codigoArcom;
+    }
+
+    public void setCodigoArcom(String codigoArcom) {
+        this.codigoArcom = codigoArcom;
     }
     
     public List<CatalogoDetalle> getZonas() {
@@ -394,52 +428,36 @@ public class ActividadMineraCtrl extends BaseCtrl {
         return sistemasExplotacion;
     }
     
-    public List<CatalogoWrapper> getInfraestruturasWrapper() {
-        infraestructuras= getInfraestructuras();
-        infraestruturasWrapper= new ArrayList<>();
-        for(CatalogoDetalle i : infraestructuras) {
-            CatalogoWrapper cw= new CatalogoWrapper();
-            cw.setCatalogoDetalle(i);
-            cw.setOpcion(Boolean.FALSE);
-            infraestruturasWrapper.add(cw);
-        }
+    public List<DetalleFichaTecnicaWrapper> getInfraestruturasWrapper() {
         return infraestruturasWrapper;
     }
 
-    public void setInfraestruturasWrapper(List<CatalogoWrapper> infraestruturasWrapper) {
+    public void setInfraestruturasWrapper(List<DetalleFichaTecnicaWrapper> infraestruturasWrapper) {
         this.infraestruturasWrapper = infraestruturasWrapper;
     }
 
-    public List<CatalogoWrapper> getMaquinariasWrapper() {
-        maquinarias= getMaquinarias();
-        maquinariasWrapper= new ArrayList<>();
-        for(CatalogoDetalle i : maquinarias) {
-            CatalogoWrapper cw= new CatalogoWrapper();
-            cw.setCatalogoDetalle(i);
-            cw.setOpcion(Boolean.FALSE);
-            maquinariasWrapper.add(cw);
-        }
+    public List<DetalleFichaTecnicaWrapper> getMaquinariasWrapper() {
         return maquinariasWrapper;
     }
 
-    public void setMaquinariasWrapper(List<CatalogoWrapper> maquinariasWrapper) {
+    public void setMaquinariasWrapper(List<DetalleFichaTecnicaWrapper> maquinariasWrapper) {
         this.maquinariasWrapper = maquinariasWrapper;
     }
 
-    public List<CatalogoWrapper> getOperacionesMinerasWrapper() {
-        operacionesMineras= getOperacionesMineras();
-        operacionesMinerasWrapper= new ArrayList<>();
-        for(CatalogoDetalle i : operacionesMineras) {
-            CatalogoWrapper cw= new CatalogoWrapper();
-            cw.setCatalogoDetalle(i);
-            cw.setOpcion(Boolean.FALSE);
-            operacionesMinerasWrapper.add(cw);
-        }
+    public List<DetalleFichaTecnicaWrapper> getOperacionesMinerasWrapper() {
         return operacionesMinerasWrapper;
     }
 
-    public void setOperacionesMinerasWrapper(List<CatalogoWrapper> operacionesMinerasWrapper) {
+    public void setOperacionesMinerasWrapper(List<DetalleFichaTecnicaWrapper> operacionesMinerasWrapper) {
         this.operacionesMinerasWrapper = operacionesMinerasWrapper;
+    }
+
+    public List<DetalleFichaTecnica> getSociosLaborMinera() {
+        return sociosLaborMinera;
+    }
+
+    public void setSociosLaborMinera(List<DetalleFichaTecnica> sociosLaborMinera) {
+        this.sociosLaborMinera = sociosLaborMinera;
     }
     
     public List<CatalogoDetalle> getModalidadesTrabajo() {
@@ -550,11 +568,336 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     ///////////////////////////////////////////////////////
     
-    public void newFichaTecnicaAction() {
+    public String newFichaTecnicaAction() {
+        this.fichaTecnica= new FichaTecnica();
+        resetAction();
+        Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
+        this.fichaTecnica.setUsuarioElaboracion(usr);
+        //this.fichaTecnica.setConcesionMinera(new ConcesionMinera());
+        this.sociosLaborMinera= new ArrayList<>();
+        cargarInfraestructuraWrapper();
+        cargarMaquinariasWrapper();
+        cargarOperacionesMinerasWrapper();
+        return "fichafrm";
+    }
+    
+    public String saveFichaTecnicaAction() {
+        if(edit) {
+            if(actualizar()) {
+                mostrarMensaje(FacesMessage.SEVERITY_INFO, "Ficha actualizada correctamente");
+            } else {
+                mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Ocurrio un error al actualizar");
+            }
+        } else {
+            if(guardar()) {
+                mostrarMensaje(FacesMessage.SEVERITY_INFO, "Ficha guardada correctamente");
+            } else {
+                mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Ocurrio un error al guardar");
+            }
+        }
+        return endAction();
+    }
+    
+    public String obtenerFechaConFormato(Date fecha) {
+        return obtenerFechaConFormato("dd-MM-yyyy", fecha);
+    }
+    
+    public String obtenerFechaConFormato(String formato, Date fecha) {
+        SimpleDateFormat sdf= new SimpleDateFormat(formato);
+        if(fecha!=null) {
+            return sdf.format(fecha);
+        }
+        return "";
+    }
+    
+    public String cancelAction() {
+        return endAction();
+    }
+    
+    public void addSocioAction() {
+        DetalleFichaTecnica dft= new DetalleFichaTecnica();
+        sociosLaborMinera.add(dft);
+    }
+    
+    public String editAction(FichaTecnica ft) {
+        edit= true;
+        resetAction();
+        this.fichaTecnica= ft;
+        if(fichaTecnica.getCodigoCensal()!=null && fichaTecnica.getCodigoCensal().length()>0) {
+            this.codigoCensal= true;
+        }
+        if(fichaTecnica.getTipoTerreno().getNombre().equals("OTRO")) {
+            this.showDetalleTipoTerreno= true;
+        } else {
+            this.showDetalleTipoTerreno= false;
+        }
+        if(fichaTecnica.getConcesionMinera() != null && fichaTecnica.getConcesionMinera().getCodigoConcesion() != null) {
+            this.showDerechoMinero= true;
+            this.codigoArcom= fichaTecnica.getConcesionMinera().getCodigoArcom();
+            this.coordenadas= coordenadaAreaServicio.findByCodigoArea(fichaTecnica.getConcesionMinera().getCodigoConcesion());
+            this.contratos= contratoOperacionServicio.listarPorCodigoConcesion(fichaTecnica.getConcesionMinera().getCodigoConcesion());
+        }
+        if(this.fichaTecnica.getFormaExplotacion().getNemonico().equals("SECIEABIRODU")) {
+            this.showCieloAbierto= true;
+            this.showSubterraneo= false;
+        } else if(this.fichaTecnica.getFormaExplotacion().getNemonico().equals("SESUBTE")) {
+            this.showCieloAbierto= false;
+            this.showSubterraneo= true;
+        } else {
+            this.showCieloAbierto= false;
+            this.showSubterraneo= false;
+        }
         
+        //Cargar infraestructuras - maquinarias - operaciones mineras
+        List<DetalleFichaTecnica> detallesFichaTecnica= detalleFichaTecnicaServicio.listarPorFichaTecnica(fichaTecnica.getCodigoFichaTecnica());
+        infraestruturasWrapper= new ArrayList<>();
+        maquinariasWrapper= new ArrayList<>();
+        operacionesMinerasWrapper= new ArrayList<>();
+        for(DetalleFichaTecnica dft : detallesFichaTecnica) {
+            DetalleFichaTecnicaWrapper cw= new DetalleFichaTecnicaWrapper();
+            if(dft.getCodigoTipoInformacionRegistro().getNemonico().equals("TIPOINFINFACT")) {
+                cw.setCatalogoDetalle(dft.getCodigoCatalogo());
+                cw.setOpcion(dft.isCodigoOpcion());
+                cw.setCodigoDetalleFichaTecnica(dft.getCodigoDetalleFichaTecnica());
+                infraestruturasWrapper.add(cw);
+            } else if(dft.getCodigoTipoInformacionRegistro().getNemonico().equals("TIPOINFEQUMAQ")) {
+                cw.setCatalogoDetalle(dft.getCodigoCatalogo());
+                cw.setOpcion(dft.isCodigoOpcion());
+                cw.setCantidad(dft.getCantidad());
+                cw.setCodigoDetalleFichaTecnica(dft.getCodigoDetalleFichaTecnica());
+                maquinariasWrapper.add(cw);
+            } else if(dft.getCodigoTipoInformacionRegistro().getNemonico().equals("TIPOINFPORMIN")) {
+                cw.setCatalogoDetalle(dft.getCodigoCatalogo());
+                cw.setOpcion(dft.isCodigoOpcion());
+                cw.setCodigoDetalleFichaTecnica(dft.getCodigoDetalleFichaTecnica());
+                operacionesMinerasWrapper.add(cw);
+            }
+        }
+        
+        //Cargar socios
+        sociosLaborMinera= detalleFichaTecnicaServicio.listarSociosPorFichaTecnica(fichaTecnica.getCodigoFichaTecnica());
+        return "fichafrm";
     }
     
     private void cargarFichasTecnicas() {
-        fichasTecnicas= fichaTecnicaServicio.listar();
+        fichasTecnicas= fichaTecnicaServicio.listarPorUsuarioCreacion(login.getCodigoUsuario());
+    }
+    
+    private void cargarInfraestructuraWrapper() {
+        infraestructuras= getInfraestructuras();
+        infraestruturasWrapper= new ArrayList<>();
+        for(CatalogoDetalle i : infraestructuras) {
+            DetalleFichaTecnicaWrapper cw= new DetalleFichaTecnicaWrapper();
+            cw.setCatalogoDetalle(i);
+            cw.setOpcion(Boolean.FALSE);
+            infraestruturasWrapper.add(cw);
+        }
+    }
+    
+    private void cargarMaquinariasWrapper() {
+        maquinarias= getMaquinarias();
+        maquinariasWrapper= new ArrayList<>();
+        for(CatalogoDetalle i : maquinarias) {
+            DetalleFichaTecnicaWrapper cw= new DetalleFichaTecnicaWrapper();
+            cw.setCatalogoDetalle(i);
+            cw.setOpcion(Boolean.FALSE);
+            maquinariasWrapper.add(cw);
+        }
+    }
+    
+    private void cargarOperacionesMinerasWrapper() {
+        operacionesMineras= getOperacionesMineras();
+        operacionesMinerasWrapper= new ArrayList<>();
+        for(CatalogoDetalle i : operacionesMineras) {
+            DetalleFichaTecnicaWrapper cw= new DetalleFichaTecnicaWrapper();
+            cw.setCatalogoDetalle(i);
+            cw.setOpcion(Boolean.FALSE);
+            operacionesMinerasWrapper.add(cw);
+        }
+    }
+    
+    private void resetAction() {
+        this.codigoCensal= false;
+        this.showDerechoMinero= false;
+        this.showCieloAbierto= false;
+        this.showSubterraneo= false;
+        this.codigoArcom= "";
+        this.coordenadas= new ArrayList<>();
+        this.contratos= new ArrayList<>();
+    }
+    
+    private String endAction() {
+        fichaTecnica= new FichaTecnica();
+        cargarFichasTecnicas();
+        return "actividadesmineras";
+    }
+    
+    ////////////////////////////////////////////////////////
+    
+    public void mostrarMensaje(FacesMessage.Severity s, String msg) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(s, "", msg));
+    }
+    
+    private boolean guardar() {
+        return guardarFichaTecnica() && guardarInfraestructuras() && guardarMaquinarias() && guardarOperacionesMineras() && guardarSocios();
+    }
+    
+    private boolean guardarFichaTecnica() {
+        fichaTecnica.setEstadoRegistro(Boolean.TRUE);
+        fichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
+        fichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+        fichaTecnicaServicio.create(fichaTecnica);
+        return true;
+    }
+    
+    private boolean guardarSocios() {
+        for(DetalleFichaTecnica detFichaTecnica : sociosLaborMinera) {
+            detFichaTecnica.setCodigoTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFSOCLAB").get(0));
+            detFichaTecnica.setFichaTecnica(fichaTecnica);
+            detFichaTecnica.setEstadoRegistro(Boolean.TRUE);
+            detFichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
+            detFichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            detalleFichaTecnicaServicio.create(detFichaTecnica);
+        }
+        return true;
+    }
+    
+    private boolean guardarInfraestructuras() {
+        for(DetalleFichaTecnicaWrapper catWrapper : infraestruturasWrapper) {
+            DetalleFichaTecnica detFichaTecnica= new DetalleFichaTecnica();
+            
+            detFichaTecnica.setCodigoCatalogo(catWrapper.getCatalogoDetalle());
+            detFichaTecnica.setCodigoOpcion(catWrapper.isOpcion());
+            detFichaTecnica.setCodigoTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFINFACT").get(0));
+            
+            detFichaTecnica.setFichaTecnica(fichaTecnica);
+            detFichaTecnica.setEstadoRegistro(Boolean.TRUE);
+            detFichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
+            detFichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            detalleFichaTecnicaServicio.create(detFichaTecnica);
+        }
+        return true;
+    }
+    
+    private boolean guardarMaquinarias() {
+        for(DetalleFichaTecnicaWrapper catWrapper : maquinariasWrapper) {
+            DetalleFichaTecnica detFichaTecnica= new DetalleFichaTecnica();
+            
+            detFichaTecnica.setCodigoCatalogo(catWrapper.getCatalogoDetalle());
+            detFichaTecnica.setCodigoOpcion(catWrapper.isOpcion());
+            detFichaTecnica.setCantidad(catWrapper.getCantidad());
+            detFichaTecnica.setCodigoTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFEQUMAQ").get(0));
+            
+            detFichaTecnica.setFichaTecnica(fichaTecnica);
+            detFichaTecnica.setEstadoRegistro(Boolean.TRUE);
+            detFichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
+            detFichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            detalleFichaTecnicaServicio.create(detFichaTecnica);
+        }
+        return true;
+    }
+    
+    private boolean guardarOperacionesMineras() {
+        for(DetalleFichaTecnicaWrapper catWrapper : operacionesMinerasWrapper) {
+            DetalleFichaTecnica detFichaTecnica= new DetalleFichaTecnica();
+            
+            detFichaTecnica.setCodigoCatalogo(catWrapper.getCatalogoDetalle());
+            detFichaTecnica.setCodigoOpcion(catWrapper.isOpcion());
+            detFichaTecnica.setCodigoTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFPORMIN").get(0));
+            
+            detFichaTecnica.setFichaTecnica(fichaTecnica);
+            detFichaTecnica.setEstadoRegistro(Boolean.TRUE);
+            detFichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
+            detFichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            detalleFichaTecnicaServicio.create(detFichaTecnica);
+        }
+        return true;
+    }
+    
+    public void buscarDerechoMinero() {
+        System.out.println("######### Codigo Arcom: " + codigoArcom);
+        if(codigoArcom.length()>0) {
+            System.out.println("######");
+            System.out.println("Buscando concesion");
+            System.out.println("######");
+            ConcesionMinera cm= concesionMineraServicio.obtenerPorCodigoArcom(codigoArcom);
+            if(cm!=null) {
+                fichaTecnica.setConcesionMinera(cm);
+                AreaMinera am= areaMineraServicio.obtenerPorConcesionMinera(cm.getCodigoConcesion());
+                this.coordenadas= coordenadaAreaServicio.findByCodigoArea(am.getCodigoAreaMinera());
+                this.contratos= contratoOperacionServicio.listarPorCodigoConcesion(cm.getCodigoConcesion());
+            }
+            RequestContext.getCurrentInstance().update("derechoMineroPanel");
+        }
+    }
+    
+    private boolean actualizar() {
+        return actualizarFichaTecnica() && actualizarInfraestructuras() && actualizarMaquinarias() && actualizarOperacionesMineras() && actualizarSocios();
+    }
+    
+    private boolean actualizarFichaTecnica() {
+        //fichaTecnica.setEstadoRegistro(Boolean.TRUE);
+        fichaTecnica.setFechaModificacion(Calendar.getInstance().getTime());
+        fichaTecnica.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+        fichaTecnicaServicio.update(fichaTecnica);
+        return true;
+    }
+    
+    private boolean actualizarSocios() {
+        for(DetalleFichaTecnica detFichaTecnica : sociosLaborMinera) {
+            if(detFichaTecnica.getCodigoDetalleFichaTecnica()==null) {
+                detFichaTecnica.setCodigoTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFSOCLAB").get(0));
+                detFichaTecnica.setFichaTecnica(fichaTecnica);
+                detFichaTecnica.setEstadoRegistro(Boolean.TRUE);
+                detFichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
+                detFichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+                detalleFichaTecnicaServicio.create(detFichaTecnica);
+            } else {
+                detFichaTecnica.setFechaModificacion(Calendar.getInstance().getTime());
+                detFichaTecnica.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+                detalleFichaTecnicaServicio.update(detFichaTecnica);
+            }
+        }
+        return true;
+    }
+    
+    private boolean actualizarInfraestructuras() {
+        for(DetalleFichaTecnicaWrapper catWrapper : infraestruturasWrapper) {
+            DetalleFichaTecnica detFichaTecnica= detalleFichaTecnicaServicio.findByPk(catWrapper.getCodigoDetalleFichaTecnica());
+            
+            detFichaTecnica.setCodigoCatalogo(catWrapper.getCatalogoDetalle());
+            detFichaTecnica.setCodigoOpcion(catWrapper.isOpcion());
+            detFichaTecnica.setFechaModificacion(Calendar.getInstance().getTime());
+            detFichaTecnica.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            detalleFichaTecnicaServicio.update(detFichaTecnica);
+        }
+        return true;
+    }
+    
+    private boolean actualizarMaquinarias() {
+        for(DetalleFichaTecnicaWrapper catWrapper : maquinariasWrapper) {
+            DetalleFichaTecnica detFichaTecnica= detalleFichaTecnicaServicio.findByPk(catWrapper.getCodigoDetalleFichaTecnica());
+            
+            detFichaTecnica.setCodigoCatalogo(catWrapper.getCatalogoDetalle());
+            detFichaTecnica.setCodigoOpcion(catWrapper.isOpcion());
+            detFichaTecnica.setCantidad(catWrapper.getCantidad());
+            detFichaTecnica.setFechaModificacion(Calendar.getInstance().getTime());
+            detFichaTecnica.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            detalleFichaTecnicaServicio.update(detFichaTecnica);
+        }
+        return true;
+    }
+    
+    private boolean actualizarOperacionesMineras() {
+        for(DetalleFichaTecnicaWrapper catWrapper : operacionesMinerasWrapper) {
+            DetalleFichaTecnica detFichaTecnica= detalleFichaTecnicaServicio.findByPk(catWrapper.getCodigoDetalleFichaTecnica());
+            
+            detFichaTecnica.setCodigoCatalogo(catWrapper.getCatalogoDetalle());
+            detFichaTecnica.setCodigoOpcion(catWrapper.isOpcion());
+            detFichaTecnica.setFechaModificacion(Calendar.getInstance().getTime());
+            detFichaTecnica.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            detalleFichaTecnicaServicio.update(detFichaTecnica);
+        }
+        return true;
     }
 }

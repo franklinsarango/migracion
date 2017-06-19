@@ -11,10 +11,11 @@ import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
  *
  * @author mejiaw
  */
-public class CatalogoWrapper {
+public class DetalleFichaTecnicaWrapper {
     private CatalogoDetalle catalogoDetalle;
     private boolean opcion;
     private Long cantidad;
+    private Long codigoDetalleFichaTecnica;
 
     public CatalogoDetalle getCatalogoDetalle() {
         return catalogoDetalle;
@@ -38,5 +39,13 @@ public class CatalogoWrapper {
 
     public void setCantidad(Long cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Long getCodigoDetalleFichaTecnica() {
+        return codigoDetalleFichaTecnica;
+    }
+
+    public void setCodigoDetalleFichaTecnica(Long codigoDetalleFichaTecnica) {
+        this.codigoDetalleFichaTecnica = codigoDetalleFichaTecnica;
     }
 }
