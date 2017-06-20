@@ -600,6 +600,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     public String newFichaTecnicaAction() {
         edit= false;
         this.fichaTecnica= new FichaTecnica();
+        this.secuenciasPorCoordinacion= new HashMap<>();
         resetAction();
         Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
         this.fichaTecnica.setUsuarioElaboracion(usr);
