@@ -11,6 +11,8 @@ import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.LocalidadRegional;
+import ec.gob.arcom.migracion.modelo.PersonaJuridica;
+import ec.gob.arcom.migracion.modelo.PersonaNatural;
 import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.Secuencia;
 import ec.gob.arcom.migracion.modelo.Usuario;
@@ -25,10 +27,13 @@ import ec.gob.arcom.migracion.servicio.DetalleFichaTecnicaServicio;
 import ec.gob.arcom.migracion.servicio.FichaTecnicaServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadRegionalServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
+import ec.gob.arcom.migracion.servicio.PersonaJuridicaServicio;
+import ec.gob.arcom.migracion.servicio.PersonaNaturalServicio;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
 import ec.gob.arcom.migracion.servicio.SecuenciaServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
 import ec.gob.arcom.migracion.util.DetalleFichaTecnicaWrapper;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,13 +99,15 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private RegionalServicio regionalServicio;
     @EJB
     private SecuenciaServicio secuenciaServicio;
+    @EJB
+    private PersonaNaturalServicio personaNaturalServicio;
+    @EJB
+    private PersonaJuridicaServicio personaJuridicaServicio;
     
     private Date fechaMaxima;
     
     private List<FichaTecnica> fichasTecnicas;
     private FichaTecnica fichaTecnica;
-    
-    //private List<DetalleFichaTecnica> detallesFichaTecnica;
     
     private List<CatalogoDetalle> zonasGeograficas;
     private List<CatalogoDetalle> etnias;
@@ -133,6 +140,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private boolean showSubterraneo= false;
     private boolean showCieloAbierto= false;
     private Map<String, String> secuenciasPorCoordinacion;
+    private String tipoPersona= "";
     
     private String codigoArcom= "";
     
@@ -154,7 +162,14 @@ public class ActividadMineraCtrl extends BaseCtrl {
         cargarFichasTecnicas();
     }
     
+    public boolean isEdit() {
+        return edit;
+    }
+
     ///////////////////////////////////////////////////////
+    public void setEdit(boolean edit) {    
+        this.edit = edit;
+    }
 
     public Date getFechaMaxima() {
         fechaMaxima= Calendar.getInstance().getTime();
@@ -653,6 +668,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
         if(fichaTecnica.getConcesionMinera() != null && fichaTecnica.getConcesionMinera().getCodigoConcesion() != null) {
             this.showDerechoMinero= true;
             this.codigoArcom= fichaTecnica.getConcesionMinera().getCodigoArcom();
+            buscarPersona();
             this.coordenadas= coordenadaAreaServicio.findByCodigoArea(fichaTecnica.getConcesionMinera().getCodigoConcesion());
             this.contratos= contratoOperacionServicio.listarPorCodigoConcesion(fichaTecnica.getConcesionMinera().getCodigoConcesion());
         }
@@ -777,6 +793,16 @@ public class ActividadMineraCtrl extends BaseCtrl {
         if(!fichaTecnica.getTipoTerreno().getNombre().equals("OTRO")) {
             fichaTecnica.setDetalleTipoTerreno("");
         }
+        if(fichaTecnica.getFormaExplotacion().getNemonico().equals("SECIEABIRODU")) {
+            fichaTecnica.setLongitudSubterranea(null);
+            fichaTecnica.setAnchoSubterranea(null);
+            fichaTecnica.setAltoSubterranea(null);
+            fichaTecnica.setRumboSubterranea(null);
+        } else {
+            fichaTecnica.setLongitudCieloAbierto(null);
+            fichaTecnica.setAnchoCieloAbierto(null);
+            fichaTecnica.setAltoCieloAbierto(null);
+        }
     }
     
     private boolean guardarFichaTecnica() {
@@ -860,6 +886,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
                 AreaMinera am= areaMineraServicio.obtenerPorConcesionMinera(cm.getCodigoConcesion());
                 this.coordenadas= coordenadaAreaServicio.findByCodigoArea(am.getCodigoAreaMinera());
                 this.contratos= contratoOperacionServicio.listarPorCodigoConcesion(cm.getCodigoConcesion());
+                buscarPersona();
             }
             RequestContext.getCurrentInstance().update("derechoMineroPanel");
         }
@@ -1015,5 +1042,51 @@ public class ActividadMineraCtrl extends BaseCtrl {
         cargarCantones();
         establecerRegional();
         establecerNumeroFormulario();
+    }
+    
+    private void buscarPersona() {
+        PersonaNatural personaNatural = personaNaturalServicio.findByNumeroDocumento(fichaTecnica.getConcesionMinera().getDocumentoConcesionarioPrincipal());
+        if (personaNatural != null) {
+            tipoPersona = "N";
+            fichaTecnica.getConcesionMinera().setPersonaNaturalTransient(personaNatural);
+        } else {
+            PersonaJuridica personaJuridica = personaJuridicaServicio.findByRuc(fichaTecnica.getConcesionMinera().getDocumentoConcesionarioPrincipal());
+            if (personaJuridica != null) {
+                tipoPersona = "J";
+                fichaTecnica.getConcesionMinera().setPersonaJuridicaTransient(personaJuridica);
+            }
+        }
+    }
+    
+    public String obtenerTelefono() {
+        if(tipoPersona.equals("N")) {
+            return fichaTecnica.getConcesionMinera().getPersonaNaturalTransient().getTelefono();
+        } else if(tipoPersona.equals("J")) {
+            return fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getTelefono();
+        }
+        return "";
+    }
+    
+    public String obtenerCelular() {
+        if(tipoPersona.equals("N")) {
+            return fichaTecnica.getConcesionMinera().getPersonaNaturalTransient().getCelular();
+        } else if(tipoPersona.equals("J")) {
+            return fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getCelular();
+        }
+        return "";
+    }
+    
+    public String obtenerRepresentanteLegal() {
+        if(tipoPersona.equals("N")) {
+            return "";
+        } else if(tipoPersona.equals("J")) {
+            try {
+                return fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getNombreRepresentanteLegal() + " " + 
+                    fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getApellidoRepresentanteLegal();
+            } catch(Exception ex) {
+                
+            }
+        }
+        return "";
     }
 }

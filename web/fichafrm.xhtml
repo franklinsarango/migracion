@@ -107,7 +107,10 @@
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="cedulaRepres" value="Cédula representante labor minera:"/></p:column>
                         <p:column style="text-align: left">
-                            <p:inputText id="cedulaRepres" value="#{actividadMineraCtrl.fichaTecnica.documentoRepresentanteLaborMinera}" required="true" styleClass="inputtext-form"/>
+                            <p:inputText id="cedulaRepres" value="#{actividadMineraCtrl.fichaTecnica.documentoRepresentanteLaborMinera}" required="true" styleClass="inputtext-form">
+                                <f:validateLength minimum="10" maximum="10"/>
+                                <f:validateRegex pattern="[0-9]*"/>
+                            </p:inputText>
                         </p:column>
                     </p:row>
                     
@@ -142,16 +145,17 @@
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="telefonoRepres" value="Teléfono:"/></p:column>
                         <p:column style="text-align: left">
-                            <pe:inputNumber id="telefonoRepres" thousandSeparator="" decimalSeparator="" decimalPlaces="0" maxValue="999999999" 
-                                            value="#{actividadMineraCtrl.fichaTecnica.telefono}" style="width: 270px" required="true"/>
+                            <p:inputMask id="telefonoRepres" mask="9?999999999" value="#{actividadMineraCtrl.fichaTecnica.telefono}"
+                                         style="width: 270px;" maxlength="20" required="true" placeHolder=""/>
+
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="celularRepres" value="Celular:"/></p:column>
                         <p:column style="text-align: left">
-                            <pe:inputNumber id="celularRepres" thousandSeparator="" decimalSeparator="" decimalPlaces="0" maxValue="9999999999" 
-                                            value="#{actividadMineraCtrl.fichaTecnica.celular}" style="width: 270px" required="true"/>
+                            <p:inputMask id="celularRepres" mask="9?999999999" value="#{actividadMineraCtrl.fichaTecnica.celular}"
+                                         style="width: 270px;" maxlength="20" required="true" placeHolder=""/>
                         </p:column>
                     </p:row>
                     
@@ -169,7 +173,7 @@
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="utmNorte" value="UTM Norte:"/></p:column>
                         <p:column style="text-align: left">
-                            <pe:inputNumber id="utmNorte" thousandSeparator="" decimalSeparator="." decimalPlaces="4" maxValue="9999999999" 
+                            <pe:inputNumber id="utmNorte" maxValue="9999999999.9999" 
                                             value="#{actividadMineraCtrl.fichaTecnica.utmNorte}" style="width: 270px" required="true"/>
                         </p:column>
                     </p:row>
@@ -177,7 +181,7 @@
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="utmEste" value="UTM Este:"/></p:column>
                         <p:column style="text-align: left">
-                            <pe:inputNumber id="utmEste" thousandSeparator="" decimalSeparator="." decimalPlaces="4" maxValue="9999999999" 
+                            <pe:inputNumber id="utmEste" maxValue="9999999999.9999" 
                                             value="#{actividadMineraCtrl.fichaTecnica.utmEste}" style="width: 270px" required="true"/>
                         </p:column>
                     </p:row>
@@ -208,7 +212,7 @@
                         <p:column style="text-align: right"><p:outputLabel for="provincia" value="Provincia:"/></p:column>
                         <p:column style="text-align: left">
                             <p:selectOneMenu id="provincia" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                             value="#{actividadMineraCtrl.fichaTecnica.provincia}">
+                                             value="#{actividadMineraCtrl.fichaTecnica.provincia}" disabled="#{actividadMineraCtrl.edit}">
                                 <f:selectItem itemLabel="Seleccione una provincia..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{actividadMineraCtrl.provincias}"
                                                var="prov"
@@ -427,7 +431,7 @@
                                     <p:column style="text-align: right">
                                         <p:outputLabel for="representanteDerecho" value="Representante legal:" rendered="#{actividadMineraCtrl.showDerechoMinero}"/></p:column>
                                     <p:column style="text-align: left">
-                                        <p:inputText id="representanteDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.nombreRepLegal}"
+                                        <p:inputText id="representanteDerecho" value="#{actividadMineraCtrl.obtenerRepresentanteLegal()}"
                                                      readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showDerechoMinero}"/>
                                     </p:column>
                                 </p:row>
@@ -436,14 +440,14 @@
                                     <p:column style="text-align: right">
                                         <p:outputLabel for="telefonoDerecho" value="Teléfono:" rendered="#{actividadMineraCtrl.showDerechoMinero}"/></p:column>
                                     <p:column style="text-align: left">
-                                        <p:inputText id="telefonoDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.convencional}"
+                                        <p:inputText id="telefonoDerecho" value="#{actividadMineraCtrl.obtenerTelefono()}"
                                                      readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showDerechoMinero}"/>
                                     </p:column>
                                     
                                     <p:column style="text-align: right">
                                         <p:outputLabel for="celularDerecho" value="Celular:" rendered="#{actividadMineraCtrl.showDerechoMinero}"/></p:column>
                                     <p:column style="text-align: left">
-                                        <p:inputText id="celularDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.celular}"
+                                        <p:inputText id="celularDerecho" value="#{actividadMineraCtrl.obtenerCelular()}"
                                                      readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showDerechoMinero}"/>
                                     </p:column>
                                 </p:row>
@@ -609,14 +613,20 @@
                                             <p:column headerText="Teléfono">
                                                 <p:cellEditor>
                                                     <f:facet name="output"><h:outputText value="#{socio.telefono}" /></f:facet>
-                                                    <f:facet name="input"><p:inputText value="#{socio.telefono}" style="width:100%" label="Teléfono"/></f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputMask mask="9?999999999" value="#{socio.telefono}" label="Teléfono"
+                                                                     style="width:100%" maxlength="20" required="true" placeHolder=""/>
+                                                    </f:facet>
                                                 </p:cellEditor>
                                             </p:column>
                                             
                                             <p:column headerText="Celular">
                                                 <p:cellEditor>
                                                     <f:facet name="output"><h:outputText value="#{socio.celular}" /></f:facet>
-                                                    <f:facet name="input"><p:inputText value="#{socio.celular}" style="width:100%" label="Celular"/></f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputMask mask="9?999999999" value="#{socio.celular}" label="Celular"
+                                                                     style="width:100%" maxlength="20" required="true" placeHolder=""/>
+                                                    </f:facet>
                                                 </p:cellEditor>
                                             </p:column>
                                             

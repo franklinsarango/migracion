@@ -59,6 +59,10 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                  rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
 
+                        <p:column headerText="No Formulario" style="width: 100px;">
+                            <h:outputText value="#{ficha.numeroFormulario}"/>
+                        </p:column>
+                        
                         <p:column headerText="Nombre labor minera" style="width: 100px;">
                             <h:outputText value="#{ficha.rasonSocialLaborMinera}"/>
                         </p:column>
