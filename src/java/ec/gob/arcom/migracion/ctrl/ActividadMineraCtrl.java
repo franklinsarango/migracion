@@ -1060,18 +1060,26 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     public String obtenerTelefono() {
         if(tipoPersona.equals("N")) {
-            return fichaTecnica.getConcesionMinera().getPersonaNaturalTransient().getTelefono();
+            try {
+                return fichaTecnica.getConcesionMinera().getPersonaNaturalTransient().getTelefono();
+            } catch(Exception ex) {}
         } else if(tipoPersona.equals("J")) {
-            return fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getTelefono();
+            try {
+                return fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getTelefono();
+            } catch(Exception ex) {}
         }
         return "";
     }
     
     public String obtenerCelular() {
         if(tipoPersona.equals("N")) {
-            return fichaTecnica.getConcesionMinera().getPersonaNaturalTransient().getCelular();
+            try {
+                return fichaTecnica.getConcesionMinera().getPersonaNaturalTransient().getCelular();
+            } catch(Exception ex) {}
         } else if(tipoPersona.equals("J")) {
-            return fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getCelular();
+            try {
+                return fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getCelular();
+            } catch(Exception ex) {}
         }
         return "";
     }
@@ -1083,9 +1091,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
             try {
                 return fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getNombreRepresentanteLegal() + " " + 
                     fichaTecnica.getConcesionMinera().getPersonaJuridicaTransient().getApellidoRepresentanteLegal();
-            } catch(Exception ex) {
-                
-            }
+            } catch(Exception ex) {}
         }
         return "";
     }
