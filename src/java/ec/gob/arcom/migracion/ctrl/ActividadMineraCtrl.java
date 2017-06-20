@@ -10,6 +10,9 @@ import ec.gob.arcom.migracion.modelo.CoordenadaArea;
 import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Localidad;
+import ec.gob.arcom.migracion.modelo.LocalidadRegional;
+import ec.gob.arcom.migracion.modelo.Regional;
+import ec.gob.arcom.migracion.modelo.Secuencia;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.servicio.AreaMineraServicio;
 import ec.gob.arcom.migracion.servicio.AuditoriaServicio;
@@ -20,7 +23,10 @@ import ec.gob.arcom.migracion.servicio.ContratoOperacionServicio;
 import ec.gob.arcom.migracion.servicio.CoordenadaAreaServicio;
 import ec.gob.arcom.migracion.servicio.DetalleFichaTecnicaServicio;
 import ec.gob.arcom.migracion.servicio.FichaTecnicaServicio;
+import ec.gob.arcom.migracion.servicio.LocalidadRegionalServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
+import ec.gob.arcom.migracion.servicio.RegionalServicio;
+import ec.gob.arcom.migracion.servicio.SecuenciaServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
 import ec.gob.arcom.migracion.util.DetalleFichaTecnicaWrapper;
 import java.math.BigInteger;
@@ -28,7 +34,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -59,6 +67,8 @@ public class ActividadMineraCtrl extends BaseCtrl {
     public static final String DELETE= "DELETE";
     
     @EJB
+    private LocalidadRegionalServicio localidadRegionalServicio;
+    @EJB
     private LocalidadServicio localidadServicio;
     @EJB
     private UsuarioServicio usuarioServicio;
@@ -80,6 +90,10 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private AreaMineraServicio areaMineraServicio;
     @EJB
     private ContratoOperacionServicio contratoOperacionServicio;
+    @EJB
+    private RegionalServicio regionalServicio;
+    @EJB
+    private SecuenciaServicio secuenciaServicio;
     
     private Date fechaMaxima;
     
@@ -118,6 +132,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private boolean showDerechoMinero= false;
     private boolean showSubterraneo= false;
     private boolean showCieloAbierto= false;
+    private Map<String, String> secuenciasPorCoordinacion;
     
     private String codigoArcom= "";
     
@@ -131,6 +146,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
         fichaTecnica= new FichaTecnica();
         coordenadas= new ArrayList();
         contratos= new ArrayList();
+        secuenciasPorCoordinacion= new HashMap<>();
     }
     
     @PostConstruct
@@ -704,6 +720,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
             DetalleFichaTecnicaWrapper cw= new DetalleFichaTecnicaWrapper();
             cw.setCatalogoDetalle(i);
             cw.setOpcion(Boolean.FALSE);
+            cw.setCantidad((long)0);
             maquinariasWrapper.add(cw);
         }
     }
@@ -916,5 +933,87 @@ public class ActividadMineraCtrl extends BaseCtrl {
             detalleFichaTecnicaServicio.update(detFichaTecnica);
         }
         return true;
+    }
+    
+    public void deleteSocioAction(DetalleFichaTecnica socio) {
+        if(socio.getCodigoDetalleFichaTecnica()== null) {
+            sociosLaborMinera.remove(socio);
+        } else {
+            sociosLaborMinera.remove(socio);
+            detalleFichaTecnicaServicio.delete(socio.getCodigoDetalleFichaTecnica());
+        }
+    }
+    
+    public void establecerRegional() {
+        fichaTecnica.setRegional(obtenerRegional(fichaTecnica.getProvincia().getCodigoLocalidad()));
+    }
+    
+    public Regional obtenerRegional(Long codigoProvincia) {
+        LocalidadRegional localidadRegional = localidadRegionalServicio.obtenerPorCodigoLocalidad(codigoProvincia);
+        return regionalServicio.findByPk(localidadRegional.getLocalidadRegionalPK().getCodigoRegional());
+    }
+    
+    public Long obtenerSecuenciaFichaTecnica(String prefijoRegional) {
+        Secuencia secuenciaConcesion = secuenciaServicio.obtenerPorTabla("SECACTMINORGL" + prefijoRegional);
+        Long codigoConcesionSiguiente = secuenciaConcesion.getValor();
+        //fichaTecnica.setNumeroFormulario(formarCodigoFormulario(prefijoRegional, codigoConcesionSiguiente));
+        secuenciaConcesion.setValor(codigoConcesionSiguiente + 1);
+        secuenciaServicio.update(secuenciaConcesion);
+        return codigoConcesionSiguiente;
+    }
+    
+    public String obtenerPrefijoTxt(String prefijoRegional) {
+        String prefijoTxt= "";
+        if(prefijoRegional.equals("01")) {
+            prefijoTxt= "CUEN";
+        } else if(prefijoRegional.equals("02")) {
+            prefijoTxt= "RIOB";
+        } else if(prefijoRegional.equals("03")) {
+            prefijoTxt= "MACH";
+        } else if(prefijoRegional.equals("04")) {
+            prefijoTxt= "IBAR";
+        } else if(prefijoRegional.equals("05")) {
+            prefijoTxt= "ZAMO";
+        } else if(prefijoRegional.equals("06")) {
+            prefijoTxt= "LOJA";
+        } else if(prefijoRegional.equals("07")) {
+            prefijoTxt= "GUAY";
+        } else if(prefijoRegional.equals("09")) {
+            prefijoTxt= "MACAS";
+        } else if(prefijoRegional.equals("10")) {
+            prefijoTxt= "TENA";
+        }
+        return prefijoTxt;
+    }
+    
+    protected String formarCodigoFormulario(String prefijoTxt, Long secuencial) {
+        String codigo = secuencial.toString();
+        while (codigo.length() < 4) {
+            codigo = "0" + codigo;
+        }
+        codigo = prefijoTxt + codigo;
+        return codigo;
+    }
+    
+    public void establecerNumeroFormulario() {
+        String prefijoRegional= obtenerRegional(fichaTecnica.getProvincia().getCodigoLocalidad()).getPrefijoCodigo();
+        String prefijoTxt= obtenerPrefijoTxt(prefijoRegional);
+        String numFormulario= "";
+        numFormulario= secuenciasPorCoordinacion.get(prefijoTxt);
+        
+        if(numFormulario == null) {
+            Long secuenciaNumeroFormulario= obtenerSecuenciaFichaTecnica(prefijoRegional);
+            numFormulario= formarCodigoFormulario(prefijoTxt, secuenciaNumeroFormulario);
+            fichaTecnica.setNumeroFormulario(numFormulario);
+            secuenciasPorCoordinacion.put(prefijoTxt, numFormulario);
+        } else {
+            fichaTecnica.setNumeroFormulario(numFormulario);
+        }
+    }
+    
+    public void llamarListeners() {
+        cargarCantones();
+        establecerRegional();
+        establecerNumeroFormulario();
     }
 }

@@ -47,7 +47,21 @@
                 <center>
                     <p:outputLabel value="Actualización de Informacion de Actividades Mineras" style="font-weight: bolder; font-size: large"/>
                 </center>
-
+                <p:panelGrid id="numeroFormularioPanel" styleClass="pg-center">
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="N° Formulario:" style="font-weight: bolder; font-size: large"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <p:outputLabel id="numeroFormulario" value="#{actividadMineraCtrl.fichaTecnica.numeroFormulario}" style="font-weight: bolder; font-size: large"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
                 <p:panelGrid id="fichaPanel" styleClass="pg-center">
                     <p:row>
                         <p:column colspan="2"> <p:separator/> </p:column>
@@ -200,7 +214,7 @@
                                                var="prov"
                                                itemLabel="#{prov.nombre}"
                                                itemValue="#{prov}"/>
-                                <p:ajax  listener="#{actividadMineraCtrl.cargarCantones()}" update="canton parroquia"/>
+                                <p:ajax  listener="#{actividadMineraCtrl.llamarListeners()}" update="canton parroquia regional numeroFormulario"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -239,6 +253,13 @@
                         <p:column style="text-align: left">
                             <p:inputText id="sector" value="#{actividadMineraCtrl.fichaTecnica.sector}" required="true"
                                          styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Regional:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel id="regional" value="#{actividadMineraCtrl.fichaTecnica.regional.nombreRegional}"/>
                         </p:column>
                     </p:row>
                     
@@ -346,20 +367,20 @@
                             <p:selectOneRadio id="dentroTitulo" value="#{actividadMineraCtrl.showDerechoMinero}" required="true">
                                 <f:selectItem itemLabel="SI" itemValue="true" />
                                 <f:selectItem itemLabel="NO" itemValue="false" />
-                                <p:ajax  update="derechoMineroPanel" process="derechoMineroPanel @this"/>
+                                <p:ajax  update="derechoMineroPanel"/>
                             </p:selectOneRadio>
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column colspan="2" style="text-align: center">
-                            <p:panelGrid id="derechoMineroPanel" styleClass="pg-center" rendered="#{actividadMineraCtrl.showDerechoMinero}">
+                            <p:panelGrid id="derechoMineroPanel" styleClass="pg-center">
                                 <p:row>
-                                    <p:column colspan="4"> <p:separator/> </p:column>
+                                    <p:column colspan="4"> <p:separator rendered="#{actividadMineraCtrl.showDerechoMinero}"/> </p:column>
                                 </p:row>
                                 <p:row>
                                     <p:column colspan="4" style="text-align: center">
-                                        <p:outputLabel value="Datos del derecho minero" style="font-weight: bolder"/>
+                                        <p:outputLabel value="Datos del derecho minero" style="font-weight: bolder" rendered="#{actividadMineraCtrl.showDerechoMinero}"/>
                                     </p:column>
                                 </p:row>
                                 
@@ -602,6 +623,10 @@
                                             <p:column style="width:32px">
                                                 <p:rowEditor />
                                             </p:column>
+                                            
+                                            <p:column style="width:32px">
+                                                <p:commandButton icon="ui-icon-trash" actionListener="#{actividadMineraCtrl.deleteSocioAction(socio)}" update="sociosdt" immediate="true"/>
+                                            </p:column>
                                         </p:dataTable>
                                     </p:column>
                                 </p:row>
@@ -788,44 +813,44 @@
                                         <p:panelGrid id="dimensionsSubPanel" styleClass="pg-center">
                                             <p:row>
                                                 <p:column style="text-align: right">
-                                                    <p:outputLabel id="longsublbl" for="longsub" value="Longitud:" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                    <p:outputLabel id="longsublbl" for="longsub" value="Longitud (metros):" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
                                                 </p:column>
                                                 <p:column style="text-align: left">
                                                     <pe:inputNumber id="longsub" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="9999" 
-                                                                    value="#{actividadMineraCtrl.fichaTecnica.longitudSubterranea}" style="width: 180px" required="true"
+                                                                    value="#{actividadMineraCtrl.fichaTecnica.longitudSubterranea}" style="width: 130px" required="true"
                                                                     rendered="#{actividadMineraCtrl.showSubterraneo}"/>
                                                 </p:column>
                                             </p:row>
 
                                             <p:row>
                                                 <p:column style="text-align: right">
-                                                    <p:outputLabel id="anchosublbl" for="anchosub" value="Ancho:" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                    <p:outputLabel id="anchosublbl" for="anchosub" value="Ancho (metros):" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
                                                 </p:column>
                                                 <p:column style="text-align: left">
                                                     <pe:inputNumber id="anchosub" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="9999" 
-                                                                    value="#{actividadMineraCtrl.fichaTecnica.anchoSubterranea}" style="width: 180px" required="true"
+                                                                    value="#{actividadMineraCtrl.fichaTecnica.anchoSubterranea}" style="width: 130px" required="true"
                                                                     rendered="#{actividadMineraCtrl.showSubterraneo}"/>
                                                 </p:column>
                                             </p:row>
 
                                             <p:row>
                                                 <p:column style="text-align: right">
-                                                    <p:outputLabel id="altosublbl" for="altosub" value="Alto:" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                    <p:outputLabel id="altosublbl" for="altosub" value="Alto (metros):" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
                                                 </p:column>
                                                 <p:column style="text-align: left">
                                                     <pe:inputNumber id="altosub" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="9999" 
-                                                                    value="#{actividadMineraCtrl.fichaTecnica.altoSubterranea}" style="width: 180px" required="true"
+                                                                    value="#{actividadMineraCtrl.fichaTecnica.altoSubterranea}" style="width: 130px" required="true"
                                                                     rendered="#{actividadMineraCtrl.showSubterraneo}"/>
                                                 </p:column>
                                             </p:row>
 
                                             <p:row>
                                                 <p:column style="text-align: right">
-                                                    <p:outputLabel id="rumbosublbl" for="rumbosub" value="Rumbo:" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
+                                                    <p:outputLabel id="rumbosublbl" for="rumbosub" value="Rumbo (grados):" rendered="#{actividadMineraCtrl.showSubterraneo}"/>
                                                 </p:column>
                                                 <p:column style="text-align: left">
                                                     <pe:inputNumber id="rumbosub" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="9999" 
-                                                                    value="#{actividadMineraCtrl.fichaTecnica.rumboSubterranea}" style="width: 180px" required="true"
+                                                                    value="#{actividadMineraCtrl.fichaTecnica.rumboSubterranea}" style="width: 130px" required="true"
                                                                     rendered="#{actividadMineraCtrl.showSubterraneo}"/>
                                                 </p:column>
                                             </p:row>
@@ -834,33 +859,33 @@
                                         <p:panelGrid id="dimensionsCiePanel" styleClass="pg-center">
                                             <p:row>
                                                 <p:column style="text-align: right">
-                                                    <p:outputLabel id="longcielbl" for="longcie" value="Longitud:" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                    <p:outputLabel id="longcielbl" for="longcie" value="Longitud (metros):" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
                                                 </p:column>
                                                 <p:column style="text-align: left">
                                                     <pe:inputNumber id="longcie" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="9999" 
-                                                                    value="#{actividadMineraCtrl.fichaTecnica.longitudCieloAbierto}" style="width: 180px" required="true"
+                                                                    value="#{actividadMineraCtrl.fichaTecnica.longitudCieloAbierto}" style="width: 130px" required="true"
                                                                     rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
                                                 </p:column>
                                             </p:row>
 
                                             <p:row>
                                                 <p:column style="text-align: right">
-                                                    <p:outputLabel id="anchocielbl" for="anchocie" value="Ancho:" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                    <p:outputLabel id="anchocielbl" for="anchocie" value="Ancho (metros):" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
                                                 </p:column>
                                                 <p:column style="text-align: left">
                                                     <pe:inputNumber id="anchocie" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="9999" 
-                                                                    value="#{actividadMineraCtrl.fichaTecnica.anchoCieloAbierto}" style="width: 180px" required="true"
+                                                                    value="#{actividadMineraCtrl.fichaTecnica.anchoCieloAbierto}" style="width: 130px" required="true"
                                                                     rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
                                                 </p:column>
                                             </p:row>
 
                                             <p:row>
                                                 <p:column style="text-align: right">
-                                                    <p:outputLabel id="altocielbl" for="altocie" value="Alto:" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
+                                                    <p:outputLabel id="altocielbl" for="altocie" value="Alto (metros):" rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
                                                 </p:column>
                                                 <p:column style="text-align: left">
                                                     <pe:inputNumber id="altocie" thousandSeparator="," decimalSeparator="." decimalPlaces="2" maxValue="9999" 
-                                                                    value="#{actividadMineraCtrl.fichaTecnica.altoCieloAbierto}" style="width: 180px" required="true"
+                                                                    value="#{actividadMineraCtrl.fichaTecnica.altoCieloAbierto}" style="width: 130px" required="true"
                                                                     rendered="#{actividadMineraCtrl.showCieloAbierto}"/>
                                                 </p:column>
                                             </p:row>

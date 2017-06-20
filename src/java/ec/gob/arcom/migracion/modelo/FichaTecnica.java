@@ -189,6 +189,14 @@ public class FichaTecnica implements Serializable {
     
     @Column(name = "observaciones_ficha_tecnica")
     private String observacionesFichaTecnica;
+    
+    @JoinColumn(name = "codigo_regional", referencedColumnName = "codigo_regional")
+    @ManyToOne
+    private Regional regional;
+    
+    @Column(name = "numero_formulario")
+    private String numeroFormulario;
+    
     /////////////////////////////////////////////
     
     @Column(name = "estado_registro")
@@ -594,6 +602,22 @@ public class FichaTecnica implements Serializable {
 
     public void setObservacionesFichaTecnica(String observacionesFichaTecnica) {
         this.observacionesFichaTecnica = observacionesFichaTecnica;
+    }
+
+    public Regional getRegional() {
+        return regional;
+    }
+
+    public void setRegional(Regional regional) {
+        this.regional = regional;
+    }
+
+    public String getNumeroFormulario() {
+        return numeroFormulario;
+    }
+
+    public void setNumeroFormulario(String numeroFormulario) {
+        this.numeroFormulario = numeroFormulario;
     }
     
     public Boolean getEstadoRegistro() {
