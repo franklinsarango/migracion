@@ -146,7 +146,7 @@
                         <p:column style="text-align: right"><p:outputLabel for="telefonoRepres" value="Teléfono:"/></p:column>
                         <p:column style="text-align: left">
                             <p:inputMask id="telefonoRepres" mask="9?999999999" value="#{actividadMineraCtrl.fichaTecnica.telefono}"
-                                         style="width: 270px;" maxlength="20" required="true" placeHolder=""/>
+                                         style="width: 270px;" maxlength="20" placeHolder=""/>
 
                         </p:column>
                     </p:row>
@@ -155,16 +155,17 @@
                         <p:column style="text-align: right"><p:outputLabel for="celularRepres" value="Celular:"/></p:column>
                         <p:column style="text-align: left">
                             <p:inputMask id="celularRepres" mask="9?999999999" value="#{actividadMineraCtrl.fichaTecnica.celular}"
-                                         style="width: 270px;" maxlength="20" required="true" placeHolder=""/>
+                                         style="width: 270px;" maxlength="20" placeHolder=""/>
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="emailRepres" value="Correo electrónico"/></p:column>
                         <p:column style="text-align: left">
-                            <p:inputText id="emailRepres" value="#{actividadMineraCtrl.fichaTecnica.correoElectronico}" required="true"
+                            <p:inputText id="emailRepres" value="#{actividadMineraCtrl.fichaTecnica.correoElectronico}"
                                          styleClass="inputtext-form" validatorMessage="El correo ingresado no es válido">
-                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?"/>
+                                <f:validateLength minimum="0"/>
                             </p:inputText>
                         </p:column>
                     </p:row>
