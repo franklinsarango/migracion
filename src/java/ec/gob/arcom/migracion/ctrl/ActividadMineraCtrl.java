@@ -64,9 +64,6 @@ import org.primefaces.context.RequestContext;
 @ManagedBean
 @SessionScoped
 public class ActividadMineraCtrl extends BaseCtrl {
-    public static final String TIPOINSTITUCION= "TIPOINFINSTPART";
-    public static final String TIPODETENIDO= "TIPOINFDETOPE";
-    public static final String TIPODEPOSITARIO= "TIPOINFDEPMAQ";
     public static final String INSERT= "INSERT";
     public static final String UPDATE=  "UPDATE";
     public static final String DELETE= "DELETE";
