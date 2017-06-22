@@ -11,6 +11,7 @@ import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 

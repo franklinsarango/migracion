@@ -425,7 +425,7 @@
                                     <p:column style="text-align: right">
                                         <p:outputLabel for="titularDerecho" value="Titular:" rendered="#{actividadMineraCtrl.showDerechoMinero}"/></p:column>
                                     <p:column style="text-align: left">
-                                        <p:inputText id="titularDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.nombreConcesionarioPrincipal}"
+                                        <p:inputText id="titularDerecho" value="#{actividadMineraCtrl.fichaTecnica.concesionMinera.nombreConcesionarioPrincipal.concat(' ').concat(actividadMineraCtrl.fichaTecnica.concesionMinera.apellidoConcesionarioPrincipal)}"
                                                      readonly="true" styleClass="inputtext-form" rendered="#{actividadMineraCtrl.showDerechoMinero}"/>
                                     </p:column>
                                     

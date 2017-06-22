@@ -1,0 +1,764 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Actividades Mineras"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+            
+            <h:form id="fichaform" >
+                <p:panelGrid columns="2" styleClass="panelSinBorde">
+                    
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
+                                <h:outputText value="Inicio"/>
+                            </h:panelGrid>
+                        </h:commandLink>
+                    </h:panelGroup>
+                </p:panelGrid>
+            
+                <p:separator/>
+
+                <center>
+                    <p:outputLabel value="Actualización de Informacion de Actividades Mineras" style="font-weight: bolder; font-size: large"/>
+                </center>
+                <p:panelGrid id="numeroFormularioPanel" styleClass="pg-center" style="width: 100%">
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel value="N° Formulario:" style="font-weight: bolder; font-size: large"/>
+                        </p:column>
+                        
+                        <p:column style="text-align: left">
+                            <p:outputLabel id="numeroFormulario" value="#{actividadMineraRepCtrl.fichaTecnica.numeroFormulario}" style="font-weight: bolder; font-size: large"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
+                <p:panelGrid id="fichaPanel" styleClass="pg-center" style="width: 100%">
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel value="Realizado por: "/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel id="usrname" value="#{actividadMineraRepCtrl.fichaTecnica.usuarioElaboracion.nombre.concat(' ').concat(actividadMineraRepCtrl.fichaTecnica.usuarioElaboracion.apellido)}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel value="Fecha visita: "/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{actividadMineraRepCtrl.obtenerFecha(actividadMineraRepCtrl.fichaTecnica.fechaVisita)}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="IDENTIFICACIÓN Y UBICACIÓN DE LA LABOR MINERA" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Nombre o razón social de la labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel id="razonSocial" value="#{actividadMineraRepCtrl.fichaTecnica.rasonSocialLaborMinera}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Cédula representante labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel id="cedulaRepres" value="#{actividadMineraRepCtrl.fichaTecnica.documentoRepresentanteLaborMinera}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Nombre representante labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel id="nombreRepres" value="#{actividadMineraRepCtrl.fichaTecnica.nombreRepresentanteLaborMinera}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Apellido representante labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel id="apellidoRepres" value="#{actividadMineraRepCtrl.fichaTecnica.apellidoRepresentanteLaborMinera}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Etnia:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.etnia.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Teléfono:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.telefono}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Celular:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.celular}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Correo electrónico"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.correoElectronico}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="UTM Norte:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.utmNorte}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="UTM Este:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.utmEste}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Cota:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.cota}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Zona:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.zona.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Provincia:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.provincia.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Cantón:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.canton.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Parroquia:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.parroquia.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Sector:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.sector}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Regional:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel id="regional" value="#{actividadMineraRepCtrl.fichaTecnica.regional.nombreRegional}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="El terreno de la labor minera es:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.tipoTerreno.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="detallePanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel id="detalleTerrenoLbl"
+                                                       value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       Detalle:"
+                                                       rendered="#{actividadMineraRepCtrl.showDetalleTipoTerreno}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.detalleTipoTerreno}" rendered="#{actividadMineraRepCtrl.showDetalleTipoTerreno}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Tiempo de trabajo en la labor (meses):"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.tiempoLaborMinera}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Condición labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.condicionLaborMinera.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Tiene código censal:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.transformBoolean(actividadMineraRepCtrl.codigoCensal)}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="codigoCensalPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel id="codigoCensalLbl"
+                                                       value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       No. código censal:"
+                                                       rendered="#{actividadMineraRepCtrl.codigoCensal}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel id="codigoCensal" value="#{actividadMineraRepCtrl.fichaTecnica.codigoCensal}"
+                                                     styleClass="inputtext-form" rendered="#{actividadMineraRepCtrl.codigoCensal}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Zona de riesgo:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.transformBoolean(actividadMineraRepCtrl.fichaTecnica.zonaRiesgo)}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Esta dentro de un titulo minero o permiso artesanal:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.transformBoolean(actividadMineraRepCtrl.showDerechoMinero)}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="derechoMineroPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column colspan="4"> <p:separator rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/> </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="4" style="text-align: center">
+                                        <p:outputLabel value="Datos del derecho minero" style="font-weight: bolder" rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: right" colspan="2">
+                                        <p:outputLabel id="codigoDerechoLbl"
+                                                       value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                                       Ingrese código del derecho minero:" rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/></p:column>
+                                    <p:column style="text-align: left" colspan="2">
+                                        <p:outputLabel id="codigoDerecho" value="#{actividadMineraRepCtrl.codigoArcom}"
+                                                     rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel value="Estado:" rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel id="estadoDerecho" value="#{actividadMineraRepCtrl.fichaTecnica.concesionMinera.estadoConcesion.nombre}"
+                                                     rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel value="Hectareas:" rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel id="hectareasDerecho" value="#{actividadMineraRepCtrl.fichaTecnica.concesionMinera.numeroHectareasConcesion}"
+                                                     rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel value="Titular:" rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel id="titularDerecho" value="#{actividadMineraRepCtrl.fichaTecnica.concesionMinera.nombreConcesionarioPrincipal.concat(' ').concat(actividadMineraRepCtrl.fichaTecnica.concesionMinera.apellidoConcesionarioPrincipal)}"
+                                                     rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel value="Representante legal:" rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel id="representanteDerecho" value="#{actividadMineraRepCtrl.obtenerRepresentanteLegal()}"
+                                                     rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel value="Teléfono:" rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel id="telefonoDerecho" value="#{actividadMineraRepCtrl.obtenerTelefono()}"
+                                                     rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: right">
+                                        <p:outputLabel value="Celular:" rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/></p:column>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel id="celularDerecho" value="#{actividadMineraRepCtrl.obtenerCelular()}"
+                                                     rendered="#{actividadMineraRepCtrl.showDerechoMinero}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: center" colspan="4">
+                                        <p:outputLabel value="Coordenadas derecho minero" rendered="#{actividadMineraRepCtrl.showDerechoMinero}" style="font-weight: bolder"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: center" colspan="4">
+                                        <p:dataTable id="coordenadasdm" value="#{actividadMineraRepCtrl.coordenadas}" var="coor" style="width: 800px"
+                                                     emptyMessage="No se encontraron resultados" rendered="#{actividadMineraRepCtrl.showDerechoMinero}">
+                                            <p:column headerText="UTM Este">
+                                                <p:outputLabel value="#{coor.utmEste}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="UTM Norte">
+                                                <p:outputLabel value="#{coor.utmNorte}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: center" colspan="4">
+                                        <p:outputLabel value="Contratos de operación" rendered="#{actividadMineraRepCtrl.showDerechoMinero}" style="font-weight: bolder"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: center" colspan="4">
+                                        <p:dataTable value="#{actividadMineraRepCtrl.contratos}" var="contract" style="width: 800px"
+                                                     emptyMessage="No se encontraron resultados" rendered="#{actividadMineraRepCtrl.showDerechoMinero}">
+                                            <p:column headerText="Código">
+                                                <p:outputLabel value="#{contract.codigoArcom}"/>
+                                            </p:column>
+                                            <p:column headerText="Tipo contrato">
+                                                <p:outputLabel value="#{contract.tipoContrato.nombre}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Porcentaje">
+                                                <p:outputLabel value="#{contract.porcentaje}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Cédula/RUC">
+                                                <p:outputLabel value="#{contract.numeroDocumento}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Estado">
+                                                <p:outputLabel value="#{contract.estadoContrato.nombre}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="MODALIDAD DE TRABAJO Y PERSONAL" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Modalidad de trabajo:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.modalidadTrabajo.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Cuál esl el número de socios de esta organización:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.numeroSocios}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Cuántas personas trabajan en esta labor minera:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.numeroPersonasLaborMinera}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Trabajadores permanentes son mayor de edad:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.numeroPersonasMayorEdad}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Cuántos días trabaja en el mes:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.diasTrabajoMes}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Los trabajadores son asegurados:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:outputLabel value="#{actividadMineraRepCtrl.transformBoolean(actividadMineraRepCtrl.fichaTecnica.trabajadoresAsegurados)}"/>
+                        </p:column>
+                    </p:row>
+                    
+                     <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="SOCIOS LABOR MINERA" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="sociosPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column style="text-align: right">
+                                        
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:dataTable id="sociosdt" value="#{actividadMineraRepCtrl.sociosLaborMinera}" var="socio" style="width: 700px"
+                                                     editable="true" emptyMessage="Aun no se han agregado socios">
+                                            <p:column headerText="Nombres">
+                                                <h:outputText value="#{socio.nombreSocio}" />
+                                            </p:column>
+                                            
+                                            <p:column headerText="Apellidos">
+                                                <h:outputText value="#{socio.apellidoSocio}" />
+                                            </p:column>
+                                            
+                                            <p:column headerText="Teléfono">
+                                                <h:outputText value="#{socio.telefono}" />
+                                            </p:column>
+                                            
+                                            <p:column headerText="Celular">
+                                                <h:outputText value="#{socio.celular}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="INFRAESTRUCTURA COMPLEMENTARIA PARA REALIZAR LA ACTIVIDAD MINERA" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="infraestructuraPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column rowspan="6">
+                                        <p:dataTable value="#{actividadMineraRepCtrl.infraestruturasWrapper}" var="infraes" style="width: 300px">
+                                            <p:column>
+                                                <p:outputLabel value="#{infraes.catalogoDetalle.nombre}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:outputLabel value="#{actividadMineraRepCtrl.transformBoolean(infraes.opcion)}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="La energía eléctrica proviene de:"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.tipoEnergia.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="El agua que utiliza es:"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.tipoAguaUtiliza.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="Cantidad de combustible (galones):"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.cantidadCombustible}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="ASPECTOS ECONÓMICOS Y TÉCNICOS" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid id="aspectosPanel" styleClass="pg-center">
+                                <p:row>
+                                    <p:column rowspan="10">
+                                        <p:dataTable value="#{actividadMineraRepCtrl.maquinariasWrapper}" var="maq" style="width: 380px">
+                                            <p:column>
+                                                <p:outputLabel value="#{maq.catalogoDetalle.nombre}"/>
+                                            </p:column>
+                                            <p:column style="width: 125px">
+                                                <p:outputLabel value="#{actividadMineraRepCtrl.transformBoolean(maq.opcion)}"/>
+                                            </p:column>
+                                            <p:column style="width: 70px">
+                                                <p:outputLabel value="Cantidad:"/>
+                                                <p:outputLabel value="#{maq.cantidad}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="Mineral o material:"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.tipoMaterial.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.materialInteres.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="Sistema de explotación:"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.formaExplotacion.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.sistemaExplotacion.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="text-align: left">
+                                        <p:panelGrid id="dimensionsSubPanel" styleClass="pg-center">
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="longsublbl" value="Longitud (metros):" rendered="#{actividadMineraRepCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.longitudSubterranea}" rendered="#{actividadMineraRepCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="anchosublbl" value="Ancho (metros):" rendered="#{actividadMineraRepCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.anchoSubterranea}" rendered="#{actividadMineraRepCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="altosublbl" value="Alto (metros):" rendered="#{actividadMineraRepCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.altoSubterranea}" rendered="#{actividadMineraRepCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="rumbosublbl" value="Rumbo (grados):" rendered="#{actividadMineraRepCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.rumboSubterranea}" rendered="#{actividadMineraRepCtrl.showSubterraneo}"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        
+                                        <p:panelGrid id="dimensionsCiePanel" styleClass="pg-center">
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="longcielbl" value="Longitud (metros):" rendered="#{actividadMineraRepCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.longitudCieloAbierto}" rendered="#{actividadMineraRepCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="anchocielbl" value="Ancho (metros):" rendered="#{actividadMineraRepCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.anchoCieloAbierto}" rendered="#{actividadMineraRepCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                            </p:row>
+
+                                            <p:row>
+                                                <p:column style="text-align: right">
+                                                    <p:outputLabel id="altocielbl" value="Alto (metros):" rendered="#{actividadMineraRepCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                                <p:column style="text-align: left">
+                                                    <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.altoCieloAbierto}" rendered="#{actividadMineraRepCtrl.showCieloAbierto}"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="OPERACIONES MINERAS" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:dataTable value="#{actividadMineraRepCtrl.operacionesMinerasWrapper}" var="operacion" style="width: 700px; margin: 0 auto">
+                                <p:column>
+                                    <p:outputLabel value="#{operacion.catalogoDetalle.nombre}"/>
+                                </p:column>
+                                <p:column style="width: 125px">
+                                    <p:outputLabel value="#{actividadMineraRepCtrl.transformBoolean(operacion.opcion)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2"> <p:separator/> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:outputLabel value="OBSERVACIONES" style="font-weight: bolder"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:inputTextarea value="#{actividadMineraRepCtrl.fichaTecnica.observacionesFichaTecnica}" styleClass="inputtextarea-form-02"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:commandButton value="Volver" action="#{actividadMineraRepCtrl.returnAction()}"/>
+                        </p:column>
+                    </p:row>
+                    
+                </p:panelGrid>
+            </h:form>
+            
+        </ui:define>
+    </ui:composition>
+</html>
