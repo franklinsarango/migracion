@@ -95,7 +95,7 @@ public class ActividadMineraRepCtrl {
         showCieloAbierto= false;
         operacionesMinerasWrapper= new ArrayList();
     }
-    
+        
     @PostConstruct
     public void inicializar() {
         cargarFichasTecnicas();
@@ -331,6 +331,7 @@ public class ActividadMineraRepCtrl {
     }
     
     public String returnAction() {
+        cargarFichasTecnicas();
         return "actividadesminerasreport";
     }
     
@@ -405,5 +406,57 @@ public class ActividadMineraRepCtrl {
         //Cargar socios
         sociosLaborMinera= detalleFichaTecnicaServicio.listarSociosPorFichaTecnica(fichaTecnica.getCodigoFichaTecnica());
         return "viewfichafrm";
+    }
+    
+    public String labels() {
+        String l= "";
+        List<String> labels= obtenerLabelsRegional(regionalServicio.findActivos());
+        if(labels!=null && labels.size()>0) {
+            l= labels.get(0);
+            for (int i=1; i<labels.size(); i++) {
+                l+= ";" + labels.get(i);
+            }
+        }
+        return l;
+    }
+    
+    public String values() {
+        String v= "";
+        List<Long> values= obtenerValuesRegional(regionalServicio.findActivos());
+        
+        if(values!=null && values.size()>0) {
+            v= values.get(0).toString();
+            for (int i=1; i<values.size(); i++) {
+                v+= ";" + values.get(i);
+            }
+        }
+        return v;
+    }
+    
+    private List<String> obtenerLabelsRegional(List<Regional> regs) {
+        List<String> labelsRegional= new ArrayList<>();
+        for(Regional r : regs) {
+            labelsRegional.add(r.getNombreRegional());
+        }
+        return labelsRegional;
+    }
+    
+    private List<String> obtenerLabelsUsuario(List<Usuario> usrs) {
+        List<String> labelsUsuario= new ArrayList<>();
+        for(Usuario u : usrs) {
+            labelsUsuario.add(u.getNombre() + " " + u.getApellido());
+        }
+        return labelsUsuario;
+    }
+    
+    private List<Long> obtenerValuesRegional(List<Regional> regs) {
+        List<Long> valuesRegional= new ArrayList<>();
+        for(Regional r : regs) {
+            Long v= fichaTecnicaServicio.contarPorRegional(r);
+            if(v!=null) {
+                valuesRegional.add(v);
+            }
+        }
+        return valuesRegional;
     }
 }

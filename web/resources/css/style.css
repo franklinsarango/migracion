@@ -400,3 +400,13 @@ a.lnkexport:hover {
 a.lnkexport:active {
     color: buttonface;
 }
+
+.panelgrid-graphic {
+    margin: 0 auto;
+    text-align: center;
+}
+/*Sirve para quitar el borde del panel grid*/
+.panelgrid-graphic.ui-panelgrid>*>tr,
+.panelgrid-graphic.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}

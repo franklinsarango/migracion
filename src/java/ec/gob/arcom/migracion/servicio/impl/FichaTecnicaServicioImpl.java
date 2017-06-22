@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.FichaTecnicaDao;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
+import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.servicio.FichaTecnicaServicio;
@@ -42,5 +43,10 @@ public class FichaTecnicaServicioImpl extends GenericServiceImpl<FichaTecnica, L
     @Override
     public List<Usuario> obtenerPorUsuariosDistintos() {
         return fichaTecnicaDao.listarPorUsuariosDistintos();
+    }
+
+    @Override
+    public Long contarPorRegional(Regional r) {
+        return fichaTecnicaDao.contarPorRegional(r);
     }
 }

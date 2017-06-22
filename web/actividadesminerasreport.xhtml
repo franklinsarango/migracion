@@ -54,9 +54,14 @@
                             <p:column style="text-align: right; width: 100%">
                                 <h:commandLink styleClass="lnkexport">
                                     <h:graphicImage value="resources/images/msexcel.png" width="16"/>
-                                    <h:outputLabel value="&#160;Exportar tabla"/>
+                                    <h:outputLabel value="&#160;Exportar tabla&#160;"/>
                                     <p:dataExporter type="xls" target="fichastecnicasdt" fileName="fichas" />
                                 </h:commandLink>
+                                
+                                <p:commandLink styleClass="lnkexport" oncomplete="PF('graphicdlgwg').show();">
+                                    <h:graphicImage value="resources/images/estadistica.png" width="16"/>
+                                    <h:outputLabel value="&#160;Estadisticas"/>
+                                </p:commandLink>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
@@ -80,15 +85,15 @@
                                     <f:selectItems value="#{actividadMineraRepCtrl.usuarios}"/>
                                 </p:selectOneMenu>
                             </f:facet>
-                            <h:outputText value="#{ficha.usuarioCreacion.nombresCompletos}"/>
+                            <h:outputText value="#{ficha.usuarioCreacion.nombre.toUpperCase().concat(' ').concat(ficha.usuarioCreacion.apellido.toUpperCase())}"/>
                         </p:column>
                         
                         <p:column headerText="Nombre labor minera">
-                            <h:outputText value="#{ficha.rasonSocialLaborMinera}"/>
+                            <h:outputText value="#{ficha.rasonSocialLaborMinera.toUpperCase()}"/>
                         </p:column>
                         
                         <p:column headerText="Representante labor minera">
-                            <h:outputText value="#{ficha.nombreRepresentanteLaborMinera.concat(' ').concat(ficha.apellidoRepresentanteLaborMinera)}"/>
+                            <h:outputText value="#{ficha.nombreRepresentanteLaborMinera.toUpperCase().concat(' ').concat(ficha.apellidoRepresentanteLaborMinera.toUpperCase())}"/>
                         </p:column>
                         
                         <p:column headerText="Fecha visita" sortBy="#{ficha.fechaVisita}" style="width:80px;text-align: center">
@@ -129,6 +134,11 @@
                     </p:dataTable>
                 </p:panelGrid>
             </h:form>
+            
+            <p:dialog id="graphicdlg" widgetVar="graphicdlgwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                header="Estadisticas">
+               <ui:include src="fichasgraphic.xhtml"/>
+            </p:dialog>
             
         </ui:define>
     </ui:composition>

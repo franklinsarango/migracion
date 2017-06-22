@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
+import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import java.util.List;
 import javax.ejb.Local;
@@ -23,5 +24,7 @@ public interface FichaTecnicaDao extends GenericDao<FichaTecnica, Long> {
     public List<FichaTecnica> listarPorUsuarioCreacion(Long codigoUsuario);
 
     public List<Usuario> listarPorUsuariosDistintos();
+
+    public Long contarPorRegional(Regional r);
     
 }

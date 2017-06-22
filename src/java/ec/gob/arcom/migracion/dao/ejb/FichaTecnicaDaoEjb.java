@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.dao.FichaTecnicaDao;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
+import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import java.util.List;
 import javax.persistence.Query;
@@ -62,6 +63,19 @@ public class FichaTecnicaDaoEjb extends GenericDaoEjbEl<FichaTecnica, Long> impl
         } catch(Exception ex) {
             System.out.println("Ocurrio un error:");
             System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public Long contarPorRegional(Regional r) {
+        try {
+            Query query= em.createQuery("Select count(ficha) from FichaTecnica ficha where ficha.estadoRegistro= :activo and ficha.regional.codigoRegional= :codigo");
+            query.setParameter("activo", true);
+            query.setParameter("codigo", r.getCodigoRegional());
+            return (Long) query.getSingleResult();
+        } catch(Exception ex) {
+            System.out.println("Error al contar las auditorias por auditor " + ex.toString());
         }
         return null;
     }
