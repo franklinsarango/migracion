@@ -63,6 +63,7 @@ public class LoginCtrl extends BaseCtrl {
     private boolean usuarioInterno;
     private boolean tecnico;
     private boolean tecnicoCatastro;
+    private boolean coordinadorRegional;
     private boolean usuarioEnami;
     
     //PERMISOS
@@ -203,6 +204,11 @@ public class LoginCtrl extends BaseCtrl {
                             this.tecnicoCatastro = true;
                         } else {
                             this.tecnicoCatastro = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_COORDINADOR_REGIONAL.getNemonico())){
+                            this.coordinadorRegional = true;
+                        } else {
+                            this.coordinadorRegional = false;
                         }
                         if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RMN")) {
                             this.registroMineroNacional = true;
@@ -421,6 +427,20 @@ public class LoginCtrl extends BaseCtrl {
      */
     public void setUsuarioEnami(boolean usuarioEnami) {
         this.usuarioEnami = usuarioEnami;
+    }
+
+    /**
+     * @return the coordinadorRegional
+     */
+    public boolean isCoordinadorRegional() {
+        return coordinadorRegional;
+    }
+
+    /**
+     * @param coordinadorRegional the coordinadorRegional to set
+     */
+    public void setCoordinadorRegional(boolean coordinadorRegional) {
+        this.coordinadorRegional = coordinadorRegional;
     }
 
 }
