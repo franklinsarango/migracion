@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
+import ec.gob.arcom.migracion.modelo.Usuario;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -20,5 +21,7 @@ public interface FichaTecnicaServicio extends GenericService<FichaTecnica, Long>
     public List<FichaTecnica> listar();
 
     public List<FichaTecnica> listarPorUsuarioCreacion(Long codigoUsuario);
+
+    public List<Usuario> obtenerPorUsuariosDistintos();
     
 }

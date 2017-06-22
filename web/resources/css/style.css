@@ -369,3 +369,34 @@ a.lnkadjuntos:active {
     width: 150px;
     height: 35px;
 }
+
+.pg-right {
+    margin: 0 auto;
+    width: 100%;
+}
+
+/*Sirve para quitar el borde del panel grid*/
+.pg-right.ui-panelgrid>*>tr,
+.pg-right.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+/* link */
+.lnkexport {
+    text-decoration: none;
+}
+a.lnkexport:link {
+    color: #000000;
+}
+/* visited link */
+a.lnkexport:visited {
+    color: #000000;
+}
+/* mouse over link */
+a.lnkexport:hover {
+    color: #FF6600;
+}
+/* selected link */
+a.lnkexport:active {
+    color: buttonface;
+}

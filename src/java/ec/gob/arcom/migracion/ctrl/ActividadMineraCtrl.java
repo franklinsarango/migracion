@@ -32,6 +32,7 @@ import ec.gob.arcom.migracion.servicio.PersonaNaturalServicio;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
 import ec.gob.arcom.migracion.servicio.SecuenciaServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
+import ec.gob.arcom.migracion.util.DateUtil;
 import ec.gob.arcom.migracion.util.DetalleFichaTecnicaWrapper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -626,14 +627,9 @@ public class ActividadMineraCtrl extends BaseCtrl {
         return endAction();
     }
     
-    public String obtenerFechaConFormato(Date fecha) {
-        return obtenerFechaConFormato("dd-MM-yyyy", fecha);
-    }
-    
-    public String obtenerFechaConFormato(String formato, Date fecha) {
-        SimpleDateFormat sdf= new SimpleDateFormat(formato);
+    public String obtenerFecha(Date fecha) {
         if(fecha!=null) {
-            return sdf.format(fecha);
+            return DateUtil.obtenerFechaConFormato(fecha);
         }
         return "";
     }
