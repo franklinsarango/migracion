@@ -1083,8 +1083,8 @@
             // legend
             legend_show: true,
             legend_hide: false,
-            legend_position: 'bottom',
-            legend_inset_anchor: 'top-left',
+            legend_position: 'right',
+            legend_inset_anchor: 'top-right',
             legend_inset_x: 10,
             legend_inset_y: 0,
             legend_inset_step: undefined,
@@ -2597,7 +2597,7 @@
     };
     c3_chart_internal_fn.getCurrentPaddingRight = function () {
         var $$ = this, config = $$.config,
-            defaultPadding = 10, legendWidthOnRight = $$.isLegendRight ? $$.getLegendWidth() + 20 : 0;
+            defaultPadding = 0, legendWidthOnRight = $$.isLegendRight ? $$.getLegendWidth() + 0 : 0;
         if (isValue(config.padding_right)) {
             return config.padding_right + 1; // 1 is needed not to hide tick line
         } else if (config.axis_rotated) {

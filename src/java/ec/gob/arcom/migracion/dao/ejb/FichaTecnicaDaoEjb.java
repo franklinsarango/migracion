@@ -75,7 +75,20 @@ public class FichaTecnicaDaoEjb extends GenericDaoEjbEl<FichaTecnica, Long> impl
             query.setParameter("codigo", r.getCodigoRegional());
             return (Long) query.getSingleResult();
         } catch(Exception ex) {
-            System.out.println("Error al contar las auditorias por auditor " + ex.toString());
+            System.out.println("Error al contar las fichas por regional: " + ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public Long contarPorUsuarioCreacion(Usuario u) {
+        try {
+            Query query= em.createQuery("Select count(ficha) from FichaTecnica ficha where ficha.estadoRegistro= :activo and ficha.usuarioCreacion.codigoUsuario= :codigo");
+            query.setParameter("activo", true);
+            query.setParameter("codigo", u.getCodigoUsuario());
+            return (Long) query.getSingleResult();
+        } catch(Exception ex) {
+            System.out.println("Error al contar las fichas por usuarioCreacion: " + ex.toString());
         }
         return null;
     }

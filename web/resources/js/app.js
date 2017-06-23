@@ -3,6 +3,10 @@ var valores;
 var chartData = [];
 
 addChart= function(keys, values, tipo) {
+    claves= "";
+    valores= "";
+    chartData= [];
+    
     claves= keys.split(";");
     console.log(claves);
     
@@ -22,8 +26,4 @@ addChart= function(keys, values, tipo) {
             columns: chartData
         },
     })
-}
-
-function saludar() {
-    alert('hola');
 }

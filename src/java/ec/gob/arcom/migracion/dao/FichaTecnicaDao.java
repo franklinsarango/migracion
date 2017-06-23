@@ -26,5 +26,7 @@ public interface FichaTecnicaDao extends GenericDao<FichaTecnica, Long> {
     public List<Usuario> listarPorUsuariosDistintos();
 
     public Long contarPorRegional(Regional r);
+
+    public Long contarPorUsuarioCreacion(Usuario u);
     
 }

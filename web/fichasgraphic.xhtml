@@ -15,10 +15,16 @@
     <h:outputScript library="js" name="c3.js"/>
     
     <h:form>
-        <p:panelGrid styleClass="pg-center" style="height: 420px">
+        <p:panelGrid id="graphicpanel" styleClass="pg-center" style="height: 420px">
             <p:row>
                 <p:column style="text-align: center">
                     <h1><p:outputLabel value="Fichas Técnicas"/></h1>
+                </p:column>
+                <p:column>
+                    <p:commandLink value="Por regional" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByRegional()}"
+                                   update="graphicpanel" disabled="#{actividadMineraRepCtrl.byRegional}"/>
+                    <p:commandLink value="&#160;Por usuario" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByUsuario()}"
+                                   update="graphicpanel" disabled="#{!actividadMineraRepCtrl.byRegional}"/>
                 </p:column>
             </p:row>
 

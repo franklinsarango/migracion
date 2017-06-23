@@ -27,22 +27,6 @@ body {
     font-size: 20px;
 }
 
-.comida {
-    float: left;
-    margin: 10px;
-    padding: 10px;
-    width: 200px;
-}
-
-.comida p {
-    color: green;
-    margin-top: 10px;
-    border-radius: 5px;
-    padding-top: 10px;
-    height: 60px;
-
-}
-
 .badge{
 	background-color: #31708f;
 	font-size: 14px;
@@ -62,7 +46,7 @@ body {
 }
 
 .grafica {
-    width: 600px;
+    width: 800px;
     float: left;
     padding-right: 10px;
     text-align: center;

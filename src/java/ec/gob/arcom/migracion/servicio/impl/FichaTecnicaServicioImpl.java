@@ -49,4 +49,9 @@ public class FichaTecnicaServicioImpl extends GenericServiceImpl<FichaTecnica, L
     public Long contarPorRegional(Regional r) {
         return fichaTecnicaDao.contarPorRegional(r);
     }
+
+    @Override
+    public Long contarPorUsuarioCreacion(Usuario u) {
+        return fichaTecnicaDao.contarPorUsuarioCreacion(u);
+    }
 }

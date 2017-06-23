@@ -26,5 +26,7 @@ public interface FichaTecnicaServicio extends GenericService<FichaTecnica, Long>
     public List<Usuario> obtenerPorUsuariosDistintos();
 
     public Long contarPorRegional(Regional r);
+
+    public Long contarPorUsuarioCreacion(Usuario u);
     
 }

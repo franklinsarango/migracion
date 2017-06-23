@@ -76,6 +76,7 @@ public class ActividadMineraRepCtrl {
     private boolean showSubterraneo;
     private boolean showCieloAbierto;
     private List<DetalleFichaTecnicaWrapper> operacionesMinerasWrapper;
+    private boolean byRegional;
     
     /**
      * Creates a new instance of ActividadMineraRepCtrl
@@ -94,6 +95,8 @@ public class ActividadMineraRepCtrl {
         showSubterraneo= false;
         showCieloAbierto= false;
         operacionesMinerasWrapper= new ArrayList();
+        byRegional= true;
+        System.out.println(" ############## se vuelve a ejecutar el constructor");
     }
         
     @PostConstruct
@@ -101,6 +104,7 @@ public class ActividadMineraRepCtrl {
         cargarFichasTecnicas();
         regionales= obtenerRegionales();
         usuarios= obtenerUsuarios();
+        System.out.println(" ######## se vuelve a ejecutar el postconstruct");
     }
 
     public List<FichaTecnica> getFichasTecnicas() {
@@ -246,6 +250,14 @@ public class ActividadMineraRepCtrl {
     public void setOperacionesMinerasWrapper(List<DetalleFichaTecnicaWrapper> operacionesMinerasWrapper) {
         this.operacionesMinerasWrapper = operacionesMinerasWrapper;
     }
+
+    public boolean isByRegional() {
+        return byRegional;
+    }
+
+    public void setByRegional(boolean byRegional) {
+        this.byRegional = byRegional;
+    }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -280,7 +292,7 @@ public class ActividadMineraRepCtrl {
         List<SelectItem> usuariosSI= new ArrayList<>();
         if(usrs!=null) {
             for(Usuario usr : usrs) {
-                usuariosSI.add(new SelectItem(usr.getCodigoUsuario(), usr.getNombre() + " " + usr.getApellido()));
+                usuariosSI.add(new SelectItem(usr.getCodigoUsuario(), usr.getNombre().toUpperCase() + " " + usr.getApellido().toUpperCase()));
             }
         }
         return usuariosSI;
@@ -408,9 +420,23 @@ public class ActividadMineraRepCtrl {
         return "viewfichafrm";
     }
     
+    public void showByRegional() {
+        byRegional= true;
+    }
+    
+    public void showByUsuario() {
+        byRegional= false;
+    }
+    
     public String labels() {
         String l= "";
-        List<String> labels= obtenerLabelsRegional(regionalServicio.findActivos());
+        List<String> labels;
+        if(byRegional) {
+            labels= obtenerLabelsRegional(regionalServicio.findActivos());
+        } else {
+            labels= obtenerLabelsUsuario(fichaTecnicaServicio.obtenerPorUsuariosDistintos());
+        }
+        
         if(labels!=null && labels.size()>0) {
             l= labels.get(0);
             for (int i=1; i<labels.size(); i++) {
@@ -422,8 +448,13 @@ public class ActividadMineraRepCtrl {
     
     public String values() {
         String v= "";
-        List<Long> values= obtenerValuesRegional(regionalServicio.findActivos());
-        
+        List<Long> values;
+        if(byRegional) {
+            values= obtenerValuesRegional(regionalServicio.findActivos());
+        } else {
+            values= obtenerValuesUsuario(fichaTecnicaServicio.obtenerPorUsuariosDistintos());
+        }
+                
         if(values!=null && values.size()>0) {
             v= values.get(0).toString();
             for (int i=1; i<values.size(); i++) {
@@ -441,14 +472,6 @@ public class ActividadMineraRepCtrl {
         return labelsRegional;
     }
     
-    private List<String> obtenerLabelsUsuario(List<Usuario> usrs) {
-        List<String> labelsUsuario= new ArrayList<>();
-        for(Usuario u : usrs) {
-            labelsUsuario.add(u.getNombre() + " " + u.getApellido());
-        }
-        return labelsUsuario;
-    }
-    
     private List<Long> obtenerValuesRegional(List<Regional> regs) {
         List<Long> valuesRegional= new ArrayList<>();
         for(Regional r : regs) {
@@ -458,5 +481,24 @@ public class ActividadMineraRepCtrl {
             }
         }
         return valuesRegional;
+    }
+    
+    private List<String> obtenerLabelsUsuario(List<Usuario> usrs) {
+        List<String> labelsUsuario= new ArrayList<>();
+        for(Usuario u : usrs) {
+            labelsUsuario.add(u.getNombre().toUpperCase() + " " + u.getApellido().toUpperCase());
+        }
+        return labelsUsuario;
+    }
+    
+    private List<Long> obtenerValuesUsuario(List<Usuario> usrs) {
+        List<Long> valuesUsuario= new ArrayList<>();
+        for(Usuario u : usrs) {
+            Long v= fichaTecnicaServicio.contarPorUsuarioCreacion(u);
+            if(v!=null) {
+                valuesUsuario.add(v);
+            }  
+        }
+        return valuesUsuario;
     }
 }
