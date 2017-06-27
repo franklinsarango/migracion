@@ -651,21 +651,29 @@ public class ActividadMineraCtrl extends BaseCtrl {
         getParroquias();
         getMineralesInteres();
         getSistemasExplotacion();
+        
         if(fichaTecnica.getCodigoCensal()!=null && fichaTecnica.getCodigoCensal().length()>0) {
             this.codigoCensal= true;
+        } else {
+            this.codigoCensal= false;
         }
+        
         if(fichaTecnica.getTipoTerreno().getNombre().equals("OTRO")) {
             this.showDetalleTipoTerreno= true;
         } else {
             this.showDetalleTipoTerreno= false;
         }
+        
         if(fichaTecnica.getConcesionMinera() != null && fichaTecnica.getConcesionMinera().getCodigoConcesion() != null) {
             this.showDerechoMinero= true;
             this.codigoArcom= fichaTecnica.getConcesionMinera().getCodigoArcom();
             buscarPersona();
             this.coordenadas= coordenadaAreaServicio.findByCodigoArea(fichaTecnica.getConcesionMinera().getCodigoConcesion());
             this.contratos= contratoOperacionServicio.listarPorCodigoConcesion(fichaTecnica.getConcesionMinera().getCodigoConcesion());
+        } else {
+            this.showDerechoMinero= false;
         }
+        
         if(this.fichaTecnica.getFormaExplotacion().getNemonico().equals("SECIEABIRODU")) {
             this.showCieloAbierto= true;
             this.showSubterraneo= false;
