@@ -64,6 +64,7 @@ public class LoginCtrl extends BaseCtrl {
     private boolean tecnico;
     private boolean tecnicoCatastro;
     private boolean coordinadorRegional;
+    private boolean directorEjecutivo;
     private boolean usuarioEnami;
     
     //PERMISOS
@@ -209,6 +210,11 @@ public class LoginCtrl extends BaseCtrl {
                             this.coordinadorRegional = true;
                         } else {
                             this.coordinadorRegional = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_DIRECTOR_EJECUTIVO.getNemonico())){
+                            this.directorEjecutivo = true;
+                        } else {
+                            this.directorEjecutivo = false;
                         }
                         if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RMN")) {
                             this.registroMineroNacional = true;
@@ -441,6 +447,20 @@ public class LoginCtrl extends BaseCtrl {
      */
     public void setCoordinadorRegional(boolean coordinadorRegional) {
         this.coordinadorRegional = coordinadorRegional;
+    }
+
+    /**
+     * @return the directorEjecutivo
+     */
+    public boolean isDirectorEjecutivo() {
+        return directorEjecutivo;
+    }
+
+    /**
+     * @param directorEjecutivo the directorEjecutivo to set
+     */
+    public void setDirectorEjecutivo(boolean directorEjecutivo) {
+        this.directorEjecutivo = directorEjecutivo;
     }
 
 }

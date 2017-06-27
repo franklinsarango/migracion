@@ -155,6 +155,14 @@
                         </h:panelGrid>
                     </h:commandLink>
                     
+                    <h:commandLink action="web/actividadesminerasreport?faces-redirect=true" title="Ficha de actualización de Información de Act. Min. Reporte"
+                                   rendered="#{loginCtrl.coordinadorRegional or loginCtrl.directorEjecutivo}">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/actividadesminerasreport.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Ficha de actualización de Información de Act. Min. Reporte"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+                    
                     <h:commandLink action="web/reporteForm?faces-redirect=true" title="Generar Reporte"
                                    rendered="#{!(loginCtrl.usuarioLectura or loginCtrl.usuarioEnami)}">
                         <h:panelGrid class="botonHome">
