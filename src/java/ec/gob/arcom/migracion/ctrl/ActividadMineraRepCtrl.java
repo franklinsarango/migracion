@@ -5,6 +5,8 @@
  */
 package ec.gob.arcom.migracion.ctrl;
 
+import ec.gob.arcom.migracion.modelo.Catalogo;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import ec.gob.arcom.migracion.modelo.CoordenadaArea;
 import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
@@ -13,6 +15,8 @@ import ec.gob.arcom.migracion.modelo.PersonaJuridica;
 import ec.gob.arcom.migracion.modelo.PersonaNatural;
 import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.Usuario;
+import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
+import ec.gob.arcom.migracion.servicio.CatalogoServicio;
 import ec.gob.arcom.migracion.servicio.ContratoOperacionServicio;
 import ec.gob.arcom.migracion.servicio.CoordenadaAreaServicio;
 import ec.gob.arcom.migracion.servicio.DetalleFichaTecnicaServicio;
@@ -56,12 +60,17 @@ public class ActividadMineraRepCtrl {
     private CoordenadaAreaServicio coordenadaAreaServicio;
     @EJB
     private ContratoOperacionServicio contratoOperacionServicio;
+    @EJB
+    private CatalogoServicio catalogoServicio;
+    @EJB
+    private CatalogoDetalleServicio catalogoDetalleServicio;
     
     private List<FichaTecnica> fichasTecnicas;
     private List<FichaTecnica> filteredFichasTecnicas;
     private boolean filtroAplicado;
     private List<SelectItem> regionales;
     private List<SelectItem> usuarios;
+    private List<SelectItem> condicionesLaborMinera;
     private FichaTecnica fichaTecnica;
     private boolean codigoCensal;
     private boolean showDerechoMinero;
@@ -104,6 +113,7 @@ public class ActividadMineraRepCtrl {
         cargarFichasTecnicas();
         regionales= obtenerRegionales();
         usuarios= obtenerUsuarios();
+        condicionesLaborMinera= obtenerCondicionesLaborMinera();
         System.out.println(" ######## se vuelve a ejecutar el postconstruct");
     }
 
@@ -145,6 +155,14 @@ public class ActividadMineraRepCtrl {
 
     public void setUsuarios(List<SelectItem> usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public List<SelectItem> getCondicionesLaborMinera() {
+        return condicionesLaborMinera;
+    }
+
+    public void setCondicionesLaborMinera(List<SelectItem> condicionesLaborMinera) {
+        this.condicionesLaborMinera = condicionesLaborMinera;
     }
 
     public FichaTecnica getFichaTecnica() {
@@ -296,6 +314,18 @@ public class ActividadMineraRepCtrl {
             }
         }
         return usuariosSI;
+    }
+    
+    public List<SelectItem> obtenerCondicionesLaborMinera() {
+        Catalogo catalogo= catalogoServicio.findByNemonico("TIPOCON");
+        List<SelectItem> condicionesSI= new ArrayList<>();
+        if (catalogo != null) {
+            List<CatalogoDetalle> condiciones = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+            for (CatalogoDetalle condicion : condiciones) {
+                condicionesSI.add(new SelectItem(condicion.getCodigoCatalogoDetalle(), condicion.getNombre().toUpperCase()));
+            }
+        }
+        return condicionesSI;
     }
     
     public String transformBoolean(Boolean valor) {

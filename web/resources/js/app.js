@@ -8,10 +8,7 @@ addChart= function(keys, values, tipo) {
     chartData= [];
     
     claves= keys.split(";");
-    console.log(claves);
-    
     valores= values.split(";");
-    console.log(valores);
     
     var data = [];
     for(i=0; i<claves.length; i++) {

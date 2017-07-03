@@ -51,6 +51,42 @@
                 <p:panelGrid id="tablePanel" columns="1">
                     <p:panelGrid styleClass="pg-right">
                         <p:row>
+                            <p:column style="text-align: left; width: 50%">
+                                <p:commandLink id="dynaButton" styleClass="lnkexport" rendered="false">
+                                    <h:graphicImage value="resources/images/estadistica.png" width="16"/>
+                                    <h:outputLabel value="&#160;Reportes"/>
+                                </p:commandLink>
+                                <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
+                                    <p:submenu label="Ilegales" icon="ui-icon-extlink">
+                                        <p:menuitem value="Total"/>
+                                        <p:submenu label="Por regional">
+                                            <p:menuitem value="Cuenca"/>
+                                            <p:menuitem value="Guayaquil"/>
+                                            <p:menuitem value="Ibarra"/>
+                                            <p:menuitem value="Loja"/>
+                                            <p:menuitem value="Macas"/>
+                                            <p:menuitem value="Machala"/>
+                                            <p:menuitem value="Riobamba"/>
+                                            <p:menuitem value="Tena"/>
+                                            <p:menuitem value="Zamora"/>
+                                        </p:submenu>
+                                    </p:submenu>
+                                    <p:submenu label="Informales" icon="ui-icon-extlink">
+                                        <p:menuitem value="Total"/>
+                                        <p:submenu label="Por regional">
+                                            <p:menuitem value="Cuenca"/>
+                                            <p:menuitem value="Guayaquil"/>
+                                            <p:menuitem value="Ibarra"/>
+                                            <p:menuitem value="Loja"/>
+                                            <p:menuitem value="Macas"/>
+                                            <p:menuitem value="Machala"/>
+                                            <p:menuitem value="Riobamba"/>
+                                            <p:menuitem value="Tena"/>
+                                            <p:menuitem value="Zamora"/>
+                                        </p:submenu>
+                                    </p:submenu>
+                                </p:tieredMenu>
+                            </p:column>
                             <p:column style="text-align: right; width: 100%">
                                 <h:commandLink styleClass="lnkexport">
                                     <h:graphicImage value="resources/images/msexcel.png" width="16"/>
@@ -66,7 +102,7 @@
                         </p:row>
                     </p:panelGrid>
 
-                    <p:dataTable id="fichastecnicasdt" emptyMessage="No hay resultados..."
+                    <p:dataTable id="fichastecnicasdt" emptyMessage="No hay resultados..." style="font-size: 9px"
                                  var="ficha" value="#{actividadMineraRepCtrl.fichasTecnicas}" rowIndexVar="row"
                                  currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
@@ -100,11 +136,26 @@
                             <h:outputText value="#{actividadMineraRepCtrl.obtenerFecha(ficha.fechaVisita)}"/>
                         </p:column>
                         
-                        <p:column headerText="Condición" sortBy="#{ficha.condicionLaborMinera.codigoCatalogoDetalle}" style="width:60px;text-align: center">
+                        <p:column headerText="Condición" sortBy="#{ficha.condicionLaborMinera.codigoCatalogoDetalle}" style="width:60px;text-align: center"
+                                  filterBy="#{ficha.condicionLaborMinera.codigoCatalogoDetalle}" filterMatchMode="exact">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('fichastable').filter()" valueChangeListener="#{actividadMineraRepCtrl.changeFiltroAplicado()}">
+                                    <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{actividadMineraRepCtrl.condicionesLaborMinera}"/>
+                                </p:selectOneMenu>
+                            </f:facet>
                             <h:outputText value="#{ficha.condicionLaborMinera.nombre}"/>
                         </p:column>
                         
-                        <p:column headerText="Zona riesgo" sortBy="#{ficha.zonaRiesgo}" style="width:40px;text-align: center">
+                        <p:column headerText="Zona riesgo" sortBy="#{ficha.zonaRiesgo}" style="width:40px;text-align: center"
+                                  filterBy="#{ficha.zonaRiesgo}" filterMatchMode="exact">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('fichastable').filter()" valueChangeListener="#{actividadMineraRepCtrl.changeFiltroAplicado()}">
+                                    <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="true" itemLabel="SI"/>
+                                    <f:selectItem itemValue="false" itemLabel="NO"/>
+                                </p:selectOneMenu>
+                            </f:facet>
                             <h:outputText value="#{actividadMineraRepCtrl.transformBoolean(ficha.zonaRiesgo)}"/>
                         </p:column>
                         
@@ -114,6 +165,26 @@
                         
                         <p:column headerText="Provincia" sortBy="#{ficha.provincia.codigoLocalidad}">
                             <h:outputText value="#{ficha.provincia.nombre}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Cantón" sortBy="#{ficha.canton.codigoLocalidad}">
+                            <h:outputText value="#{ficha.canton.nombre}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Parroquia" sortBy="#{ficha.parroquia.codigoLocalidad}">
+                            <h:outputText value="#{ficha.parroquia.nombre}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Sector">
+                            <h:outputText value="#{ficha.sector}"/>
+                        </p:column>
+                        
+                        <p:column headerText="UTM Norte">
+                            <h:outputText value="#{ficha.utmNorte}"/>
+                        </p:column>
+                        
+                        <p:column headerText="UTM Este">
+                            <h:outputText value="#{ficha.utmEste}"/>
                         </p:column>
                         
                         <p:column headerText="Regional" sortBy="#{ficha.regional.codigoRegional}"
