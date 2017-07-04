@@ -15,24 +15,33 @@
     <h:outputScript library="js" name="c3.js"/>
     
     <h:form>
-        <p:panelGrid id="graphicpanel" styleClass="pg-center" style="height: 420px">
+        <p:scrollPanel style="height: 420px">
+        <p:panelGrid id="graphicpanel" styleClass="pg-center">
             <p:row>
                 <p:column style="text-align: center">
                     <h1><p:outputLabel value="Fichas Técnicas"/></h1>
                 </p:column>
+                
                 <p:column>
-                    <p:commandLink value="Por regional" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByRegional()}"
-                                   update="graphicpanel" disabled="#{actividadMineraRepCtrl.byRegional}"/>
-                    <p:commandLink value="&#160;Por usuario" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByUsuario()}"
-                                   update="graphicpanel" disabled="#{!actividadMineraRepCtrl.byRegional}"/>
+                    <p:commandLink value="Por provincia" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByProvincia()}"
+                                   update="graphicpanel" disabled="#{!actividadMineraRepCtrl.byRegional and !actividadMineraRepCtrl.byElOro}"/>
+                    
+                    <p:commandLink value="&#160;&#160;Por regional" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByRegional()}"
+                                   update="graphicpanel" disabled="#{actividadMineraRepCtrl.byRegional and !actividadMineraRepCtrl.byElOro}"/>
+                    
+                    <p:commandLink value="&#160;&#160;El Oro" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByElOro()}"
+                                   update="graphicpanel" disabled="#{!actividadMineraRepCtrl.byRegional and actividadMineraRepCtrl.byElOro}"/>
+                    
+                    <p:commandLink value="&#160;&#160;Azuay" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByAzuay()}"
+                                   update="graphicpanel" disabled="#{actividadMineraRepCtrl.byRegional and actividadMineraRepCtrl.byElOro}"/>
                 </p:column>
             </p:row>
 
             <p:row>
                 <p:column>
                     <p:panelGrid columns="2" styleClass="panelgrid-graphic">
-                        <p:commandButton update="@none" onclick="addChart('#{actividadMineraRepCtrl.labels()}','#{actividadMineraRepCtrl.values()}','bar')" value="Gráfica de barras"/>
-                        <p:commandButton onclick="addChart('#{actividadMineraRepCtrl.labels()}','#{actividadMineraRepCtrl.values()}','pie')" value="Gráfica de pastel"/>
+                        <p:commandButton update="@none" onclick="addChart('#{actividadMineraRepCtrl.labels()}','#{actividadMineraRepCtrl.values()}','bar','#{actividadMineraRepCtrl.obtenerTotal()}')" value="Gráfica de barras"/>
+                        <p:commandButton onclick="addChart('#{actividadMineraRepCtrl.labels()}','#{actividadMineraRepCtrl.values()}','pie','#{actividadMineraRepCtrl.obtenerTotal()}')" value="Gráfica de pastel"/>
                     </p:panelGrid>
                 </p:column>
             </p:row>
@@ -43,7 +52,22 @@
                         <div id="chart" class="grafica"></div>
                     </p:panelGrid>
                 </p:column>
+                
+                <p:column>
+                    <p:panelGrid columns="1" styleClass="panelgrid-graphic">
+                        <p:dataTable id="estadisticasdt" value="#{actividadMineraRepCtrl.datosTabla}" var="estadistica" styleClass="datagrid">
+                            <p:column headerText="DESCRIPCIÓN">
+                                <h:outputText value="#{estadistica.label}" />
+                            </p:column>
+                            
+                            <p:column headerText="VALOR">
+                                <h:outputText value="#{estadistica.value}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panelGrid>
+                </p:column>
             </p:row>
         </p:panelGrid>
+        </p:scrollPanel>
     </h:form>
 </ui:composition>

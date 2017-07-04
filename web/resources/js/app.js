@@ -2,7 +2,7 @@ var claves;
 var valores;
 var chartData = [];
 
-addChart= function(keys, values, tipo) {
+addChart= function(keys, values, tipo, total) {
     claves= "";
     valores= "";
     chartData= [];
@@ -21,6 +21,13 @@ addChart= function(keys, values, tipo) {
         data: {
             type: tipo,
             columns: chartData
+        },
+        tooltip: {
+            format: {
+                title: function(x) {
+                    return 'TOTAL: ' + total;
+                }
+            }
         },
     })
 }

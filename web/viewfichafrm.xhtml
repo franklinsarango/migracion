@@ -166,6 +166,12 @@
                     </p:row>
                     
                     <p:row>
+                        <p:column style="text-align: center" colspan="2">
+                            <p:commandButton value="Ver mapa" oncomplete="PF('mapdlgwg').show();"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
                         <p:column style="text-align: right"><p:outputLabel value="Cota:"/></p:column>
                         <p:column style="text-align: left">
                             <p:outputLabel value="#{actividadMineraRepCtrl.fichaTecnica.cota}"/>
@@ -749,6 +755,10 @@
                     
                 </p:panelGrid>
             </h:form>
+            
+            <p:dialog id="mapdlg" widgetVar="mapdlgwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip" header="Ubicación" closable="true">
+               <ui:include src="viewmap.xhtml"/>
+            </p:dialog>
             
         </ui:define>
     </ui:composition>

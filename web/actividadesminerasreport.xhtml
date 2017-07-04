@@ -53,40 +53,41 @@
                         <p:row>
                             <p:column style="text-align: left; width: 50%">
                                 <p:commandLink id="dynaButton" styleClass="lnkexport" rendered="false">
-                                    <h:graphicImage value="resources/images/estadistica.png" width="16"/>
+                                    <h:graphicImage value="resources/images/report-icon.png" width="16"/>
                                     <h:outputLabel value="&#160;Reportes"/>
                                 </p:commandLink>
                                 <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
                                     <p:submenu label="Ilegales" icon="ui-icon-extlink">
-                                        <p:menuitem value="Total"/>
+                                        <p:menuitem value="Total" url="#{actividadMineraRepCtrl.generarReporteIlegalTotal()}"/>
                                         <p:submenu label="Por regional">
-                                            <p:menuitem value="Cuenca"/>
-                                            <p:menuitem value="Guayaquil"/>
-                                            <p:menuitem value="Ibarra"/>
-                                            <p:menuitem value="Loja"/>
-                                            <p:menuitem value="Macas"/>
-                                            <p:menuitem value="Machala"/>
-                                            <p:menuitem value="Riobamba"/>
-                                            <p:menuitem value="Tena"/>
-                                            <p:menuitem value="Zamora"/>
+                                            <p:menuitem value="Cuenca" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(1)}"/>
+                                            <p:menuitem value="Guayaquil" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(7)}"/>
+                                            <p:menuitem value="Ibarra" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(4)}"/>
+                                            <p:menuitem value="Loja" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(6)}"/>
+                                            <p:menuitem value="Macas" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(9)}"/>
+                                            <p:menuitem value="Machala" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(3)}"/>
+                                            <p:menuitem value="Riobamba" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(2)}"/>
+                                            <p:menuitem value="Tena" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(10)}"/>
+                                            <p:menuitem value="Zamora" url="#{actividadMineraRepCtrl.generarReporteIlegalPorRegional(5)}"/>
                                         </p:submenu>
                                     </p:submenu>
                                     <p:submenu label="Informales" icon="ui-icon-extlink">
-                                        <p:menuitem value="Total"/>
+                                        <p:menuitem value="Total" url="#{actividadMineraRepCtrl.generarReporteInformalTotal()}"/>
                                         <p:submenu label="Por regional">
-                                            <p:menuitem value="Cuenca"/>
-                                            <p:menuitem value="Guayaquil"/>
-                                            <p:menuitem value="Ibarra"/>
-                                            <p:menuitem value="Loja"/>
-                                            <p:menuitem value="Macas"/>
-                                            <p:menuitem value="Machala"/>
-                                            <p:menuitem value="Riobamba"/>
-                                            <p:menuitem value="Tena"/>
-                                            <p:menuitem value="Zamora"/>
+                                            <p:menuitem value="Cuenca" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(1)}"/>
+                                            <p:menuitem value="Guayaquil" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(7)}"/>
+                                            <p:menuitem value="Ibarra" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(4)}"/>
+                                            <p:menuitem value="Loja" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(6)}"/>
+                                            <p:menuitem value="Macas" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(9)}"/>
+                                            <p:menuitem value="Machala" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(3)}"/>
+                                            <p:menuitem value="Riobamba" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(2)}"/>
+                                            <p:menuitem value="Tena" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(10)}"/>
+                                            <p:menuitem value="Zamora" url="#{actividadMineraRepCtrl.generarReporteInformalPorRegional(5)}"/>
                                         </p:submenu>
                                     </p:submenu>
                                 </p:tieredMenu>
                             </p:column>
+                            
                             <p:column style="text-align: right; width: 100%">
                                 <h:commandLink styleClass="lnkexport">
                                     <h:graphicImage value="resources/images/msexcel.png" width="16"/>

@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.dao.FichaTecnicaDao;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
+import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import java.util.List;
@@ -89,6 +90,59 @@ public class FichaTecnicaDaoEjb extends GenericDaoEjbEl<FichaTecnica, Long> impl
             return (Long) query.getSingleResult();
         } catch(Exception ex) {
             System.out.println("Error al contar las fichas por usuarioCreacion: " + ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public Long contarPorProvincia(Localidad p) {
+        try {
+            Query query= em.createQuery("Select count(ficha) from FichaTecnica ficha where ficha.estadoRegistro= :activo and ficha.provincia.codigoLocalidad= :codigo");
+            query.setParameter("activo", true);
+            query.setParameter("codigo", p.getCodigoLocalidad());
+            return (Long) query.getSingleResult();
+        } catch(Exception ex) {
+            System.out.println("Error al contar las fichas por provincia: " + ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public List<Localidad> listarProvinciasDistintas() {
+        try {
+            Query query= em.createQuery("Select distinct ficha.provincia from FichaTecnica ficha where ficha.estadoRegistro= :estado order by ficha.provincia.nombre");
+            query.setParameter("estado", true);
+            return query.getResultList();
+        } catch(Exception ex) {
+            System.out.println("Ocurrio un error:");
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public List<Localidad> listarCantonesDistintosPorProvincia(Localidad l) {
+        try {
+            Query query= em.createQuery("Select distinct ficha.canton from FichaTecnica ficha where ficha.estadoRegistro= :estado and ficha.provincia.codigoLocalidad= :codigoProvincia order by ficha.canton.nombre");
+            query.setParameter("estado", true);
+            query.setParameter("codigoProvincia", l.getCodigoLocalidad());
+            return query.getResultList();
+        } catch(Exception ex) {
+            System.out.println("Ocurrio un error:");
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public Long contarPorCanton(Localidad c) {
+        try {
+            Query query= em.createQuery("Select count(ficha) from FichaTecnica ficha where ficha.estadoRegistro= :activo and ficha.canton.codigoLocalidad= :codigoCanton");
+            query.setParameter("activo", true);
+            query.setParameter("codigoCanton", c.getCodigoLocalidad());
+            return (Long) query.getSingleResult();
+        } catch(Exception ex) {
+            System.out.println("Error al contar las fichas por canton: " + ex.toString());
         }
         return null;
     }

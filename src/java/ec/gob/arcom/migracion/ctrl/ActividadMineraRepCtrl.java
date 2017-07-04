@@ -11,6 +11,7 @@ import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import ec.gob.arcom.migracion.modelo.CoordenadaArea;
 import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
+import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.PersonaJuridica;
 import ec.gob.arcom.migracion.modelo.PersonaNatural;
 import ec.gob.arcom.migracion.modelo.Regional;
@@ -21,12 +22,15 @@ import ec.gob.arcom.migracion.servicio.ContratoOperacionServicio;
 import ec.gob.arcom.migracion.servicio.CoordenadaAreaServicio;
 import ec.gob.arcom.migracion.servicio.DetalleFichaTecnicaServicio;
 import ec.gob.arcom.migracion.servicio.FichaTecnicaServicio;
+import ec.gob.arcom.migracion.servicio.LocalidadServicio;
 import ec.gob.arcom.migracion.servicio.PersonaJuridicaServicio;
 import ec.gob.arcom.migracion.servicio.PersonaNaturalServicio;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
 import ec.gob.arcom.migracion.util.DateUtil;
 import ec.gob.arcom.migracion.util.DetalleFichaTecnicaWrapper;
+import ec.gob.arcom.migracion.util.EstadisticaWrapper;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -64,6 +68,8 @@ public class ActividadMineraRepCtrl {
     private CatalogoServicio catalogoServicio;
     @EJB
     private CatalogoDetalleServicio catalogoDetalleServicio;
+    @EJB
+    private LocalidadServicio localidadServicio;
     
     private List<FichaTecnica> fichasTecnicas;
     private List<FichaTecnica> filteredFichasTecnicas;
@@ -86,6 +92,10 @@ public class ActividadMineraRepCtrl {
     private boolean showCieloAbierto;
     private List<DetalleFichaTecnicaWrapper> operacionesMinerasWrapper;
     private boolean byRegional;
+    private boolean byElOro;
+    private List<EstadisticaWrapper> datosTabla;
+    //private String graphicLabels;
+    //private String graphicValues;
     
     /**
      * Creates a new instance of ActividadMineraRepCtrl
@@ -104,8 +114,9 @@ public class ActividadMineraRepCtrl {
         showSubterraneo= false;
         showCieloAbierto= false;
         operacionesMinerasWrapper= new ArrayList();
-        byRegional= true;
-        System.out.println(" ############## se vuelve a ejecutar el constructor");
+        byRegional= false;
+        byElOro= false;
+        datosTabla= new ArrayList<>();
     }
         
     @PostConstruct
@@ -114,7 +125,6 @@ public class ActividadMineraRepCtrl {
         regionales= obtenerRegionales();
         usuarios= obtenerUsuarios();
         condicionesLaborMinera= obtenerCondicionesLaborMinera();
-        System.out.println(" ######## se vuelve a ejecutar el postconstruct");
     }
 
     public List<FichaTecnica> getFichasTecnicas() {
@@ -275,6 +285,22 @@ public class ActividadMineraRepCtrl {
 
     public void setByRegional(boolean byRegional) {
         this.byRegional = byRegional;
+    }
+
+    public boolean isByElOro() {
+        return byElOro;
+    }
+
+    public void setByElOro(boolean byElOro) {
+        this.byElOro = byElOro;
+    }
+
+    public List<EstadisticaWrapper> getDatosTabla() {
+        return datosTabla;
+    }
+
+    public void setDatosTabla(List<EstadisticaWrapper> datosTabla) {
+        this.datosTabla = datosTabla;
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -458,21 +484,82 @@ public class ActividadMineraRepCtrl {
         return "viewfichafrm";
     }
     
-    public void showByRegional() {
-        byRegional= true;
+    public void showByProvincia() {
+        byRegional= false;
+        byElOro= false;
     }
     
-    public void showByUsuario() {
+    public void showByRegional() {
+        byRegional= true;
+        byElOro= false;
+    }
+    
+    public void showByElOro() {
         byRegional= false;
+        byElOro= true;
+    }
+    
+    public void showByAzuay() {
+        byRegional= true;
+        byElOro= true;
+    }
+    
+    public void generarDatos() {
+        List<String> labels= new ArrayList<>();
+        if(byRegional && !byElOro) { //Por regional
+            labels= obtenerLabelsRegional(regionalServicio.findActivos());
+        } else if(!byRegional && !byElOro) { //Por provincia
+            labels= obtenerLabelsProvincia(fichaTecnicaServicio.obtenerProvinciasDistintas());
+        } else if(!byRegional && byElOro) { //El Oro
+            Localidad provincia= localidadServicio.findByNemonico("EOR").get(0);
+            labels= obtenerLabelsElOro(fichaTecnicaServicio.obtenerCantonesDistintosPorProvincia(provincia));
+        } else { //Azuay
+            Localidad provincia= localidadServicio.findByNemonico("AZU").get(0);
+            labels= obtenerLabelsAzuay(fichaTecnicaServicio.obtenerCantonesDistintosPorProvincia(provincia));
+        }
+        
+        List<Long> values= new ArrayList<>();
+        if(byRegional && !byElOro) { //Por regional
+            values= obtenerValuesRegional(regionalServicio.findActivos());
+        } else if(!byRegional && !byElOro) { //Por provincia
+            values= obtenerValuesProvincia(fichaTecnicaServicio.obtenerProvinciasDistintas());
+        } else if(!byRegional && byElOro) { //El Oro
+            Localidad provincia= localidadServicio.findByNemonico("EOR").get(0);
+            values= obtenerValuesElOro(fichaTecnicaServicio.obtenerCantonesDistintosPorProvincia(provincia));
+        } else { //Azuay
+            Localidad provincia= localidadServicio.findByNemonico("AZU").get(0);
+            values= obtenerValuesAzuay(fichaTecnicaServicio.obtenerCantonesDistintosPorProvincia(provincia));
+        }
+            
+        Long total= (long) 0;
+        datosTabla= new ArrayList<>();
+        for(int i=0; i<labels.size(); i++) {
+            EstadisticaWrapper ew= new EstadisticaWrapper();
+            ew.setLabel(labels.get(i));
+            ew.setValue(values.get(i).toString());
+            datosTabla.add(ew);
+            total= total + values.get(i);
+        }
+        EstadisticaWrapper ew= new EstadisticaWrapper();
+        ew.setLabel("TOTAL"); ew.setValue(total.toString());
+        datosTabla.add(ew);
     }
     
     public String labels() {
+        generarDatos();
+        
         String l= "";
-        List<String> labels;
-        if(byRegional) {
+        List<String> labels= new ArrayList<>();
+        if(byRegional && !byElOro) { //Por regional
             labels= obtenerLabelsRegional(regionalServicio.findActivos());
-        } else {
-            labels= obtenerLabelsUsuario(fichaTecnicaServicio.obtenerPorUsuariosDistintos());
+        } else if(!byRegional && !byElOro) { //Por provincia
+            labels= obtenerLabelsProvincia(fichaTecnicaServicio.obtenerProvinciasDistintas());
+        } else if(!byRegional && byElOro) { //El Oro
+            Localidad provincia= localidadServicio.findByNemonico("EOR").get(0);
+            labels= obtenerLabelsElOro(fichaTecnicaServicio.obtenerCantonesDistintosPorProvincia(provincia));
+        } else { //Azuay
+            Localidad provincia= localidadServicio.findByNemonico("AZU").get(0);
+            labels= obtenerLabelsAzuay(fichaTecnicaServicio.obtenerCantonesDistintosPorProvincia(provincia));
         }
         
         if(labels!=null && labels.size()>0) {
@@ -486,11 +573,17 @@ public class ActividadMineraRepCtrl {
     
     public String values() {
         String v= "";
-        List<Long> values;
-        if(byRegional) {
+        List<Long> values= new ArrayList<>();
+        if(byRegional && !byElOro) { //Por regional
             values= obtenerValuesRegional(regionalServicio.findActivos());
-        } else {
-            values= obtenerValuesUsuario(fichaTecnicaServicio.obtenerPorUsuariosDistintos());
+        } else if(!byRegional && !byElOro) { //Por provincia
+            values= obtenerValuesProvincia(fichaTecnicaServicio.obtenerProvinciasDistintas());
+        } else if(!byRegional && byElOro) { //El Oro
+            Localidad l= localidadServicio.findByNemonico("EOR").get(0);
+            values= obtenerValuesElOro(fichaTecnicaServicio.obtenerCantonesDistintosPorProvincia(l));
+        } else { //Azuay
+            Localidad provincia= localidadServicio.findByNemonico("AZU").get(0);
+            values= obtenerValuesAzuay(fichaTecnicaServicio.obtenerCantonesDistintosPorProvincia(provincia));
         }
                 
         if(values!=null && values.size()>0) {
@@ -505,7 +598,7 @@ public class ActividadMineraRepCtrl {
     private List<String> obtenerLabelsRegional(List<Regional> regs) {
         List<String> labelsRegional= new ArrayList<>();
         for(Regional r : regs) {
-            labelsRegional.add(r.getNombreRegional());
+            labelsRegional.add(r.getDescripcionRegional());
         }
         return labelsRegional;
     }
@@ -521,22 +614,91 @@ public class ActividadMineraRepCtrl {
         return valuesRegional;
     }
     
-    private List<String> obtenerLabelsUsuario(List<Usuario> usrs) {
-        List<String> labelsUsuario= new ArrayList<>();
-        for(Usuario u : usrs) {
-            labelsUsuario.add(u.getNombre().toUpperCase() + " " + u.getApellido().toUpperCase());
+    private List<String> obtenerLabelsProvincia(List<Localidad> provincias) {
+        List<String> labelsProvincia= new ArrayList<>();
+        for(Localidad p : provincias) {
+            labelsProvincia.add(p.getNombre());
         }
-        return labelsUsuario;
+        return labelsProvincia;
     }
     
-    private List<Long> obtenerValuesUsuario(List<Usuario> usrs) {
-        List<Long> valuesUsuario= new ArrayList<>();
-        for(Usuario u : usrs) {
-            Long v= fichaTecnicaServicio.contarPorUsuarioCreacion(u);
+    private List<Long> obtenerValuesProvincia(List<Localidad> provincias) {
+        List<Long> valuesProvincia= new ArrayList<>();
+        for(Localidad p : provincias) {
+            Long v= fichaTecnicaServicio.contarPorProvincia(p);
             if(v!=null) {
-                valuesUsuario.add(v);
+                valuesProvincia.add(v);
             }  
         }
-        return valuesUsuario;
+        return valuesProvincia;
+    }
+    
+    private List<String> obtenerLabelsElOro(List<Localidad> cantones) {
+        List<String> labelsElOro= new ArrayList<>();
+        for(Localidad c : cantones) {
+            labelsElOro.add(c.getNombre());
+        }
+        return labelsElOro;
+    }
+    
+    private List<Long> obtenerValuesElOro(List<Localidad> cantones) {
+        List<Long> valuesElOro= new ArrayList<>();
+        for(Localidad c : cantones) {
+            Long v= fichaTecnicaServicio.contarPorCanton(c);
+            if(v!=null) {
+                valuesElOro.add(v);
+            }  
+        }
+        return valuesElOro;
+    }
+    
+    private List<String> obtenerLabelsAzuay(List<Localidad> cantones) {
+        List<String> labelsAzuay= new ArrayList<>();
+        for(Localidad c : cantones) {
+            labelsAzuay.add(c.getNombre());
+        }
+        return labelsAzuay;
+    }
+    
+    private List<Long> obtenerValuesAzuay(List<Localidad> cantones) {
+        List<Long> valuesAzuay= new ArrayList<>();
+        for(Localidad c : cantones) {
+            Long v= fichaTecnicaServicio.contarPorCanton(c);
+            if(v!=null) {
+                valuesAzuay.add(v);
+            }  
+        }
+        return valuesAzuay;
+    }
+    
+    public String obtenerTotal() {
+        int size= datosTabla.size();
+        return datosTabla.get(size-1).getValue();
+    }
+    
+    public String generarReporteIlegalTotal() {
+        String urlReporte= "../../birt/frameset?__report=report/fichatecnica/ilegaltotal.rptdesign&__format=xlsx";
+        System.out.println(urlReporte);
+        return urlReporte;
+    }
+    
+    public String generarReporteIlegalPorRegional(Long codigoRegional) {
+        String urlReporte= "../../birt/frameset?__report=report/fichatecnica/ilegalxregional.rptdesign&codigo_regional="
+                    + codigoRegional + "&__format=xlsx";
+        System.out.println(urlReporte);
+        return urlReporte;
+    }
+    
+    public String generarReporteInformalTotal() {
+        String urlReporte= "../../birt/frameset?__report=report/fichatecnica/informaltotal.rptdesign&__format=xlsx";
+        System.out.println(urlReporte);
+        return urlReporte;
+    }
+    
+    public String generarReporteInformalPorRegional(Long codigoRegional) {
+        String urlReporte= "../../birt/frameset?__report=report/fichatecnica/informalxregional.rptdesign&codigo_regional="
+                    + codigoRegional + "&__format=xlsx";
+        System.out.println(urlReporte);
+        return urlReporte;
     }
 }
