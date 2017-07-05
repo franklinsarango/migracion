@@ -675,30 +675,4 @@ public class ActividadMineraRepCtrl {
         int size= datosTabla.size();
         return datosTabla.get(size-1).getValue();
     }
-    
-    public String generarReporteIlegalTotal() {
-        String urlReporte= "../../birt/frameset?__report=report/fichatecnica/ilegaltotal.rptdesign&__format=xlsx";
-        System.out.println(urlReporte);
-        return urlReporte;
-    }
-    
-    public String generarReporteIlegalPorRegional(Long codigoRegional) {
-        String urlReporte= "../../birt/frameset?__report=report/fichatecnica/ilegalxregional.rptdesign&codigo_regional="
-                    + codigoRegional + "&__format=xlsx";
-        System.out.println(urlReporte);
-        return urlReporte;
-    }
-    
-    public String generarReporteInformalTotal() {
-        String urlReporte= "../../birt/frameset?__report=report/fichatecnica/informaltotal.rptdesign&__format=xlsx";
-        System.out.println(urlReporte);
-        return urlReporte;
-    }
-    
-    public String generarReporteInformalPorRegional(Long codigoRegional) {
-        String urlReporte= "../../birt/frameset?__report=report/fichatecnica/informalxregional.rptdesign&codigo_regional="
-                    + codigoRegional + "&__format=xlsx";
-        System.out.println(urlReporte);
-        return urlReporte;
-    }
 }
