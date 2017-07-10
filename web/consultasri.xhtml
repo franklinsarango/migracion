@@ -14,16 +14,17 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="consultafrm">
-                <p:panelGrid columns="5" styleClass="panelSinBorde">
+                <p:panelGrid columns="5" styleClass="panelSinBorde" style="width: 100%">
                     <p:selectOneMenu value="#{dinardapSriController.consulta}">
                         <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
                         <f:selectItem itemLabel="CATEGORIA RISE" itemValue="625"/>
+                        <f:selectItem itemLabel="FORMULARIO 106" itemValue="833"/>
                         <f:selectItem itemLabel="FORMULARIO 113" itemValue="626"/>
                         <f:selectItem itemLabel="FORMULARIO 117" itemValue="627"/>
                         <f:selectItem itemLabel="RAZON SOCIAL" itemValue="628"/>
                     </p:selectOneMenu>
                     <p:inputText value="#{dinardapSriController.valorBuscar}"/>
-                    <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultar()}" update=":tablePanel :entityname :consulta625 :consulta626 :consulta627 :consulta628"/>
+                    <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultar()}" update=":tablePanel :entityname :consulta625 :consulta626 :consulta627 :consulta628 :consulta833 consultafrm"/>
                     
                     <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
@@ -34,16 +35,53 @@
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
                                    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
-                    <h:panelGroup style="text-align: right; right: -93%;">
+                    <h:panelGroup style="text-align: right; width: 100%">
                         <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
                             <h:panelGrid style="text-align:center">
-                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 50px; height: 50px"/>
+                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
                                 <h:outputText value="Inicio"/>
                             </h:panelGrid>
                         </h:commandLink>
                     </h:panelGroup>
                 </p:panelGrid>
+                
+                <p:panelGrid styleClass="pg-left">
+                    <p:row>                            
+                        <p:column style="text-align: left; width: 100%">
+                            <h:commandLink id="btn625" styleClass="lnkexport" rendered="#{dinardapSriController.tabla625}">
+                                <h:graphicImage value="resources/images/msexcel.png" width="16"/>
+                                <h:outputLabel value="&#160;Exportar tabla&#160;"/>
+                                <p:dataExporter type="xls" target=":consulta625" fileName="categoriarise" />
+                            </h:commandLink>
+
+                            <h:commandLink id="btn626" styleClass="lnkexport" rendered="#{dinardapSriController.tabla626}">
+                                <h:graphicImage value="resources/images/msexcel.png" width="16"/>
+                                <h:outputLabel value="&#160;Exportar tabla&#160;"/>
+                                <p:dataExporter type="xls" target=":consulta626" fileName="formulario113" />
+                            </h:commandLink>
+
+                            <h:commandLink id="btn627" styleClass="lnkexport" rendered="#{dinardapSriController.tabla627}">
+                                <h:graphicImage value="resources/images/msexcel.png" width="16"/>
+                                <h:outputLabel value="&#160;Exportar tabla&#160;"/>
+                                <p:dataExporter type="xls" target=":consulta627" fileName="formulario117" />
+                            </h:commandLink>
+
+                            <h:commandLink id="btn628" styleClass="lnkexport" rendered="#{dinardapSriController.tabla628}">
+                                <h:graphicImage value="resources/images/msexcel.png" width="16"/>
+                                <h:outputLabel value="&#160;Exportar tabla&#160;"/>
+                                <p:dataExporter type="xls" target=":consulta628" fileName="razonsocial" />
+                            </h:commandLink>
+
+                            <h:commandLink id="btn833" styleClass="lnkexport" rendered="#{dinardapSriController.tabla833}">
+                                <h:graphicImage value="resources/images/msexcel.png" width="16"/>
+                                <h:outputLabel value="&#160;Exportar tabla&#160;"/>
+                                <p:dataExporter type="xls" target=":consulta833" fileName="formulario106" />
+                            </h:commandLink>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
             </h:form>
+            
             <p:separator/>
             
             <center>
@@ -77,6 +115,59 @@
 
                     <p:column headerText="Número meses" style="width: 100px">
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila625.columnas.columna.get(5))}"/>
+                    </p:column>
+                </p:dataTable>
+                
+                <p:dataTable id="consulta833" emptyMessage="No hay resultados..."
+                             var="fila833" value="#{dinardapSriController.filas}"
+                             scrollable="true" scrollWidth="79%" rendered="#{dinardapSriController.tabla833}"
+                             styleClass="consulta833" style="width: 100%">
+                    <p:column headerText="Número formulario" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(0))}"/>
+                    </p:column>
+
+                    <p:column headerText="Código formulario" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(1))}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Número adhesivo" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(2))}"/>
+                    </p:column>
+
+                    <p:column headerText="Número secuencial" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(3))}"/>
+                    </p:column>
+
+                    <p:column headerText="Número identificación" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(4))}"/>
+                    </p:column>
+
+                    <p:column headerText="Razón social" style="width: 200px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(5))}"/>
+                    </p:column>
+
+                    <p:column headerText="Año fiscal" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(6))}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Mes fiscal" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(7))}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Código impuesto" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(8))}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Fecha recaudación" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(9))}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Total pagado" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(10))}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Marca pago" style="width: 100px;">
+                        <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(11))}"/>
                     </p:column>
                 </p:dataTable>
                 

@@ -287,6 +287,25 @@ h2 {
 .consulta628 table tbody td:nth-child(1) {text-align: left;}
 .consulta628 table tbody td:nth-child(1) {text-align: left;}
 
+.consulta833 table { border-collapse: collapse; text-align: left; width: 100%; }
+.consulta833 {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+.consulta833 table td, .consulta833 table th { padding: 3px 10px; }
+.consulta833 table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#ffffff; font-size: 12px; font-weight: bold; border-left: 1px solid #0070A8; text-align: center; vertical-align: top;}
+.consulta833 table tbody td { color: #00496B; border-left: 1px solid #E1EEF4;font-size: 12px;font-weight: normal;}
+.consulta833 table tbody .alt td { background: #E1EEF4; color: #00496B; }
+.consulta833 table tbody td:nth-child(1) {text-align: right;}
+.consulta833 table tbody td:nth-child(2) {text-align: right;}
+.consulta833 table tbody td:nth-child(3) {text-align: right;}
+.consulta833 table tbody td:nth-child(4) {text-align: right;}
+.consulta833 table tbody td:nth-child(5) {text-align: right;}
+.consulta833 table tbody td:nth-child(6) {text-align: center;}
+.consulta833 table tbody td:nth-child(7) {text-align: center;}
+.consulta833 table tbody td:nth-child(8) {text-align: right;}
+.consulta833 table tbody td:nth-child(9) {text-align: right;}
+.consulta833 table tbody td:nth-child(10) {text-align: center;}
+.consulta833 table tbody td:nth-child(11) {text-align: center;}
+.consulta833 table tbody td:nth-child(12) {text-align: center;}
+
 /*Centrar los botones del dialogo de confirmacion*/
 .ui-dialog-buttonpane {
     text-align: center !important;
@@ -378,6 +397,17 @@ a.lnkadjuntos:active {
 /*Sirve para quitar el borde del panel grid*/
 .pg-right.ui-panelgrid>*>tr,
 .pg-right.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.pg-left {
+    margin: 0 auto;
+    width: 100%;
+}
+
+/*Sirve para quitar el borde del panel grid*/
+.pg-left.ui-panelgrid>*>tr,
+.pg-left.ui-panelgrid .ui-panelgrid-cell {
     border: none;
 }
 
