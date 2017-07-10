@@ -91,7 +91,7 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReporteConcesionMineraBirt() {
         System.out.println("entra generarReporteConcesionMineraBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/concesionesMineras.rptdesign&codigoTipoMineria=" + codigoTipoMineria
                 + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -99,7 +99,7 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReporteLicenciaComercializacionBirt() {
         System.out.println("entra generarReporteLicenciaComercializacionBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/licenciasComercializacion.rptdesign"
                 + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -107,7 +107,7 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReportePlantasBeneficioBirt() {
         System.out.println("entra generarReportePlantasBeneficioBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/plantasBeneficio.rptdesign"
                 + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -115,14 +115,14 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReporteDerechosMinerosConsolidadosBirt() {
         System.out.println("entra generarReporteDerechosMinerosConsolidados");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                         + "/birt/frameset?__report=report/derechosMineros/consolidadoDerechosMinerosVig.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
 
     public void generarReporteObligacionesEconomicasBirt() {
         System.out.println("entra generarReporteObligacionesEconomicas");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/ComprobatesPago/Rpt-patentesutilidadesregalias.rptdesign&"
                 + "regional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -130,7 +130,7 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReporteContratosOperacionBirt() {
         System.out.println("entra generarReporteContratosOperacionBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/contratos_operacion.rptdesign"
                 + "&codigoRegional=" + prefijoRegionalFiltro + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -138,49 +138,49 @@ public class ReporteCtrl extends BaseCtrl {
     
     public void generarReporteConsolidadoConcesionesBirt() {
         System.out.println("entra generarReporteConsolidadoConcesionesBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/consolidadoConcesiones.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
     
     public void generarReporteConsolidadoMineriaArtesanalBirt() {
         System.out.println("entra generarReporteConsolidadoMineriaArtesanalBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/consolidadoMineriaArtesanal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
     
     public void generarReporteConsolidadoLibreAprovBirt() {
         System.out.println("entra generarReporteConsolidadoLibreAprovBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/consolidadoLibreAprovechamiento.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
     
     public void generarReporteConsolidadoPlantaBeneficioBirt() {
         System.out.println("entra generarReporteConsolidadoPlantaBeneficioBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/consolidadoPlantasBeneficio.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
     
     public void generarReporteConsolidadoLicenciasComerBirt() {
         System.out.println("entra generarReporteConsolidadoLicenciasComerBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/consolidadoLicenciasComercializacion.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
     
     public void generarReporteMedianaGranMineriaCoordenadasBirt() {
         System.out.println("entra generarReporteMedianaGranMineriaCoordenadasBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt_v4.5/frameset?__report=report/derechosMineros/mediana_gran_mineria_con_coordenadas.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
     
     public void generarReporteUsuariosSGMBirt() {
         System.out.println("entra generarReporteUsuariosSGMBirt");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/derechosMineros/usuarios_sgm.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
     }
@@ -432,7 +432,7 @@ public class ReporteCtrl extends BaseCtrl {
     public void generarReporteAutogestion() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (validarFechas(this.fechaDesdeFiltro, this.fechaHastaFiltro)){
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/ComprobatesPago/Rpt-autogestion.rptdesign&fecha_desde="
                 + sdf.format(fechaDesdeFiltro) + "&fecha_hasta=" + sdf.format(fechaHastaFiltro)
                 + "&regional=" + prefijoRegionalFiltro + "&__format=html";
@@ -472,14 +472,14 @@ public class ReporteCtrl extends BaseCtrl {
     
     //Reportes de fichas tecnicas de labores mineras
     public String generarReporteIlegalTotal() {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/ilegaltotal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
         return urlReporte;
     }
     
     public String generarReporteIlegalPorRegional(Long codigoRegional) {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/ilegalxregional.rptdesign&codigo_regional="
                     + codigoRegional + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -487,14 +487,14 @@ public class ReporteCtrl extends BaseCtrl {
     }
     
     public String generarReporteInformalTotal() {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/informaltotal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
         return urlReporte;
     }
     
     public String generarReporteInformalPorRegional(Long codigoRegional) {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/informalxregional.rptdesign&codigo_regional="
                     + codigoRegional + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -502,14 +502,14 @@ public class ReporteCtrl extends BaseCtrl {
     }
     
     public String generarReporteInformalNoRiesgoTotal() {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/informalnoriesgototal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
         return urlReporte;
     }
     
     public String generarReporteInformalNoRiesgoPorRegional(Long codigoRegional) {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/informalnoriesgoxregional.rptdesign&codigo_regional="
                     + codigoRegional + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -517,21 +517,21 @@ public class ReporteCtrl extends BaseCtrl {
     }
     
     public String generarReporteConCodigoCensal() {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/laboresconcodigocensal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
         return urlReporte;
     }
     
     public String generarReporteInformalNoRiesgoInCmTotal() {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/informalnoriesgoincmtotal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
         return urlReporte;
     }
     
     public String generarReporteInformalNoRiesgoInCmPorRegional(Long codigoRegional) {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/informalnoriesgoincmxregional.rptdesign&codigo_regional="
                     + codigoRegional + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -539,14 +539,14 @@ public class ReporteCtrl extends BaseCtrl {
     }
     
     public String generarReporteInformalNoRiesgoOutCmTotal() {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/informalnoriesgooutcmtotal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
         return urlReporte;
     }
     
     public String generarReporteInformalNoRiesgoOutCmPorRegional(Long codigoRegional) {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/informalnoriesgooutcmxregional.rptdesign&codigo_regional="
                     + codigoRegional + "&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
@@ -554,7 +554,7 @@ public class ReporteCtrl extends BaseCtrl {
     }
     
     public String generarReporteLaboresMinerasTotal() {
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/fichatecnica/laboresminerastotal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
         return urlReporte;
