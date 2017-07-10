@@ -328,7 +328,7 @@ public class ActualizacionActosAdministrativosCtrl extends BaseCtrl {
     
     public String verListainformes() {
         DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
-        urlReporte = ConstantesEnum.URL_BASE.getDescripcion()
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/informes/lista_informes.rptdesign&codigoArcom=" + derechoMineroDtoItem.getCodigo();
         System.out.println("urlReporte: " + urlReporte);
 
