@@ -809,6 +809,8 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     private boolean guardarFichaTecnica() {
         comprobarCondicionales();
+        fichaTecnica.setUtmEste(fichaTecnica.getUtmEste().replace(".", ","));
+        fichaTecnica.setUtmNorte(fichaTecnica.getUtmNorte().replace(".", ","));
         fichaTecnica.setEstadoRegistro(Boolean.TRUE);
         fichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
         fichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
@@ -900,6 +902,8 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     private boolean actualizarFichaTecnica() {
         comprobarCondicionales();
+        fichaTecnica.setUtmEste(fichaTecnica.getUtmEste().replace(".", ","));
+        fichaTecnica.setUtmNorte(fichaTecnica.getUtmNorte().replace(".", ","));
         fichaTecnica.setFechaModificacion(Calendar.getInstance().getTime());
         fichaTecnica.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
         fichaTecnicaServicio.update(fichaTecnica);
@@ -1096,5 +1100,9 @@ public class ActividadMineraCtrl extends BaseCtrl {
             } catch(Exception ex) {}
         }
         return "";
+    }
+    
+    private String changePoint4Coma(String value) {
+        return value.replace(".", ",");
     }
 }

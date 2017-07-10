@@ -174,23 +174,31 @@
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="utmNorte" value="UTM Norte:"/></p:column>
                         <p:column style="text-align: left">
-                            <pe:inputNumber id="utmNorte" maxValue="9999999999.9999" 
-                                            value="#{actividadMineraCtrl.fichaTecnica.utmNorte}" style="width: 270px" required="true"/>
+                            <p:inputText id="utmNorte" value="#{actividadMineraCtrl.fichaTecnica.utmNorte}" required="true"
+                                             requiredMessage="Debe ingresar utmNorte" styleClass="inputtext-form"
+                                             validatorMessage="La coordenada utmNorte no es valida">
+                                <f:validateRegex pattern="^[0-9]+(\.[0-9][0-9]?[0-9]?[0-9]?)?"/>
+                                <p:ajax update=":growl"/>
+                            </p:inputText>
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="utmEste" value="UTM Este:"/></p:column>
                         <p:column style="text-align: left">
-                            <pe:inputNumber id="utmEste" maxValue="9999999999.9999" 
-                                            value="#{actividadMineraCtrl.fichaTecnica.utmEste}" style="width: 270px" required="true"/>
+                            <p:inputText id="utmEste" value="#{actividadMineraCtrl.fichaTecnica.utmEste}" required="true"
+                                             requiredMessage="Debe ingresar utmEste" styleClass="inputtext-form"
+                                             validatorMessage="La coordenada utmEste no es valida">
+                                <f:validateRegex pattern="^[0-9]+(\.[0-9][0-9]?[0-9]?[0-9]?)?"/>
+                                <p:ajax update=":growl"/>
+                            </p:inputText>
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="cota" value="Cota:"/></p:column>
                         <p:column style="text-align: left">
-                            <pe:inputNumber id="cota" thousandSeparator="," decimalSeparator="." decimalPlaces="0" maxValue="9999" 
+                            <pe:inputNumber id="cota" thousandSeparator="" decimalSeparator="" decimalPlaces="0" maxValue="9999" 
                                             value="#{actividadMineraCtrl.fichaTecnica.cota}" style="width: 270px" required="true"/>
                         </p:column>
                     </p:row>
@@ -956,7 +964,7 @@
                     
                     <p:row>
                         <p:column style="text-align: right">
-                            <p:commandButton value="Aceptar" action="#{actividadMineraCtrl.saveFichaTecnicaAction()}" update="fichaform"/>
+                            <p:commandButton value="Aceptar" action="#{actividadMineraCtrl.saveFichaTecnicaAction()}" update="fichaform :growl"/>
                         </p:column>
                         
                         <p:column style="text-align: left">
