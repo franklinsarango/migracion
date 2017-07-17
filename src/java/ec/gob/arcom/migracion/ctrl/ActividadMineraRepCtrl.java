@@ -571,7 +571,18 @@ public class ActividadMineraRepCtrl {
         ew.setLabel("TOTAL"); ew.setValue(total.toString());
         datosTabla.add(ew);
         
-        return String.join(";", labels) + "-|-" + String.join(";", long2String(values));
+        return stringJoin(labels, ";") + "-|-" + stringJoin(long2String(values), ";");
+    }
+    
+    private String stringJoin(List<String> listStrings, String separator) {
+        String join= "";
+        if(listStrings!=null && listStrings.size()>0) {
+            join= listStrings.get(0);
+            for (int i=1; i<listStrings.size(); i++) {
+                join+= separator + listStrings.get(i);
+            }
+        }
+        return join;
     }
     
     private List<String> obtenerLabelsRegional(List<Regional> regs) {

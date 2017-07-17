@@ -10,13 +10,6 @@
             <file>file:/D:/Frank/SGM/proyectos/migracion/src/java/ec/gob/arcom/migracion/ctrl/DinardapSriController.java</file>
             <file>file:/D:/Frank/SGM/proyectos/migracion/nbproject/build-impl.xml</file>
         </group>
-        <group>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/actividadesminerasreport.xhtml</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/ctrl/ActividadMineraRepCtrl.java</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/resources/css/style.css</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/resources/js/app.js</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/fichafrm.xhtml</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/fichasgraphic.xhtml</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
