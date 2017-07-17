@@ -15,7 +15,7 @@
     <h:outputScript library="js" name="c3.js"/>
     
     <h:form>
-        <p:scrollPanel style="height: 420px">
+        <p:scrollPanel style="height: 98%">
         <p:panelGrid id="graphicpanel" styleClass="pg-center">
             <p:row>
                 <p:column style="text-align: center">
@@ -24,24 +24,31 @@
                 
                 <p:column>
                     <p:commandLink value="Por provincia" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByProvincia()}"
-                                   update="graphicpanel" disabled="#{!actividadMineraRepCtrl.byRegional and !actividadMineraRepCtrl.byElOro}"/>
+                                   update="graphicpanel" disabled="#{!actividadMineraRepCtrl.byRegional and !actividadMineraRepCtrl.byProvinciaIndividual}"/>
                     
                     <p:commandLink value="&#160;&#160;Por regional" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByRegional()}"
-                                   update="graphicpanel" disabled="#{actividadMineraRepCtrl.byRegional and !actividadMineraRepCtrl.byElOro}"/>
-                    
-                    <p:commandLink value="&#160;&#160;El Oro" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByElOro()}"
-                                   update="graphicpanel" disabled="#{!actividadMineraRepCtrl.byRegional and actividadMineraRepCtrl.byElOro}"/>
-                    
-                    <p:commandLink value="&#160;&#160;Azuay" styleClass="lnkexport" actionListener="#{actividadMineraRepCtrl.showByAzuay()}"
-                                   update="graphicpanel" disabled="#{actividadMineraRepCtrl.byRegional and actividadMineraRepCtrl.byElOro}"/>
+                                   update="graphicpanel" disabled="#{actividadMineraRepCtrl.byRegional and !actividadMineraRepCtrl.byProvinciaIndividual}"/>
+                </p:column>
+            </p:row>
+            
+            <p:row>
+                <p:column>
+                    <p:spacer/>
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu valueChangeListener="#{actividadMineraRepCtrl.showByProvinciaIndividual()}" value="#{actividadMineraRepCtrl.selectedProvincia}">
+                        <f:selectItem itemLabel="Seleccione una provincia" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{actividadMineraRepCtrl.provinciasDistintas}"/>
+                        <p:ajax update="graphicpanel"/>
+                    </p:selectOneMenu>
                 </p:column>
             </p:row>
 
             <p:row>
                 <p:column>
                     <p:panelGrid columns="2" styleClass="panelgrid-graphic">
-                        <p:commandButton update="@none" onclick="addChart('#{actividadMineraRepCtrl.labels()}','#{actividadMineraRepCtrl.values()}','bar','#{actividadMineraRepCtrl.obtenerTotal()}')" value="Gráfica de barras"/>
-                        <p:commandButton onclick="addChart('#{actividadMineraRepCtrl.labels()}','#{actividadMineraRepCtrl.values()}','pie','#{actividadMineraRepCtrl.obtenerTotal()}')" value="Gráfica de pastel"/>
+                        <p:commandButton update="@none" onclick="addChart('#{actividadMineraRepCtrl.generarDatos()}','bar','#{actividadMineraRepCtrl.obtenerTotal()}')" value="Gráfica de barras"/>
+                        <p:commandButton onclick="addChart('#{actividadMineraRepCtrl.generarDatos()}','pie','#{actividadMineraRepCtrl.obtenerTotal()}')" value="Gráfica de pastel"/>
                     </p:panelGrid>
                 </p:column>
             </p:row>

@@ -1,14 +1,17 @@
+var datosGrafico;
 var claves;
 var valores;
 var chartData = [];
 
-addChart= function(keys, values, tipo, total) {
+addChart= function(data, tipo, total) {
+    datosGrafico= "";
     claves= "";
     valores= "";
     chartData= [];
     
-    claves= keys.split(";");
-    valores= values.split(";");
+    datosGrafico= data.split("-|-");
+    claves= datosGrafico[0].split(";");
+    valores= datosGrafico[1].split(";");
     
     var data = [];
     for(i=0; i<claves.length; i++) {
