@@ -217,6 +217,15 @@ h2 {
     border: none;
 }
 
+.panelSinBorde-02 {
+    width: 100%;
+}
+/*Sirve para quitar el borde del panel grid*/
+.panelSinBorde-02.ui-panelgrid>*>tr,
+.panelSinBorde-02.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
 .consulta625 table { border-collapse: collapse; text-align: left; width: 100%; }
 .consulta625 {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 .consulta625 table td, .consulta625 table th { padding: 3px 10px; }
@@ -325,7 +334,6 @@ h2 {
     margin: 0 auto;
     width: 999px;
 }
-
 /*Sirve para quitar el borde del panel grid*/
 .pg-center-02.ui-panelgrid>*>tr,
 .pg-center-02.ui-panelgrid .ui-panelgrid-cell {
@@ -334,6 +342,24 @@ h2 {
 
 .pg-center-03 {
     margin: 0 auto;
+}
+
+.pg-center-04 {
+    margin: 0 auto;
+}
+/*Sirve para quitar el borde del panel grid*/
+.pg-center-04.ui-panelgrid>*>tr,
+.pg-center-04.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.pg-ubicacion {
+    margin: 0 auto;
+}
+/*Sirve para quitar el borde del panel grid*/
+.pg-ubicacion.ui-panelgrid>*>tr,
+.pg-ubicacion.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
 }
 
 .inputtext-form {
@@ -385,8 +411,12 @@ a.lnkadjuntos:active {
 
 .endbutton {
     margin: 0 auto;
-    width: 150px;
-    height: 35px;
+    width: 100px;
+    height: 30px;
+    background-color: #4c6f9b;
+    font-weight:bolder;
+    font-size: 12px;
+    color: #ffffff;
 }
 
 .pg-right {
@@ -438,5 +468,10 @@ a.lnkexport:active {
 /*Sirve para quitar el borde del panel grid*/
 .panelgrid-graphic.ui-panelgrid>*>tr,
 .panelgrid-graphic.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.size_uploadfiles {}
+.size_uploadfiles.ui-datalist .ui-datalist-content {
     border: none;
 }

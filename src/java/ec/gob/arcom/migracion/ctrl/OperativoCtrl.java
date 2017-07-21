@@ -138,6 +138,9 @@ public class OperativoCtrl extends BaseCtrl {
     private List<UploadedFile> archivosParaCargar;
     private boolean showUploadPanel= false;
     
+    private List<String> headers;
+    private List<Object> values;
+    
     @ManagedProperty(value = "#{loginCtrl}")
     private LoginCtrl login;
     
@@ -150,11 +153,30 @@ public class OperativoCtrl extends BaseCtrl {
         detalleOperativo= new DetalleOperativo();
         maquinaria= new MaquinariaConcesion();
         maquinaria.setEstadoMaquinaria(BigInteger.ZERO);
+        headers= new ArrayList<>();
+        values= new ArrayList<>();
     }
     
     @PostConstruct
     private void inicializar() {
+        login.setCodigoUsuario((long)1689);
         obtenerOperativos();
+    }
+
+    public List<String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(List<String> headers) {
+        this.headers = headers;
+    }
+
+    public List<Object> getValues() {
+        return values;
+    }
+
+    public void setValues(List<Object> values) {
+        this.values = values;
     }
 
     public List<Operativo> getOperativos() {
@@ -412,12 +434,14 @@ public class OperativoCtrl extends BaseCtrl {
         cantones = null;
         parroquias = null;
         operativo.setCanton(null);
+        operativo.setParroquia(null);
         getCantones();
         getParroquias();
     }
     
     public void cargaParroquias() {
         parroquias = null;
+        operativo.setParroquia(null);
         getParroquias();
     }
     
@@ -484,6 +508,7 @@ public class OperativoCtrl extends BaseCtrl {
     public List<DetalleOperativo> obtenerInformacionDepositarios() {
         return obtenerInformacionPorTipo(TIPODEPOSITARIO);
     }
+    
     ////////////////////////
     
     public void newOperativoAction() {
@@ -523,6 +548,8 @@ public class OperativoCtrl extends BaseCtrl {
     public void editOperativoAction(Integer row) {
         edit= true;
         operativo= operativos.get(row);
+        operativo.setUtmEste(operativo.getUtmEste().replace(",", "."));
+        operativo.setUtmNorte(operativo.getUtmNorte().replace(",", "."));
         detallesOperativo= detalleOperativoServicio.listarPorOperativo(operativo);
         maquinarias= maquinariaConcesionServicio.obtenerMaquinariasPorOperativo(operativo);
         archivosCargados= obtenerArchivosCargados(operativo);
@@ -639,6 +666,8 @@ public class OperativoCtrl extends BaseCtrl {
                 
     private boolean guardarOperativo() {
         Usuario usrCreacion= usuarioServicio.findByPk(login.getCodigoUsuario());
+        operativo.setUtmEste(operativo.getUtmEste().replace(".", ","));
+        operativo.setUtmNorte(operativo.getUtmNorte().replace(".", ","));
         operativo.setEstadoRegistro(Boolean.TRUE);
         operativo.setFechaCreacion(Calendar.getInstance().getTime());
         operativo.setUsuarioCreacion(usrCreacion);
@@ -678,6 +707,8 @@ public class OperativoCtrl extends BaseCtrl {
     private boolean actualizarOperativo() {
         Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
         Operativo anterior= operativoServicio.findByPk(operativo.getCodigoOperativo());
+        operativo.setUtmEste(operativo.getUtmEste().replace(".", ","));
+        operativo.setUtmNorte(operativo.getUtmNorte().replace(".", ","));
         operativo.setFechaModificacion(Calendar.getInstance().getTime());
         operativo.setUsuarioModificacion(usr);
         operativoServicio.update(operativo);
@@ -825,6 +856,8 @@ public class OperativoCtrl extends BaseCtrl {
         }
         if(!existe) {
             archivosParaCargar.add(event.getFile());
+        } else {
+            mostrarMensaje(FacesMessage.SEVERITY_ERROR, "El archivo ya se encuentra en la lista");
         }
     }
     
@@ -891,5 +924,87 @@ public class OperativoCtrl extends BaseCtrl {
     
     private List<Adjunto> obtenerArchivosCargados(Operativo o) {
         return adjuntoServicio.findByOperativo(o);
+    }
+    
+    public void generarReporteMensual() {
+        List<String> encabezados= new ArrayList<>();
+        Calendar c= Calendar.getInstance();
+        int mes= c.get(Calendar.MONTH);
+        String mesString= "";
+        encabezados.add("COORDINACIÓN REGINAL DIRECCIÓN TÉCNICA");
+        for(int i=0; i<=mes; i++) {
+            switch (i) {
+                case 0:  mesString = "Enero";
+                         break;
+                case 1:  mesString = "Febrero";
+                         break;
+                case 2:  mesString = "Marzo";
+                         break;
+                case 3:  mesString = "Abril";
+                         break;
+                case 4:  mesString = "Mayo";
+                         break;
+                case 5:  mesString = "Junio";
+                         break;
+                case 6:  mesString = "Julio";
+                         break;
+                case 7:  mesString = "Agosto";
+                         break;
+                case 8:  mesString = "Septiembre";
+                         break;
+                case 9: mesString = "Octubre";
+                         break;
+                case 10: mesString = "Novimbre";
+                         break;
+                case 11: mesString = "Diciembre";
+                         break;
+            }
+            encabezados.add(mesString);
+        }
+        headers= encabezados;
+        
+        //
+        List<Object> valores= new ArrayList<>();
+        for(String h : headers) {
+            valores.add("hola");
+        }
+        
+        values= valores;
+    }
+    
+    public class Data {
+        String header;
+        String column;
+        Long value;
+
+        public String getHeader() {
+            return header;
+        }
+
+        public void setHeader(String header) {
+            this.header = header;
+        }
+
+        public Long getValue() {
+            return value;
+        }
+
+        public String getColumn() {
+            return column;
+        }
+
+        public void setColumn(String column) {
+            this.column = column;
+        }
+
+        public void setValue(Long value) {
+            this.value = value;
+        }
+        
+        public Data(String h, String c, Long v) {
+            header= h;
+            column= c;
+            value= v;
+        }
     }
 }

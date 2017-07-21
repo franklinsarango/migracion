@@ -14,36 +14,44 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="consultafrm">
-                <p:panelGrid columns="5" styleClass="panelSinBorde" style="width: 100%">
-                    <p:selectOneMenu value="#{dinardapSriController.consulta}">
-                        <f:selectItem itemLabel="Seleccione una opción..." itemValue="#{null}" noSelectionOption="true"/>
-                        <f:selectItem itemLabel="CATEGORIA RISE" itemValue="625"/>
-                        <f:selectItem itemLabel="FORMULARIO 106" itemValue="833"/>
-                        <f:selectItem itemLabel="FORMULARIO 113" itemValue="626"/>
-                        <f:selectItem itemLabel="FORMULARIO 117" itemValue="627"/>
-                        <f:selectItem itemLabel="RAZON SOCIAL" itemValue="628"/>
-                    </p:selectOneMenu>
-                    <p:inputText value="#{dinardapSriController.valorBuscar}"/>
-                    <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultar()}" update=":tablePanel :entityname :consulta625 :consulta626 :consulta627 :consulta628 :consulta833 consultafrm"/>
-                    
-                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
-                    <h:panelGroup style="text-align: right; width: 100%">
-                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
-                            <h:panelGrid style="text-align:center">
-                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
-                                <h:outputText value="Inicio"/>
-                            </h:panelGrid>
-                        </h:commandLink>
-                    </h:panelGroup>
+                <p:panelGrid styleClass="panelSinBorde" style="width: 100%">
+                    <p:row>
+                        <p:column>
+                            <p:selectOneMenu id="forms" value="#{dinardapSriController.consulta}" requiredMessage="Debe seleccionar un formulario" required="true">
+                                <f:selectItem itemLabel="Seleccione un formulario..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="FORMULARIO 106" itemValue="833"/>
+                                <f:selectItem itemLabel="FORMULARIO 113" itemValue="626"/>
+                                <f:selectItem itemLabel="FORMULARIO 117" itemValue="627"/>
+                                <f:selectItem itemLabel="RAZON SOCIAL" itemValue="628"/>
+                                <p:ajax listener="#{dinardapSriController.actualizarRazonSocialSelected()}" update="consultafrm"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="busqueda" value="#{dinardapSriController.valorBuscar}" style="width: 250px" required="true" requiredMessage="#{dinardapSriController.obtenerMensajeBusqueda()}"/>
+                            <p:watermark id="busquedawm" for="busqueda" value="#{dinardapSriController.obtenerMensajeMarcaAgua()}"/>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultar()}" update=":tablePanel :entityname :consulta625 :consulta626 :consulta627 :consulta628 :consulta833 consultafrm"/>
+                        </p:column>
+                        <p:column style="width: 100%; text-align: right">
+                            <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" immediate="true">
+                                    <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
+                                    <br/>
+                                    <h:outputText value="Inicio"/>
+                            </h:commandLink>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Tabla de categorías RISE" actionListener="#{dinardapSriController.consultarRise()}"
+                                           style="font-weight: bolder; width: 200px" immediate="true"
+                                           update=":tablePanel :entityname :consulta625 :consulta626 :consulta627 :consulta628 :consulta833 consultafrm"/>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
+                
+                <p:spacer width="100" height="15"/>
                 
                 <p:panelGrid styleClass="pg-left">
                     <p:row>                            
@@ -88,7 +96,7 @@
                 <p:outputLabel id="entityname" value="#{dinardapSriController.nombreEntidad}" style="font-weight: bolder; font-size: large"/>
             </center>
             
-            <p:panelGrid id="tablePanel" columns="1">
+            <p:panelGrid id="tablePanel" columns="1" styleClass="panelSinBorde">
                 <p:dataTable id="consulta625" emptyMessage="No hay resultados..."
                          var="fila625" value="#{dinardapSriController.filas}"
                          scrollable="true" scrollWidth="95%" rendered="#{dinardapSriController.tabla625}"

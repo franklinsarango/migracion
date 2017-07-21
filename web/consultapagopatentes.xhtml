@@ -14,94 +14,96 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="consultafrm">
-                <p:panelGrid columns="6" styleClass="panelSinBorde">
-                    <p:outputLabel value="Seleccione el año fiscal: "/>
-                    <p:selectOneMenu value="#{dinardapSriController.anioFiscal}">
-                        <f:selectItems value="#{dinardapSriController.aniosFiscales}"/>
-                    </p:selectOneMenu>
-                    <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultarPatentes()}" update="tablePanel consultapatentes"/>
-                    <p:commandButton value="Actualizar pagos" oncomplete="PF('updatedlgwg').show()" update=":dlgform"/>
-                    
-                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
-                    <h:panelGroup style="text-align: right; right: -93%;">
-                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
-                            <h:panelGrid style="text-align:center">
-                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
-                                <h:outputText value="Inicio"/>
-                            </h:panelGrid>
-                        </h:commandLink>
-                    </h:panelGroup>
-                </p:panelGrid>
-            
-            <p:separator/>
-            
-            <center>
-                <p:outputLabel id="entityname" value="Pago de patentes por año fiscal" style="font-weight: bolder; font-size: large"/>
-            </center>
-            
-            <p:panelGrid id="tablePanel" columns="1">
-                <p:panelGrid columns="2">
-                    <h:commandLink>
-                        <h:graphicImage value="resources/images/excel.png" width="24"/>
-                        <h:outputLabel value="Exportar"/>
-                        <p:dataExporter type="xls" target="consultapatentes" fileName="pagos" />
-                    </h:commandLink>
+                <p:panelGrid styleClass="panelSinBorde" style="width: 100%">
+                    <p:row>
+                        <p:column style="width: 13%; text-align: right">
+                            <p:outputLabel value="Seleccione el año fiscal: " />
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu value="#{dinardapSriController.anioFiscal}">
+                                <f:selectItems value="#{dinardapSriController.aniosFiscales}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultarPatentes()}" update="tablePanel consultapatentes"/>
+                        </p:column>
+                        <p:column style="width: 80%; text-align: right">
+                            <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" immediate="true">
+                                    <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
+                                    <br/>
+                                    <h:outputText value="Inicio"/>
+                            </h:commandLink>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Actualizar pagos" oncomplete="PF('updatedlgwg').show()" update=":dlgform"/>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
                 
-                <p:dataTable id="consultapatentes" emptyMessage="No hay resultados..."
-                             var="pago" value="#{dinardapSriController.pagos}"
-                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                             rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
-                    <p:column headerText="CODIGO ARCOM" style="width: 100px;">
-                        <h:outputText value="#{pago.concesionMinera.codigoArcom}"/>
-                    </p:column>
+                <p:separator/>
+            
+                <center>
+                    <p:outputLabel id="entityname" value="Pago de patentes por año fiscal" style="font-weight: bolder; font-size: large"/>
+                </center>
 
-                    <p:column headerText="NOMBRE" style="width: 100px;">
-                        <h:outputText value="#{pago.concesionMinera.nombreConcesion}"/>
-                    </p:column>
-                    
-                    <p:column headerText="REGIONAL" style="width: 100px;">
-                        <h:outputText value="#{pago.concesionMinera.codigoRegional.nombreRegional}"/>
-                    </p:column>
+                <p:panelGrid id="tablePanel" columns="1" styleClass="panelSinBorde">
+                    <p:panelGrid columns="2" styleClass="pg-left">
+                        <h:commandLink styleClass="lnkexport">
+                            <h:graphicImage value="resources/images/msexcel.png" width="16"/>
+                            <h:outputLabel value="&#160;Exportar tabla&#160;"/>
+                            <p:dataExporter type="xls" target="consultapatentes" fileName="pagos" />
+                        </h:commandLink>
+                    </p:panelGrid>
 
-                    <p:column headerText="VALOR CALCULADO ARCOM" style="width: 100px;">
-                        <h:outputText value="#{dinardapSriController.obtenerValorConFormato(pago.valorCalculadoArcom)}"/>
-                    </p:column>
-                    
-                    <p:column headerText="VALOR PAGO ARCOM" style="width: 100px;">
-                        <h:outputText value="#{dinardapSriController.obtenerValorConFormato(pago.valorPagoArcom)}"/>
-                    </p:column>
-                    
-                    <p:column headerText="COMPROBANTE ELECTRONICO ARCOM" style="width: 100px;">
-                        <h:outputText value="#{pago.comprobanteElectronicoArcom}"/>
-                    </p:column>
+                    <p:dataTable id="consultapatentes" emptyMessage="No hay resultados..."
+                                 var="pago" value="#{dinardapSriController.pagos}"
+                                 currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
+                        <p:column headerText="CODIGO ARCOM" style="width: 100px;">
+                            <h:outputText value="#{pago.concesionMinera.codigoArcom}"/>
+                        </p:column>
 
-                    <p:column headerText="AÑO FISCAL" style="width: 100px">
-                        <h:outputText value="#{pago.anioFiscal}"/>
-                    </p:column>
+                        <p:column headerText="NOMBRE" style="width: 100px;">
+                            <h:outputText value="#{pago.concesionMinera.nombreConcesion}"/>
+                        </p:column>
 
-                    <p:column headerText="COMPROBANTE ELECTRONICO SRI" style="width: 200px">
-                        <h:outputText value="#{pago.comprobanteElectronicoSri}"/>
-                    </p:column>
+                        <p:column headerText="REGIONAL" style="width: 90px;">
+                            <h:outputText value="#{pago.concesionMinera.codigoRegional.descripcionRegional}"/>
+                        </p:column>
 
-                    <p:column headerText="VALOR PAGO SRI" style="width: 100px;">
-                        <h:outputText value="#{dinardapSriController.obtenerValorConFormato(pago.valorPagoSri)}"/>
-                    </p:column>
-                    
-                    <p:column headerText="FECHA CONSULTA" style="width: 100px;">
-                        <h:outputText value="#{dinardapSriController.obtenerFechaConFormato(pago.fechaHora)}"/>
-                    </p:column>
-                </p:dataTable>
-            </p:panelGrid>
+                        <p:column headerText="VALOR CALCULADO ARCOM" style="width: 100px;">
+                            <h:outputText value="#{dinardapSriController.obtenerValorConFormato(pago.valorCalculadoArcom)}"/>
+                        </p:column>
+
+                        <p:column headerText="VALOR PAGO ARCOM" style="width: 100px;">
+                            <h:outputText value="#{dinardapSriController.obtenerValorConFormato(pago.valorPagoArcom)}"/>
+                        </p:column>
+
+                        <p:column headerText="COMPROBANTE ELECTRONICO ARCOM" style="width: 100px;">
+                            <h:outputText value="#{pago.comprobanteElectronicoArcom}"/>
+                        </p:column>
+
+                        <p:column headerText="AÑO FISCAL" style="width: 70px">
+                            <h:outputText value="#{pago.anioFiscal}"/>
+                        </p:column>
+
+                        <p:column headerText="COMPROBANTE ELECTRONICO SRI" style="width: 200px">
+                            <h:outputText value="#{pago.comprobanteElectronicoSri}"/>
+                        </p:column>
+
+                        <p:column headerText="VALOR PAGO SRI" style="width: 100px;">
+                            <h:outputText value="#{dinardapSriController.obtenerValorConFormato(pago.valorPagoSri)}"/>
+                        </p:column>
+
+                        <p:column headerText="FECHA CONSULTA" style="width: 85px;">
+                            <h:outputText value="#{dinardapSriController.obtenerFechaConFormato(pago.fechaHora)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
             </h:form>
             
             <h:form id="dlgform">

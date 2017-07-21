@@ -15,43 +15,28 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="listaoperativosfrm" enctype="multipart/form-data">
-                <p:panelGrid columns="2" styleClass="panelSinBorde">
-                    
-                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
-                    <h:panelGroup style="text-align: right; right: -93%;">
-                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
-                            <h:panelGrid style="text-align:center">
-                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
-                                <h:outputText value="Inicio"/>
-                            </h:panelGrid>
-                        </h:commandLink>
-                    </h:panelGroup>
+                <p:panelGrid styleClass="panelSinBorde-02">
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir">
+                                    <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
+                                    <br/>
+                                    <h:outputText value="Inicio"/>
+                            </h:commandLink>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
             
-                <p:separator/>
+                <p:separator style="width: 100%"/>
 
                 <center>
                     <p:outputLabel id="entityname" value="Operativos de Mineria Ilegal" style="font-weight: bolder; font-size: large"/>
                 </center>
 
-                <p:panelGrid id="tablePanel" columns="1">
-                    <p:panelGrid columns="3" styleClass="panelSinBorde">
+                <p:panelGrid id="tablePanel" columns="1" styleClass="panelSinBorde">
+                    <p:panelGrid columns="1" styleClass="panelSinBorde">
                         <p:commandButton icon="ui-icon-plusthick" title="Nuevo operativo" actionListener="#{operativoCtrl.newOperativoAction()}"
-                                         oncomplete="PF('operativofrmwg').show();" update=":operativoform"/>
+                                         oncomplete="PF('operativofrmwg').show();" update=":operativoform :operativoform:operativowiz"/>
                     </p:panelGrid>
 
                     <p:dataTable id="operativosdt" emptyMessage="No hay resultados..."
@@ -59,7 +44,11 @@
                                  currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                  rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
-
+                        
+                        <p:column headerText="No" style="width: 25px">
+                            <h:outputText value="#{row + 1}"/>
+                        </p:column>
+                        
                         <p:column headerText="Fecha operativo" style="width: 100px;">
                             <h:outputText value="#{operativoCtrl.obtenerFechaConFormato(operativo.fechaOperativo)}"/>
                         </p:column>

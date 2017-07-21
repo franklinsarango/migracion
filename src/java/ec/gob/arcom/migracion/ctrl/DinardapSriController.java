@@ -59,6 +59,7 @@ public class DinardapSriController {
     private SelectItem[] aniosFiscales;
     private String anioFiscal;
     private String mensaje;
+    private boolean razonSocialSelected= false;
     /**
      * Creates a new instance of DinardapSriController
      */
@@ -128,14 +129,7 @@ public class DinardapSriController {
     }
     
     public void consultar() {
-        if(consulta!=null && consulta.equals("625")) {
-            tabla625= true;
-            tabla626= false;
-            tabla627= false;
-            tabla628= false;
-            tabla833= false;
-            consulta625();
-        } else if(consulta!=null && consulta.equals("626")) {
+        if(consulta!=null && consulta.equals("626")) {
             tabla625= false;
             tabla626= true;
             tabla627= false;
@@ -164,8 +158,17 @@ public class DinardapSriController {
             tabla833= true;
             consulta833();
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Debe seleccionar una opción"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Debe seleccionar un formulario"));
         }
+    }
+    
+    public void consultarRise() {
+        tabla625= true;
+        tabla626= false;
+        tabla627= false;
+        tabla628= false;
+        tabla833= false;
+        consulta625();
     }
     
     public void consulta625() {
@@ -175,43 +178,27 @@ public class DinardapSriController {
     }
     
     public void consulta626() {
-        if(valorBuscar.length()>0) {
-            entidades= DinardapClient.consultar(RequestFactory.generarConsulta626(valorBuscar), "626").getEntidades().getEntidad();
-            nombreEntidad= entidades.get(0).getNombre();
-            filas= entidades.get(0).getFilas().getFila();
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Debe ingresar el valor a buscar"));
-        }
+        entidades= DinardapClient.consultar(RequestFactory.generarConsulta626(valorBuscar), "626").getEntidades().getEntidad();
+        nombreEntidad= entidades.get(0).getNombre();
+        filas= entidades.get(0).getFilas().getFila();
     }
     
     public void consulta627() {
-        if(valorBuscar.length()>0) {
-            entidades= DinardapClient.consultar(RequestFactory.generarConsulta627(valorBuscar), "627").getEntidades().getEntidad();
-            nombreEntidad= entidades.get(0).getNombre();
-            filas= entidades.get(0).getFilas().getFila();
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Debe ingresar el valor a buscar"));
-        }
+        entidades= DinardapClient.consultar(RequestFactory.generarConsulta627(valorBuscar), "627").getEntidades().getEntidad();
+        nombreEntidad= entidades.get(0).getNombre();
+        filas= entidades.get(0).getFilas().getFila();
     }
     
     public void consulta628() {
-        if(valorBuscar.length()>0) {
-            entidades= DinardapClient.consultar(RequestFactory.generarConsulta628(valorBuscar), "628").getEntidades().getEntidad();
-            nombreEntidad= entidades.get(0).getNombre();
-            filas= entidades.get(0).getFilas().getFila();
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Debe ingresar el valor a buscar"));
-        }
+        entidades= DinardapClient.consultar(RequestFactory.generarConsulta628(valorBuscar), "628").getEntidades().getEntidad();
+        nombreEntidad= entidades.get(0).getNombre();
+        filas= entidades.get(0).getFilas().getFila();
     }
     
     public void consulta833() {
-        if(valorBuscar.length()>0) {
-            entidades= DinardapClient.consultar(RequestFactory.generarConsulta833(valorBuscar), "833").getEntidades().getEntidad();
-            nombreEntidad= entidades.get(0).getNombre();
-            filas= entidades.get(0).getFilas().getFila();
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Debe ingresar el valor a buscar"));
-        }
+        entidades= DinardapClient.consultar(RequestFactory.generarConsulta833(valorBuscar), "833").getEntidades().getEntidad();
+        nombreEntidad= entidades.get(0).getNombre();
+        filas= entidades.get(0).getFilas().getFila();
     }
 
     public List<Entidad> getEntidades() {
@@ -323,6 +310,14 @@ public class DinardapSriController {
         this.aniosFiscales = aniosFiscales;
     }
 
+    public boolean isRazonSocialSelected() {
+        return razonSocialSelected;
+    }
+
+    public void setRazonSocialSelected(boolean razonSocialSelected) {
+        this.razonSocialSelected = razonSocialSelected;
+    }
+
     public String getMensaje() {
         mensaje= "Se eliminaran los datos del año " + anioFiscal + 
                 " y se volveran a consultar al SRI, este proceso tardará varios minutos "
@@ -378,5 +373,28 @@ public class DinardapSriController {
             anioActual--;
         }
         return anios;
+    }
+    
+    public String obtenerMensajeMarcaAgua() {
+        if(razonSocialSelected) {
+            return "Ingrese el texto a consultar";
+        }
+        return "Ingrese el número de RUC a consultar";
+    }
+    
+    public String obtenerMensajeBusqueda() {
+        if(razonSocialSelected) {
+            return "Debe el texto a consultar";
+        }
+        return "Debe ingresar el número de RUC a consultar";
+    }
+    
+    public void actualizarRazonSocialSelected() {
+        if(consulta!=null && consulta.equals("628")) {
+            razonSocialSelected= true;
+            valorBuscar= "";
+        } else {
+            razonSocialSelected= false;
+        }
     }
 }
