@@ -384,7 +384,7 @@ public class DinardapSriController {
     
     public String obtenerMensajeBusqueda() {
         if(razonSocialSelected) {
-            return "Debe el texto a consultar";
+            return "Debe ingresar el texto a consultar";
         }
         return "Debe ingresar el número de RUC a consultar";
     }
