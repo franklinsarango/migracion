@@ -43,7 +43,8 @@
                                  var="operativo" value="#{operativoCtrl.operativos}" rowIndexVar="row"
                                  currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                 rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
+                                 rowsPerPageTemplate="10,25,50" rows="25" paginator="true"
+                                 filteredValue="#{operativoCtrl.filteredOperativos}" widgetVar="operativostable">
                         
                         <p:column headerText="No" style="width: 25px">
                             <h:outputText value="#{row + 1}"/>
@@ -53,12 +54,28 @@
                             <h:outputText value="#{operativoCtrl.obtenerFechaConFormato(operativo.fechaOperativo)}"/>
                         </p:column>
 
-                        <p:column headerText="Tipo operativo" style="width: 100px;">
+                        <p:column headerText="Tipo operativo" style="width: 100px;"
+                                  sortBy="#{operativo.tipoOperativo.codigoCatalogoDetalle}"
+                                  filterBy="#{operativo.tipoOperativo}" filterMatchMode="exact">
+                            <f:facet name="filter">
+                                 <p:selectOneMenu onchange="PF('operativostable').filter()">
+                                     <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                     <f:selectItems value="#{operativoCtrl.tiposOperativo}"/>
+                                 </p:selectOneMenu>
+                             </f:facet>
                             <h:outputText value="#{operativo.tipoOperativo.nombre}"/>
                         </p:column>
 
-                         <p:column headerText="Regional" style="width: 100px;">
-                            <h:outputText value="#{operativo.regional.nombreRegional}"/>
+                         <p:column headerText="Regional" style="width: 100px;"
+                                   sortBy="#{operativo.regional.codigoRegional}"
+                                   filterBy="#{operativo.regional}" filterMatchMode="exact">
+                             <f:facet name="filter">
+                                 <p:selectOneMenu onchange="PF('operativostable').filter()">
+                                     <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                     <f:selectItems value="#{operativoCtrl.regionales}"/>
+                                 </p:selectOneMenu>
+                             </f:facet>
+                             <h:outputText value="#{operativo.regional.descripcionRegional}"/>
                         </p:column>
 
                         <p:column headerText="Provincia" style="width: 100px;">

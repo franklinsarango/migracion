@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.modelo.Operativo;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.dao.OperativoDao;
+import ec.gob.arcom.migracion.modelo.Regional;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -27,6 +28,19 @@ public class OperativoDaoEjb extends GenericDaoEjbEl<Operativo, Long> implements
         try {
             Query query= em.createQuery("Select op from Operativo op where op.estadoRegistro= :estado order by op.fechaCreacion ASC");
             query.setParameter("estado", true);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public List<Operativo> obtenerPorRegional(Regional regional) {
+        try {
+            Query query= em.createQuery("Select op from Operativo op where op.estadoRegistro= :estado and op.regional= :regional order by op.fechaCreacion ASC");
+            query.setParameter("estado", true);
+            query.setParameter("regional", regional);
             return query.getResultList();
         } catch(Exception ex) {
            System.out.println(ex.toString());

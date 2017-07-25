@@ -210,6 +210,18 @@
                     </p:row>
                     
                     <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="zona" value="Zona:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="zona" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                             value="#{operativoCtrl.operativo.zona}">
+                                <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{operativoCtrl.zonas}"/>
+                                <p:ajax update="inecParroquia"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="coorx" value="Coordenada X (PSAD56):"/></p:column>
                         <p:column style="text-align: left">
                             <p:inputText id="coorx" value="#{operativoCtrl.operativo.utmEste}" required="true"

@@ -38,6 +38,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -108,6 +109,7 @@ public class OperativoCtrl extends BaseCtrl {
     private Date fechaMaxima;
     
     private List<Operativo> operativos;
+    private List<Operativo> filteredOperativos;
     private Operativo operativo;
     
     private List<DetalleOperativo> detallesOperativo;
@@ -115,6 +117,7 @@ public class OperativoCtrl extends BaseCtrl {
     private MaquinariaConcesion maquinaria;
     private List<MaquinariaConcesion> maquinarias;
     
+    private List<SelectItem> zonas;
     private List<SelectItem> tiposOperativo;
     private List<SelectItem> formasExplotacion;
     private List<SelectItem> tiposMaterial;
@@ -138,8 +141,8 @@ public class OperativoCtrl extends BaseCtrl {
     private List<UploadedFile> archivosParaCargar;
     private boolean showUploadPanel= false;
     
-    private List<String> headers;
-    private List<Object> values;
+    private List<DataTableColumn> columns;
+    private List<ReportData> rows;
     
     @ManagedProperty(value = "#{loginCtrl}")
     private LoginCtrl login;
@@ -153,8 +156,8 @@ public class OperativoCtrl extends BaseCtrl {
         detalleOperativo= new DetalleOperativo();
         maquinaria= new MaquinariaConcesion();
         maquinaria.setEstadoMaquinaria(BigInteger.ZERO);
-        headers= new ArrayList<>();
-        values= new ArrayList<>();
+        columns= new ArrayList<>();
+        rows= new ArrayList<>();
     }
     
     @PostConstruct
@@ -163,20 +166,28 @@ public class OperativoCtrl extends BaseCtrl {
         obtenerOperativos();
     }
 
-    public List<String> getHeaders() {
-        return headers;
+    public List<Operativo> getFilteredOperativos() {
+        return filteredOperativos;
     }
 
-    public void setHeaders(List<String> headers) {
-        this.headers = headers;
+    public void setFilteredOperativos(List<Operativo> filteredOperativos) {
+        this.filteredOperativos = filteredOperativos;
     }
 
-    public List<Object> getValues() {
-        return values;
+    public List<DataTableColumn> getColumns() {
+        return columns;
     }
 
-    public void setValues(List<Object> values) {
-        this.values = values;
+    public void setColumns(List<DataTableColumn> columns) {
+        this.columns = columns;
+    }
+
+    public List<ReportData> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<ReportData> rows) {
+        this.rows = rows;
     }
 
     public List<Operativo> getOperativos() {
@@ -250,6 +261,21 @@ public class OperativoCtrl extends BaseCtrl {
 
         }
         return tiposInstitucion;
+    }
+    
+    public List<SelectItem> getZonas() {
+        if (zonas == null) {
+            zonas = new ArrayList<>();
+            Catalogo catalogo = catalogoServicio.findByNemonico("ZONGEO");
+            if (catalogo != null) {
+                List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+                for (CatalogoDetalle catDet : tipoServCat) {
+                    zonas.add(new SelectItem(catDet, catDet.getNombre()));
+                }
+            }
+
+        }
+        return zonas;
     }
     
     public List<SelectItem> getTiposOperativo() {
@@ -373,7 +399,7 @@ public class OperativoCtrl extends BaseCtrl {
             regionales = new ArrayList<>();
             List<Regional> rgnls = regionalServicio.findActivos();
             for (Regional rgnl : rgnls) {
-                regionales.add(new SelectItem(rgnl, rgnl.getNombreRegional()));
+                regionales.add(new SelectItem(rgnl, rgnl.getDescripcionRegional()));
             }
         }
         return regionales;
@@ -927,55 +953,73 @@ public class OperativoCtrl extends BaseCtrl {
     }
     
     public void generarReporteMensual() {
-        List<String> encabezados= new ArrayList<>();
+        List<String> filas= Arrays.asList("CUENCA", "GUAYAQUIL", "IBARRA", "LOJA", "MACAS", "MACHALA", "RIOBAMBA", "TENA", "ZAMORA");
         Calendar c= Calendar.getInstance();
-        int mes= c.get(Calendar.MONTH);
+        int mesActual= c.get(Calendar.MONTH);
+        System.out.println("mesActual: " + mesActual);
         String mesString= "";
-        encabezados.add("COORDINACIÓN REGINAL DIRECCIÓN TÉCNICA");
-        for(int i=0; i<=mes; i++) {
+        columns= new ArrayList<>();
+        columns.add(new DataTableColumn("COORDINACIÓN REGIONAL DIRECCIÓN TÉCNICA ", "nombreRegional"));
+        for(int i=0; i<=mesActual; i++) {
             switch (i) {
-                case 0:  mesString = "Enero";
+                case 0:  mesString = "ENERO";
                          break;
-                case 1:  mesString = "Febrero";
+                case 1:  mesString = "FEBRERO";
                          break;
-                case 2:  mesString = "Marzo";
+                case 2:  mesString = "MARZO";
                          break;
-                case 3:  mesString = "Abril";
+                case 3:  mesString = "ABRIL";
                          break;
-                case 4:  mesString = "Mayo";
+                case 4:  mesString = "MAYO";
                          break;
-                case 5:  mesString = "Junio";
+                case 5:  mesString = "JUNIO";
                          break;
-                case 6:  mesString = "Julio";
+                case 6:  mesString = "JULIO";
                          break;
-                case 7:  mesString = "Agosto";
+                case 7:  mesString = "AGOSTO";
                          break;
-                case 8:  mesString = "Septiembre";
+                case 8:  mesString = "SEPTIEMBRE";
                          break;
-                case 9: mesString = "Octubre";
+                case 9: mesString = "OCTUBRE";
                          break;
-                case 10: mesString = "Novimbre";
+                case 10: mesString = "NOVIEMBRE";
                          break;
-                case 11: mesString = "Diciembre";
+                case 11: mesString = "DICIEMBRE";
                          break;
             }
-            encabezados.add(mesString);
+            columns.add(new DataTableColumn(mesString, "cantidadDeOperativos"));
         }
-        headers= encabezados;
-        
-        //
-        List<Object> valores= new ArrayList<>();
-        for(String h : headers) {
-            valores.add("hola");
+        rows= new ArrayList<>();
+        for(String fila : filas) {
+            List<Long> cantOperativos= new ArrayList();
+            Long codigoRegional= obtenerCodigoRegional(fila);
+            
+            List<Operativo> cantidadPorRegional= operativoServicio.obtenerPorRegional(regionalServicio.findByPk(codigoRegional));
+            for(int i= 0; i<=columns.size();i++) {
+                Long cantidadPorMes= (long) contarPorMes(cantidadPorRegional, i);
+                cantOperativos.add(cantidadPorMes);
+            }
+            rows.add(new ReportData(fila, cantOperativos));
+            System.out.println("Mes: " + fila);
+            System.out.println("cantOperativos: " + cantOperativos);
         }
-        
-        values= valores;
     }
     
-    public class Data {
+    public String obtenerValorPresentar(ReportData row, int col) {
+        if(col==0) {
+            return row.getNombreRegional();
+        }
+        return row.getCantidadDeOperativos().get(col-1).toString();
+    }
+    
+    public class DataTableColumn {
         String header;
-        String column;
-        Long value;
+        String property;
+        
+        public DataTableColumn(String h, String p) {
+            header= h;
+            property= p;
+        }
 
         public String getHeader() {
             return header;
@@ -985,26 +1029,78 @@ public class OperativoCtrl extends BaseCtrl {
             this.header = header;
         }
 
-        public Long getValue() {
-            return value;
+        public String getProperty() {
+            return property;
         }
 
-        public String getColumn() {
-            return column;
-        }
-
-        public void setColumn(String column) {
-            this.column = column;
-        }
-
-        public void setValue(Long value) {
-            this.value = value;
+        public void setProperty(String property) {
+            this.property = property;
         }
         
-        public Data(String h, String c, Long v) {
-            header= h;
-            column= c;
-            value= v;
+    }
+    
+    public class ReportData {
+        private String nombreRegional;
+        private List<Long> cantidadDeOperativos;
+        
+        public ReportData(String name, List<Long> numberOfOperativos) {
+            nombreRegional= name;
+            cantidadDeOperativos= numberOfOperativos;
         }
+
+        public String getNombreRegional() {
+            return nombreRegional;
+        }
+
+        public void setNombreRegional(String nombreRegional) {
+            this.nombreRegional = nombreRegional;
+        }
+
+        public List<Long> getCantidadDeOperativos() {
+            return cantidadDeOperativos;
+        }
+
+        public void setCantidadDeOperativos(List<Long> cantidadDeOperativos) {
+            this.cantidadDeOperativos = cantidadDeOperativos;
+        }
+        
+    }
+   
+    public Long obtenerCodigoRegional(String nombreRegional) {
+        Long codigo = (long) 0;
+        switch (nombreRegional) {
+            case "CUENCA":  codigo = (long) 1;
+                     break;
+            case "GUAYAQUIL":  codigo = (long) 7;
+                     break;
+            case "IBARRA":  codigo = (long) 4;
+                     break;
+            case "LOJA":  codigo = (long) 6;
+                     break;
+            case "MACAS":  codigo = (long) 9;
+                     break;
+            case "MACHALA":  codigo = (long) 3;
+                     break;
+            case "RIOBAMBA":  codigo = (long) 2;
+                     break;
+            case "TENA":  codigo = (long) 10;
+                     break;
+            case "ZAMORA":  codigo = (long) 5;
+                     break;
+        }
+        return codigo;
+    }
+    
+    public int contarPorMes(List<Operativo> operativosPorRegional, int mesAContar) {
+        int resultado= 0;
+        for(Operativo ope : operativosPorRegional) {
+            Calendar c= Calendar.getInstance();
+            c.setTime(ope.getFechaOperativo());
+            int mesOperativo= c.get(Calendar.MONTH);
+            if(mesOperativo==mesAContar) {
+                resultado++;
+            }
+        }
+        return resultado;
     }
 }

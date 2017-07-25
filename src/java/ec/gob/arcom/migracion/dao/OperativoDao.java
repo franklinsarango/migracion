@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
 import ec.gob.arcom.migracion.modelo.Operativo;
+import ec.gob.arcom.migracion.modelo.Regional;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,5 +19,7 @@ import javax.ejb.Local;
 public interface OperativoDao extends GenericDao<Operativo, Long> {
 
     public List<Operativo> list();
+
+    public List<Operativo> obtenerPorRegional(Regional regional);
     
 }

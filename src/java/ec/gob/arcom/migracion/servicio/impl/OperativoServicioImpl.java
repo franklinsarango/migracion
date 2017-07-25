@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.OperativoDao;
 import ec.gob.arcom.migracion.modelo.Operativo;
+import ec.gob.arcom.migracion.modelo.Regional;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.servicio.OperativoServicio;
 import java.util.List;
@@ -31,5 +32,10 @@ public class OperativoServicioImpl extends GenericServiceImpl<Operativo, Long> i
     @Override
     public List<Operativo> listar() {
         return operativoDao.list();
+    }
+
+    @Override
+    public List<Operativo> obtenerPorRegional(Regional regional) {
+        return operativoDao.obtenerPorRegional(regional);
     }
 }

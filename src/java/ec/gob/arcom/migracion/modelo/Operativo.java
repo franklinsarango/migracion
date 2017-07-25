@@ -49,6 +49,9 @@ public class Operativo implements Serializable {
     private Localidad parroquia;
     @Column(name = "sector")
     private String sector;
+    @JoinColumn(name = "codigo_zona", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle zona;
     @Column(name = "utm_este")
     private String utmEste;
     @Column(name = "utm_norte")
@@ -168,6 +171,14 @@ public class Operativo implements Serializable {
 
     public void setSector(String sector) {
         this.sector = sector;
+    }
+
+    public CatalogoDetalle getZona() {
+        return zona;
+    }
+
+    public void setZona(CatalogoDetalle zona) {
+        this.zona = zona;
     }
 
     public String getUtmEste() {

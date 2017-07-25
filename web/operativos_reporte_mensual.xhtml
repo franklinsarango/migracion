@@ -4,7 +4,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition template="/templates/page-template_pf.xhtml">
         <ui:define name="title">
@@ -39,9 +39,9 @@
                                          update="reporte"/>
                     </p:panelGrid>
 
-                    <p:dataTable id="reporte" emptyMessage="" value="#{operativoCtrl.values}" var="r">
-                        <p:columns value="#{operativoCtrl.headers}" var="v" headerText="#{v}">
-                            #{r}
+                    <p:dataTable id="reporte" emptyMessage="" value="#{operativoCtrl.rows}" var="r">
+                        <p:columns value="#{operativoCtrl.columns}" var="c" headerText="#{c.header}" columnIndexVar="col" style="text-align: right">
+                            <h:outputLabel value="#{operativoCtrl.obtenerValorPresentar(r, col)}"/>
                         </p:columns>
                     </p:dataTable>
                 </p:panelGrid>

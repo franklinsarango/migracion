@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
 import ec.gob.arcom.migracion.modelo.Operativo;
+import ec.gob.arcom.migracion.modelo.Regional;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,5 +19,7 @@ import javax.ejb.Local;
 public interface OperativoServicio extends GenericService<Operativo, Long> {
 
     public List<Operativo> listar();
+
+    public List<Operativo> obtenerPorRegional(Regional findByPk);
     
 }
