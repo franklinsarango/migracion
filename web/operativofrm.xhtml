@@ -214,7 +214,7 @@
                         <p:column style="text-align: left">
                             <p:selectOneMenu id="zona" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
                                              value="#{operativoCtrl.operativo.zona}">
-                                <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Seleccione la zona..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{operativoCtrl.zonas}"/>
                                 <p:ajax update="inecParroquia"/>
                             </p:selectOneMenu>
