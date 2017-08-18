@@ -474,16 +474,22 @@ public class OperativoCtrl extends BaseCtrl {
         if (tecnicos == null) {
             tecnicos = new ArrayList<>();
             Rol rol= obtenerRol("TECNICO");
-            List<UsuarioRol> usuariosRol= new ArrayList();
-            usuariosRol= usuarioRolServicio.listByRol(rol);
+            List<UsuarioRol> usuariosRol= usuarioRolServicio.listByRol(rol);            
+            
+            rol= obtenerRol("TECNICOCAT");
+            List<UsuarioRol> usuariosRol02= usuarioRolServicio.listByRol(rol);
             
             List<Usuario> usuarios= new ArrayList<>();
             for(UsuarioRol ur : usuariosRol) {
                 usuarios.add(ur.getUsuario());
             }
             
+            for(UsuarioRol ur : usuariosRol02) {
+                usuarios.add(ur.getUsuario());
+            }
+            
             for (Usuario u : usuarios) {
-                tecnicos.add(new SelectItem(u, u.getNombresCompletos()));
+                tecnicos.add(new SelectItem(u, u.getNombresCompletos().toUpperCase()));
             }
         }
         return tecnicos;
@@ -493,16 +499,22 @@ public class OperativoCtrl extends BaseCtrl {
         if (legales == null) {
             legales = new ArrayList<>();
             Rol rol= obtenerRol("ABOGADO");
-            List<UsuarioRol> usuariosRol= new ArrayList();
-            usuariosRol= usuarioRolServicio.listByRol(rol);
+            List<UsuarioRol> usuariosRol= usuarioRolServicio.listByRol(rol);
+            
+            rol= obtenerRol("RGRGNL");
+            List<UsuarioRol> usuariosRol02= usuarioRolServicio.listByRol(rol);
             
             List<Usuario> usuarios= new ArrayList<>();
             for(UsuarioRol ur : usuariosRol) {
                 usuarios.add(ur.getUsuario());
             }
             
+            for(UsuarioRol ur : usuariosRol02) {
+                usuarios.add(ur.getUsuario());
+            }
+            
             for (Usuario u : usuarios) {
-                legales.add(new SelectItem(u, u.getNombresCompletos()));
+                legales.add(new SelectItem(u, u.getNombresCompletos().toUpperCase()));
             }
         }
         return legales;
@@ -572,9 +584,12 @@ public class OperativoCtrl extends BaseCtrl {
     
     public void editOperativoAction(Integer row) {
         edit= true;
+        resetAction();
         operativo= operativos.get(row);
         operativo.setUtmEste(operativo.getUtmEste().replace(",", "."));
         operativo.setUtmNorte(operativo.getUtmNorte().replace(",", "."));
+        getCantones();
+        getParroquias();
         detallesOperativo= detalleOperativoServicio.listarPorOperativo(operativo);
         maquinarias= maquinariaConcesionServicio.obtenerMaquinariasPorOperativo(operativo);
         archivosCargados= obtenerArchivosCargados(operativo);
@@ -696,6 +711,12 @@ public class OperativoCtrl extends BaseCtrl {
         operativo.setEstadoRegistro(Boolean.TRUE);
         operativo.setFechaCreacion(Calendar.getInstance().getTime());
         operativo.setUsuarioCreacion(usrCreacion);
+        if(!operativo.getExpedienteAdministrativo()) {
+            operativo.setNumeroExpedienteAdministrativo(null);
+            operativo.setEstadoAdministrativo(null);
+            operativo.setNumeroResolucionAdministrativo(null);
+            operativo.setFechaResolucionAdministrativo(null);
+        }
         operativoServicio.create(operativo);
         saveAuditoria(INSERT, operativo, new Operativo());
         
@@ -736,6 +757,12 @@ public class OperativoCtrl extends BaseCtrl {
         operativo.setUtmNorte(operativo.getUtmNorte().replace(".", ","));
         operativo.setFechaModificacion(Calendar.getInstance().getTime());
         operativo.setUsuarioModificacion(usr);
+        if(!operativo.getExpedienteAdministrativo()) {
+            operativo.setNumeroExpedienteAdministrativo(null);
+            operativo.setEstadoAdministrativo(null);
+            operativo.setNumeroResolucionAdministrativo(null);
+            operativo.setFechaResolucionAdministrativo(null);
+        }
         operativoServicio.update(operativo);
         saveAuditoria(UPDATE, operativo, anterior);
         
@@ -949,6 +976,11 @@ public class OperativoCtrl extends BaseCtrl {
     
     private List<Adjunto> obtenerArchivosCargados(Operativo o) {
         return adjuntoServicio.findByOperativo(o);
+    }
+    
+    private void resetAction() {
+        this.cantones= null;
+        this.parroquias= null;
     }
     
     public void generarReporteMensual() {

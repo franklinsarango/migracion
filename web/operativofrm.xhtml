@@ -425,8 +425,8 @@
                         <p:column colspan="2" style="text-align: center"><p:outputLabel value="Sellos" style="font-weight: bolder"/></p:column>
                     </p:row>
                     <p:row>
-                        <p:column style="text-align: right"><p:outputLabel for="sello" value="Sello:"/></p:column>
-                        <p:column style="text-align: left">
+                        <p:column style="text-align: right; width: 50%"><p:outputLabel for="sello" value="Sello:"/></p:column>
+                        <p:column style="text-align: left; width: 50%">
                             <p:selectOneMenu id="sello" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
                                              value="#{operativoCtrl.operativo.tipoSello}" requiredMessage="Debe seleccionar un tipo sello">
                                 <f:selectItem itemLabel="Seleccione un tipo sello..." itemValue="#{null}" noSelectionOption="true"/>
@@ -474,13 +474,26 @@
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="expediente" value="Expediente administrativo:"/></p:column>
                         <p:column style="text-align: left">
-                            <p:selectBooleanCheckbox id="expediente" value="#{operativoCtrl.operativo.expedienteAdministrativo}"/>
+                            <p:selectBooleanCheckbox id="expediente" value="#{operativoCtrl.operativo.expedienteAdministrativo}">
+                                <p:ajax update="panelExpAdm"/>
+                            </p:selectBooleanCheckbox>
                         </p:column>
                     </p:row>
+                </p:panelGrid>
+                
+                <p:panelGrid id="panelExpAdm" styleClass="pg-center-02">
                     <p:row>
-                        <p:column style="text-align: right"><p:outputLabel for="estadoProcedimiento" value="Estado procedimiento administrativo:"/></p:column>
+                        <p:column style="text-align: right; width: 50%"><p:outputLabel for="numExpAdm" value="No. expediente administrativo:" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"/></p:column>
+                        <p:column style="text-align: left; width: 50%">
+                            <p:inputText id="numExpAdm" value="#{operativoCtrl.operativo.numeroExpedienteAdministrativo}" required="true" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"
+                                         maxlength="100" requiredMessage="Debe ingresar el número de expediente administrativo" styleClass="inputtext-form"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel for="estadoProcedimiento" value="Estado procedimiento administrativo:" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"/></p:column>
                         <p:column style="text-align: left">
-                            <p:selectOneMenu id="estadoProcedimiento" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                            <p:selectOneMenu id="estadoProcedimiento" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"
                                              value="#{operativoCtrl.operativo.estadoAdministrativo}" requiredMessage="Debe seleccionar un estado procedimiento">
                                 <f:selectItem itemLabel="Seleccione un estado procedimiento..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{operativoCtrl.estadosProcedimiento}"/>
@@ -488,16 +501,16 @@
                         </p:column>
                     </p:row>
                     <p:row>
-                        <p:column style="text-align: right"><p:outputLabel for="numResolucion" value="No. resolución:"/></p:column>
+                        <p:column style="text-align: right"><p:outputLabel for="numResolucion" value="No. resolución:" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"/></p:column>
                         <p:column style="text-align: left">
-                            <p:inputText id="numResolucion" value="#{operativoCtrl.operativo.numeroResolucionAdministrativo}"
+                            <p:inputText id="numResolucion" value="#{operativoCtrl.operativo.numeroResolucionAdministrativo}" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"
                                          maxlength="100" requiredMessage="Debe ingresar el número de resolución" styleClass="inputtext-form"/>
                         </p:column>
                     </p:row>
                     <p:row>
-                        <p:column style="text-align: right"><p:outputLabel for="fechaResolucion" value="Fecha resolución:"/></p:column>
+                        <p:column style="text-align: right"><p:outputLabel for="fechaResolucion" value="Fecha resolución:" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"/></p:column>
                         <p:column style="text-align: left">
-                            <p:calendar id="fechaResolucion" styleClass="calendar-form"
+                            <p:calendar id="fechaResolucion" styleClass="calendar-form" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"
                                         readonlyInput="true" requiredMessage="El campo fecha de resolución es requerido"
                                         maxdate="#{operativoCtrl.fechaMaxima}"
                                         value="#{operativoCtrl.operativo.fechaResolucionAdministrativo}"/>
