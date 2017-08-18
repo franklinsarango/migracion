@@ -93,8 +93,6 @@ public class Operativo implements Serializable {
     private String accionesRealizar;
     @Column(name = "expediente_administrativo")
     private Boolean expedienteAdministrativo;
-    @Column(name = "numero_expediente_administrativo")
-    private String numeroExpedienteAdministrativo;
     @JoinColumn(name = "codigo_estado_administrativo", referencedColumnName = "codigo_catalogo_detalle")
     @ManyToOne
     private CatalogoDetalle estadoAdministrativo;
@@ -319,14 +317,6 @@ public class Operativo implements Serializable {
         this.expedienteAdministrativo = expedienteAdministrativo;
     }
 
-    public String getNumeroExpedienteAdministrativo() {
-        return numeroExpedienteAdministrativo;
-    }
-
-    public void setNumeroExpedienteAdministrativo(String numeroExpedienteAdministrativo) {
-        this.numeroExpedienteAdministrativo = numeroExpedienteAdministrativo;
-    }
-
     public CatalogoDetalle getEstadoAdministrativo() {
         return estadoAdministrativo;
     }
@@ -403,14 +393,9 @@ public class Operativo implements Serializable {
                 ", responsableLegal=" + responsableLegal.getNumeroDocumento() + ", numeroInformeTecnico=" + numeroInformeTecnico +
                 ", observacionesOperativo=" + observacionesOperativo + ", fechaOperativo=" + fechaOperativo + ", tipoMaterial=" + tipoMaterial.getCodigoCatalogo() + 
                 ", formaExplotacion=" + formaExplotacion.getCodigoCatalogoDetalle() + ", descripcionAccionesRealizadas=" + descripcionAccionesRealizadas +
-                ", multaProcesoAdministrativo=" + multaProcesoAdministrativo + ", accionesRealizar=" + accionesRealizar + 
-                ", expedienteAdministrativo=" + expedienteAdministrativo + 
-                ", numeroExpedienteAdministrativo=" + numeroExpedienteAdministrativo +
-                ", estadoAdministrativo=" + obtenerEstadoAdministrativo() + 
-                ", numeroResolucionAdministrativo=" + numeroResolucionAdministrativo +
-                ", fechaResolucionAdministrativo=" + obtenerValorNulo(fechaResolucionAdministrativo) + 
-                ", estadoRegistro=" + estadoRegistro + 
-                ", fechaCreacion=" + fechaCreacion + 
+                ", multaProcesoAdministrativo=" + multaProcesoAdministrativo + ", accionesRealizar=" + accionesRealizar + ", expedienteAdministrativo=" + expedienteAdministrativo + 
+                ", estadoAdministrativo=" + estadoAdministrativo.getCodigoCatalogoDetalle() + ", numeroResolucionAdministrativo=" + numeroResolucionAdministrativo +
+                ", fechaResolucionAdministrativo=" + fechaResolucionAdministrativo + ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + 
                 ", usuarioCreacion=" + usuarioCreacion + 
                 ", fechaModificacion=" + fechaModificacion + 
                 ", usuarioModificacion=" + obtenerUsuarioModificacion() +
@@ -423,22 +408,6 @@ public class Operativo implements Serializable {
             return "";
         } else {
             return usuarioModificacion.getNumeroDocumento();
-        }
-    }
-    
-    private String obtenerEstadoAdministrativo() {
-        try {
-            return estadoAdministrativo.getCodigoCatalogoDetalle().toString();
-        } catch(Exception ex) {
-            return "";
-        }
-    }
-    
-    private String obtenerValorNulo(Object value) {
-        if(value==null) {
-            return "";
-        } else {
-            return value.toString();
         }
     }
 }
