@@ -474,11 +474,17 @@ public class OperativoCtrl extends BaseCtrl {
         if (tecnicos == null) {
             tecnicos = new ArrayList<>();
             Rol rol= obtenerRol("TECNICO");
-            List<UsuarioRol> usuariosRol= new ArrayList();
-            usuariosRol= usuarioRolServicio.listByRol(rol);
+            List<UsuarioRol> usuariosRol= usuarioRolServicio.listByRol(rol);
+            
+            rol= obtenerRol("TECNICOCAT");
+            List<UsuarioRol> usuariosRol02= usuarioRolServicio.listByRol(rol);
             
             List<Usuario> usuarios= new ArrayList<>();
             for(UsuarioRol ur : usuariosRol) {
+                usuarios.add(ur.getUsuario());
+            }
+            
+            for(UsuarioRol ur : usuariosRol02) {
                 usuarios.add(ur.getUsuario());
             }
             
@@ -493,11 +499,17 @@ public class OperativoCtrl extends BaseCtrl {
         if (legales == null) {
             legales = new ArrayList<>();
             Rol rol= obtenerRol("ABOGADO");
-            List<UsuarioRol> usuariosRol= new ArrayList();
-            usuariosRol= usuarioRolServicio.listByRol(rol);
+            List<UsuarioRol> usuariosRol= usuarioRolServicio.listByRol(rol);
+            
+            rol= obtenerRol("RGRGNL");
+            List<UsuarioRol> usuariosRol02= usuarioRolServicio.listByRol(rol);
             
             List<Usuario> usuarios= new ArrayList<>();
             for(UsuarioRol ur : usuariosRol) {
+                usuarios.add(ur.getUsuario());
+            }
+            
+            for(UsuarioRol ur : usuariosRol02) {
                 usuarios.add(ur.getUsuario());
             }
             
