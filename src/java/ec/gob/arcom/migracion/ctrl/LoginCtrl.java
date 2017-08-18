@@ -62,7 +62,6 @@ public class LoginCtrl extends BaseCtrl {
     private boolean usuarioCatastro;    //UC7
     private boolean usuarioInterno;
     private boolean tecnico;
-    private boolean abogado;
     private boolean tecnicoCatastro;
     private boolean coordinadorRegional;
     private boolean directorEjecutivo;
@@ -206,11 +205,6 @@ public class LoginCtrl extends BaseCtrl {
                             this.tecnicoCatastro = true;
                         } else {
                             this.tecnicoCatastro = false;
-                        }
-                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ABOGADO.getNemonico())){
-                            this.abogado = true;
-                        } else {
-                            this.abogado = false;
                         }
                         if(usRol.getRol().getNemonico().equals(RolEnum.ROL_COORDINADOR_REGIONAL.getNemonico())){
                             this.coordinadorRegional = true;
@@ -467,20 +461,6 @@ public class LoginCtrl extends BaseCtrl {
      */
     public void setDirectorEjecutivo(boolean directorEjecutivo) {
         this.directorEjecutivo = directorEjecutivo;
-    }
-
-    /**
-     * @return the abogado
-     */
-    public boolean isAbogado() {
-        return abogado;
-    }
-
-    /**
-     * @param abogado the abogado to set
-     */
-    public void setAbogado(boolean abogado) {
-        this.abogado = abogado;
     }
 
 }
