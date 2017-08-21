@@ -474,7 +474,7 @@ public class OperativoCtrl extends BaseCtrl {
         if (tecnicos == null) {
             tecnicos = new ArrayList<>();
             Rol rol= obtenerRol("TECNICO");
-            List<UsuarioRol> usuariosRol= usuarioRolServicio.listByRol(rol);
+            List<UsuarioRol> usuariosRol= usuarioRolServicio.listByRol(rol);            
             
             rol= obtenerRol("TECNICOCAT");
             List<UsuarioRol> usuariosRol02= usuarioRolServicio.listByRol(rol);
@@ -549,19 +549,29 @@ public class OperativoCtrl extends BaseCtrl {
     ////////////////////////
     
     public void newOperativoAction() {
-        operativo= new Operativo();
-        detallesOperativo= new ArrayList<>();
-        detalleOperativo= new DetalleOperativo();
-        maquinarias= new ArrayList<>();
-        archivosParaCargar= new ArrayList<>();
+        if(login.getCodigoUsuario()!=null) {
+            operativo= new Operativo();
+            detallesOperativo= new ArrayList<>();
+            detalleOperativo= new DetalleOperativo();
+            maquinarias= new ArrayList<>();
+            archivosParaCargar= new ArrayList<>();
         
-        Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("operativoform:operativowiz");
-        wizard.setStep("tab01");
-        RequestContext.getCurrentInstance().update("operativoform");
+            Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("operativoform:operativowiz");
+            wizard.setStep("tab01");
+            RequestContext.getCurrentInstance().update("operativoform");
+            RequestContext.getCurrentInstance().execute("PF('operativofrmwg').show();");
+        } else {
+            mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Debe estar logueado para realizar esta acción");
+        }
     }
     
     public void setOperativoEliminarAction(Integer row) {
-        operativo= operativos.get(row);
+        if(login.getCodigoUsuario()!=null) {
+            operativo= operativos.get(row);
+            RequestContext.getCurrentInstance().execute("PF('deloperativodlgwg').show();");
+        } else {
+            mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Debe estar logueado para realizar esta acción");
+        }
     }
     
     public void deleteOperativoAction() {
@@ -583,18 +593,26 @@ public class OperativoCtrl extends BaseCtrl {
     }
     
     public void editOperativoAction(Integer row) {
-        edit= true;
-        operativo= operativos.get(row);
-        operativo.setUtmEste(operativo.getUtmEste().replace(",", "."));
-        operativo.setUtmNorte(operativo.getUtmNorte().replace(",", "."));
-        detallesOperativo= detalleOperativoServicio.listarPorOperativo(operativo);
-        maquinarias= maquinariaConcesionServicio.obtenerMaquinariasPorOperativo(operativo);
-        archivosCargados= obtenerArchivosCargados(operativo);
-        archivosParaCargar= new ArrayList<>();
-        
-        Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("operativoform:operativowiz");
-        wizard.setStep("tab01");
-        RequestContext.getCurrentInstance().update("operativoform");
+        if(login.getCodigoUsuario()!=null) {
+            edit= true;
+            resetAction();
+            operativo= operativos.get(row);
+            operativo.setUtmEste(operativo.getUtmEste().replace(",", "."));
+            operativo.setUtmNorte(operativo.getUtmNorte().replace(",", "."));
+            getCantones();
+            getParroquias();
+            detallesOperativo= detalleOperativoServicio.listarPorOperativo(operativo);
+            maquinarias= maquinariaConcesionServicio.obtenerMaquinariasPorOperativo(operativo);
+            archivosCargados= obtenerArchivosCargados(operativo);
+            archivosParaCargar= new ArrayList<>();
+
+            Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("operativoform:operativowiz");
+            wizard.setStep("tab01");
+            RequestContext.getCurrentInstance().update("operativoform");
+            RequestContext.getCurrentInstance().execute("PF('operativofrmwg').show();");
+        } else {
+            mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Debe estar logueado para realizar esta acción");
+        }
     }
     
     public void newInstitucionAction() {
@@ -695,8 +713,12 @@ public class OperativoCtrl extends BaseCtrl {
     }
     
     private boolean guardar() {
-        if(guardarOperativo() && guardarMaquinaria()) {
-            return true;
+        if(login.getCodigoUsuario()!=null) {
+            if(guardarOperativo() && guardarMaquinaria()) {
+                return true;
+            }
+        } else {
+            mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Debe estar logueado para realizar esta acción");
         }
         return false;
     }
@@ -708,6 +730,12 @@ public class OperativoCtrl extends BaseCtrl {
         operativo.setEstadoRegistro(Boolean.TRUE);
         operativo.setFechaCreacion(Calendar.getInstance().getTime());
         operativo.setUsuarioCreacion(usrCreacion);
+        if(!operativo.getExpedienteAdministrativo()) {
+            operativo.setNumeroExpedienteAdministrativo(null);
+            operativo.setEstadoAdministrativo(null);
+            operativo.setNumeroResolucionAdministrativo(null);
+            operativo.setFechaResolucionAdministrativo(null);
+        }
         operativoServicio.create(operativo);
         saveAuditoria(INSERT, operativo, new Operativo());
         
@@ -735,8 +763,12 @@ public class OperativoCtrl extends BaseCtrl {
     }
     
     private boolean actualizar() {
-        if(actualizarOperativo() && actualizarMaquinaria()) {
-            return true;
+        if(login.getCodigoUsuario()!=null) {
+            if(actualizarOperativo() && actualizarMaquinaria()) {
+                return true;
+            }
+        } else {
+            mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Debe estar logueado para realizar esta acción");
         }
         return false;
     }
@@ -748,6 +780,12 @@ public class OperativoCtrl extends BaseCtrl {
         operativo.setUtmNorte(operativo.getUtmNorte().replace(".", ","));
         operativo.setFechaModificacion(Calendar.getInstance().getTime());
         operativo.setUsuarioModificacion(usr);
+        if(!operativo.getExpedienteAdministrativo()) {
+            operativo.setNumeroExpedienteAdministrativo(null);
+            operativo.setEstadoAdministrativo(null);
+            operativo.setNumeroResolucionAdministrativo(null);
+            operativo.setFechaResolucionAdministrativo(null);
+        }
         operativoServicio.update(operativo);
         saveAuditoria(UPDATE, operativo, anterior);
         
@@ -961,6 +999,11 @@ public class OperativoCtrl extends BaseCtrl {
     
     private List<Adjunto> obtenerArchivosCargados(Operativo o) {
         return adjuntoServicio.findByOperativo(o);
+    }
+    
+    private void resetAction() {
+        this.cantones= null;
+        this.parroquias= null;
     }
     
     public void generarReporteMensual() {

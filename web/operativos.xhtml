@@ -36,7 +36,7 @@
                 <p:panelGrid id="tablePanel" columns="1" styleClass="panelSinBorde">
                     <p:panelGrid columns="1" styleClass="panelSinBorde">
                         <p:commandButton icon="ui-icon-plusthick" title="Nuevo operativo" actionListener="#{operativoCtrl.newOperativoAction()}"
-                                         oncomplete="PF('operativofrmwg').show();" update=":operativoform :operativoform:operativowiz"/>
+                                         update=":operativoform :operativoform:operativowiz"/>
                     </p:panelGrid>
 
                     <p:dataTable id="operativosdt" emptyMessage="No hay resultados..."
@@ -105,13 +105,12 @@
                         <p:column headerText="Editar" style="width:60px;text-align: center">
                             <p:commandButton icon="ui-icon-newwin" title="Editar operativo"
                                              actionListener="#{operativoCtrl.editOperativoAction(row)}"
-                                             oncomplete="PF('operativofrmwg').show();" update=":operativoform"/>
+                                             update=":operativoform"/>
                         </p:column>
 
                         <p:column headerText="Eliminar" style="width:45px;text-align: center">
                             <p:commandButton icon="ui-icon-trash" title="Eliminar"
-                                             actionListener="#{operativoCtrl.setOperativoEliminarAction(row)}"
-                                             update="" oncomplete="PF('deloperativodlgwg').show()"/>
+                                             actionListener="#{operativoCtrl.setOperativoEliminarAction(row)}"/>
                         </p:column>
                     </p:dataTable>
                 </p:panelGrid>
