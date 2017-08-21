@@ -585,9 +585,9 @@ public class OperativoCtrl extends BaseCtrl {
         }
     }
     
-    public void setOperativoEliminarAction(Integer row) {
+    public void setOperativoEliminarAction(Operativo ope) {
         if(login.getCodigoUsuario()!=null) {
-            operativo= operativos.get(row);
+            operativo= ope;
             RequestContext.getCurrentInstance().execute("PF('deloperativodlgwg').show();");
         } else {
             mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Debe estar logueado para realizar esta acción");
@@ -612,11 +612,11 @@ public class OperativoCtrl extends BaseCtrl {
         }
     }
     
-    public void editOperativoAction(Integer row) {
+    public void editOperativoAction(Operativo ope) {
         if(login.getCodigoUsuario()!=null) {
             edit= true;
             resetAction();
-            operativo= operativos.get(row);
+            operativo= ope;
             operativo.setUtmEste(operativo.getUtmEste().replace(",", "."));
             operativo.setUtmNorte(operativo.getUtmNorte().replace(",", "."));
             getCantones();

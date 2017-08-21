@@ -3,11 +3,12 @@
    Author     : mejiaw
 */
 body {
-    
+    background-color: #ffffff;
 }
 
 form {
     width: 100%;
+    padding: 0px;
 }
 
 h1 {
@@ -40,14 +41,14 @@ h2 {
     position: relative;
     background-color: #ffffff;
     color: white;
-    padding: 5px;
+    padding: 0px;
     margin: 0px 0px 10px 0px;
 }
 
 .center_content {
     position: relative;
     background-color: #f4f4f4;
-    padding: 5px;
+    padding: 0px;
     text-align: justify;
 }
 
@@ -203,7 +204,6 @@ h2 {
     margin: 0 auto;
     width: 750px;
 }
-
 .panelCentrado.ui-panel-content, .panelCentrado.ui-widget-content{
     border: none;
 }
@@ -219,10 +219,22 @@ h2 {
 
 .panelSinBorde-02 {
     width: 100%;
+    padding: 0px;
 }
 /*Sirve para quitar el borde del panel grid*/
 .panelSinBorde-02.ui-panelgrid>*>tr,
 .panelSinBorde-02.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.panelSinBorde-03 {
+    margin: 0 auto;
+    width: 100%;
+    padding: 0px;
+}
+/*Sirve para quitar el borde del panel grid*/
+.panelSinBorde-03.ui-panelgrid>*>tr,
+.panelSinBorde-03.ui-panelgrid .ui-panelgrid-cell {
     border: none;
 }
 

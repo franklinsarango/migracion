@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
 
-    <ui:composition template="/templates/page-template_pf.xhtml">
+    <ui:composition template="/templates/basetemplate-operativo.xhtml">
         <ui:define name="title">
             <h:outputText value="Operativos de Mineria Ilegal"/>
         </ui:define>
@@ -17,7 +17,7 @@
             <h:form id="listaoperativosfrm" enctype="multipart/form-data">
                 <p:panelGrid styleClass="panelSinBorde-02">
                     <p:row>
-                        <p:column style="text-align: right">
+                        <p:column style="text-align: right; padding-top: 0px; padding-bottom: 0px">
                             <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir">
                                     <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
                                     <br/>
@@ -26,13 +26,20 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-            
-                <p:separator style="width: 100%"/>
-
-                <center>
-                    <p:outputLabel id="entityname" value="Operativos de Mineria Ilegal" style="font-weight: bolder; font-size: large"/>
-                </center>
-
+                
+                <p:panelGrid styleClass="panelSinBorde-03">
+                    <p:row>
+                        <p:column style="padding-top: 0px; padding-bottom: 0px">
+                            <p:separator style="width: 100%;"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="text-align: center; padding-top: 0px; padding-bottom: 0px">
+                            <p:outputLabel id="entityname" value="Operativos de Mineria Ilegal" style="font-weight: bolder; font-size: large"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
                 <p:panelGrid id="tablePanel" columns="1" styleClass="panelSinBorde">
                     <p:panelGrid columns="1" styleClass="panelSinBorde">
                         <p:commandButton icon="ui-icon-plusthick" title="Nuevo operativo" actionListener="#{operativoCtrl.newOperativoAction()}"
@@ -104,13 +111,13 @@
 
                         <p:column headerText="Editar" style="width:60px;text-align: center">
                             <p:commandButton icon="ui-icon-newwin" title="Editar operativo"
-                                             actionListener="#{operativoCtrl.editOperativoAction(row)}"
+                                             actionListener="#{operativoCtrl.editOperativoAction(operativo)}"
                                              update=":operativoform"/>
                         </p:column>
 
                         <p:column headerText="Eliminar" style="width:45px;text-align: center">
                             <p:commandButton icon="ui-icon-trash" title="Eliminar"
-                                             actionListener="#{operativoCtrl.setOperativoEliminarAction(row)}"/>
+                                             actionListener="#{operativoCtrl.setOperativoEliminarAction(operativo)}"/>
                         </p:column>
                     </p:dataTable>
                 </p:panelGrid>
@@ -338,7 +345,9 @@
                 <p:confirmDialog id="deloperativodlg" showEffect="fade" hideEffect="fade" widgetVar="deloperativodlgwg" header="Confirmar eliminar operativo"
                                  message="¿Esta seguro de eliminar el operativo?">
                     <p:commandButton value="Si" icon="ui-icon-check" oncomplete="PF('deloperativodlgwg').hide()"
-                                     actionListener="#{operativoCtrl.deleteOperativoAction()}" update=":growl :listaoperativosfrm:operativosdt"/>
+                                     actionListener="#{operativoCtrl.deleteOperativoAction()}" ajax="false">
+                        <p:ajax update=":listaoperativosfrm:operativosdt"/>
+                    </p:commandButton>
                     <p:commandButton value="No" icon="ui-icon-close" oncomplete="PF('deloperativodlgwg').hide()"/>
                 </p:confirmDialog>
             </h:form>
