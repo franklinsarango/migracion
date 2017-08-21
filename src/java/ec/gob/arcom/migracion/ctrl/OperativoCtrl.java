@@ -479,12 +479,32 @@ public class OperativoCtrl extends BaseCtrl {
             rol= obtenerRol("TECNICOCAT");
             List<UsuarioRol> usuariosRol02= usuarioRolServicio.listByRol(rol);
             
+            rol= obtenerRol("COORDREGIO");
+            List<UsuarioRol> usuariosRol03= usuarioRolServicio.listByRol(rol);
+            rol= obtenerRol("ESPECOREG");
+            List<UsuarioRol> usuariosRol04= usuarioRolServicio.listByRol(rol);
+            rol= obtenerRol("TECCATNAC");
+            List<UsuarioRol> usuariosRol05= usuarioRolServicio.listByRol(rol);
+            rol= obtenerRol("ECONAC");
+            List<UsuarioRol> usuariosRol06= usuarioRolServicio.listByRol(rol);
+            
             List<Usuario> usuarios= new ArrayList<>();
             for(UsuarioRol ur : usuariosRol) {
                 usuarios.add(ur.getUsuario());
             }
-            
             for(UsuarioRol ur : usuariosRol02) {
+                usuarios.add(ur.getUsuario());
+            }
+            for(UsuarioRol ur : usuariosRol03) {
+                usuarios.add(ur.getUsuario());
+            }
+            for(UsuarioRol ur : usuariosRol04) {
+                usuarios.add(ur.getUsuario());
+            }
+            for(UsuarioRol ur : usuariosRol05) {
+                usuarios.add(ur.getUsuario());
+            }
+            for(UsuarioRol ur : usuariosRol06) {
                 usuarios.add(ur.getUsuario());
             }
             
