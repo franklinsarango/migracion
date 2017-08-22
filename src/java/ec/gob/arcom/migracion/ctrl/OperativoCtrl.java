@@ -605,6 +605,7 @@ public class OperativoCtrl extends BaseCtrl {
     
     public void newOperativoAction() {
         if(login.getCodigoUsuario()!=null) {
+            edit= false;
             operativo= new Operativo();
             detallesOperativo= new ArrayList<>();
             detalleOperativo= new DetalleOperativo();

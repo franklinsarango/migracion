@@ -452,7 +452,7 @@
                         <p:column style="text-align: right"><p:outputLabel for="fechaInfMae" value="Fecha envío:"/></p:column>
                         <p:column style="text-align: left">
                             <p:calendar id="fechaInfMae" styleClass="calendar-form"
-                                        readonlyInput="true" required="true" requiredMessage="El campo fecha de envío es requerido"
+                                        readonlyInput="true" required="false" requiredMessage="El campo fecha de envío es requerido"
                                         maxdate="#{operativoCtrl.fechaMaxima}"
                                         value="#{operativoCtrl.operativo.fechaInformeMae}"/>
                         </p:column>
@@ -460,7 +460,7 @@
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="numDoc" value="No. documento:"/></p:column>
                         <p:column style="text-align: left">
-                            <p:inputText id="numDoc" value="#{operativoCtrl.operativo.numeroDocumentoInformeMae}" required="true"
+                            <p:inputText id="numDoc" value="#{operativoCtrl.operativo.numeroDocumentoInformeMae}" required="false"
                                          maxlength="100" requiredMessage="Debe ingresar el número de documento" styleClass="inputtext-form"/>
                         </p:column>
                     </p:row>
