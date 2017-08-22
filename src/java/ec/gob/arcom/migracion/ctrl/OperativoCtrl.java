@@ -508,12 +508,33 @@ public class OperativoCtrl extends BaseCtrl {
                 usuarios.add(ur.getUsuario());
             }
             
+            ordenarListaUsuarios(usuarios);
+            
             for (Usuario u : usuarios) {
                 tecnicos.add(new SelectItem(u, u.getNombresCompletos().toUpperCase()));
             }
         }
         return tecnicos;
     }
+    
+    // Inicio del metodo de ordenamiento de la Burbuja
+    public List<Usuario> ordenarListaUsuarios(List<Usuario> listaUsuariosA) {        
+        for (int i = 1; i <= listaUsuariosA.size(); i++) {
+            for (int j = 0; j < listaUsuariosA.size() - i; j++) {
+                int valor = j + 1;
+                if (listaUsuariosA.get(j).getNombresCompletos().compareTo(listaUsuariosA.get(valor).getNombresCompletos()) > 0) {
+                    Usuario usuarioAux = new Usuario();;
+                    usuarioAux = listaUsuariosA.get(j);
+                    Usuario usuarioTemp = new Usuario();
+                    usuarioTemp = listaUsuariosA.get(valor);
+                    listaUsuariosA.set(j, usuarioTemp);
+                    listaUsuariosA.set(valor, usuarioAux);
+                }
+            }
+        }
+        return listaUsuariosA;
+    }
+    // Fin del metodo de ordenamiento de la Burbuja
     
     public List<SelectItem> getLegales() {
         if (legales == null) {
@@ -532,6 +553,8 @@ public class OperativoCtrl extends BaseCtrl {
             for(UsuarioRol ur : usuariosRol02) {
                 usuarios.add(ur.getUsuario());
             }
+            
+            ordenarListaUsuarios(usuarios);
             
             for (Usuario u : usuarios) {
                 legales.add(new SelectItem(u, u.getNombresCompletos().toUpperCase()));
