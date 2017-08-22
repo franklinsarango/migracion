@@ -37,4 +37,9 @@ public class UsuarioServicioImpl extends GenericServiceImpl<Usuario, Long>
     public void actualizarUsuario(Usuario usuario) {
         usuarioDao.actualizarUsuario(usuario);
     }
+    
+    @Override
+    public List<Usuario> findByTipoUsuarioCampoReservado3(String tipoUsuario) {
+        return usuarioDao.findByTipoUsuarioCampoReservado3(tipoUsuario);
+    }
 }

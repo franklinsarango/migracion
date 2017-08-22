@@ -5,6 +5,7 @@ import ec.gob.arcom.migracion.alfresco.bean.AlfrescoFileBean;
 import ec.gob.arcom.migracion.alfresco.util.AlfrescoFileUtil;
 import ec.gob.arcom.migracion.alfresco.AlfrescoMimeType;
 import ec.gob.arcom.migracion.alfresco.service.AlfrescoService;
+import ec.gob.arcom.migracion.constantes.RolEnum;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
 import ec.gob.arcom.migracion.modelo.Adjunto;
 import ec.gob.arcom.migracion.modelo.Auditoria;
@@ -486,7 +487,7 @@ public class OperativoCtrl extends BaseCtrl {
             rol= obtenerRol("TECCATNAC");
             List<UsuarioRol> usuariosRol05= usuarioRolServicio.listByRol(rol);
             rol= obtenerRol("ECONAC");
-            List<UsuarioRol> usuariosRol06= usuarioRolServicio.listByRol(rol);
+            List<UsuarioRol> usuariosRol06= usuarioRolServicio.listByRol(rol);            
             
             List<Usuario> usuarios= new ArrayList<>();
             for(UsuarioRol ur : usuariosRol) {
@@ -508,6 +509,11 @@ public class OperativoCtrl extends BaseCtrl {
                 usuarios.add(ur.getUsuario());
             }
             
+            //SE AGREGA LOS USUARIOS TECNICOS ASIGNADOS ESPECIFICAMENTE DESDE LA BASE DE DATOS
+            List<Usuario> usuarios07= usuarioServicio.findByTipoUsuarioCampoReservado3(RolEnum.ROL_TECNICO.getNemonico());
+            for(Usuario u : usuarios07) {
+                usuarios.add(u);
+            }
             ordenarListaUsuarios(usuarios);
             
             for (Usuario u : usuarios) {
@@ -523,7 +529,7 @@ public class OperativoCtrl extends BaseCtrl {
             for (int j = 0; j < listaUsuariosA.size() - i; j++) {
                 int valor = j + 1;
                 if (listaUsuariosA.get(j).getNombresCompletos().compareTo(listaUsuariosA.get(valor).getNombresCompletos()) > 0) {
-                    Usuario usuarioAux = new Usuario();;
+                    Usuario usuarioAux = new Usuario();
                     usuarioAux = listaUsuariosA.get(j);
                     Usuario usuarioTemp = new Usuario();
                     usuarioTemp = listaUsuariosA.get(valor);
@@ -552,6 +558,12 @@ public class OperativoCtrl extends BaseCtrl {
             
             for(UsuarioRol ur : usuariosRol02) {
                 usuarios.add(ur.getUsuario());
+            }
+            
+            //SE AGREGA LOS USUARIOS ABOGADOS ASIGNADOS ESPECIFICAMENTE DESDE LA BASE DE DATOS
+            List<Usuario> usuarios03= usuarioServicio.findByTipoUsuarioCampoReservado3(RolEnum.ROL_ABOGADO.getNemonico());
+            for(Usuario u : usuarios03) {
+                usuarios.add(u);
             }
             
             ordenarListaUsuarios(usuarios);

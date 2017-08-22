@@ -23,4 +23,5 @@ public interface UsuarioServicio extends GenericService<Usuario, Long> {
 
     void actualizarUsuario(Usuario usuario);
 
+    List<Usuario> findByTipoUsuarioCampoReservado3(String tipoUsuario);
 }

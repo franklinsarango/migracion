@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.dao.ejb;
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
 import ec.gob.arcom.migracion.modelo.Usuario;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -53,5 +54,21 @@ public class UsuarioDaoEjb extends GenericDaoEjbEl<Usuario, Long> implements
         System.out.println("JSQL:"+sql);
         Query query = em.createNativeQuery(sql);
         query.executeUpdate();
+    }
+    
+    @Override
+    public List<Usuario> findByTipoUsuarioCampoReservado3(String tipoUsuario) {
+        try {
+            Query query = em.createQuery("Select u from Usuario u where u.campoReservado03 like :tipoUsuario and u.estadoRegistro = true");
+            query.setParameter("tipoUsuario", tipoUsuario);
+            List<Usuario> listaFinal = query.getResultList();
+            for (Usuario u : listaFinal) {
+                this.refresh(u);
+            }
+            return listaFinal;
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
     }
 }
