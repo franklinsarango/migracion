@@ -166,7 +166,8 @@
                             <p:column colspan="2" style="text-align: center">
                                 <p:commandButton value="Aceptar" title="Aceptar" actionListener="#{operativoCtrl.addInstitucionAction()}"
                                                  oncomplete="PF('institucionfrmwg').hide();"
-                                                 update=":operativoform:instdt :operativoform:detenidosdt :operativoform:depositariosdt"/>
+                                                 update=":operativoform:instdt :operativoform:detenidosdt :operativoform:depositariosdt
+                                                    :institucionform:tipoInstitucion"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>

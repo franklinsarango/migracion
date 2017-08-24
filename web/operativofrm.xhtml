@@ -63,9 +63,16 @@
 
                         <p:row>
                             <p:column style="text-align: right"><p:outputLabel for="accionesRealizadas" value="Descripción de acciones realizadas:"/></p:column>
-                            <p:column style="text-align: left">
+                            <p:column style="text-align: left" rowspan="2">
                                 <p:inputTextarea id="accionesRealizadas" value="#{operativoCtrl.operativo.descripcionAccionesRealizadas}"
-                                                 maxlength="255" styleClass="inputtextarea-form"/>
+                                                 styleClass="inputtextarea-form" maxlength="2000"
+                                                 counter="contadorAccionesRealizadas" counterTemplate="{0} caracteres restantes."/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel id="contadorAccionesRealizadas" style="font-size: 9px"/>
                             </p:column>
                         </p:row>
 
@@ -81,12 +88,19 @@
                     <p:panelGrid styleClass="pg-center">
                         <p:row>
                             <p:column style="text-align: right"><p:outputLabel for="accionesRealizar" value="Acciones a realizar:"/></p:column>
-                            <p:column style="text-align: left">
+                            <p:column style="text-align: left" rowspan="2">
                                 <p:inputTextarea id="accionesRealizar" value="#{operativoCtrl.operativo.accionesRealizar}"
-                                                 maxlength="255" styleClass="inputtextarea-form"/>
+                                                 styleClass="inputtextarea-form" maxlength="2000"
+                                                 counter="contadorAccionesRealizar" counterTemplate="{0} caracteres restantes."/>
                             </p:column>
                         </p:row>
-
+                        
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel id="contadorAccionesRealizar" style="font-size: 9px"/>
+                            </p:column>
+                        </p:row>
+                        
                         <p:row>
                             <p:column style="text-align: right"><p:outputLabel for="regional" value="Regional:"/></p:column>
                             <p:column style="text-align: left">
@@ -133,9 +147,16 @@
 
                         <p:row>
                             <p:column style="text-align: right"><p:outputLabel for="observaciones" value="Observaciones:"/></p:column>
-                            <p:column style="text-align: left">
+                            <p:column style="text-align: left" rowspan="2">
                                 <p:inputTextarea id="observaciones" value="#{operativoCtrl.operativo.observacionesOperativo}"
-                                                 maxlength="500" styleClass="inputtextarea-form"/>
+                                                 styleClass="inputtextarea-form" maxlength="2000"
+                                                 counter="contadorObs" counterTemplate="{0} caracteres restantes."/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel id="contadorObs" style="font-size: 9px"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>

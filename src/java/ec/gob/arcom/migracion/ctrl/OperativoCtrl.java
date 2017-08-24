@@ -249,18 +249,25 @@ public class OperativoCtrl extends BaseCtrl {
     }
     
     public List<SelectItem> getTiposInstitucion() {
+        obtenerTiposInstitucion();
+        return tiposInstitucion;
+    }
+    
+    private void obtenerTiposInstitucion() {
         if (tiposInstitucion == null) {
-            tiposInstitucion = new ArrayList<>();
             Catalogo catalogo = catalogoServicio.findByNemonico("TIPOINSTOPE");
             if (catalogo != null) {
                 List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
-                for (CatalogoDetalle catDet : tipoServCat) {
-                    tiposInstitucion.add(new SelectItem(catDet, catDet.getNombre()));
-                }
+                llenarTiposInstitucion(tipoServCat);
             }
-
         }
-        return tiposInstitucion;
+    }
+    
+    private void llenarTiposInstitucion(List<CatalogoDetalle> tipos) {
+        tiposInstitucion = new ArrayList<>();
+        for (CatalogoDetalle catDet : tipos) {
+            tiposInstitucion.add(new SelectItem(catDet, catDet.getNombre()));
+        }
     }
     
     public List<SelectItem> getZonas() {
@@ -673,11 +680,44 @@ public class OperativoCtrl extends BaseCtrl {
     
     public void newInstitucionAction() {
         this.detalleOperativo= new DetalleOperativo();
+        tiposInstitucion= null;
+        if(detallesOperativo.size()>0) {
+            actualizarTiposInstitucion();
+        } else {
+            obtenerTiposInstitucion();
+        }
     }
     
     public void addInstitucionAction() {
         detalleOperativo.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico(TIPOINSTITUCION).get(0));
         this.detallesOperativo.add(detalleOperativo);
+    }
+    
+    private void actualizarTiposInstitucion() {
+        List<DetalleOperativo> selectedInstituciones= new ArrayList();
+        for(DetalleOperativo dOpe : detallesOperativo) {
+            if(dOpe.getTipoInformacionRegistro().getNemonico().equals(TIPOINSTITUCION)) {
+                selectedInstituciones.add(dOpe);
+            }
+        }
+        
+        Catalogo catalogo = catalogoServicio.findByNemonico("TIPOINSTOPE");
+        if (catalogo != null) {
+            List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+            List<CatalogoDetalle> instRemover= new ArrayList<>();
+            
+            for(CatalogoDetalle catDet : tipoServCat) {
+                for(DetalleOperativo dOpe : selectedInstituciones) {
+                    if(catDet.getCodigoCatalogoDetalle().compareTo(dOpe.getTipoInstitucion().getCodigoCatalogoDetalle())==0) {
+                        instRemover.add(catDet);
+                    }
+                }
+            }
+            for(CatalogoDetalle catDet : instRemover) {
+                tipoServCat.remove(catDet);
+            }
+            llenarTiposInstitucion(tipoServCat);
+        }
     }
     
     public void deleteInstitucionAction(DetalleOperativo detalle) {
