@@ -598,7 +598,7 @@
                         <p:column style="text-align: center">
                             <h:commandButton value="Finalizar" title="Finalizar" actionListener="#{operativoCtrl.saveOperativoAction()}" 
                                              styleClass="endbutton">
-                                <p:ajax update=":listaoperativosfrm:operativosdt :operativoform"/>
+                                <p:ajax update=":listaoperativosfrm:operativosdt :operativoform" process="@form"/>
                             </h:commandButton>
                         </p:column>
                     </p:row>

@@ -638,15 +638,35 @@ public class OperativoCtrl extends BaseCtrl {
     }
     
     public void deleteOperativoAction() {
-        if(operativo!=null) {
+        if (operativo != null) {
+            //SE ELIMINA EL DETALLE DEL OPERATIVO
             deleteDetalles(operativo);
+            
+            //SE ELIMINA LA MAQUINARIA DEL OPERATIVO
+            maquinarias = maquinariaConcesionServicio.obtenerMaquinariasPorOperativo(operativo);
+            if (maquinarias != null && maquinarias.size() > 0) {
+                for (MaquinariaConcesion mq : maquinarias) {
+                    maquinariaConcesionServicio.delete(mq.getCodigoMaquinaria());
+                }
+            }
+            
+            //SE ELIMINA LOS ARCHIVOS ADJUNTOS
+            archivosCargados= obtenerArchivosCargados(operativo);
+            if (archivosCargados != null && archivosCargados.size() > 0) {
+                for (Adjunto adj : archivosCargados) {
+                    adjuntoServicio.delete(adj.getCodigoAdjunto());
+                }
+            }
+            
+            //SE ELIMINA LE OPERATTIVO
             operativoServicio.delete(operativo.getCodigoOperativo());
+
             saveAuditoria(DELETE, operativo, new Operativo());
             obtenerOperativos();
             mostrarMensaje(FacesMessage.SEVERITY_INFO, "Operativo eliminado correctamente");
         }
     }
-    
+
     private void deleteDetalles(Operativo o) {
         List<DetalleOperativo> detalles= detalleOperativoServicio.listarPorOperativo(o);
         for(DetalleOperativo detop : detalles) {
