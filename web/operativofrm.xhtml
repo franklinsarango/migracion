@@ -20,7 +20,7 @@
                             <p:column style="text-align: left">
                                 <p:calendar id="fechaOperativo" styleClass="calendar-form"
                                             readonlyInput="true" required="true" requiredMessage="El campo fecha operativo es requerido"
-                                            maxdate="#{operativoCtrl.fechaMaxima}"
+                                            maxdate="#{operativoCtrl.fechaMaxima}" navigator="true"
                                             value="#{operativoCtrl.operativo.fechaOperativo}"/>
                             </p:column>
                         </p:row>
@@ -235,7 +235,7 @@
                         <p:column style="text-align: left">
                             <p:selectOneMenu id="zona" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
                                              value="#{operativoCtrl.operativo.zona}">
-                                <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Seleccione una zona..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{operativoCtrl.zonas}"/>
                                 <p:ajax update="inecParroquia"/>
                             </p:selectOneMenu>
@@ -448,7 +448,7 @@
                     <p:row>
                         <p:column style="text-align: right; width: 50%"><p:outputLabel for="sello" value="Sello:"/></p:column>
                         <p:column style="text-align: left; width: 50%">
-                            <p:selectOneMenu id="sello" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                            <p:selectOneMenu id="sello" styleClass="onemenu-form" required="false" converter="#{catalogoDetalleConverter}"
                                              value="#{operativoCtrl.operativo.tipoSello}" requiredMessage="Debe seleccionar un tipo sello">
                                 <f:selectItem itemLabel="Seleccione un tipo sello..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{operativoCtrl.tiposSello}"/>
@@ -458,7 +458,7 @@
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="numSello" value="Número sello:"/></p:column>
                         <p:column style="text-align: left">
-                            <p:inputText id="numSello" value="#{operativoCtrl.operativo.numeroSello}" required="true" styleClass="inputtext-form"
+                            <p:inputText id="numSello" value="#{operativoCtrl.operativo.numeroSello}" required="false" styleClass="inputtext-form"
                                          maxlength="100" requiredMessage="Debe ingresar el número de sello"/>
                         </p:column>
                     </p:row>
@@ -474,7 +474,7 @@
                         <p:column style="text-align: left">
                             <p:calendar id="fechaInfMae" styleClass="calendar-form"
                                         readonlyInput="true" required="false" requiredMessage="El campo fecha de envío es requerido"
-                                        maxdate="#{operativoCtrl.fechaMaxima}"
+                                        maxdate="#{operativoCtrl.fechaMaxima}" navigator="true"
                                         value="#{operativoCtrl.operativo.fechaInformeMae}"/>
                         </p:column>
                     </p:row>
@@ -533,7 +533,7 @@
                         <p:column style="text-align: left">
                             <p:calendar id="fechaResolucion" styleClass="calendar-form" rendered="#{operativoCtrl.operativo.expedienteAdministrativo}"
                                         readonlyInput="true" requiredMessage="El campo fecha de resolución es requerido"
-                                        maxdate="#{operativoCtrl.fechaMaxima}"
+                                        maxdate="#{operativoCtrl.fechaMaxima}" navigator="true"
                                         value="#{operativoCtrl.operativo.fechaResolucionAdministrativo}"/>
                         </p:column>
                     </p:row>
@@ -598,7 +598,7 @@
                         <p:column style="text-align: center">
                             <h:commandButton value="Finalizar" title="Finalizar" actionListener="#{operativoCtrl.saveOperativoAction()}" 
                                              styleClass="endbutton">
-                                <p:ajax update=":listaoperativosfrm:operativosdt :operativoform" process="@form"/>
+                                <p:ajax update=":listaoperativosfrm:operativosdt :operativoform"/>
                             </h:commandButton>
                         </p:column>
                     </p:row>

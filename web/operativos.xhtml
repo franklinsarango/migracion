@@ -93,22 +93,26 @@
                         <p:column headerText="Sector" style="width: 100px;">
                             <h:outputText value="#{operativo.sector}"/>
                         </p:column>
+                        
+                        <p:column headerText="Creado Por" style="width: 100px;">
+                            <h:outputText value="#{operativo.usuarioCreacion.nombresCompletos}"/>
+                        </p:column>
 
-                        <p:column headerText="Tipo sello" style="width: 100px;">
+                        <p:column headerText="Tipo sello" style="width: 50px;">
                             <h:outputText value="#{operativo.tipoSello.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Tipo material" style="width: 100px;">
+                        <p:column headerText="Tipo material" style="width: 50px;">
                             <h:outputText value="#{operativo.tipoMaterial.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Editar" style="width:60px;text-align: center">
+                        <p:column headerText="Editar" style="width:40px;text-align: center">
                             <p:commandButton icon="ui-icon-newwin" title="Editar operativo"
                                              actionListener="#{operativoCtrl.editOperativoAction(operativo)}"
                                              update=":operativoform"/>
                         </p:column>
 
-                        <p:column headerText="Eliminar" style="width:45px;text-align: center">
+                        <p:column headerText="Eliminar" style="width:40px;text-align: center">
                             <p:commandButton icon="ui-icon-trash" title="Eliminar"
                                              actionListener="#{operativoCtrl.setOperativoEliminarAction(operativo)}"/>
                         </p:column>
@@ -151,7 +155,7 @@
                             <p:column style="text-align: right"><p:outputLabel for="descripcion" value="Descripción:"/></p:column>
                             <p:column style="text-align: left">
                                 <p:inputTextarea id="descripcion" value="#{operativoCtrl.detalleOperativo.descripcionInstitucion}"
-                                                 maxlength="100" styleClass="inputtextarea-form"/>
+                                                 maxlength="400" styleClass="inputtextarea-form"/>
                             </p:column>
                         </p:row>
                         
@@ -318,7 +322,7 @@
                             <p:column style="text-align: right"><p:outputLabel for="descripcionDepositario" value="Descripción:"/></p:column>
                             <p:column style="text-align: left">
                                 <p:inputTextarea id="descripcionDepositario" value="#{operativoCtrl.detalleOperativo.descripcionDepositario}"
-                                                 maxlength="200" styleClass="inputtextarea-form"/>
+                                                 maxlength="1500" styleClass="inputtextarea-form"/>
                             </p:column>
                         </p:row>
                         
