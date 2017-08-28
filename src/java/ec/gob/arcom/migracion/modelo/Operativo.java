@@ -398,12 +398,20 @@ public class Operativo implements Serializable {
                 "codigoOperativo=" + codigoOperativo + ", tipoOperativo=" + tipoOperativo.getCodigoCatalogoDetalle() + 
                 ", regional=" + regional.getCodigoRegional() + ", provincia=" + provincia.getCodigoLocalidad() + ", canton=" + canton.getCodigoLocalidad() + 
                 ", parroquia=" + parroquia.getCodigoLocalidad() + ", sector=" + sector + ", utmEste=" + utmEste + ", utmNorte=" + utmNorte + 
-                ", tipoSello=" + tipoSello.getCodigoCatalogoDetalle() + ", numeroSello=" + numeroSello + ", fechaInformeMae=" + fechaInformeMae + 
-                ", numeroDocumentoInformeMae=" + numeroDocumentoInformeMae + ", responsableTecnico=" + responsableTecnico.getNumeroDocumento() +
-                ", responsableLegal=" + responsableLegal.getNumeroDocumento() + ", numeroInformeTecnico=" + numeroInformeTecnico +
-                ", observacionesOperativo=" + observacionesOperativo + ", fechaOperativo=" + fechaOperativo + ", tipoMaterial=" + tipoMaterial.getCodigoCatalogo() + 
-                ", formaExplotacion=" + formaExplotacion.getCodigoCatalogoDetalle() + ", descripcionAccionesRealizadas=" + descripcionAccionesRealizadas +
-                ", multaProcesoAdministrativo=" + multaProcesoAdministrativo + ", accionesRealizar=" + accionesRealizar + 
+                ", tipoSello=" + obtenerTipoSello() + 
+                ", numeroSello=" + obtenerValorNulo(numeroSello) + 
+                ", fechaInformeMae=" + obtenerValorNulo(fechaInformeMae) + 
+                ", numeroDocumentoInformeMae=" + numeroDocumentoInformeMae + 
+                ", responsableTecnico=" + responsableTecnico.getNumeroDocumento() +
+                ", responsableLegal=" + responsableLegal.getNumeroDocumento() + 
+                ", numeroInformeTecnico=" + numeroInformeTecnico +
+                ", observacionesOperativo=" + observacionesOperativo + 
+                ", fechaOperativo=" + obtenerValorNulo(fechaOperativo) + 
+                ", tipoMaterial=" + obtenerTipoMaterial() + 
+                ", formaExplotacion=" + formaExplotacion.getCodigoCatalogoDetalle() + 
+                ", descripcionAccionesRealizadas=" + descripcionAccionesRealizadas +
+                ", multaProcesoAdministrativo=" + multaProcesoAdministrativo + 
+                ", accionesRealizar=" + accionesRealizar + 
                 ", expedienteAdministrativo=" + expedienteAdministrativo + 
                 ", numeroExpedienteAdministrativo=" + numeroExpedienteAdministrativo +
                 ", estadoAdministrativo=" + obtenerEstadoAdministrativo() + 
@@ -416,6 +424,22 @@ public class Operativo implements Serializable {
                 ", usuarioModificacion=" + obtenerUsuarioModificacion() +
                  "}";
         return response;
+    }
+    
+    private String obtenerTipoMaterial() {
+        if(tipoMaterial==null) {
+            return "";
+        } else {
+            return tipoMaterial.getCodigoCatalogo().toString();
+        }
+    }
+    
+    private String obtenerTipoSello() {
+        if(tipoSello==null) {
+            return "";
+        } else {
+            return tipoSello.getCodigoCatalogoDetalle().toString();
+        }
     }
     
     private String obtenerUsuarioModificacion() {
