@@ -353,22 +353,29 @@ public class OperativoCtrl extends BaseCtrl {
                 }
             }
         }
-        return estadosMaquinaria;
+        return estadosMaquinaria; 
     }
     
     public List<SelectItem> getTiposDepositario() {
+        obtenerTiposDepositario();
+        return tiposDepositario;
+    }
+    
+    private void obtenerTiposDepositario() {
         if (tiposDepositario == null) {
-            tiposDepositario = new ArrayList<>();
             Catalogo catalogo = catalogoServicio.findByNemonico("TIPODEPS");
             if (catalogo != null) {
                 List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
-                for (CatalogoDetalle catDet : tipoServCat) {
-                    tiposDepositario.add(new SelectItem(catDet, catDet.getNombre()));
-                }
+                llenarTiposDepositario(tipoServCat);
             }
-
         }
-        return tiposDepositario;
+    }
+    
+    private void llenarTiposDepositario(List<CatalogoDetalle> tipos) {
+        tiposDepositario = new ArrayList<>();
+        for (CatalogoDetalle catDet : tipos) {
+            tiposDepositario.add(new SelectItem(catDet, catDet.getNombre()));
+        }
     }
     
     public List<SelectItem> getTiposSello() {
@@ -381,7 +388,6 @@ public class OperativoCtrl extends BaseCtrl {
                     tiposSello.add(new SelectItem(catDet, catDet.getNombre()));
                 }
             }
-
         }
         return tiposSello;
     }
@@ -785,11 +791,44 @@ public class OperativoCtrl extends BaseCtrl {
     
     public void newDepositarioAction() {
         this.detalleOperativo= new DetalleOperativo();
+        tiposDepositario= null;
+        if(detallesOperativo.size()>0) {
+            actualizarTiposDepositario();
+        } else {
+            obtenerTiposDepositario();
+        }
     }
     
     public void addDepositarioAction() {
         detalleOperativo.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico(TIPODEPOSITARIO).get(0));
         this.detallesOperativo.add(detalleOperativo);
+    }
+    
+    private void actualizarTiposDepositario() {
+        List<DetalleOperativo> selectedDepositarios= new ArrayList();
+        for(DetalleOperativo dOpe : detallesOperativo) {
+            if(dOpe.getTipoInformacionRegistro().getNemonico().equals(TIPODEPOSITARIO)) {
+                selectedDepositarios.add(dOpe);
+            }
+        }
+        
+        Catalogo catalogo = catalogoServicio.findByNemonico("TIPODEPS");
+        if (catalogo != null) {
+            List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+            List<CatalogoDetalle> instRemover= new ArrayList<>();
+            
+            for(CatalogoDetalle catDet : tipoServCat) {
+                for(DetalleOperativo dOpe : selectedDepositarios) {
+                    if(catDet.getCodigoCatalogoDetalle().compareTo(dOpe.getTipoDepositario().getCodigoCatalogoDetalle())==0) {
+                        instRemover.add(catDet);
+                    }
+                }
+            }
+            for(CatalogoDetalle catDet : instRemover) {
+                tipoServCat.remove(catDet);
+            }
+            llenarTiposDepositario(tipoServCat);
+        }
     }
     
     public void deleteDepositarioAction(DetalleOperativo detalle) {

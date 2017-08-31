@@ -50,7 +50,13 @@
                             <h:outputText value="#{row + 1}"/>
                         </p:column>
                         
-                        <p:column headerText="Fecha operativo" style="width: 100px;">
+                        <p:column headerText="Id operativo" style="width: 30px"
+                                  sortBy="#{operativo.codigoOperativo}">
+                            <h:outputText value="#{operativo.codigoOperativo}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Fecha operativo" style="width: 75px;"
+                                  sortBy="#{operativo.fechaOperativo}">
                             <h:outputText value="#{operativoCtrl.obtenerFechaConFormato(operativo.fechaOperativo)}"/>
                         </p:column>
 
@@ -78,31 +84,38 @@
                              <h:outputText value="#{operativo.regional.descripcionRegional}"/>
                         </p:column>
 
-                        <p:column headerText="Provincia" style="width: 100px;">
+                        <p:column headerText="Provincia" style="width: 100px;"
+                                  sortBy="#{operativo.provincia.codigoLocalidad}">
                             <h:outputText value="#{operativo.provincia.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Cantón" style="width: 100px;">
+                        <p:column headerText="Cantón" style="width: 100px;"
+                                  sortBy="#{operativo.canton.codigoLocalidad}">
                             <h:outputText value="#{operativo.canton.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Parroquia" style="width: 100px;">
+                        <p:column headerText="Parroquia" style="width: 100px;"
+                                  sortBy="#{operativo.parroquia.codigoLocalidad}">
                             <h:outputText value="#{operativo.parroquia.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Sector" style="width: 100px;">
-                            <h:outputText value="#{operativo.sector}"/>
+                        <p:column headerText="Sector" style="width: 100px;"
+                                  sortBy="#{operativo.sector}">
+                            <h:outputText value="#{operativo.sector.toUpperCase()}"/>
                         </p:column>
                         
-                        <p:column headerText="Creado Por" style="width: 100px;">
-                            <h:outputText value="#{operativo.usuarioCreacion.nombresCompletos}"/>
+                        <p:column headerText="Creado Por" style="width: 100px;"
+                                  sortBy="#{operativo.usuarioCreacion.codigoUsuario}">
+                            <h:outputText value="#{operativo.usuarioCreacion.nombresCompletos.toUpperCase()}"/>
                         </p:column>
 
-                        <p:column headerText="Tipo sello" style="width: 50px;">
+                        <p:column headerText="Tipo sello" style="width: 50px;"
+                                  sortBy="#{operativo.tipoSello.codigoCatalogoDetalle}">
                             <h:outputText value="#{operativo.tipoSello.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Tipo material" style="width: 50px;">
+                        <p:column headerText="Tipo material" style="width: 50px;"
+                                  sortBy="#{operativo.tipoMaterial.codigoCatalogo}">
                             <h:outputText value="#{operativo.tipoMaterial.nombre}"/>
                         </p:column>
 

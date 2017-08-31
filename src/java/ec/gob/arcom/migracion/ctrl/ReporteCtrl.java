@@ -71,8 +71,14 @@ public class ReporteCtrl extends BaseCtrl {
     private Date fechaDesdeFiltro;
     private Date fechaHastaFiltro;
     private List<SelectItem> regionales;
+    private List<SelectItem> subTiposOperativo;
+    private List<SelectItem> aniosOperativo;
     private String prefijoRegionalFiltro;
     private String urlReporte;
+    private boolean mostrarSubTipoReporteOperativo;
+    private boolean mostrarFiltroAnio;
+    private Long codigoSubTipoOperativo;
+    private String anioOperativo;
 
     @PostConstruct
     public void init() {
@@ -185,12 +191,81 @@ public class ReporteCtrl extends BaseCtrl {
         System.out.println("urlReporte: " + urlReporte);
     }
     
+    public void generarReporteOpeMinIleTotal() {
+        System.out.println("entra generarReporteOpeMinIleTotal");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/operativomineriailegal/operativomineriailegal.rptdesign&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    public void generarReporteOpeMinIleMensual() {
+        System.out.println("entra generarReporteOpeMinIleMensual");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/operativomineriailegal/operativopormesanual.rptdesign"
+                + "&anio_param=" + anioOperativo + "&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    public void generarReporteOpeMinIleMaq() {
+        System.out.println("entra generarReporteOpeMinIleMaq");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/operativomineriailegal/maquinariaoperativoporestadoanual.rptdesign"
+                + "&anio_param=" + anioOperativo + "&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
     public LoginCtrl getLogin() {
         return login;
     }
 
     public void setLogin(LoginCtrl login) {
         this.login = login;
+    }
+
+    public boolean isMostrarSubTipoReporteOperativo() {
+        return mostrarSubTipoReporteOperativo;
+    }
+
+    public void setMostrarSubTipoReporteOperativo(boolean mostrarSubTipoReporteOperativo) {
+        this.mostrarSubTipoReporteOperativo = mostrarSubTipoReporteOperativo;
+    }
+
+    public Long getCodigoSubTipoOperativo() {
+        return codigoSubTipoOperativo;
+    }
+
+    public void setCodigoSubTipoOperativo(Long codigoSubTipoOperativo) {
+        this.codigoSubTipoOperativo = codigoSubTipoOperativo;
+    }
+
+    public boolean isMostrarFiltroAnio() {
+        return mostrarFiltroAnio;
+    }
+
+    public void setMostrarFiltroAnio(boolean mostrarFiltroAnio) {
+        this.mostrarFiltroAnio = mostrarFiltroAnio;
+    }
+
+    public String getAnioOperativo() {
+        return anioOperativo;
+    }
+
+    public void setAnioOperativo(String anioOperativo) {
+        this.anioOperativo = anioOperativo;
+    }
+
+    public List<SelectItem> getAniosOperativo() {
+        if(aniosOperativo==null) {
+            aniosOperativo= new ArrayList<>();
+            int anioInicial= 2015;
+            int anioFinal= Calendar.getInstance().get(Calendar.YEAR);
+            for(int i=anioFinal; i>=anioInicial; i--) {
+                aniosOperativo.add(new SelectItem(i, String.valueOf(i)));
+            }
+        }
+        return aniosOperativo;
+    }
+
+    public void setAniosOperativo(List<SelectItem> aniosOperativo) {
+        this.aniosOperativo = aniosOperativo;
     }
 
     public Long getCodigoTipoMineria() {
@@ -274,6 +349,12 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteMedianaGranMineriaCoordenadasBirt();
         }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_USUARIOS_SGM.getCodigo())) {
             generarReporteUsuariosSGMBirt();
+        } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL.getCodigo())) {
+            generarReporteOpeMinIleTotal();
+        } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MENSUAL.getCodigo())) {
+            generarReporteOpeMinIleMensual();
+        } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MAQ.getCodigo())) {
+            generarReporteOpeMinIleMaq();
         }
     }
 
@@ -286,7 +367,15 @@ public class ReporteCtrl extends BaseCtrl {
             concesionMinera = false;
         }
     }
-
+    
+    public void listenerSubTipoOperativo() {
+        if(codigoSubTipoOperativo!=null && !codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL.getCodigo())) {
+            mostrarFiltroAnio= true;
+        } else {
+            mostrarFiltroAnio= false;
+        } 
+    }
+    
     public void listenerTipoReporte() {
         if (codigoTipoMineria != null) {
             if(regionales == null){
@@ -325,15 +414,32 @@ public class ReporteCtrl extends BaseCtrl {
                 || codigoTipoMineria.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE.getCodigo())
                 || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())) {
             setMostrarFiltroRegional(true);
+            setMostrarSubTipoReporteOperativo(false);
+            setMostrarFiltroAnio(false);
         } else {
             setMostrarFiltroRegional(false);
+            setMostrarSubTipoReporteOperativo(false);
+            setMostrarFiltroAnio(false);
         }
 
         //SE MUESTRA EL FILTRO FECHA DESDE HASTA
         if (codigoTipoMineria.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE.getCodigo())) {
             setMostrarFiltroFecha(true);
+            setMostrarSubTipoReporteOperativo(false);
+            setMostrarFiltroAnio(false);
         } else {
             setMostrarFiltroFecha(false);
+            setMostrarSubTipoReporteOperativo(false);
+            setMostrarFiltroAnio(false);
+        }
+        
+        //MOSTRAR SUBTIPO DE OPERATIVO
+        if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo())) {
+            setMostrarSubTipoReporteOperativo(true);
+            setMostrarFiltroAnio(false);
+        } else {
+            setMostrarSubTipoReporteOperativo(false);
+            setMostrarFiltroAnio(false);
         }
     }
     
@@ -355,6 +461,7 @@ public class ReporteCtrl extends BaseCtrl {
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LIBRE_APROVECHAMIENTO)
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PLANTAS_BENEFICIO)
                         || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LICENCIAS_COMERCIALIZACION)
+                        || ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL)
 //                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PROVINCIA)
 //                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_REGIONAL)                
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS)) {
@@ -364,6 +471,24 @@ public class ReporteCtrl extends BaseCtrl {
             tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getDescripcion()));
         }
         return tipoSolicitudes;
+    }
+    
+    public List<SelectItem> getSubTiposOperativo() {
+        if (subTiposOperativo == null) {
+            subTiposOperativo = new ArrayList<>();
+            for (ConstantesEnum ce : ConstantesEnum.values()) {
+                if (ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL)
+                        || ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MENSUAL)
+                        || ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MAQ)) {
+                    subTiposOperativo.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
+                }
+            }
+        }
+        return subTiposOperativo;
+    }
+
+    public void setSubTiposOperativo(List<SelectItem> subTiposOperativo) {
+        this.subTiposOperativo = subTiposOperativo;
     }
 
     public boolean validarFechas(Date fechaDesde_, Date fechaHasta_){

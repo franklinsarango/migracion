@@ -82,6 +82,28 @@
                         <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                         <f:selectItems value="#{reporteCtrl.regionales}" />
                     </p:selectOneMenu>
+                    
+                    <p:outputLabel value="Subtipo Reporte:" rendered="#{reporteCtrl.mostrarSubTipoReporteOperativo}"/>
+                    <p:selectOneMenu value="#{reporteCtrl.codigoSubTipoOperativo}"
+                                     required="true"
+                                     requiredMessage="Subtipo reporte operativo es requerido"
+                                     style="width: 93%"
+                                     rendered="#{reporteCtrl.mostrarSubTipoReporteOperativo}">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{reporteCtrl.subTiposOperativo}"/>
+                        <p:ajax listener="#{reporteCtrl.listenerSubTipoOperativo()}" update="panelFiltros botones"/>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel value="Año:" rendered="#{reporteCtrl.mostrarFiltroAnio}"/>
+                    <p:selectOneMenu value="#{reporteCtrl.anioOperativo}"
+                                     required="true"
+                                     requiredMessage="Año es requerido"
+                                     style="width: 93%"
+                                     rendered="#{reporteCtrl.mostrarFiltroAnio}">
+                        <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                        <f:selectItems value="#{reporteCtrl.aniosOperativo}"/>
+                    </p:selectOneMenu>
+                    
                     <f:facet name="footer">
                         <h:panelGroup id="botones" style="display:block; text-align:center">
                             <h:commandButton value="Generar" 
