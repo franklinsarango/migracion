@@ -118,7 +118,7 @@
                         <p:selectOneMenu id="estadoLic" value="#{licenciaComercializacionCtrl.licenciaComercializacion.estadoLicencia.codigoCatalogoDetalle}" required="true" requiredMessage="Estado es requerido" style="width: 93%">
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                             <f:selectItems value="#{selectItemCtrl.estadosCodigoCatalogo19}" />
-                            <p:ajax process=":form:fecOtorga :form:fecInscribe" update=":form:fecOtorga :form:fecInscribe" />
+                            <p:ajax listener="#{licenciaComercializacionCtrl.validarEstadoLicencia}" update="numResolArchivo1 numResolArchivo2 fecResolArchivo1 fecResolArchivo2 fecArchivo1 fecArchivo2"/>                                
                         </p:selectOneMenu>
 
                         <p:outputLabel for="fecOtorga" value="Fecha otorga:"></p:outputLabel>
@@ -131,6 +131,32 @@
                                     value="#{licenciaComercializacionCtrl.licenciaComercializacion.fechaInscribe}"  
                                     locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%"/>
 
+                        <h:panelGroup id="numResolArchivo1">
+                            <p:outputLabel for="numResolArchivo" value="Resolución Archivo:" rendered="#{licenciaComercializacionCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="numResolArchivo2">
+                            <p:inputText id="numResolArchivo" size="50" value="#{licenciaComercializacionCtrl.licenciaComercializacion.numeroResolucionArchivo}" required="true" requiredMessage="Número Resolución Archivo es requerido" maxlength="50"
+                                         rendered="#{licenciaComercializacionCtrl.esEstadoArchivado}"></p:inputText>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecResolArchivo1">
+                            <p:outputLabel for="fecResolArchivo" value="Fecha Resolución Archivo:" rendered="#{licenciaComercializacionCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecResolArchivo2">
+                            <p:calendar id="fecResolArchivo" required="true" requiredMessage="Fecha Resolución Archivo es requerido"
+                                        value="#{licenciaComercializacionCtrl.licenciaComercializacion.fechaResolucionArchivo}" placeholder="aaaa-mm-dd" navigator="true"
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
+                                        rendered="#{licenciaComercializacionCtrl.esEstadoArchivado}"/>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecArchivo1">
+                            <p:outputLabel for="fecArchivo" value="Fecha Inscripción Archivo:" rendered="#{licenciaComercializacionCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecArchivo2">
+                            <p:calendar id="fecArchivo" required="true" requiredMessage="Fecha Archivo es requerido"
+                                        value="#{licenciaComercializacionCtrl.licenciaComercializacion.fechaArchivo}" placeholder="aaaa-mm-dd" navigator="true"
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
+                                        rendered="#{licenciaComercializacionCtrl.esEstadoArchivado}"/>
+                        </h:panelGroup>
+                        
                         <p:outputLabel for="somProvincia01" value="Provincia:"></p:outputLabel>
                         <p:selectOneMenu id="somProvincia01" value="#{licenciaComercializacionCtrl.licenciaComercializacion.codigoProvincia}" required="true" requiredMessage="Provincia es requerida" style="width: 93%" >
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />

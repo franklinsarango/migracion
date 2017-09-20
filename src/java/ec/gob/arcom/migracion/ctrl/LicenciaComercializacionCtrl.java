@@ -96,6 +96,8 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
 
     private PersonaNatural personaNatural;
     private PersonaJuridica personaJuridica;
+    
+    private boolean esEstadoArchivado;
 
     public LicenciaComercializacion getLicenciaComercializacion() {
         if (licenciaComercializacion == null) {
@@ -132,6 +134,7 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
                     codigoArcomNull = false;
                 }
                 existeCodigoArcom = false;
+                validarEstadoLicencia();
             }
         }
         return licenciaComercializacion;
@@ -757,5 +760,27 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
                     "Número de cédula inválido", null));
         }
     }
+    
+    public void validarEstadoLicencia() {
+        if (licenciaComercializacion.getEstadoLicencia()!= null 
+                && licenciaComercializacion.getEstadoLicencia().getCodigoCatalogoDetalle() != null) {
+            if (licenciaComercializacion.getEstadoLicencia().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_ARCHIVADA.getCodigo())) {
+                System.out.println("Estado Planta Beneficio: " + licenciaComercializacion.getEstadoLicencia().getCodigoCatalogoDetalle());
+                esEstadoArchivado = true;
+            } else {
+                esEstadoArchivado = false;
+            }
+        }
+    }
+
+    public boolean isEsEstadoArchivado() {
+        return esEstadoArchivado;
+    }
+
+    public void setEsEstadoArchivado(boolean esEstadoArchivado) {
+        this.esEstadoArchivado = esEstadoArchivado;
+    }
+    
+    
 
 }

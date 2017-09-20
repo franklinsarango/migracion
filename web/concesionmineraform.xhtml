@@ -195,7 +195,7 @@
                         <p:calendar id="fecInscSustitucion"
                                     value="#{concesionMineraCtrl.concesionMinera.fechaInscripcionSustitucion}" placeholder="aaaa-mm-dd" navigator="true"
                                     locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" />
-
+                        
                         <p:outputLabel for="console" value="Zona:"></p:outputLabel>
                         <p:selectOneRadio id="console" value="#{concesionMineraCtrl.concesionMinera.codigoZona.codigoCatalogoDetalle}" 
                                           required="true" requiredMessage="Zona es requerida">
@@ -217,8 +217,7 @@
                                          required="true" requiredMessage="Estado concesión es requerido" style="width: 93%">
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                             <f:selectItems value="#{selectItemCtrl.estadosCodigoCatalogo19}" />
-                            <p:ajax process=":form1:somEstado :form1:fecOtorga :form1:fecInscribe" 
-                                    update=":form1:fecOtorgaLab :form1:fecInscribeLab :form1:fecOtorga :form1:fecInscribe" immediate="true"/>
+                            <p:ajax listener="#{concesionMineraCtrl.validarEstadoConcesion}" update="numResolArchivo1 numResolArchivo2 fecResolArchivo1 fecResolArchivo2 fecArchivo1 fecArchivo2"/>
                         </p:selectOneMenu>
 
                         <p:outputLabel for="tipoSolic" value="Tipo solicitud:"></p:outputLabel>
@@ -250,6 +249,32 @@
                                 <f:selectItem itemValue="1000" itemLabel="--Seleccione una opción--" />
                                 <f:selectItems value="#{concesionMineraCtrl.fasesCodigoCatalogo}" />
                             </p:selectOneMenu>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id="numResolArchivo1">
+                            <p:outputLabel for="numResolArchivo" value="Resolución Archivo:" rendered="#{concesionMineraCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="numResolArchivo2">
+                            <p:inputText id="numResolArchivo" size="50" value="#{concesionMineraCtrl.concesionMinera.numeroResolucionArchivo}" required="true" requiredMessage="Número Resolución Archivo es requerido" maxlength="50"
+                                         rendered="#{concesionMineraCtrl.esEstadoArchivado}"></p:inputText>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecResolArchivo1">
+                            <p:outputLabel for="fecResolArchivo" value="Fecha Resolución Archivo:" rendered="#{concesionMineraCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecResolArchivo2">
+                            <p:calendar id="fecResolArchivo" required="true" requiredMessage="Fecha Resolución Archivo es requerido"
+                                        value="#{concesionMineraCtrl.concesionMinera.fechaResolucionArchivo}" placeholder="aaaa-mm-dd" navigator="true"
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
+                                        rendered="#{concesionMineraCtrl.esEstadoArchivado}"/>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecArchivo1">
+                            <p:outputLabel for="fecArchivo" value="Fecha Inscripción Archivo:" rendered="#{concesionMineraCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecArchivo2">
+                            <p:calendar id="fecArchivo" required="true" requiredMessage="Fecha Archivo es requerido"
+                                        value="#{concesionMineraCtrl.concesionMinera.fechaArchivo}" placeholder="aaaa-mm-dd" navigator="true"
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
+                                        rendered="#{concesionMineraCtrl.esEstadoArchivado}"/>
                         </h:panelGroup>
                         
                         <h:panelGroup id="numResolCambioRegimen1">

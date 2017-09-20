@@ -151,6 +151,109 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
     }
 
     @Override
+    public List<ConcesionMineraDto> obtenerAllAreas() {        
+        String sql = "SELECT \n"
+                + "cm.codigo_concesion,\n"
+                + "cm.codigo_arcom,\n"
+                + "catmin.format_gmadigital(cm.nombre_concesion) as nombre_concesion,\n"
+                + "cm.documento_concesionario_principal AS titular_documento,\n"
+                + "case when p.apellido is null then catmin.format_gmadigital(p.nombre) else catmin.format_gmadigital(p.apellido || ' ' || p.nombre) end as titular_nombre,\n"
+                + "p.telefono,\n"
+                + "catmin.format_gmadigital(p.direccion) as direccion,\n"
+                + "p.documento_representante_legal as rep_legal_documento,\n"
+                + "case when p.apellido_representante_legal is null then catmin.format_gmadigital(p.nombre_representante_legal) else catmin.format_gmadigital(p.apellido_representante_legal || ' ' || p.nombre_representante_legal) end as rep_legal_nombre,\n"
+                + "p.casillero_judicial,\n"
+                + "cm.plazo_concesion,\n"
+                + "cm.plazo_dias,\n"
+                + "COALESCE((select nombre_fase from catmin.fase where codigo_fase = cm.codigo_fase),'') as fase,\n"
+                + "tm.nombre_tipo_mineria as tipo_solicitud,\n"
+                + "cm.fecha_otorga as fecha_otorgamiento,                                     \n"
+                + "cm.fecha_inscribe as fecha_inscripcion,\n"
+                + "cm.fecha_sustitucion,\n"
+                + "cm.fecha_inscripcion_sustitucion,\n"
+                + "est_.nombre as estado_concesion,\n"
+                + "(select nombre_regional from catmin.regional r, catmin.localidad_regional l where cm.codigo_provincia = l.codigo_localidad and r.codigo_regional = l.codigo_regional) as nombre_regional,\n"
+                + "(select codigo_internacional from catmin.localidad where cm.codigo_provincia = codigo_localidad) as codigo_provincia,\n"
+                + "catmin.format_gmadigital(prov.nombre) as provincia,\n"
+                + "(select codigo_internacional from catmin.localidad where cm.codigo_canton = codigo_localidad) as codigo_canton,\n"
+                + "(select catmin.format_gmadigital(nombre) from catmin.localidad where cm.codigo_canton = codigo_localidad) as canton,\n"
+                + "(select codigo_internacional from catmin.localidad where cm.codigo_parroquia = codigo_localidad) as codigo_parroquia,\n"
+                + "(select catmin.format_gmadigital(nombre) from catmin.localidad where cm.codigo_parroquia = codigo_localidad) as parroquia,\n"
+                + "\n"
+                + "case when cm.codigo_zona = 11 then 15 \n"
+                + "        when cm.codigo_zona = 12 then 16\n"
+                + "        when cm.codigo_zona = 13 then 17\n"
+                + "        when cm.codigo_zona = 14 then 18 else null end as zona,\n"
+                + "(select upper(nombre) from catmin.catalogo_detalle where codigo_catalogo_detalle = cm.codigo_material_interes) as material_interes,        \n"
+                + "(select upper(nombre) from catmin.catalogo where codigo_catalogo = cm.codigo_tipo_material) as mineral,\n"
+                + "cm.numero_hectareas_concesion as superficie,\n"
+                + "cm.fecha_creacion,\n"
+                + "(select upper(nombre) from catmin.regimen where codigo_regimen = cm.codigo_regimen) as regimen,\n"
+                + "(select upper(nombre) from catmin.catalogo_detalle where codigo_catalogo_detalle = cm.codigo_modalidad_trabajo) as modalidad_trabajo,\n"
+                + "(select upper(nombre) from catmin.catalogo_detalle where codigo_catalogo_detalle = cm.codigo_forma_explotacion) as forma_explotacion,\n"
+                + "cm.volumen_diario_explotacion,\n"
+                + "cm.volumen_total_explotacion,\n"
+                + "case when cm.litispendencia = true then 'S' else 'N' end as litispendencia\n"
+                + "FROM catmin.concesion_minera cm, catmin.personas p, catmin.tipo_mineria tm,catmin.localidad prov, catmin.catalogo_detalle est_    \n"
+                + "where prov.codigo_localidad = cm.codigo_provincia\n"
+                + "and est_.codigo_catalogo_detalle = cm.estado_concesion\n"
+                + "and cm.codigo_tipo_mineria = tm.codigo_tipo_mineria\n"
+                + "and cm.documento_concesionario_principal = p.numero_documento\n"
+                + "and cm.estado_registro = true";
+        System.out.println("sql concesion: " + sql);
+
+        Query query = em.createNativeQuery(sql);
+
+        List<Object[]> listaTmp = query.getResultList();
+        List<ConcesionMineraDto> listaFinal = new ArrayList<>();
+
+        for (Object[] fila : listaTmp) {
+            ConcesionMineraDto cmd = new ConcesionMineraDto();
+            cmd.setCodigoConcesion(fila[0] != null ? Long.valueOf(fila[0].toString()) : null);
+            cmd.setCodigoArcom(fila[1] != null ? fila[1].toString() : null);
+            cmd.setNombreConcesion(fila[2] != null ? fila[2].toString() : null);
+            cmd.setTitularDocumento(fila[3] != null ? fila[3].toString() : null);            
+            cmd.setTitularNombre(fila[4] != null ? fila[4].toString() : null);            
+            cmd.setTelefono(fila[5] != null ? fila[5].toString() : null);
+            cmd.setDireccion(fila[6] != null ? fila[6].toString() : null);
+            cmd.setRepLegalDocumento(fila[7] != null ? fila[7].toString() : null);
+            cmd.setRepLegalNombre(fila[8] != null ? fila[8].toString() : null);            
+            cmd.setCasilleroJudicial(fila[9] != null ? fila[9].toString() : null);
+            cmd.setPlazoConcesion(fila[10] != null ? fila[10].toString() : null);
+            cmd.setPlazoDias(fila[11] != null ? fila[11].toString() : null);
+            cmd.setFase(fila[12] != null ? fila[12].toString() : null);
+            cmd.setTipoSolicitud(fila[13] != null ? fila[13].toString() : null);
+            cmd.setFechaOtorgamiento(fila[14] != null ? (Date) fila[14] : null);
+            cmd.setFechaInscripcion(fila[15] != null ? (Date) fila[15] : null);
+            cmd.setFechaSustitucion(fila[16] != null ? (Date) fila[16] : null);
+            cmd.setFechaInscripcionSustitucion(fila[17] != null ? (Date) fila[17] : null);
+            cmd.setEstadoConcesion(fila[18] != null ? fila[18].toString() : null);
+            cmd.setNombreRegional(fila[19] != null ? fila[19].toString() : null);
+            cmd.setCodigoProvincia(fila[20] != null ? fila[20].toString() : null);
+            cmd.setProvincia(fila[21] != null ? fila[21].toString() : null);
+            cmd.setCodigoCanton(fila[22] != null ? fila[22].toString() : null);
+            cmd.setCanton(fila[23] != null ? fila[23].toString() : null);
+            cmd.setCodigoParroquia(fila[24] != null ? fila[24].toString() : null);
+            cmd.setParroquia(fila[25] != null ? fila[25].toString() : null);
+            cmd.setZona(fila[26] != null ? fila[26].toString() : null);
+            cmd.setMaterialInteres(fila[27] != null ? fila[27].toString() : null);
+            cmd.setMineral(fila[28] != null ? fila[28].toString() : null);
+            cmd.setSuperficie(fila[29] != null ? Double.valueOf(fila[29].toString()) : null);            
+            cmd.setFechaCreacion(fila[30] != null ? (Date) fila[30] : null);
+            cmd.setRegimen(fila[31] != null ? fila[31].toString() : null);
+            cmd.setModalidadTrabajo(fila[32] != null ? fila[32].toString() : null);
+            cmd.setFormaExplotacion(fila[33] != null ? fila[33].toString() : null);
+            cmd.setVolumenDiarioExplotacion(fila[34] != null ? fila[34].toString() : null);
+            cmd.setVolumenTotalExplotacion(fila[35] != null ? fila[35].toString() : null);
+            cmd.setLitispendencia(fila[36] != null ? fila[36].toString() : null);
+            listaFinal.add(cmd);
+        }
+
+        return listaFinal;
+    }
+    
+    
+    @Override
     public List<ConcesionMineraDto> obtenerRegistrosPorFiltros(String codigoFiltro, String cedulaTitularFiltro, String nombreAreaFiltro) {
         if (codigoFiltro == null || codigoFiltro.trim().isEmpty()) {
             codigoFiltro = "-1";
@@ -503,6 +606,21 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             sql = sql + "    fecha_inscripcion_cambio_regimen = '" + formatoDelTexto.format(concesionMinera.getFechaInscripcionCambioRegimen()) + "',\n";
         } else {
             sql = sql + "    fecha_inscripcion_cambio_regimen = null ,\n";
+        }
+        if (concesionMinera.getNumeroResolucionArchivo()!= null) {
+            sql = sql + "    numero_resolucion_archivo = '" + concesionMinera.getNumeroResolucionArchivo()+ "',\n";
+        }
+        if (concesionMinera.getFechaResolucionArchivo()!= null) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_resolucion_archivo = '" + formatoDelTexto.format(concesionMinera.getFechaResolucionArchivo()) + "',\n";
+        } else {
+            sql = sql + "    fecha_resolucion_archivo = null ,\n";
+        }
+        if (concesionMinera.getFechaArchivo()!= null) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_archivo = '" + formatoDelTexto.format(concesionMinera.getFechaArchivo()) + "',\n";
+        } else {
+            sql = sql + "    fecha_archivo = null ,\n";
         }
         sql = sql + "    plazo_dias = " + concesionMinera.getDias() + ",\n";
         sql = sql + "    migrada = " + concesionMinera.getMigrada() + "\n";

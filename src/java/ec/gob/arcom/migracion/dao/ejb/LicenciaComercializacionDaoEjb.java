@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.LicenciaComercializacionDao;
 import ec.gob.arcom.migracion.dto.LicenciaComercializacionDto;
 import ec.gob.arcom.migracion.modelo.LicenciaComercializacion;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -241,6 +242,21 @@ public class LicenciaComercializacionDaoEjb extends GenericDaoEjbEl<LicenciaCome
             sql = sql + "    observaciones = '" + licenciaComercializacion.getObservaciones() + "',\n";
         } else {
             sql = sql + "    observaciones = null" + ",\n";
+        }
+        if (licenciaComercializacion.getNumeroResolucionArchivo()!= null) {
+            sql = sql + "    numero_resolucion_archivo = '" + licenciaComercializacion.getNumeroResolucionArchivo()+ "',\n";
+        }
+        if (licenciaComercializacion.getFechaResolucionArchivo()!= null) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_resolucion_archivo = '" + formatoDelTexto.format(licenciaComercializacion.getFechaResolucionArchivo()) + "',\n";
+        } else {
+            sql = sql + "    fecha_resolucion_archivo = null ,\n";
+        }
+        if (licenciaComercializacion.getFechaArchivo()!= null) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_archivo = '" + formatoDelTexto.format(licenciaComercializacion.getFechaArchivo()) + "',\n";
+        } else {
+            sql = sql + "    fecha_archivo = null ,\n";
         }
         if (licenciaComercializacion.getTipoPersona() != null) {
             sql = sql + "    tipo_persona = '" + licenciaComercializacion.getTipoPersona() + "',\n";
