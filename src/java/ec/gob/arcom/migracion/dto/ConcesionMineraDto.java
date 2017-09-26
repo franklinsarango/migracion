@@ -23,11 +23,16 @@ public class ConcesionMineraDto {
     private String repLegalNombre;
     private String casilleroJudicial;
     private String plazoConcesion;
+    private String plazoDias;
     private Date fechaInforme;
     private String fase;
+    private String regimen;
     private String tipoSolicitud;
+    private Date fechaCreacion;
     private Date fechaOtorgamiento;
     private Date fechaInscripcion;
+    private Date fechaSustitucion;
+    private Date fechaInscripcionSustitucion;
     private String estadoConcesion;
     private String nombreRegional;
     private String codigoProvincia;
@@ -46,6 +51,11 @@ public class ConcesionMineraDto {
     private String mineral;
     private Double superficie;
     private String codigoArcom;
+    private String modalidadTrabajo;
+    private String formaExplotacion;
+    private String volumenDiarioExplotacion;
+    private String volumenTotalExplotacion;
+    private String litispendencia;
     private String tipoTabla;
 
     public Long getCodigoConcesion() {
@@ -318,5 +328,145 @@ public class ConcesionMineraDto {
 
     public void setTipoTabla(String tipoTabla) {
         this.tipoTabla = tipoTabla;
+    }
+
+    /**
+     * @return the plazoDias
+     */
+    public String getPlazoDias() {
+        return plazoDias;
+    }
+
+    /**
+     * @param plazoDias the plazoDias to set
+     */
+    public void setPlazoDias(String plazoDias) {
+        this.plazoDias = plazoDias;
+    }
+
+    /**
+     * @return the fechaSustitucion
+     */
+    public Date getFechaSustitucion() {
+        return fechaSustitucion;
+    }
+
+    /**
+     * @param fechaSustitucion the fechaSustitucion to set
+     */
+    public void setFechaSustitucion(Date fechaSustitucion) {
+        this.fechaSustitucion = fechaSustitucion;
+    }
+
+    /**
+     * @return the fechaInscripcionSustitucion
+     */
+    public Date getFechaInscripcionSustitucion() {
+        return fechaInscripcionSustitucion;
+    }
+
+    /**
+     * @param fechaInscripcionSustitucion the fechaInscripcionSustitucion to set
+     */
+    public void setFechaInscripcionSustitucion(Date fechaInscripcionSustitucion) {
+        this.fechaInscripcionSustitucion = fechaInscripcionSustitucion;
+    }
+
+    /**
+     * @return the fechaCreacion
+     */
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    /**
+     * @param fechaCreacion the fechaCreacion to set
+     */
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    /**
+     * @return the regimen
+     */
+    public String getRegimen() {
+        return regimen;
+    }
+
+    /**
+     * @param regimen the regimen to set
+     */
+    public void setRegimen(String regimen) {
+        this.regimen = regimen;
+    }
+
+    /**
+     * @return the modalidadTrabajo
+     */
+    public String getModalidadTrabajo() {
+        return modalidadTrabajo;
+    }
+
+    /**
+     * @param modalidadTrabajo the modalidadTrabajo to set
+     */
+    public void setModalidadTrabajo(String modalidadTrabajo) {
+        this.modalidadTrabajo = modalidadTrabajo;
+    }
+
+    /**
+     * @return the formaExplotacion
+     */
+    public String getFormaExplotacion() {
+        return formaExplotacion;
+    }
+
+    /**
+     * @param formaExplotacion the formaExplotacion to set
+     */
+    public void setFormaExplotacion(String formaExplotacion) {
+        this.formaExplotacion = formaExplotacion;
+    }
+
+    /**
+     * @return the volumenDiarioExplotacion
+     */
+    public String getVolumenDiarioExplotacion() {
+        return volumenDiarioExplotacion;
+    }
+
+    /**
+     * @param volumenDiarioExplotacion the volumenDiarioExplotacion to set
+     */
+    public void setVolumenDiarioExplotacion(String volumenDiarioExplotacion) {
+        this.volumenDiarioExplotacion = volumenDiarioExplotacion;
+    }
+
+    /**
+     * @return the volumenTotalExplotacion
+     */
+    public String getVolumenTotalExplotacion() {
+        return volumenTotalExplotacion;
+    }
+
+    /**
+     * @param volumenTotalExplotacion the volumenTotalExplotacion to set
+     */
+    public void setVolumenTotalExplotacion(String volumenTotalExplotacion) {
+        this.volumenTotalExplotacion = volumenTotalExplotacion;
+    }
+
+    /**
+     * @return the litispendencia
+     */
+    public String getLitispendencia() {
+        return litispendencia;
+    }
+
+    /**
+     * @param litispendencia the litispendencia to set
+     */
+    public void setLitispendencia(String litispendencia) {
+        this.litispendencia = litispendencia;
     }
 }

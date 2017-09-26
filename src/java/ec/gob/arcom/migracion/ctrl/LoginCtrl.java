@@ -64,6 +64,7 @@ public class LoginCtrl extends BaseCtrl {
     private boolean tecnico;
     private boolean abogado;
     private boolean tecnicoCatastro;
+    private boolean tecnicoCatastroNacional;
     private boolean coordinadorRegional;
     private boolean directorEjecutivo;
     private boolean usuarioEnami;
@@ -206,6 +207,11 @@ public class LoginCtrl extends BaseCtrl {
                             this.tecnicoCatastro = true;
                         } else {
                             this.tecnicoCatastro = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_TECNICO_CATASTRO_NACIONAL.getNemonico())){
+                            this.tecnicoCatastroNacional = true;
+                        } else {
+                            this.tecnicoCatastroNacional = false;
                         }
                         if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ABOGADO.getNemonico())){
                             this.abogado = true;
@@ -481,6 +487,20 @@ public class LoginCtrl extends BaseCtrl {
      */
     public void setAbogado(boolean abogado) {
         this.abogado = abogado;
+    }
+
+    /**
+     * @return the tecnicoCatastroNacional
+     */
+    public boolean isTecnicoCatastroNacional() {
+        return tecnicoCatastroNacional;
+    }
+
+    /**
+     * @param tecnicoCatastroNacional the tecnicoCatastroNacional to set
+     */
+    public void setTecnicoCatastroNacional(boolean tecnicoCatastroNacional) {
+        this.tecnicoCatastroNacional = tecnicoCatastroNacional;
     }
 
 }

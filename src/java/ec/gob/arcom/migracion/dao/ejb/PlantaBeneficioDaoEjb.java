@@ -10,6 +10,7 @@ import ec.gob.arcom.migracion.dao.PlantaBeneficioDao;
 import ec.gob.arcom.migracion.dto.PlantaBeneficioDto;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.PlantaBeneficio;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -319,6 +320,21 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
         }
         if (plantaBeneficio.getPlazo() != null) {
             sql = sql + "    plazo = " + plantaBeneficio.getPlazo() + ",\n";
+        }
+        if (plantaBeneficio.getNumeroResolucionArchivo()!= null) {
+            sql = sql + "    numero_resolucion_archivo = '" + plantaBeneficio.getNumeroResolucionArchivo()+ "',\n";
+        }
+        if (plantaBeneficio.getFechaResolucionArchivo()!= null) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_resolucion_archivo = '" + formatoDelTexto.format(plantaBeneficio.getFechaResolucionArchivo()) + "',\n";
+        } else {
+            sql = sql + "    fecha_resolucion_archivo = null ,\n";
+        }
+        if (plantaBeneficio.getFechaArchivo()!= null) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            sql = sql + "    fecha_archivo = '" + formatoDelTexto.format(plantaBeneficio.getFechaArchivo()) + "',\n";
+        } else {
+            sql = sql + "    fecha_archivo = null ,\n";
         }
         if (plantaBeneficio.getTipoPersona() != null) {
             sql = sql + "    tipo_persona = '" + plantaBeneficio.getTipoPersona() + "',\n";

@@ -54,6 +54,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -169,8 +170,9 @@ public class ConcesionMineraCtrl extends BaseCtrl {
     private int cantidadMaquinaria = 1;
     //private Resolucion resolucion;
     
+    private boolean esEstadoArchivado;
     private List<CoordenadaArea> coordenadasPorArea;
-
+    
     public ConcesionMinera getConcesionMinera() {
         if (concesionMinera == null) {
             String concesionMineraId = getHttpServletRequestParam("idItem");
@@ -281,6 +283,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                 existeCodigoArcom = false;
                 mostrarCoordenadas = true;
                 mostrarMaquinaria = true;
+                validarEstadoConcesion();
                 validarRegimenFase();
             }
         }
@@ -1257,6 +1260,18 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         this.tipSolConcMin = tipSolConcMin;
     }
 
+    public void validarEstadoConcesion() {
+        if (concesionMinera.getEstadoConcesion()!= null 
+                && concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle() != null) {
+            if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_ARCHIVADA.getCodigo())) {
+                System.out.println("Estado Concesion: " + concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle());
+                esEstadoArchivado = true;
+            } else {
+                esEstadoArchivado = false;
+            }
+        }
+    }
+    
     public void validarRegimenFase() {
         if (concesionMinera.getCodigoTipoMineria() != null 
                 && concesionMinera.getCodigoTipoMineria().getCodigoTipoMineria() != null) {
@@ -1571,4 +1586,18 @@ public class ConcesionMineraCtrl extends BaseCtrl {
      public void setResolucion(Resolucion resolucion) {
      this.resolucion = resolucion;
      }*/
+
+    /**
+     * @return the esEstadoArchivado
+     */
+    public boolean isEsEstadoArchivado() {
+        return esEstadoArchivado;
+    }
+
+    /**
+     * @param esEstadoArchivado the esEstadoArchivado to set
+     */
+    public void setEsEstadoArchivado(boolean esEstadoArchivado) {
+        this.esEstadoArchivado = esEstadoArchivado;
+    }
 }

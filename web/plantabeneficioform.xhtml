@@ -162,10 +162,36 @@
                                              rendered="#{!plantaBeneficioCtrl.concesionMinera}">
                                 <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                                 <f:selectItems value="#{selectItemCtrl.estadosCodigoCatalogo19}" />
-                                <p:ajax process=":form:fecOtorga :form:fecInscribe" update=":form:fecOtorga :form:fecInscribe" />
+                                <p:ajax listener="#{plantaBeneficioCtrl.validarEstadoPlantaBeneficio}" update="numResolArchivo1 numResolArchivo2 fecResolArchivo1 fecResolArchivo2 fecArchivo1 fecArchivo2"/>                                
                             </p:selectOneMenu>
                         </h:panelGroup>
 
+                        <h:panelGroup id="numResolArchivo1">
+                            <p:outputLabel for="numResolArchivo" value="Resolución Archivo:" rendered="#{plantaBeneficioCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="numResolArchivo2">
+                            <p:inputText id="numResolArchivo" size="50" value="#{plantaBeneficioCtrl.plantaBeneficio.numeroResolucionArchivo}" required="true" requiredMessage="Número Resolución Archivo es requerido" maxlength="50"
+                                         rendered="#{plantaBeneficioCtrl.esEstadoArchivado}"></p:inputText>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecResolArchivo1">
+                            <p:outputLabel for="fecResolArchivo" value="Fecha Resolución Archivo:" rendered="#{plantaBeneficioCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecResolArchivo2">
+                            <p:calendar id="fecResolArchivo" required="true" requiredMessage="Fecha Resolución Archivo es requerido"
+                                        value="#{plantaBeneficioCtrl.plantaBeneficio.fechaResolucionArchivo}" placeholder="aaaa-mm-dd" navigator="true"
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
+                                        rendered="#{plantaBeneficioCtrl.esEstadoArchivado}"/>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecArchivo1">
+                            <p:outputLabel for="fecArchivo" value="Fecha Inscripción Archivo:" rendered="#{plantaBeneficioCtrl.esEstadoArchivado}"></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup id="fecArchivo2">
+                            <p:calendar id="fecArchivo" required="true" requiredMessage="Fecha Archivo es requerido"
+                                        value="#{plantaBeneficioCtrl.plantaBeneficio.fechaArchivo}" placeholder="aaaa-mm-dd" navigator="true"
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
+                                        rendered="#{plantaBeneficioCtrl.esEstadoArchivado}"/>
+                        </h:panelGroup>
+                        
                         <p:outputLabel for="somProcedencia" value="Procedencia Material:"></p:outputLabel>
                         <p:selectOneMenu id="somProcedencia" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoProcedenciaMaterial.codigoCatalogoDetalle}" required="true" requiredMessage="Estado es requerido" style="width: 93%">
                             <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />

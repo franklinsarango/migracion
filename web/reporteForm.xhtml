@@ -118,7 +118,7 @@
                             <p:commandButton value="Cancelar" action="index.xhtml?faces-redirect=true" immediate="true"/>
                         </h:panelGroup>
                     </f:facet>
-                </p:panelGrid>
+                </p:panelGrid>                
                 <p:dialog id="dialoVisorTareas" header="Comprobante" 
                           widgetVar="visorTramite" width="95%" height="600px"  
                           showEffect="fade" draggable="false" 
@@ -129,6 +129,145 @@
                             width="100%" height="98%" 
                             marginheight="0" marginwidth="0">
                     </iframe>
+                </p:dialog>
+                <p:dialog id="dialoVisorRptCN" header="Reporte Catastro Nacional" widgetVar="visorRptCatastroNacional" width="95%" height="400px"  
+                          showEffect="fade" draggable="false" 
+                          resizable="false" modal="true" >
+                    <h:commandLink styleClass="lnkexport" id="idBoton">
+                        <h:graphicImage value="resources/images/msexcel.png" width="16"/>
+                        <h:outputLabel value="&#160;Exportar Reporte"/>
+                        <p:dataExporter type="xls" target="dtDatosReporte" fileName="CatastroNacional" />
+                    </h:commandLink>
+                    
+                    <p:dataTable id="dtDatosReporte" var="reg" value="#{reporteCtrl.listaAreas}" rows="2" 
+                                 paginator="true"
+                                 currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" styleClass="texto_tabla_datos" rowIndexVar="rowIndex" emptyMessage="No existen registros" style="width: 100%">
+
+                        <p:column headerText="CODIGO SOLICITID" style="width: 85px; text-align: right">
+                            <h:outputText  styleClass="texto_tabla_datos_codigo" value="#{reg.codigoArcom}" />
+                        </p:column>
+                        <p:column headerText="CODIGO CATASTRO">
+                            <h:outputText value="#{reg.codigoArcom}" />
+                        </p:column>
+                        <p:column headerText="NOMBRE CONCESION">
+                            <h:outputText value="#{reg.nombreConcesion}" />
+                        </p:column>
+                        <p:column headerText="N° DOC. TITULAR">
+                            <h:outputText value="#{reg.titularDocumento}" />
+                        </p:column>
+                        <p:column headerText="NOMBRE TITULAR">
+                            <h:outputText value="#{reg.titularNombre}" />
+                        </p:column>
+                        <p:column headerText="TELEFONO">
+                            <h:outputText value="#{reg.telefono}" />
+                        </p:column>
+                        <p:column headerText="DIRECCION">
+                            <h:outputText value="#{reg.direccion}" />
+                        </p:column>
+                        <p:column headerText="NOMBRE REP. LEGAL">
+                            <h:outputText value="#{reg.repLegalNombre}" />
+                        </p:column>
+                        <p:column headerText="N° DOC. REP. LEGAL">
+                            <h:outputText value="#{reg.repLegalDocumento}" />
+                        </p:column>
+                        <p:column headerText="CASILLERO JUDICIAL">
+                            <h:outputText value="#{reg.casilleroJudicial}" />
+                        </p:column>
+                        <p:column headerText="PLAZO CONCESION">
+                            <h:outputText value="#{reg.plazoConcesion}" />
+                        </p:column>
+                        <p:column headerText="PLAZO DIAS">
+                            <h:outputText value="#{reg.plazoDias}" />
+                        </p:column>
+                        <p:column headerText="FASE">
+                            <h:outputText value="#{reg.fase}" />
+                        </p:column>
+                        <p:column headerText="TIPO SOLICITUD">
+                            <h:outputText value="#{reg.tipoSolicitud}" />
+                        </p:column>
+                        <p:column headerText="FECHA OTORGAMIENTO">
+                            <h:outputText value="#{reg.fechaOtorgamiento}" >
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FECHA INSCRIPCION">
+                            <h:outputText value="#{reg.fechaInscripcion}" >
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FECHA SUSTITUCION">
+                            <h:outputText value="#{reg.fechaSustitucion}" >
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FECHA INSCRIPCION SUSTITUCION">
+                            <h:outputText value="#{reg.fechaInscripcionSustitucion}" >
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="ESTADO CONCESION">
+                            <h:outputText value="#{reg.estadoConcesion}" />
+                        </p:column>
+                        <p:column headerText="REGIONAL">
+                            <h:outputText value="#{reg.nombreRegional}" />
+                        </p:column>
+                        <p:column headerText="CODIGO PROVINCIA">
+                            <h:outputText value="#{reg.codigoProvincia}" />
+                        </p:column>
+                        <p:column headerText="PROVINCIA">
+                            <h:outputText value="#{reg.provincia}" />
+                        </p:column>
+                        <p:column headerText="CODIGO CANTON">
+                            <h:outputText value="#{reg.codigoCanton}" />
+                        </p:column>
+                        <p:column headerText="CANTON">
+                            <h:outputText value="#{reg.canton}" />
+                        </p:column>
+                        <p:column headerText="CODIGO PARROQUIA">
+                            <h:outputText value="#{reg.codigoParroquia}" />
+                        </p:column>
+                        <p:column headerText="PARROQUIA">
+                            <h:outputText value="#{reg.parroquia}" />
+                        </p:column>
+                        <p:column headerText="ZONA">
+                            <h:outputText value="#{reg.zona}" />
+                        </p:column>
+                        <p:column headerText="MATERIAL DE INTERES">
+                            <h:outputText value="#{reg.materialInteres}" />
+                        </p:column>
+                        <p:column headerText="MINERAL">
+                            <h:outputText value="#{reg.mineral}" />
+                        </p:column>
+                        <p:column headerText="SUPERFICIE">
+                            <h:outputText value="#{reg.superficie}" />
+                        </p:column>
+                        <p:column headerText="FECHA CREACION">
+                            <h:outputText value="#{reg.fechaCreacion}" >
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="REGIMEN">
+                            <h:outputText value="#{reg.regimen}" />
+                        </p:column>
+                        <p:column headerText="MODALIDAD DE TRABAJO">
+                            <h:outputText value="#{reg.modalidadTrabajo}" />
+                        </p:column>
+                        <p:column headerText="FORMA EXPLOTACION">
+                            <h:outputText value="#{reg.formaExplotacion}" />
+                        </p:column>
+                        <p:column headerText="VOLUMEN DIARIO EXPLOTACION">
+                            <h:outputText value="#{reg.volumenDiarioExplotacion}" />
+                        </p:column>
+                        <p:column headerText="VOLUMEN TOTAL EXPLOTACION">
+                            <h:outputText value="#{reg.volumenTotalExplotacion}" />
+                        </p:column>
+                        <p:column headerText="LITISPENDENCIA">
+                            <h:outputText value="#{reg.litispendencia}" />
+                        </p:column>
+
+                    </p:dataTable>
                 </p:dialog>
             </h:form>
         </ui:define>

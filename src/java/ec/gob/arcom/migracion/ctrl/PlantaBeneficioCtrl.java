@@ -111,6 +111,7 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
     private String tipoMineria = "pb";
     private ConcesionMinera concesionMineraPB;
     private boolean concesionMinera;
+    private boolean esEstadoArchivado;
 
     private Secuencia secuenciaConcesionMineraPB;
     
@@ -162,6 +163,7 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
                 }
                 accionNuevaPB = false;
                 mostrarPanelDatosPB = true;
+                validarEstadoPlantaBeneficio();
             }
         }
         return plantaBeneficio;
@@ -855,6 +857,18 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
         }
     }
 
+    public void validarEstadoPlantaBeneficio() {
+        if (plantaBeneficio.getEstadoPlanta()!= null 
+                && plantaBeneficio.getEstadoPlanta().getCodigoCatalogoDetalle() != null) {
+            if (plantaBeneficio.getEstadoPlanta().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_ARCHIVADA.getCodigo())) {
+                System.out.println("Estado Planta Beneficio: " + plantaBeneficio.getEstadoPlanta().getCodigoCatalogoDetalle());
+                esEstadoArchivado = true;
+            } else {
+                esEstadoArchivado = false;
+            }
+        }
+    }
+    
     public String getTipoMineria() {
         return tipoMineria;
     }
@@ -954,5 +968,15 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
     public void setAccionNuevaPB(boolean accionNuevaPB) {
         this.accionNuevaPB = accionNuevaPB;
     }
+
+    public boolean isEsEstadoArchivado() {
+        return esEstadoArchivado;
+    }
+
+    public void setEsEstadoArchivado(boolean esEstadoArchivado) {
+        this.esEstadoArchivado = esEstadoArchivado;
+    }
+    
+    
 
 }

@@ -133,6 +133,14 @@ public class LicenciaComercializacion implements Serializable {
     private String tipoPersona;
     @Column(name = "migrada")
     private boolean migrada;
+    @Column(name = "numero_resolucion_archivo")
+    private String numeroResolucionArchivo;
+    @Column(name = "fecha_resolucion_archivo")
+    @Temporal(TemporalType.DATE)
+    private Date fechaResolucionArchivo;
+    @Column(name = "fecha_archivo")
+    @Temporal(TemporalType.DATE)
+    private Date fechaArchivo;
     //@OneToOne(cascade = CascadeType.ALL, mappedBy = "licenciaComercializacion")
     //private Resolucion resolucion;
     @Transient
@@ -514,6 +522,7 @@ public class LicenciaComercializacion implements Serializable {
                 + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion + ", codigoArcom=" + codigoArcom + ", fechaOtorga=" + fechaOtorga + ", fechaInscribe=" + fechaInscribe + ", estadoLicencia="
                 + (estadoLicencia != null ? estadoLicencia.getCodigoCatalogoDetalle() : null) + ", tipoLicencia=" + (tipoLicencia != null ? tipoLicencia.getCodigoCatalogoDetalle() : null)
                 + ", codigoTipoMineral=" + (codigoTipoMineral != null ? codigoTipoMineral.getCodigoCatalogoDetalle() : null) + ", codigoMineralInteres="
+                + ", numeroResolucionArchivo=" + numeroResolucionArchivo + ", fechaResolucionArchivo=" + fechaResolucionArchivo + ", fechaArchivo=" + fechaArchivo
                 + (codigoMineralInteres != null ? codigoMineralInteres.getCodigoCatalogoDetalle() : null) + ", correoElectronico=" + correoElectronico + ", observaciones=" + observaciones + ", tipoPersona=" + tipoPersona + ", migrada=" + migrada +'}';
     }
 
@@ -523,6 +532,48 @@ public class LicenciaComercializacion implements Serializable {
 
     public void setMigrada(Boolean migrada) {
         this.migrada = migrada;
+    }
+
+    /**
+     * @return the numeroResolucionArchivo
+     */
+    public String getNumeroResolucionArchivo() {
+        return numeroResolucionArchivo;
+    }
+
+    /**
+     * @param numeroResolucionArchivo the numeroResolucionArchivo to set
+     */
+    public void setNumeroResolucionArchivo(String numeroResolucionArchivo) {
+        this.numeroResolucionArchivo = numeroResolucionArchivo;
+    }
+
+    /**
+     * @return the fechaResolucionArchivo
+     */
+    public Date getFechaResolucionArchivo() {
+        return fechaResolucionArchivo;
+    }
+
+    /**
+     * @param fechaResolucionArchivo the fechaResolucionArchivo to set
+     */
+    public void setFechaResolucionArchivo(Date fechaResolucionArchivo) {
+        this.fechaResolucionArchivo = fechaResolucionArchivo;
+    }
+
+    /**
+     * @return the fechaArchivo
+     */
+    public Date getFechaArchivo() {
+        return fechaArchivo;
+    }
+
+    /**
+     * @param fechaArchivo the fechaArchivo to set
+     */
+    public void setFechaArchivo(Date fechaArchivo) {
+        this.fechaArchivo = fechaArchivo;
     }
 
 }

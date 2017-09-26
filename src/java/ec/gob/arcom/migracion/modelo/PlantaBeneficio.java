@@ -206,6 +206,14 @@ public class PlantaBeneficio implements Serializable {
     private ConcesionMinera codigoConcesionUbicacionPlanta;
     @Column(name = "tiene_autorizacion")
     private Boolean tieneAutorizacion;
+    @Column(name = "numero_resolucion_archivo")
+    private String numeroResolucionArchivo;
+    @Column(name = "fecha_resolucion_archivo")
+    @Temporal(TemporalType.DATE)
+    private Date fechaResolucionArchivo;
+    @Column(name = "fecha_archivo")
+    @Temporal(TemporalType.DATE)
+    private Date fechaArchivo;
     
     @Transient
     private boolean concesionMinera;
@@ -733,6 +741,7 @@ public class PlantaBeneficio implements Serializable {
                 + ", unidadPeso=" + (unidadPeso != null ? unidadPeso.getCodigoCatalogoDetalle() : null) + ", mae=" + mae + ", senagua=" + senagua + ", obsActoAdministrativo=" + obsActoAdministrativo 
                 + ", observacionGeneral=" + observacionGeneral + ", correoElectronico=" + correoElectronico
                 + ", codigoProcedenciaMaterial=" + (codigoProcedenciaMaterial != null ? codigoProcedenciaMaterial.getCodigoCatalogoDetalle() : null) + ", zona=" + zona + ", plazo=" + plazo + ", tipoPersona=" + tipoPersona 
+                + ", numeroResolucionArchivo=" + numeroResolucionArchivo + ", fechaResolucionArchivo=" + fechaResolucionArchivo + ", fechaArchivo=" + fechaArchivo
                 + ", codigoConcesionUbicacionPlanta=" + (codigoConcesionUbicacionPlanta != null ? codigoConcesionUbicacionPlanta.getCodigoConcesion(): null) + ", migrada=" + migrada + '}';
     }
 
@@ -921,6 +930,48 @@ public class PlantaBeneficio implements Serializable {
      */
     public void setObservacionGeneral(String observacionGeneral) {
         this.observacionGeneral = observacionGeneral;
+    }
+
+    /**
+     * @return the numeroResolucionArchivo
+     */
+    public String getNumeroResolucionArchivo() {
+        return numeroResolucionArchivo;
+    }
+
+    /**
+     * @param numeroResolucionArchivo the numeroResolucionArchivo to set
+     */
+    public void setNumeroResolucionArchivo(String numeroResolucionArchivo) {
+        this.numeroResolucionArchivo = numeroResolucionArchivo;
+    }
+
+    /**
+     * @return the fechaResolucionArchivo
+     */
+    public Date getFechaResolucionArchivo() {
+        return fechaResolucionArchivo;
+    }
+
+    /**
+     * @param fechaResolucionArchivo the fechaResolucionArchivo to set
+     */
+    public void setFechaResolucionArchivo(Date fechaResolucionArchivo) {
+        this.fechaResolucionArchivo = fechaResolucionArchivo;
+    }
+
+    /**
+     * @return the fechaArchivo
+     */
+    public Date getFechaArchivo() {
+        return fechaArchivo;
+    }
+
+    /**
+     * @param fechaArchivo the fechaArchivo to set
+     */
+    public void setFechaArchivo(Date fechaArchivo) {
+        this.fechaArchivo = fechaArchivo;
     }
 
 }

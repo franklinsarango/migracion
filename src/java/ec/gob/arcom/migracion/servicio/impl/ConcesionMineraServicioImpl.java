@@ -57,6 +57,11 @@ public class ConcesionMineraServicioImpl extends GenericServiceImpl<ConcesionMin
     }
     
     @Override
+    public List<ConcesionMineraDto> obtenerAllAreas() {
+        return concesionMineraDao.obtenerAllAreas();
+    }
+    
+    @Override
     public List<ConcesionMineraDto> obtenerRegistrosPorFiltros(String codigoFiltro, String cedulaTitularFiltro, String nombreAreaFiltro) {
         return concesionMineraDao.obtenerRegistrosPorFiltros(codigoFiltro, cedulaTitularFiltro, nombreAreaFiltro);
     }

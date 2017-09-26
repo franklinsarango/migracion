@@ -8,10 +8,12 @@ package ec.gob.arcom.migracion.ctrl;
 import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
+import ec.gob.arcom.migracion.dto.ConcesionMineraDto;
 import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.RegistroPagoObligaciones;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.modelo.UsuarioRol;
+import ec.gob.arcom.migracion.servicio.ConcesionMineraServicio;
 import ec.gob.arcom.migracion.servicio.RecursoServicio;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioRolServicio;
@@ -29,7 +31,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +42,8 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import org.primefaces.component.commandlink.CommandLink;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -55,6 +61,8 @@ public class ReporteCtrl extends BaseCtrl {
     private UsuarioDao usuarioDao;
     @EJB
     private UsuarioRolServicio usuarioRolServicio;
+    @EJB
+    private ConcesionMineraServicio concesionMineraServicio;
 
     @ManagedProperty(value = "#{loginCtrl}")
     private LoginCtrl login;
@@ -63,6 +71,7 @@ public class ReporteCtrl extends BaseCtrl {
     private Long codigoTipoMineria;
     private List<SelectItem> tipoSolicitudesPrincipales;
     private List<SelectItem> tipoSolicitudesDeConcesionMinera;
+    private List<ConcesionMineraDto> listaAreas;
     private Long codigoSubtipoMineria;
     private boolean concesionMinera;
     private boolean mostrarFiltroRegional;
@@ -87,7 +96,7 @@ public class ReporteCtrl extends BaseCtrl {
         calendar.setTime(new Date());
         calendar.add(Calendar.DAY_OF_YEAR, -30);
         fechaDesdeFiltro = calendar.getTime();
-
+        listaAreas = new ArrayList<>();
         try {            
              getRegionales();
         } catch (Exception ex) {
@@ -182,6 +191,15 @@ public class ReporteCtrl extends BaseCtrl {
         urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
                 + "/birt_v4.5/frameset?__report=report/derechosMineros/mediana_gran_mineria_con_coordenadas.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
+    }
+    
+    public void generarReporteCatastroNacionalBirt() {
+        System.out.println("entra generarReporteCatastroNacionalBirt");
+        listaAreas = concesionMineraServicio.obtenerAllAreas();
+        RequestContext.getCurrentInstance().execute("PF('visorRptCatastroNacional').show()");
+//        urlReporte = ConstantesEnum.URL_PROD_REPORTES_IPINTERNA.getDescripcion()
+//                + "/birt_v4.5/frameset?__report=report/derechosMineros/catastroNacional.rptdesign&__format=xlsx";
+//        System.out.println("urlReporte: " + urlReporte);
     }
     
     public void generarReporteUsuariosSGMBirt() {
@@ -347,7 +365,9 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteConsolidadoLicenciasComerBirt();
         }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_MEDIANA_GRAN_MINERIA_COORDENADAS.getCodigo())) {
             generarReporteMedianaGranMineriaCoordenadasBirt();
-        }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_USUARIOS_SGM.getCodigo())) {
+        } else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CACASTRO_NACIONAL.getCodigo())) {
+            generarReporteCatastroNacionalBirt();
+        } else if (codigoTipoMineria.equals(ConstantesEnum.RPT_USUARIOS_SGM.getCodigo())) {
             generarReporteUsuariosSGMBirt();
         } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL.getCodigo())) {
             generarReporteOpeMinIleTotal();
@@ -447,6 +467,10 @@ public class ReporteCtrl extends BaseCtrl {
         if (tipoSolicitudes == null) {
             tipoSolicitudes = new ArrayList<>();
             for (ConstantesEnum ce : ConstantesEnum.values()) {
+                
+                if (ce.equals(ConstantesEnum.RPT_CACASTRO_NACIONAL) && (login.isEconomicoNacional() || login.isEconomicoRegional() || login.isTecnicoCatastroNacional())) {
+                    tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
+                }
                 if (ce.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN)
                         || ce.equals(ConstantesEnum.RPT_MEDIANA_GRAN_MINERIA_COORDENADAS)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR)
@@ -683,5 +707,19 @@ public class ReporteCtrl extends BaseCtrl {
                 + "/birt/frameset?__report=report/fichatecnica/laboresminerastotal.rptdesign&__format=xlsx";
         System.out.println("urlReporte: " + urlReporte);
         return urlReporte;
+    }
+
+    /**
+     * @return the listaAreas
+     */
+    public List<ConcesionMineraDto> getListaAreas() {
+        return listaAreas;
+    }
+
+    /**
+     * @param listaAreas the listaAreas to set
+     */
+    public void setListaAreas(List<ConcesionMineraDto> listaAreas) {
+        this.listaAreas = listaAreas;
     }
 }
