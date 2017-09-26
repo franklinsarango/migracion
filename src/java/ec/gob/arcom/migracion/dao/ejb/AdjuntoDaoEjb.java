@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.AdjuntoDao;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.modelo.Adjunto;
+import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Operativo;
 import java.util.List;
 import javax.persistence.Query;
@@ -29,6 +30,20 @@ public class AdjuntoDaoEjb extends GenericDaoEjbEl<Adjunto, Long> implements Adj
             Query query= em.createQuery("Select adj from Adjunto adj where adj.tramite= :tramite and adj.codigoTramite= :codigo and adj.estadoRegistro= :estado");
             query.setParameter("tramite", "OPERATIVO");
             query.setParameter("codigo", o.getCodigoOperativo());
+            query.setParameter("estado", true);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public List<Adjunto> findByFichaTecnica(FichaTecnica ft) {
+        try {
+            Query query= em.createQuery("Select adj from Adjunto adj where adj.tramite= :tramite and adj.codigoTramite= :codigo and adj.estadoRegistro= :estado");
+            query.setParameter("tramite", "ACTIVIDADMINERA");
+            query.setParameter("codigo", ft.getCodigoFichaTecnica());
             query.setParameter("estado", true);
             return query.getResultList();
         } catch(Exception ex) {

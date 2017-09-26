@@ -1,6 +1,12 @@
 package ec.gob.arcom.migracion.ctrl;
 
+import ec.gob.arcom.migracion.alfresco.AlfrescoMimeType;
+import ec.gob.arcom.migracion.alfresco.bean.AlfrescoDocumentBean;
+import ec.gob.arcom.migracion.alfresco.bean.AlfrescoFileBean;
+import ec.gob.arcom.migracion.alfresco.service.AlfrescoService;
+import ec.gob.arcom.migracion.alfresco.util.AlfrescoFileUtil;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
+import ec.gob.arcom.migracion.modelo.Adjunto;
 import ec.gob.arcom.migracion.modelo.AreaMinera;
 import ec.gob.arcom.migracion.modelo.Catalogo;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
@@ -11,11 +17,13 @@ import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.LocalidadRegional;
+import ec.gob.arcom.migracion.modelo.Operativo;
 import ec.gob.arcom.migracion.modelo.PersonaJuridica;
 import ec.gob.arcom.migracion.modelo.PersonaNatural;
 import ec.gob.arcom.migracion.modelo.Regional;
 import ec.gob.arcom.migracion.modelo.Secuencia;
 import ec.gob.arcom.migracion.modelo.Usuario;
+import ec.gob.arcom.migracion.servicio.AdjuntoServicio;
 import ec.gob.arcom.migracion.servicio.AreaMineraServicio;
 import ec.gob.arcom.migracion.servicio.AuditoriaServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
@@ -34,6 +42,7 @@ import ec.gob.arcom.migracion.servicio.SecuenciaServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
 import ec.gob.arcom.migracion.util.DateUtil;
 import ec.gob.arcom.migracion.util.DetalleFichaTecnicaWrapper;
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -51,6 +60,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -64,7 +75,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ActividadMineraCtrl extends BaseCtrl {
+public class ActividadMineraZPCtrl extends BaseCtrl {
     public static final String INSERT= "INSERT";
     public static final String UPDATE=  "UPDATE";
     public static final String DELETE= "DELETE";
@@ -101,6 +112,8 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private PersonaNaturalServicio personaNaturalServicio;
     @EJB
     private PersonaJuridicaServicio personaJuridicaServicio;
+    @EJB
+    private AdjuntoServicio adjuntoServicio;
     
     private Date fechaMaxima;
     
@@ -128,8 +141,12 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private List<CatalogoDetalle> formasExplotacion;
     private List<CatalogoDetalle> sistemasExplotacion;
     private List<CatalogoDetalle> operacionesMineras;
+    private List<CatalogoDetalle> estadosLegal;
     private List<DetalleFichaTecnicaWrapper> operacionesMinerasWrapper;
     private List<DetalleFichaTecnica> sociosLaborMinera;
+    private List<DetalleFichaTecnica> coordenadasActividadMinera;
+    //private List<CoordenadaActividadMinera> coordenadasActividadMinera;
+    private String textoCoordenadas;
     
     private boolean edit= false;
     private boolean showDetalleTipoTerreno= false;
@@ -139,8 +156,12 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private boolean showCieloAbierto= false;
     private Map<String, String> secuenciasPorCoordinacion;
     private String tipoPersona= "";
-    
     private String codigoArcom= "";
+    
+    private List<Adjunto> archivosCargados;
+    private List<UploadedFile> archivosParaCargar;
+    private boolean showUploadPanel= false;
+    private boolean coordenadasEditadas= false;
     
     @ManagedProperty(value = "#{loginCtrl}")
     private LoginCtrl login;
@@ -148,7 +169,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     /**
      * Creates a new instance of OperativoCtrl
      */
-    public ActividadMineraCtrl() {
+    public ActividadMineraZPCtrl() {
         fichaTecnica= new FichaTecnica();
         coordenadas= new ArrayList();
         contratos= new ArrayList();
@@ -157,6 +178,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     @PostConstruct
     private void inicializar() {
+        login.setCodigoUsuario(1689L);
         cargarFichasTecnicas();
     }
     
@@ -165,6 +187,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     }
 
     ///////////////////////////////////////////////////////
+    
     public void setEdit(boolean edit) {    
         this.edit = edit;
     }
@@ -264,6 +287,46 @@ public class ActividadMineraCtrl extends BaseCtrl {
 
     public void setCodigoArcom(String codigoArcom) {
         this.codigoArcom = codigoArcom;
+    }
+
+    public List<DetalleFichaTecnica> getCoordenadasActividadMinera() {
+        return coordenadasActividadMinera;
+    }
+
+    public void setCoordenadasActividadMinera(List<DetalleFichaTecnica> coordenadasActividadMinera) {
+        this.coordenadasActividadMinera = coordenadasActividadMinera;
+    }
+
+    public String getTextoCoordenadas() {
+        return textoCoordenadas;
+    }
+
+    public void setTextoCoordenadas(String textoCoordenadas) {
+        this.textoCoordenadas = textoCoordenadas;
+    }
+
+    public List<Adjunto> getArchivosCargados() {
+        return archivosCargados;
+    }
+
+    public void setArchivosCargados(List<Adjunto> archivosCargados) {
+        this.archivosCargados = archivosCargados;
+    }
+
+    public List<UploadedFile> getArchivosParaCargar() {
+        return archivosParaCargar;
+    }
+
+    public void setArchivosParaCargar(List<UploadedFile> archivosParaCargar) {
+        this.archivosParaCargar = archivosParaCargar;
+    }
+
+    public boolean isShowUploadPanel() {
+        return showUploadPanel;
+    }
+
+    public void setShowUploadPanel(boolean showUploadPanel) {
+        this.showUploadPanel = showUploadPanel;
     }
     
     public List<CatalogoDetalle> getZonas() {
@@ -501,6 +564,20 @@ public class ActividadMineraCtrl extends BaseCtrl {
         return modalidadesTrabajo;
     }
     
+    public List<CatalogoDetalle> getEstadosLegal() {
+        if (estadosLegal == null) {
+            estadosLegal = new ArrayList<>();
+            Catalogo catalogo = catalogoServicio.findByNemonico("ESTLEGACT");
+            if (catalogo != null) {
+                List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+                for (CatalogoDetalle catDet : tipoServCat) {
+                    estadosLegal.add(catDet);
+                }
+            }
+        }
+        return estadosLegal;
+    }
+    
     public List<Localidad> getProvincias() {
         if (provincias == null) {
             provincias = new ArrayList<>();
@@ -597,28 +674,38 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     public String newFichaTecnicaAction() {
         edit= false;
+        showUploadPanel= false;
         this.fichaTecnica= new FichaTecnica();
+        this.coordenadasActividadMinera= new ArrayList<>();
+        this.textoCoordenadas= "";
         this.secuenciasPorCoordinacion= new HashMap<>();
+        archivosCargados= new ArrayList<>();
+        archivosParaCargar= new ArrayList<>();
         resetAction();
         Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
         this.fichaTecnica.setUsuarioElaboracion(usr);
-        //this.fichaTecnica.setConcesionMinera(new ConcesionMinera());
         this.sociosLaborMinera= new ArrayList<>();
         cargarInfraestructuraWrapper();
         cargarMaquinariasWrapper();
         cargarOperacionesMinerasWrapper();
-        return "fichafrm";
+        return "actividadminera-zp-form";
     }
     
     public String saveFichaTecnicaAction() {
         if(edit) {
             if(actualizar()) {
+                if(archivosParaCargar!=null && archivosParaCargar.size()>0) {
+                    guardarAdjuntos();
+                }
                 mostrarMensaje(FacesMessage.SEVERITY_INFO, "Ficha actualizada correctamente");
             } else {
                 mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Ocurrio un error al actualizar");
             }
         } else {
             if(guardar()) {
+                if(archivosParaCargar!=null && archivosParaCargar.size()>0) {
+                    guardarAdjuntos();
+                }
                 mostrarMensaje(FacesMessage.SEVERITY_INFO, "Ficha guardada correctamente");
             } else {
                 mostrarMensaje(FacesMessage.SEVERITY_ERROR, "Ocurrio un error al guardar");
@@ -645,8 +732,12 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     public String editAction(FichaTecnica ft) {
         edit= true;
+        showUploadPanel= false;
         resetAction();
         this.fichaTecnica= ft;
+        this.textoCoordenadas= "";
+        archivosCargados= obtenerArchivosCargados(fichaTecnica);
+        archivosParaCargar= new ArrayList<>();
         getCantones();
         getParroquias();
         getMineralesInteres();
@@ -658,7 +749,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
             this.codigoCensal= false;
         }
         
-        if(fichaTecnica.getTipoTerreno().getNombre().equals("OTRO")) {
+        if(fichaTecnica.getTipoTerreno()!= null && fichaTecnica.getTipoTerreno().getNombre().equals("OTRO")) {
             this.showDetalleTipoTerreno= true;
         } else {
             this.showDetalleTipoTerreno= false;
@@ -674,10 +765,10 @@ public class ActividadMineraCtrl extends BaseCtrl {
             this.showDerechoMinero= false;
         }
         
-        if(this.fichaTecnica.getFormaExplotacion().getNemonico().equals("SECIEABIRODU")) {
+        if(fichaTecnica.getFormaExplotacion() !=null && fichaTecnica.getFormaExplotacion().getNemonico().equals("SECIEABIRODU")) {
             this.showCieloAbierto= true;
             this.showSubterraneo= false;
-        } else if(this.fichaTecnica.getFormaExplotacion().getNemonico().equals("SESUBTE")) {
+        } else if(fichaTecnica.getFormaExplotacion() !=null && fichaTecnica.getFormaExplotacion().getNemonico().equals("SESUBTE")) {
             this.showCieloAbierto= false;
             this.showSubterraneo= true;
         } else {
@@ -690,6 +781,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
         infraestruturasWrapper= new ArrayList<>();
         maquinariasWrapper= new ArrayList<>();
         operacionesMinerasWrapper= new ArrayList<>();
+        coordenadasActividadMinera= new ArrayList<>();
         for(DetalleFichaTecnica dft : detallesFichaTecnica) {
             DetalleFichaTecnicaWrapper cw= new DetalleFichaTecnicaWrapper();
             if(dft.getCodigoTipoInformacionRegistro().getNemonico().equals("TIPOINFINFACT")) {
@@ -708,17 +800,18 @@ public class ActividadMineraCtrl extends BaseCtrl {
                 cw.setOpcion(dft.isCodigoOpcion());
                 cw.setCodigoDetalleFichaTecnica(dft.getCodigoDetalleFichaTecnica());
                 operacionesMinerasWrapper.add(cw);
+            } else if(dft.getCodigoTipoInformacionRegistro().getNemonico().equals("TIPOINFCOOR")) {
+                coordenadasActividadMinera.add(dft);
             }
         }
         
         //Cargar socios
         sociosLaborMinera= detalleFichaTecnicaServicio.listarSociosPorFichaTecnica(fichaTecnica.getCodigoFichaTecnica());
-        return "fichafrm";
+        return "actividadminera-zp-form";
     }
     
     private void cargarFichasTecnicas() {
-        //fichasTecnicas= fichaTecnicaServicio.listarPorUsuarioCreacion(login.getCodigoUsuario());
-        fichasTecnicas= fichaTecnicaServicio.listarPorUsuarioCreacion(login.getCodigoUsuario(), catalogoDetalleServicio.obtenerPorNemonico("TIPOINFFICTEC").get(0));
+        fichasTecnicas= fichaTecnicaServicio.listarPorUsuarioCreacion(login.getCodigoUsuario(), catalogoDetalleServicio.obtenerPorNemonico("TIPOINFENC").get(0));
     }
     
     private void cargarInfraestructuraWrapper() {
@@ -773,7 +866,7 @@ public class ActividadMineraCtrl extends BaseCtrl {
     private String endAction() {
         fichaTecnica= new FichaTecnica();
         cargarFichasTecnicas();
-        return "actividadesmineras";
+        return "actividadesmineras-zp";
     }
     
     ////////////////////////////////////////////////////////
@@ -783,7 +876,8 @@ public class ActividadMineraCtrl extends BaseCtrl {
     }
     
     private boolean guardar() {
-        return guardarFichaTecnica() && guardarInfraestructuras() && guardarMaquinarias() && guardarOperacionesMineras() && guardarSocios();
+        //return guardarFichaTecnica() && guardarInfraestructuras() && guardarMaquinarias() && guardarOperacionesMineras() && guardarSocios();
+        return guardarFichaTecnica();
     }
     
     private void comprobarCondicionales() {
@@ -793,10 +887,10 @@ public class ActividadMineraCtrl extends BaseCtrl {
         if(!isCodigoCensal()) {
             fichaTecnica.setCodigoCensal("");
         }
-        if(!fichaTecnica.getTipoTerreno().getNombre().equals("OTRO")) {
+        if(fichaTecnica.getTipoTerreno()!=null && !fichaTecnica.getTipoTerreno().getNombre().equals("OTRO")) {
             fichaTecnica.setDetalleTipoTerreno("");
         }
-        if(fichaTecnica.getFormaExplotacion().getNemonico().equals("SECIEABIRODU")) {
+        if(fichaTecnica.getFormaExplotacion()!=null && fichaTecnica.getFormaExplotacion().getNemonico().equals("SECIEABIRODU")) {
             fichaTecnica.setLongitudSubterranea(null);
             fichaTecnica.setAnchoSubterranea(null);
             fichaTecnica.setAltoSubterranea(null);
@@ -810,14 +904,26 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     private boolean guardarFichaTecnica() {
         comprobarCondicionales();
-        fichaTecnica.setUtmEste(fichaTecnica.getUtmEste().replace(".", ","));
-        fichaTecnica.setUtmNorte(fichaTecnica.getUtmNorte().replace(".", ","));
-        fichaTecnica.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFFICTEC").get(0));
+        //fichaTecnica.setUtmEste(fichaTecnica.getUtmEste().replace(".", ","));
+        //fichaTecnica.setUtmNorte(fichaTecnica.getUtmNorte().replace(".", ","));
+        fichaTecnica.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFENC").get(0));
         fichaTecnica.setEstadoRegistro(Boolean.TRUE);
         fichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
         fichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
         fichaTecnicaServicio.create(fichaTecnica);
+        guardarCoordenadas();
         return true;
+    }
+    
+    private void guardarCoordenadas() {
+        for(DetalleFichaTecnica detFichaTecnica : coordenadasActividadMinera) {
+            detFichaTecnica.setCodigoTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFCOOR").get(0));
+            detFichaTecnica.setFichaTecnica(fichaTecnica);
+            detFichaTecnica.setEstadoRegistro(Boolean.TRUE);
+            detFichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
+            detFichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            detalleFichaTecnicaServicio.create(detFichaTecnica);
+        }
     }
     
     private boolean guardarSocios() {
@@ -899,17 +1005,37 @@ public class ActividadMineraCtrl extends BaseCtrl {
     }
     
     private boolean actualizar() {
-        return actualizarFichaTecnica() && actualizarInfraestructuras() && actualizarMaquinarias() && actualizarOperacionesMineras() && actualizarSocios();
+        //return actualizarFichaTecnica() && actualizarInfraestructuras() && actualizarMaquinarias() && actualizarOperacionesMineras() && actualizarSocios();
+        return actualizarFichaTecnica();
     }
     
     private boolean actualizarFichaTecnica() {
         comprobarCondicionales();
-        fichaTecnica.setUtmEste(fichaTecnica.getUtmEste().replace(".", ","));
-        fichaTecnica.setUtmNorte(fichaTecnica.getUtmNorte().replace(".", ","));
+        //fichaTecnica.setUtmEste(fichaTecnica.getUtmEste().replace(".", ","));
+        //fichaTecnica.setUtmNorte(fichaTecnica.getUtmNorte().replace(".", ","));
         fichaTecnica.setFechaModificacion(Calendar.getInstance().getTime());
         fichaTecnica.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
         fichaTecnicaServicio.update(fichaTecnica);
+        actualizarCoordenadas();
         return true;
+    }
+    
+    private void actualizarCoordenadas() {
+        if(coordenadasEditadas) {
+            List<DetalleFichaTecnica> oldCoords= detalleFichaTecnicaServicio.listarPorFichaTecnica(fichaTecnica.getCodigoFichaTecnica(), catalogoDetalleServicio.obtenerPorNemonico("TIPOINFCOOR").get(0));
+            for(DetalleFichaTecnica dfttemp : oldCoords) {
+                detalleFichaTecnicaServicio.delete(dfttemp.getCodigoDetalleFichaTecnica());
+            }
+
+            for(DetalleFichaTecnica detFichaTecnica : coordenadasActividadMinera) {
+                detFichaTecnica.setCodigoTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFCOOR").get(0));
+                detFichaTecnica.setFichaTecnica(fichaTecnica);
+                detFichaTecnica.setEstadoRegistro(Boolean.TRUE);
+                detFichaTecnica.setFechaCreacion(Calendar.getInstance().getTime());
+                detFichaTecnica.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+                detalleFichaTecnicaServicio.create(detFichaTecnica);
+            }
+        }
     }
     
     private boolean actualizarSocios() {
@@ -1106,5 +1232,153 @@ public class ActividadMineraCtrl extends BaseCtrl {
     
     private String changePoint4Coma(String value) {
         return value.replace(".", ",");
+    }
+    
+    public void cargarCoordenadas() {
+        if (textoCoordenadas.isEmpty()) {
+            return;
+        }
+
+        String texto = textoCoordenadas;
+        String[] array_coordenadas;
+        String[] parts = texto.split("\n");
+        for (String coords : parts) {
+            array_coordenadas = coords.split("-");
+
+            //Validaciones
+            if (array_coordenadas == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Por Favor Ingrese Coordenadas Válidas", null));
+                return;
+            }
+
+            if (array_coordenadas.length != 3) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: debe Ingresar la coordenada con los datos: UTM Este-UTM Norte-Cota ", null));
+                return;
+            }
+
+            if (array_coordenadas[0].contains(".") || array_coordenadas[1].contains(".")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: Las coordenadas con decimales deben utilizar el signo (,)", null));
+                return;
+            }
+            if (array_coordenadas[2].contains(".") || array_coordenadas[2].contains(",")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: La cota debe ser un número entero", null));
+                return;
+            }
+            
+            //SE VALIDA QUE SOLO ESTEN INGRESADOS NUMEROS
+            try{
+                double coordenadaEste = Double.parseDouble(array_coordenadas[0]);
+                double coordenadaNorte = Double.parseDouble(array_coordenadas[1]);
+                double cota = Double.parseDouble(array_coordenadas[2]);
+            }catch(Exception e){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: Las coordenadas solo deben tener numeros", null));
+                return;
+            }
+        }
+
+        this.coordenadasActividadMinera.clear();
+        int orden= 0;
+        for (String coords : parts) {
+            array_coordenadas = coords.split("-");
+            DetalleFichaTecnica coordenada = new DetalleFichaTecnica();
+            coordenada.setNumeroCoordenada((long) orden);
+            //coordenada.setNumeroCoordenada(BigInteger.valueOf(orden));
+            coordenada.setUtmEste(array_coordenadas[0]);
+            coordenada.setUtmNorte(array_coordenadas[1]);
+            coordenada.setCota(BigDecimal.valueOf(Double.parseDouble(array_coordenadas[2])));
+            coordenadasActividadMinera.add(coordenada);
+            orden++;
+        }
+        textoCoordenadas= "";
+        if(edit) {
+            coordenadasEditadas= true;
+        }
+    }
+    
+    public void addArchivos(FileUploadEvent event) {
+        showUploadPanel= true;
+        boolean existe= false;
+        for(UploadedFile f : archivosParaCargar) {
+            if(f.getFileName().equals(event.getFile().getFileName())) {
+                existe= true;
+            }
+        }
+        if(!existe) {
+            archivosParaCargar.add(event.getFile());
+        } else {
+            mostrarMensaje(FacesMessage.SEVERITY_ERROR, "El archivo ya se encuentra en la lista");
+        }
+        
+        RequestContext.getCurrentInstance().execute("PF('archivosfrmwg').hide();");
+    }
+    
+    private List<Adjunto> obtenerArchivosCargados(FichaTecnica ft) {
+        return adjuntoServicio.findByFichaTecnica(ft);
+    }
+    
+    private void guardarAdjuntos() {
+        List<Adjunto> filesForSave= new ArrayList();
+        for(UploadedFile f : archivosParaCargar) {
+            Adjunto adj= subirArchivoRepositorio(f, "ACTIVIDADMINERA", String.valueOf(fichaTecnica.getCodigoFichaTecnica()), "ACTIVIDADMINERA");
+            if(adj!=null) {
+                filesForSave.add(adj);
+            }
+        }
+        
+        if(filesForSave.size()>0) {
+            for(Adjunto a : filesForSave) {
+                Secuencia secuenciaAdjunto= secuenciaServicio.obtenerPorTabla("ADJUNTO");
+                Long value= secuenciaAdjunto.getValor();
+                a.setCodigoAdjunto(value);
+                adjuntoServicio.create(a);
+                secuenciaAdjunto.setValor(value + 1);
+                secuenciaServicio.update(secuenciaAdjunto);
+            }
+        }
+    }
+    
+    public Adjunto subirArchivoRepositorio(UploadedFile upFile, String tipoTramite, String idTramite, String tramite) {
+        Adjunto adjunto = null;
+        if (upFile != null) {
+            try {
+                //Invocar a Alfresco                
+                List<String> carpetas = new ArrayList<>();
+                carpetas.add(tipoTramite);
+                carpetas.add(idTramite);
+
+                AlfrescoMimeType mt = AlfrescoFileUtil.getAlfrescoMimeType(upFile.getContentType());
+
+                AlfrescoFileBean afb = new AlfrescoFileBean();
+                File f = AlfrescoFileUtil.streamToFile(upFile.getInputstream(), upFile.getFileName(), mt.getCode());
+                afb.setStream(upFile.getInputstream());
+                afb.setMimeType(upFile.getContentType());
+                afb.setName(upFile.getFileName().replace("%", ""));
+                afb.setFullName(upFile.getFileName().replace("%", ""));
+                afb.setFile(f);
+
+                AlfrescoDocumentBean adb = AlfrescoService.uploadDocument(carpetas, afb);
+
+                adjunto = new Adjunto();
+                adjunto.setFechaCreacion(Calendar.getInstance().getTime());
+                adjunto.setUsuarioCreacion(login.getCodigoUsuario());
+                adjunto.setEstadoRegistro(Boolean.TRUE);
+                adjunto.setExtensionAdjunto(mt.getCode());
+                adjunto.setNombreAdjunto(upFile.getFileName().replace("%", ""));
+                adjunto.setUrlDocumento(adb.getDocumentUrl());
+                adjunto.setIdDocumento(adb.getDocumentId());
+                adjunto.setTipoDocumento(tipoTramite);
+                adjunto.setCodigoTramite(new Long(idTramite));
+                adjunto.setTramite(tramite);
+            } catch (Exception ex) {
+                System.out.println("Ocurrio un error: ");
+                System.out.println(ex.toString());
+            }
+        }
+        return adjunto;
     }
 }

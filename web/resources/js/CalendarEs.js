@@ -12,7 +12,7 @@ PrimeFaces.locales['es'] = {
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: '',
-    timeOnlyTitle: 'Sólo hora',
+    timeOnlyTitle: 'Seleccione la hora',
     timeText: 'Tiempo',
     hourText: 'Hora',
     minuteText: 'Minuto',

@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.Regional;
@@ -37,5 +38,7 @@ public interface FichaTecnicaServicio extends GenericService<FichaTecnica, Long>
     public List<Localidad> obtenerCantonesDistintosPorProvincia(Localidad l);
 
     public Long contarPorCanton(Localidad c);
+
+    public List<FichaTecnica> listarPorUsuarioCreacion(Long codigoUsuario, CatalogoDetalle catdet);
     
 }

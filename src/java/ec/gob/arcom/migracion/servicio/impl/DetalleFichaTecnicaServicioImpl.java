@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.servicio.impl;
 import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.DetalleFichaTecnicaDao;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
 import ec.gob.arcom.migracion.servicio.DetalleFichaTecnicaServicio;
 import javax.ejb.Stateless;
@@ -41,5 +42,10 @@ public class DetalleFichaTecnicaServicioImpl extends GenericServiceImpl<DetalleF
     @Override
     public List<DetalleFichaTecnica> listarSociosPorFichaTecnica(Long codigoFichaTecnica) {
         return detalleFichaTecnicaDao.listarSociosPorFichaTecnica(codigoFichaTecnica);
+    }
+
+    @Override
+    public List<DetalleFichaTecnica> listarPorFichaTecnica(Long codigoFichaTecnica, CatalogoDetalle catdet) {
+        return detalleFichaTecnicaDao.listarPorFichaTecnica(codigoFichaTecnica, catdet);
     }
 }

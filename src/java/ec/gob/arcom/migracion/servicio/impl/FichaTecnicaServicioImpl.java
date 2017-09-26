@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.servicio.impl;
 import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.FichaTecnicaDao;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.Regional;
@@ -74,5 +75,10 @@ public class FichaTecnicaServicioImpl extends GenericServiceImpl<FichaTecnica, L
     @Override
     public Long contarPorCanton(Localidad c) {
         return fichaTecnicaDao.contarPorCanton(c);
+    }
+
+    @Override
+    public List<FichaTecnica> listarPorUsuarioCreacion(Long codigoUsuario, CatalogoDetalle catdet) {
+        return fichaTecnicaDao.listarPorUsuarioCreacion(codigoUsuario, catdet);
     }
 }

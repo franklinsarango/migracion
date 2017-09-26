@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.AdjuntoDao;
 import ec.gob.arcom.migracion.modelo.Adjunto;
+import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Operativo;
 import ec.gob.arcom.migracion.servicio.AdjuntoServicio;
 import java.util.List;
@@ -32,5 +33,10 @@ public class AdjuntoServicioImpl extends GenericServiceImpl<Adjunto, Long> imple
     @Override
     public List<Adjunto> findByOperativo(Operativo o) {
         return adjuntoDao.findByOperativo(o);
+    }
+
+    @Override
+    public List<Adjunto> findByFichaTecnica(FichaTecnica ft) {
+        return adjuntoDao.findByFichaTecnica(ft);
     }
 }

@@ -122,7 +122,38 @@ public class Usuario implements Serializable {
     private Localidad codigoLocalidad;
     @Transient
     private String nombresCompletos;
-
+    
+    
+    //CAMPOS PARA EL CONTROL DE VACACIONES
+    @JoinColumn(name = "codigo_tipo_cargo", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle tipoCargo;
+    
+    @JoinColumn(name = "codigo_tipo_contrato", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle tipoContrato;
+    
+    @JoinColumn(name = "codigo_denominacion_cargo", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle denominacionCargo;
+    
+    @JoinColumn(name = "codigo_modalidad_contrato", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle modalidadContrato;
+    
+    @Column(name = "fecha_nacimiento")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaNacimiento;
+    
+    @Column(name = "fecha_ingreso")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaIngreso;
+    
+    @Column(name = "fecha_salida")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaSalida;
+    
+    
     public Usuario() {
     }
 
@@ -356,7 +387,65 @@ public class Usuario implements Serializable {
     public void setNombresCompletos(String nombresCompletos) {
         this.nombresCompletos = nombresCompletos;
     }
+    
+    
+    public CatalogoDetalle getTipoCargo() {
+        return tipoCargo;
+    }
 
+    public void setTipoCargo(CatalogoDetalle tipoCargo) {
+        this.tipoCargo = tipoCargo;
+    }
+
+    public CatalogoDetalle getTipoContrato() {
+        return tipoContrato;
+    }
+
+    public void setTipoContrato(CatalogoDetalle tipoContrato) {
+        this.tipoContrato = tipoContrato;
+    }
+
+    public CatalogoDetalle getDenominacionCargo() {
+        return denominacionCargo;
+    }
+
+    public void setDenominacionCargo(CatalogoDetalle denominacionCargo) {
+        this.denominacionCargo = denominacionCargo;
+    }
+
+    public CatalogoDetalle getModalidadContrato() {
+        return modalidadContrato;
+    }
+
+    public void setModalidadContrato(CatalogoDetalle modalidadContrato) {
+        this.modalidadContrato = modalidadContrato;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Date getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public Date getFechaSalida() {
+        return fechaSalida;
+    }
+
+    public void setFechaSalida(Date fechaSalida) {
+        this.fechaSalida = fechaSalida;
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

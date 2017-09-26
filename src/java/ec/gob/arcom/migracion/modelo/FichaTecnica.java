@@ -197,6 +197,14 @@ public class FichaTecnica implements Serializable {
     @Column(name = "numero_formulario")
     private String numeroFormulario;
     
+    @JoinColumn(name = "codigo_tipo_informacion_registro", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle tipoInformacionRegistro;
+    
+    @JoinColumn(name = "codigo_estado_legal", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle estadoLegal;
+    
     /////////////////////////////////////////////
     
     @Column(name = "estado_registro")
@@ -618,6 +626,22 @@ public class FichaTecnica implements Serializable {
 
     public void setNumeroFormulario(String numeroFormulario) {
         this.numeroFormulario = numeroFormulario;
+    }
+
+    public CatalogoDetalle getTipoInformacionRegistro() {
+        return tipoInformacionRegistro;
+    }
+
+    public void setTipoInformacionRegistro(CatalogoDetalle tipoInformacionRegistro) {
+        this.tipoInformacionRegistro = tipoInformacionRegistro;
+    }
+
+    public CatalogoDetalle getEstadoLegal() {
+        return estadoLegal;
+    }
+
+    public void setEstadoLegal(CatalogoDetalle estadoLegal) {
+        this.estadoLegal = estadoLegal;
     }
     
     public Boolean getEstadoRegistro() {

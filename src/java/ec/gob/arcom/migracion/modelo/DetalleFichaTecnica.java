@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,6 +64,18 @@ public class DetalleFichaTecnica implements Serializable {
     
     @Column(name = "cantidad")
     private Long cantidad;
+    
+    @Column(name = "numero_coordenada")
+    private Long numeroCoordenada;
+    
+    @Column(name = "utm_este")
+    private String utmEste;
+    
+    @Column(name = "utm_norte")
+    private String utmNorte;
+    
+    @Column(name = "cota")
+    private BigDecimal cota;
     
     /////////////////////////////////////////////
     
@@ -173,6 +186,38 @@ public class DetalleFichaTecnica implements Serializable {
 
     public void setCantidad(Long cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Long getNumeroCoordenada() {
+        return numeroCoordenada;
+    }
+
+    public void setNumeroCoordenada(Long numeroCoordenada) {
+        this.numeroCoordenada = numeroCoordenada;
+    }
+
+    public String getUtmEste() {
+        return utmEste;
+    }
+
+    public void setUtmEste(String utmEste) {
+        this.utmEste = utmEste;
+    }
+
+    public String getUtmNorte() {
+        return utmNorte;
+    }
+
+    public void setUtmNorte(String utmNorte) {
+        this.utmNorte = utmNorte;
+    }
+
+    public BigDecimal getCota() {
+        return cota;
+    }
+
+    public void setCota(BigDecimal cota) {
+        this.cota = cota;
     }
 
     public Boolean getEstadoRegistro() {

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/basetemplate-wm.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Informacion de Actividades Mineras"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+            
+            <h:form id="listaoperativosfrm">
+                <p:panelGrid id="top-menu" styleClass="panelSinBorde-02">
+                    <p:row>
+                        <p:column style="text-align: left; width: 25%">
+                            <p:commandButton icon="ui-icon-plusthick" title="Nueva actividad minera" action="#{actividadMineraZPCtrl.newFichaTecnicaAction}"/>
+                        </p:column>
+                        
+                        <p:column style="text-align: center; padding-top: 0px; padding-bottom: 0px; width: 50%">
+                            <p:outputLabel id="entityname" value="Verificación de Información de Actividades Mineras" style="font-weight: bolder; font-size: large"/>
+                        </p:column>
+                        
+                        <p:column style="text-align: right; width: 25%">
+                            <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir">
+                                    <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
+                                    <br/>
+                                    <h:outputText value="Inicio"/>
+                            </h:commandLink>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="padding-top: 0px; padding-bottom: 0px; width: 100%">
+                            <p:separator style="width: 100%;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
+                <p:dataTable id="fichasdt" emptyMessage="No hay resultados..."
+                                 var="ficha" value="#{actividadMineraZPCtrl.fichasTecnicas}" rowIndexVar="row"
+                                 currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
+
+                    <p:column headerText="No Formulario" style="width: 100px;" sortBy="#{ficha.numeroFormulario}">
+                        <h:outputText value="#{ficha.numeroFormulario}"/>
+                    </p:column>
+
+                    <p:column headerText="Nombre labor minera" style="width: 100px;" sortBy="#{ficha.rasonSocialLaborMinera}">
+                        <h:outputText value="#{ficha.rasonSocialLaborMinera}"/>
+                    </p:column>
+
+                    <p:column headerText="Elaborado por" style="width: 100px;" sortBy="#{ficha.usuarioCreacion.codigoUsuario}">
+                        <h:outputText value="#{ficha.usuarioCreacion.nombresCompletos}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha visita" style="width: 100px;" sortBy="#{ficha.fechaVisita}">
+                        <h:outputText value="#{actividadMineraZPCtrl.obtenerFecha(ficha.fechaVisita)}"/>
+                    </p:column>
+
+                    <p:column headerText="Provincia" style="width: 100px;" sortBy="#{ficha.provincia.codigoLocalidad}">
+                        <h:outputText value="#{ficha.provincia.nombre}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Estado legal" style="width: 100px;" sortBy="#{ficha.estadoLegal.codigoCatalogoDetalle}">
+                        <h:outputText value="#{ficha.estadoLegal.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Editar" style="width:60px;text-align: center">
+                        <p:commandButton icon="ui-icon-newwin" title="Editar ficha técnica"
+                                         action="#{actividadMineraZPCtrl.editAction(ficha)}"/>
+                    </p:column>
+
+                    <p:column headerText="Eliminar" style="width:45px;text-align: center" rendered="false">
+                        <p:commandButton icon="ui-icon-trash" title="Eliminar"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            
+        </ui:define>
+    </ui:composition>
+</html>

@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.dao.ejb;
 
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.DetalleFichaTecnicaDao;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.modelo.DetalleFichaTecnica;
 import java.util.List;
@@ -59,6 +60,21 @@ public class DetalleFichaTecnicaDaoEjb1 extends GenericDaoEjbEl<DetalleFichaTecn
             return query.getResultList();
         } catch(Exception ex) {
             System.out.println("Ocurrio un error al listar los socios:");
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public List<DetalleFichaTecnica> listarPorFichaTecnica(Long codigoFichaTecnica, CatalogoDetalle catdet) {
+        try {
+            Query query= em.createQuery("Select detalleFicha from DetalleFichaTecnica detalleFicha where detalleFicha.estadoRegistro= :estado and detalleFicha.fichaTecnica.codigoFichaTecnica= :codigo and detalleFicha.codigoTipoInformacionRegistro= :catdet");
+            query.setParameter("estado", true);
+            query.setParameter("codigo", codigoFichaTecnica);
+            query.setParameter("catdet", catdet);
+            return query.getResultList();
+        } catch(Exception ex) {
+            System.out.println("Ocurrio un error:");
             System.out.println(ex.toString());
         }
         return null;

@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
 import ec.gob.arcom.migracion.modelo.Adjunto;
+import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Operativo;
 import java.util.List;
 import javax.ejb.Local;
@@ -19,6 +20,8 @@ import javax.ejb.Local;
 public interface AdjuntoDao extends GenericDao<Adjunto, Long> {
 
     public List<Adjunto> findByOperativo(Operativo o);
+
+    public List<Adjunto> findByFichaTecnica(FichaTecnica ft);
 
 
     

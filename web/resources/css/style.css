@@ -421,6 +421,16 @@ a.lnkadjuntos:active {
     color: buttonface;
 }
 
+.hcombutton {
+    margin: 0 auto;
+    width: 150px;
+    height: 30px;
+    background-color: #4c6f9b;
+    font-weight:bolder;
+    font-size: 12px;
+    color: #ffffff;
+}
+
 .endbutton {
     margin: 0 auto;
     width: 100px;
@@ -486,4 +496,69 @@ a.lnkexport:active {
 .size_uploadfiles {}
 .size_uploadfiles.ui-datalist .ui-datalist-content {
     border: none;
+}
+
+
+.home-tabs {
+    
+}
+
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav.ui-widget-header{
+    /*background: activeborder;*/
+    background: #FF6600;
+}
+
+/*Cambiar el color de fondo del header del tabview*/
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav {
+    /*background: activeborder;*/
+    background: transparent;
+}
+
+/*Cambiar el color de fondo de los paneles del tabview*/
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-panels {
+    background: transparent;
+}
+
+/*Cambiar los tabs el color de fondo y tamaño de fuente por defecto
+  reducir el tamaño por defencto cuando no estan seleccionadas*/
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav > .ui-state-default {
+    background: transparent;
+    /*background-image: url("../images/config-icon.png");*/
+    margin-top: 0.6em; 
+    font-size: 80%; 
+    font-weight: bold;
+}
+
+/*Cambiar los tabs el color de fuente por defecto*/
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav > .ui-state-default a {
+    color: #a1a1a1;
+}
+
+/*Cambiar los tabs el color de fuente cuando pasa el puntero sobre ella*/
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav > .ui-state-default a:hover {
+    color: #3064a8;
+}
+
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav > .ui-state-default a:active {
+    
+}
+
+/*Quitar el color del fondo de los tabs y hacerlos mas grandes cuando estan
+  seleccionados*/
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav > .ui-state-selected,
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav > .ui-state-active {
+    background: transparent;
+    margin-top: 0em; 
+    font-size: 100%;
+}
+
+/*Cambiar el color de fuente de los tabs cuando estan seleccionadas*/
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav > .ui-state-selected a,
+.home-tabs.ui-tabs.ui-tabs-top > .ui-tabs-nav > .ui-state-active a {
+    color: #459e00;
+}
+
+.num-solicitud-vacacion {
+    color: steelblue;
+    font-weight: bold;
 }

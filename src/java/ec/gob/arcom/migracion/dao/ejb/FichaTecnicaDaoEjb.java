@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.dao.ejb;
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.dao.FichaTecnicaDao;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.FichaTecnica;
 import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.Regional;
@@ -143,6 +144,21 @@ public class FichaTecnicaDaoEjb extends GenericDaoEjbEl<FichaTecnica, Long> impl
             return (Long) query.getSingleResult();
         } catch(Exception ex) {
             System.out.println("Error al contar las fichas por canton: " + ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public List<FichaTecnica> listarPorUsuarioCreacion(Long codigoUsuario, CatalogoDetalle catdet) {
+        try {
+            Query query= em.createQuery("Select ficha from FichaTecnica ficha where ficha.estadoRegistro= :estado and ficha.usuarioCreacion.codigoUsuario= :codigo and ficha.tipoInformacionRegistro= :catdet order by ficha.fechaCreacion ASC");
+            query.setParameter("estado", true);
+            query.setParameter("codigo", codigoUsuario);
+            query.setParameter("catdet", catdet);
+            return query.getResultList();
+        } catch(Exception ex) {
+            System.out.println("Ocurrio un error:");
+            System.out.println(ex.toString());
         }
         return null;
     }
