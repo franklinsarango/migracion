@@ -68,6 +68,11 @@ public class RegistroPagoObligacionesServicioImpl extends GenericServiceImpl<Reg
     }
 
     @Override
+    public List<RegistroPagoObligaciones> obtenerPorNumeroComprobanteBanco(String numeroComprobanteBanco) {
+        return registroPagoObligacionesDao.obtenerPorCodigoComprobanteBanco(numeroComprobanteBanco);
+    }
+    
+    @Override
     public List<RegistroPagoObligaciones> obtenerRegistrosAutogestion(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, String numeroComprobanteBanco,
             String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante) {
         return registroPagoObligacionesDao.obtenerListaAutogestion(fechaInicio, fechaFin, numeroComprobanteArcom, numeroComprobanteBanco,

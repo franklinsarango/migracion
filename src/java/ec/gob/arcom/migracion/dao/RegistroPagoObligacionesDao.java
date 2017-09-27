@@ -30,6 +30,8 @@ public interface RegistroPagoObligacionesDao extends GenericDao<RegistroPagoObli
     List<RegistroPagoObligaciones> obtenerPRUNacional();
 
     List<RegistroPagoObligaciones> obtenerPorCodigoComprobanteArcom(String numeroComprobanteArcom);
+    
+    List<RegistroPagoObligaciones> obtenerPorCodigoComprobanteBanco(String numeroComprobanteBanco);
 
     List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom, String numeroComprobanteBanco,String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante);
     

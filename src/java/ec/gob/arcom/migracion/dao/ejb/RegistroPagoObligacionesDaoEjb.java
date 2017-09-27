@@ -282,13 +282,32 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
 
     @Override
     public List<RegistroPagoObligaciones> obtenerPorCodigoComprobanteArcom(String numeroComprobanteArcom) {
-        String jpql = "select rpo from RegistroPagoObligaciones rpo where rpo.numeroComprobanteArcom = :numeroComprobanteArcom";
+        String jpql = "select rpo from RegistroPagoObligaciones rpo where rpo.numeroComprobanteArcom = :numeroComprobanteArcom and rpo.estadoRegistro = true";
         Query query = em.createQuery(jpql);
         query.setParameter("numeroComprobanteArcom", numeroComprobanteArcom);
-        List<RegistroPagoObligaciones> autogestiones = query.getResultList();
-        return autogestiones;
+        List<RegistroPagoObligaciones> listaTmp = query.getResultList();
+        List<RegistroPagoObligaciones> listaFinal = new ArrayList<>();
+        for (RegistroPagoObligaciones rpo : listaTmp) {
+            this.refresh(rpo);
+            listaFinal.add(rpo);
+        }
+        return listaFinal;
     }
 
+    @Override
+    public List<RegistroPagoObligaciones> obtenerPorCodigoComprobanteBanco(String numeroComprobanteBanco) {
+        String jpql = "select rpo from RegistroPagoObligaciones rpo where rpo.numeroComprobanteBanco = :numeroComprobanteBanco and rpo.estadoRegistro = true";
+        Query query = em.createQuery(jpql);
+        query.setParameter("numeroComprobanteBanco", numeroComprobanteBanco);
+        List<RegistroPagoObligaciones> listaTmp = query.getResultList();
+        List<RegistroPagoObligaciones> listaFinal = new ArrayList<>();
+        for (RegistroPagoObligaciones rpo : listaTmp) {
+            this.refresh(rpo);
+            listaFinal.add(rpo);
+        }
+        return listaFinal;
+    }
+    
     @Override
     public List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom, String numeroComprobanteBanco,
             String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante) {

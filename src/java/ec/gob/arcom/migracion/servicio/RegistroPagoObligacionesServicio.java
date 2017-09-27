@@ -30,6 +30,8 @@ public interface RegistroPagoObligacionesServicio extends GenericService<Registr
     List<RegistroPagoObligaciones> obtenerPRUNacional();
 
     List<RegistroPagoObligaciones> obtenerPorNumeroComprobanteArcom(String numeroComprobanteArcom);
+    
+    List<RegistroPagoObligaciones> obtenerPorNumeroComprobanteBanco(String numeroComprobanteBanco);
 
     List<RegistroPagoObligaciones> obtenerRegistrosAutogestion(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, String numeroComprobanteBanco,String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante);
     

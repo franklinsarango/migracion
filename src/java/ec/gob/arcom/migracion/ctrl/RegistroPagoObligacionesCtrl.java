@@ -382,6 +382,14 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
             }
             if (registroPagoObligacionesAutoGestion.getCodigoRegistro() == null) {
                 System.out.println("entra create");
+                
+                //CONTRO PARA NO INGRESAR UN COMPROBANTE YA EXISTENTE EN LA LA BASE DE DATOS
+                if (numeroComprobanteBancoDuplicado(registroPagoObligacionesAutoGestion.getNumeroComprobanteBanco(), -1L)) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            "El comprobante: " + registroPagoObligacionesAutoGestion.getNumeroComprobanteBanco() + " Ya esta Registrado", null));
+                    return null;
+                }
+                
                 if (registroPagoObligacionesAutoGestion.getNumeroComprobanteArcom() != null) {
                     List<RegistroPagoObligaciones> autogestiones = registroPagoObligacionesServicio
                             .obtenerPorNumeroComprobanteArcom(registroPagoObligacionesAutoGestion.getNumeroComprobanteArcom());
@@ -443,6 +451,14 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
                         "Registro guardado con éxito", null));
             } else {
                 System.out.println("entra update");
+                
+                //CONTRO PARA NO INGRESAR UN COMPROBANTE YA EXISTENTE EN LA LA BASE DE DATOS
+                if (numeroComprobanteBancoDuplicado(registroPagoObligacionesAutoGestion.getNumeroComprobanteBanco(), registroPagoObligacionesAutoGestion.getCodigoRegistro())) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            "El comprobante: " + registroPagoObligacionesAutoGestion.getNumeroComprobanteBanco() + " Ya esta Registrado", null));
+                    return null;
+                }
+                
                 if (registroPagoObligacionesAutoGestion.getNumeroComprobanteArcom() != null) {
                     List<RegistroPagoObligaciones> autogestiones = registroPagoObligacionesServicio
                             .obtenerPorNumeroComprobanteArcom(registroPagoObligacionesAutoGestion.getNumeroComprobanteArcom());
@@ -477,8 +493,24 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
             ex.printStackTrace();
         }
         return "autogestion";
-    }
+    }           
+                
+    public boolean numeroComprobanteBancoDuplicado(String numeroComprobanteBanco, Long codigoRegistroActual) {
+        boolean comprobanteDuplicado = false;
+        List<RegistroPagoObligaciones> listaComprobantes = registroPagoObligacionesServicio.obtenerPorNumeroComprobanteBanco(numeroComprobanteBanco);
+        if (listaComprobantes != null && listaComprobantes.size() > 0) {
+            for (RegistroPagoObligaciones rpo : listaComprobantes) {
+                if ((rpo.getEstadoPago().getNemonico().equals(ConstantesEnum.ESTCOMP_APROBADO.getNemonico())
+                        || rpo.getEstadoPago().getNemonico().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getNemonico())
+                        ) && !rpo.getCodigoRegistro().equals(codigoRegistroActual)) {                    
+                    comprobanteDuplicado = true;
+                }
+            }
+        }
 
+        return comprobanteDuplicado;
+    }
+    
     public List<RegistroPagoObligaciones> getListaRegistrosAutoGestion() {
         if (listaRegistrosAutoGestion == null) {
 //            //SI NO ES ECONOMICO NACIONAL SOLO SE PRESENTAN LOS COMPROBANTES GENERADOS POR AUTOGESTION
