@@ -108,12 +108,12 @@
                                   sortBy="#{operativo.usuarioCreacion.codigoUsuario}">
                             <h:outputText value="#{operativo.usuarioCreacion.nombresCompletos.toUpperCase()}"/>
                         </p:column>
-
+                        <!--
                         <p:column headerText="Tipo sello" style="width: 50px;"
                                   sortBy="#{operativo.tipoSello.codigoCatalogoDetalle}">
                             <h:outputText value="#{operativo.tipoSello.nombre}"/>
                         </p:column>
-
+                        -->
                         <p:column headerText="Tipo material" style="width: 50px;"
                                   sortBy="#{operativo.tipoMaterial.codigoCatalogo}">
                             <h:outputText value="#{operativo.tipoMaterial.nombre}"/>
@@ -350,6 +350,42 @@
                 </h:form>
             </p:dialog>
             
+            <!-- FORMULARIO SELLO -->
+            <p:dialog id="sellofrm" widgetVar="sellofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Sello" style="">
+                <h:form id="selloform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="tipoSello" value="Tipo sello:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="tipoSello" styleClass="onemenu-form" required="true"
+                                             requiredMessage="Debe seleccionar un tipo sello" converter="#{catalogoDetalleConverter}"
+                                             value="#{operativoCtrl.detalleOperativo.tipoSello}">
+                                    <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{operativoCtrl.tiposSello}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="numeroSello" value="Número sello:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText id="numeroSello" value="#{operativoCtrl.detalleOperativo.numeroSello}"
+                                                 styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:commandButton value="Aceptar" title="Aceptar" actionListener="#{operativoCtrl.addSelloAction()}"
+                                                 oncomplete="PF('sellofrmwg').hide();"
+                                                 update=":operativoform:sellosdt"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
             <!-- CONFIRMAR ELIMINAR OPERATIVO -->
             <h:form>
                 <p:confirmDialog id="deloperativodlg" showEffect="fade" hideEffect="fade" widgetVar="deloperativodlgwg" header="Confirmar eliminar operativo"
@@ -359,6 +395,25 @@
                     <p:commandButton value="No" icon="ui-icon-close" oncomplete="PF('deloperativodlgwg').hide()"/>
                 </p:confirmDialog>
             </h:form>
+            
+            <!-- CARGA DE ARCHIVOS -->
+            <p:dialog id="archivosfrm" widgetVar="archivosfrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Cargar archivos">
+                <h:form id="archivosform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:fileUpload id="fuadjuntos" mode="advanced" sizeLimit="8388608" allowTypes="/(\.|\/)(pdf|PDF)$/"
+                                              invalidSizeMessage="Su archivo excede el tamaño permitido de 8MB"
+                                              invalidFileMessage="Solo puede subir archivos PDF"
+                                              cancelLabel="Cancelar" uploadLabel="Subir" label="Examinar"
+                                              fileUploadListener="#{operativoCtrl.addArchivos}"
+                                              update=":operativoform:filelistpanel :growl"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </html>

@@ -73,6 +73,7 @@ public class OperativoCtrl extends BaseCtrl {
     public static final String TIPOINSTITUCION= "TIPOINFINSTPART";
     public static final String TIPODETENIDO= "TIPOINFDETOPE";
     public static final String TIPODEPOSITARIO= "TIPOINFDEPMAQ";
+    public static final String TIPOSELLO= "TIPOINFSELL";
     public static final String INSERT= "INSERT";
     public static final String UPDATE=  "UPDATE";
     public static final String DELETE= "DELETE";
@@ -144,6 +145,10 @@ public class OperativoCtrl extends BaseCtrl {
     
     private List<DataTableColumn> columns;
     private List<ReportData> rows;
+    
+    private List<DetalleOperativo> coordenadasOperativo;
+    private String textoCoordenadas;
+    private boolean coordenadasEditadas= false;
     
     @ManagedProperty(value = "#{loginCtrl}")
     private LoginCtrl login;
@@ -236,6 +241,22 @@ public class OperativoCtrl extends BaseCtrl {
 
     public void setLogin(LoginCtrl login) {
         this.login = login;
+    }
+
+    public List<DetalleOperativo> getCoordenadasOperativo() {
+        return coordenadasOperativo;
+    }
+
+    public void setCoordenadasOperativo(List<DetalleOperativo> coordenadasOperativo) {
+        this.coordenadasOperativo = coordenadasOperativo;
+    }
+
+    public String getTextoCoordenadas() {
+        return textoCoordenadas;
+    }
+
+    public void setTextoCoordenadas(String textoCoordenadas) {
+        this.textoCoordenadas = textoCoordenadas;
     }
     
     ////////////////////////
@@ -377,7 +398,7 @@ public class OperativoCtrl extends BaseCtrl {
             tiposDepositario.add(new SelectItem(catDet, catDet.getNombre()));
         }
     }
-    
+    /*
     public List<SelectItem> getTiposSello() {
         if (tiposSello == null) {
             tiposSello = new ArrayList<>();
@@ -390,6 +411,28 @@ public class OperativoCtrl extends BaseCtrl {
             }
         }
         return tiposSello;
+    }
+    */
+    public List<SelectItem> getTiposSello() {
+        obtenerTiposSello();
+        return tiposSello;
+    }
+    
+    private void obtenerTiposSello() {
+        if (tiposSello == null) {
+            Catalogo catalogo = catalogoServicio.findByNemonico("TIPOSELLO");
+            if (catalogo != null) {
+                List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+                llenarTiposSello(tipoServCat);
+            }
+        }
+    }
+    
+    private void llenarTiposSello(List<CatalogoDetalle> tipos) {
+        tiposSello = new ArrayList<>();
+        for (CatalogoDetalle catDet : tipos) {
+            tiposSello.add(new SelectItem(catDet, catDet.getNombre()));
+        }
     }
     
     public List<SelectItem> getEstadosProcedimiento() {
@@ -613,6 +656,9 @@ public class OperativoCtrl extends BaseCtrl {
     public List<DetalleOperativo> obtenerInformacionDepositarios() {
         return obtenerInformacionPorTipo(TIPODEPOSITARIO);
     }
+    public List<DetalleOperativo> obtenerInformacionSellos() {
+        return obtenerInformacionPorTipo(TIPOSELLO);
+    }
     
     ////////////////////////
     
@@ -623,7 +669,10 @@ public class OperativoCtrl extends BaseCtrl {
             detallesOperativo= new ArrayList<>();
             detalleOperativo= new DetalleOperativo();
             maquinarias= new ArrayList<>();
+            archivosCargados= new ArrayList<>();
             archivosParaCargar= new ArrayList<>();
+            coordenadasOperativo= new ArrayList<>();
+            textoCoordenadas= "";
         
             Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("operativoform:operativowiz");
             wizard.setStep("tab01");
@@ -686,11 +735,17 @@ public class OperativoCtrl extends BaseCtrl {
             edit= true;
             resetAction();
             operativo= ope;
-            operativo.setUtmEste(operativo.getUtmEste().replace(",", "."));
-            operativo.setUtmNorte(operativo.getUtmNorte().replace(",", "."));
+            coordenadasOperativo= new ArrayList<>();
+            textoCoordenadas= "";
+            //operativo.setUtmEste(operativo.getUtmEste().replace(",", "."));
+            //operativo.setUtmNorte(operativo.getUtmNorte().replace(",", "."));
             getCantones();
             getParroquias();
             detallesOperativo= detalleOperativoServicio.listarPorOperativo(operativo);
+            for(DetalleOperativo detope : detallesOperativo) {
+                if(detope.getTipoInformacionRegistro().equals(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFCOOR").get(0)))
+                    coordenadasOperativo.add(detope);
+            }
             maquinarias= maquinariaConcesionServicio.obtenerMaquinariasPorOperativo(operativo);
             archivosCargados= obtenerArchivosCargados(operativo);
             archivosParaCargar= new ArrayList<>();
@@ -880,8 +935,8 @@ public class OperativoCtrl extends BaseCtrl {
                 
     private boolean guardarOperativo() {
         Usuario usrCreacion= usuarioServicio.findByPk(login.getCodigoUsuario());
-        operativo.setUtmEste(operativo.getUtmEste().replace(".", ","));
-        operativo.setUtmNorte(operativo.getUtmNorte().replace(".", ","));
+        //operativo.setUtmEste(operativo.getUtmEste().replace(".", ","));
+        //operativo.setUtmNorte(operativo.getUtmNorte().replace(".", ","));
         operativo.setEstadoRegistro(Boolean.TRUE);
         operativo.setFechaCreacion(Calendar.getInstance().getTime());
         operativo.setUsuarioCreacion(usrCreacion);
@@ -893,6 +948,10 @@ public class OperativoCtrl extends BaseCtrl {
         }
         operativoServicio.create(operativo);
         saveAuditoria(INSERT, operativo, new Operativo());
+        
+        for(DetalleOperativo detope : coordenadasOperativo) {
+            detallesOperativo.add(detope);
+        }
         
         for(DetalleOperativo detope : detallesOperativo) {
             detope.setOperativo(operativo);
@@ -931,8 +990,8 @@ public class OperativoCtrl extends BaseCtrl {
     private boolean actualizarOperativo() {
         Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
         Operativo anterior= operativoServicio.findByPk(operativo.getCodigoOperativo());
-        operativo.setUtmEste(operativo.getUtmEste().replace(".", ","));
-        operativo.setUtmNorte(operativo.getUtmNorte().replace(".", ","));
+        //operativo.setUtmEste(operativo.getUtmEste().replace(".", ","));
+        //operativo.setUtmNorte(operativo.getUtmNorte().replace(".", ","));
         operativo.setFechaModificacion(Calendar.getInstance().getTime());
         operativo.setUsuarioModificacion(usr);
         if(!operativo.getExpedienteAdministrativo()) {
@@ -943,6 +1002,16 @@ public class OperativoCtrl extends BaseCtrl {
         }
         operativoServicio.update(operativo);
         saveAuditoria(UPDATE, operativo, anterior);
+        
+        if(coordenadasEditadas) {
+            for(DetalleOperativo detope : detallesOperativo) {
+                if(detope.getTipoInformacionRegistro().equals(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFCOOR").get(0)))
+                    detalleOperativoServicio.delete(detope.getCodigoDetalleOperativo());
+            }
+            for(DetalleOperativo detope : coordenadasOperativo) {
+                detallesOperativo.add(detope);
+            }
+        }
         
         for(DetalleOperativo detope : detallesOperativo) {
             detope.setOperativo(operativo);
@@ -1003,7 +1072,7 @@ public class OperativoCtrl extends BaseCtrl {
         auditoria.setFecha(Calendar.getInstance().getTime());
         auditoria.setUsuario(BigInteger.valueOf(login.getCodigoUsuario()));
         auditoria.setDetalleAnterior(nuevo.toString());
-        if(accion.equals(UPDATE)) {
+        if(accion.equals(UPDATE) && anterior != null) {
             auditoria.setDetalleCambios(anterior.toString());
         } else {
             auditoria.setDetalleCambios("");
@@ -1089,6 +1158,8 @@ public class OperativoCtrl extends BaseCtrl {
         } else {
             mostrarMensaje(FacesMessage.SEVERITY_ERROR, "El archivo ya se encuentra en la lista");
         }
+        
+        RequestContext.getCurrentInstance().execute("PF('archivosfrmwg').hide();");
     }
     
     private void guardarAdjuntos() {
@@ -1311,5 +1382,85 @@ public class OperativoCtrl extends BaseCtrl {
             }
         }
         return resultado;
+    }
+    
+    public void cargarCoordenadas() {
+        if (textoCoordenadas.isEmpty()) {
+            return;
+        }
+
+        String texto = textoCoordenadas;
+        String[] array_coordenadas;
+        String[] parts = texto.split("\n");
+        for (String coords : parts) {
+            array_coordenadas = coords.split("-");
+
+            //Validaciones
+            if (array_coordenadas == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Por Favor Ingrese Coordenadas Válidas", null));
+                return;
+            }
+
+            if (array_coordenadas.length != 2) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: debe Ingresar la coordenada con los datos: UTM Este-UTM Norte", null));
+                return;
+            }
+
+            if (array_coordenadas[0].contains(".") || array_coordenadas[1].contains(".")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: Las coordenadas con decimales deben utilizar el signo (,)", null));
+                return;
+            }
+            
+            //SE VALIDA QUE SOLO ESTEN INGRESADOS NUMEROS
+            try{
+                double coordenadaEste = Double.parseDouble(array_coordenadas[0]);
+                double coordenadaNorte = Double.parseDouble(array_coordenadas[1]);
+            }catch(Exception e){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: Las coordenadas solo deben tener numeros", null));
+                return;
+            }
+        }
+
+        this.coordenadasOperativo.clear();
+        int orden= 0;
+        for (String coords : parts) {
+            array_coordenadas = coords.split("-");
+            DetalleOperativo coordenada = new DetalleOperativo();
+            coordenada.setNumeroCoordenada((long) orden);
+            coordenada.setUtmEste(array_coordenadas[0]);
+            coordenada.setUtmNorte(array_coordenadas[1]);
+            coordenada.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFCOOR").get(0));
+            coordenadasOperativo.add(coordenada);
+            orden++;
+        }
+        textoCoordenadas= "";
+        if(edit) {
+            coordenadasEditadas= true;
+        }
+    }
+    
+    public void deleteSelloAction(DetalleOperativo detalle) {
+        detallesOperativo.remove(detalle);
+        if(detalle.getCodigoDetalleOperativo()!=null) {
+            detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
+            saveAuditoria(DELETE, detalle, new DetalleOperativo());
+        }
+    }
+    
+    public void addSelloAction() {
+        detalleOperativo.setTipoInformacionRegistro(catalogoDetalleServicio.obtenerPorNemonico(TIPOSELLO).get(0));
+        this.detallesOperativo.add(detalleOperativo);
+    }
+    
+    public void newSelloAction() {
+        this.detalleOperativo= new DetalleOperativo();
+        tiposSello= null;
+        if(detallesOperativo.size()>0) {
+            obtenerTiposSello();
+        }
     }
 }

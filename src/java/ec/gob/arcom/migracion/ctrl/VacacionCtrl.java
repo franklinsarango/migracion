@@ -25,7 +25,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
 /**
@@ -43,7 +42,6 @@ public class VacacionCtrl {
     private CatalogoDetalleServicio catalogoDetalleServicio;
     @EJB
     private UsuarioServicio usuarioServicio;
-    
     
     private Licencia licencia;
     private Date fechaMinimaInicio;
@@ -312,4 +310,6 @@ public class VacacionCtrl {
     public String obtenerFechaConFormato(Date f) {
         return DateUtil.obtenerFechaConFormato(f);
     }
+    
+    
 }

@@ -241,7 +241,7 @@
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
-                    
+                    <!--
                     <p:row>
                         <p:column style="text-align: right"><p:outputLabel for="coorx" value="Coordenada X (PSAD56):"/></p:column>
                         <p:column style="text-align: left">
@@ -263,6 +263,65 @@
                                 <f:validateRegex pattern="^[0-9]+(\.[0-9][0-9]?[0-9]?[0-9]?)?"/>
                                 <p:ajax update=":growl coory"/>
                             </p:inputText>
+                        </p:column>
+                    </p:row>
+                    -->
+                </p:panelGrid>
+            </p:tab>
+            
+            <p:tab id="tab07" title="Coordenadas UTM">
+                <p:panelGrid styleClass="pg-center">
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:panelGrid columns="1" styleClass="panel_grid_center">
+                                <p:inputTextarea maxlength="900000" id="idTxtCoordenada" 
+                                                 value="#{operativoCtrl.textoCoordenadas}"
+                                                 cols="99" rows="10"
+                                                 autoResize="false"/>
+                                <f:facet name="footer" >
+                                    <div align="center">
+                                        <p:commandButton value="Cargar Coordenadas" actionListener="#{operativoCtrl.cargarCoordenadas()}"
+                                                         update="coordt :growl"/>
+                                    </div>
+                                </f:facet>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:watermark for="idTxtCoordenada" value="Orden de ingreso: UTM Este-UTM Norte"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:dataTable id="coordt" var="coor" value="#{operativoCtrl.coordenadasOperativo}" paginator="true"
+                                 currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                 styleClass="listaCoordenadas"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" rowIndexVar="rowIndex" emptyMessage="No existen registros" rows="15"
+                                 editable="true">
+
+                                <p:ajax event="rowEdit"/>
+                                <p:column headerText="Orden" style="width: 40px; text-align: center">
+                                    <h:outputText value="#{coor.numeroCoordenada}"/>
+                                </p:column>
+
+                                <p:column headerText="UTM Este" style="text-align: center">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{coor.utmEste}"/></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{coor.utmEste}" required="true" requiredMessage="UTM Este es requerido"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="UTM Norte" style="text-align: center"> 
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{coor.utmNorte}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{coor.utmNorte}" required="true" requiredMessage="UTM Norte es requerido"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                            </p:dataTable>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -440,8 +499,39 @@
                 </p:panelGrid>
             </p:tab>
             
-            <p:tab id="tab05" title="Sello-Informe MAE-Procedimiento administrativo">
+            <p:tab id="tab08" title="Sellos">
                 <p:panelGrid styleClass="pg-center-02">
+                    <p:row>
+                        <p:column style="text-align: left">
+                            <p:panelGrid columns="3" styleClass="panelSinBorde">
+                                <p:commandButton icon="ui-icon-plusthick" title="Añadir sello" actionListener="#{operativoCtrl.newSelloAction()}"
+                                                 oncomplete="PF('sellofrmwg').show();" update=":sellofrm"/>
+                            </p:panelGrid>
+                        </p:column>
+                        <p:column style="text-align: center; width: 100%"><p:spacer width="10"/></p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: center" colspan="2">
+                            <p:dataTable id="sellosdt" emptyMessage="No hay resultados..."
+                                         var="sello" value="#{operativoCtrl.obtenerInformacionSellos()}">
+                                <p:column headerText="Tipo sello" style="width: 100px;">
+                                    <h:outputText value="#{sello.tipoSello.nombre}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Número sello" style="width: 100px;">
+                                    <h:outputText value="#{sello.numeroSello}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Eliminar" style="width:45px;text-align: center">
+                                    <p:commandButton icon="ui-icon-trash" title="Eliminar"
+                                                     update=":operativoform:sellosdt"
+                                                     actionListener="#{operativoCtrl.deleteSelloAction(sello)}" immediate="true"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                    <!--
                     <p:row>
                         <p:column colspan="2" style="text-align: center"><p:outputLabel value="Sellos" style="font-weight: bolder"/></p:column>
                     </p:row>
@@ -462,16 +552,18 @@
                                          maxlength="100" requiredMessage="Debe ingresar el número de sello"/>
                         </p:column>
                     </p:row>
-                    
-                    <p:row>
-                        <p:column colspan="2"> <p:separator/> </p:column>
-                    </p:row>
+                    -->
+                </p:panelGrid>
+            </p:tab>
+            
+            <p:tab id="tab05" title="Informe MAE-Procedimiento administrativo">
+                <p:panelGrid styleClass="pg-center-02">
                     <p:row>
                         <p:column colspan="2" style="text-align: center"><p:outputLabel value="Informe al MAE por pasivos ambientales" style="font-weight: bolder"/></p:column>
                     </p:row>
                     <p:row>
-                        <p:column style="text-align: right"><p:outputLabel for="fechaInfMae" value="Fecha envío:"/></p:column>
-                        <p:column style="text-align: left">
+                        <p:column style="text-align: right; width: 50%"><p:outputLabel for="fechaInfMae" value="Fecha envío:"/></p:column>
+                        <p:column style="text-align: left; width: 50%">
                             <p:calendar id="fechaInfMae" styleClass="calendar-form"
                                         readonlyInput="true" required="false" requiredMessage="El campo fecha de envío es requerido"
                                         maxdate="#{operativoCtrl.fechaMaxima}" navigator="true"
@@ -561,6 +653,12 @@
                     </p:row>
                     
                     <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:commandButton value="Cargar archivo" oncomplete="PF('archivosfrmwg').show();" immediate="true"/>
+                        </p:column>
+                    </p:row>
+                    <!--
+                    <p:row>
                         <p:column>
                             <p:fileUpload id="fuadjuntos" mode="advanced" sizeLimit="8388608" allowTypes="/(\.|\/)(pdf|PDF)$/"
                                           invalidSizeMessage="Su archivo excede el tamaño permitido de 8MB"
@@ -570,7 +668,7 @@
                                           update="operativoform filelistUpload :growl"/>
                         </p:column>
                     </p:row>
-                    
+                    -->
                     <p:row>
                         <p:column>
                             <p:spacer width="10" height="10"/>
@@ -579,12 +677,14 @@
                     
                     <p:row>
                         <p:column>
-                            <p:dataList id="filelistUpload" value="#{operativoCtrl.archivosParaCargar}" var="newfile" styleClass="size_uploadfiles"
+                            <h:panelGroup id="filelistpanel">
+                                <p:dataList id="filelistUpload" value="#{operativoCtrl.archivosParaCargar}" var="newfile" styleClass="size_uploadfiles"
                                     emptyMessage="No se encontraron archivos" rendered="#{operativoCtrl.showUploadPanel}" rowIndexVar="row">
-                                <p:outputLabel value="#{row + 1}"/>
-                                <p:spacer width="10" height="10"/>
-                                <p:outputLabel value="#{newfile.fileName}"/>
-                            </p:dataList>
+                                    <p:outputLabel value="#{row + 1}"/>
+                                    <p:spacer width="10" height="10"/>
+                                    <p:outputLabel value="#{newfile.fileName}"/>
+                                </p:dataList>
+                            </h:panelGroup>
                         </p:column>
                     </p:row>
                     
@@ -596,10 +696,8 @@
                     
                     <p:row>
                         <p:column style="text-align: center">
-                            <h:commandButton value="Finalizar" title="Finalizar" actionListener="#{operativoCtrl.saveOperativoAction()}" 
-                                             styleClass="endbutton">
-                                <p:ajax update=":listaoperativosfrm:operativosdt :operativoform"/>
-                            </h:commandButton>
+                            <p:commandButton value="Finalizar" title="Finalizar" actionListener="#{operativoCtrl.saveOperativoAction()}" 
+                                             update=":listaoperativosfrm:operativosdt :operativoform"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid> 

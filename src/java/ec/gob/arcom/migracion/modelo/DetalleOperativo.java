@@ -57,6 +57,18 @@ public class DetalleOperativo implements Serializable {
     @Column(name = "descripcion_depositario")
     private String descripcionDepositario;
     
+    @Column(name = "numero_coordenada")
+    private Long numeroCoordenada;
+    @Column(name = "utm_este")
+    private String utmEste;
+    @Column(name = "utm_norte")
+    private String utmNorte;
+    @JoinColumn(name = "codigo_tipo_sello", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle tipoSello;
+    @Column(name = "numero_sello")
+    private String numeroSello;
+    
     @Column(name = "estado_registro")
     private Boolean estadoRegistro;
     @Column(name = "fecha_creacion")
@@ -152,6 +164,46 @@ public class DetalleOperativo implements Serializable {
         this.descripcionDepositario = descripcionDepositario;
     }
 
+    public Long getNumeroCoordenada() {
+        return numeroCoordenada;
+    }
+
+    public void setNumeroCoordenada(Long numeroCoordenada) {
+        this.numeroCoordenada = numeroCoordenada;
+    }
+
+    public String getUtmEste() {
+        return utmEste;
+    }
+
+    public void setUtmEste(String utmEste) {
+        this.utmEste = utmEste;
+    }
+
+    public String getUtmNorte() {
+        return utmNorte;
+    }
+
+    public void setUtmNorte(String utmNorte) {
+        this.utmNorte = utmNorte;
+    }
+
+    public CatalogoDetalle getTipoSello() {
+        return tipoSello;
+    }
+
+    public void setTipoSello(CatalogoDetalle tipoSello) {
+        this.tipoSello = tipoSello;
+    }
+
+    public String getNumeroSello() {
+        return numeroSello;
+    }
+
+    public void setNumeroSello(String numeroSello) {
+        this.numeroSello = numeroSello;
+    }
+    
     public Boolean getEstadoRegistro() {
         return estadoRegistro;
     }
@@ -208,6 +260,7 @@ public class DetalleOperativo implements Serializable {
                 ", tipoInformacionRegistro=" + tipoInformacionRegistro.getCodigoCatalogoDetalle() + ", tipoInstitucion=" + obtenerTipoInstitucion() +
                 ", numeroPersonas=" + numeroPersonas + ", descripcionInstitucion=" + descripcionInstitucion + ", nombre" + nombre + ", apellido=" + apellido + 
                 ", numeroDocumento=" + numeroDocumento + ", tipoDepositario=" + obtenerTipoDepositario() + ", descripcionDepositario=" + descripcionDepositario +
+                ", numeroCoordenada=" + numeroCoordenada + ", utmEste=" + utmEste + ", utmNorte=" + utmNorte + ", tipoSello=" + obtenerTipoSello() + 
                 ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion + 
                 ", fechaModificacion=" + obtenerFechaModificacion() + ", usuarioModificacion=" + obtenerUsuarioModificacion() +
                  "}";
@@ -227,6 +280,14 @@ public class DetalleOperativo implements Serializable {
             return "";
         } else {
             return tipoDepositario.getCodigoCatalogoDetalle() + "";
+        }
+    }
+    
+    private String obtenerTipoSello() {
+        if(tipoSello==null) {
+            return "";
+        } else {
+            return tipoSello.getCodigoCatalogoDetalle() + "";
         }
     }
     
