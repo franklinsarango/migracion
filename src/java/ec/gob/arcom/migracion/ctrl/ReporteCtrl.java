@@ -468,7 +468,8 @@ public class ReporteCtrl extends BaseCtrl {
             tipoSolicitudes = new ArrayList<>();
             for (ConstantesEnum ce : ConstantesEnum.values()) {
                 
-                if (ce.equals(ConstantesEnum.RPT_CACASTRO_NACIONAL) && (login.isEconomicoNacional() || login.isEconomicoRegional() || login.isTecnicoCatastroNacional())) {
+                if (ce.equals(ConstantesEnum.RPT_CACASTRO_NACIONAL) && 
+                        (login.isEconomicoNacional() || login.isEconomicoRegional() || login.isTecnicoCatastroNacional() || login.isCoordinadorRegional())) {
                     tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
                 }
                 if (ce.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN)

@@ -178,7 +178,7 @@ public class ActividadMineraZPCtrl extends BaseCtrl {
     
     @PostConstruct
     private void inicializar() {
-        login.setCodigoUsuario(1689L);
+//        login.setCodigoUsuario(1689L);
         cargarFichasTecnicas();
     }
     

@@ -1,0 +1,491 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/templates/page-template_pf.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Lista de Activos"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:growl id="growl" showDetail="true" showSummary="true" life="8000" autoUpdate="true"/>
+                <h:panelGrid columns="3">
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Código:"/>
+                            <p:inputText value="#{activoCtrl.filtroId}" style="width: 200px;"/>
+                            <p:outputLabel value="Descripción:"/>
+                            <p:inputText value="#{activoCtrl.filtroDescripcion}" style="width: 200px;"/>
+                            <p:outputLabel value="Tag Arcom:"/>
+                            <p:inputText value="#{activoCtrl.filtroTagArcom}" style="width: 200px;"/>
+                        </h:panelGrid>
+                        <h:commandButton image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar">
+                            <p:ajax listener='#{activoCtrl.mostrarDatos("btn_buscar")}' update="@form" process="@form" />
+                        </h:commandButton>
+                    </h:panelGrid>
+                    <p:outputLabel value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" style="width: 60%"/>
+                    <h:panelGroup style="text-align: right; right: -93%;">
+                        <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" >
+                            <h:panelGrid style="text-align:center">
+                                <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 50px; height: 50px"/>
+                                <h:outputText value="Inicio"/>
+                            </h:panelGrid>
+                        </h:commandLink>                        
+                    </h:panelGroup>
+                </h:panelGrid>
+
+                <h1 class="titulo_centrado">Lista de Activos</h1>
+
+                <p:dataTable var="reg" id="idListaActivos"
+                             value="#{activoCtrl.listaActivos}" rows="10">
+
+                    <p:column headerText="Código" width="25">
+                        <h:outputText value="#{reg.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo Activo" style="text-align: right">
+                        <h:outputText value="#{reg.tipoactivo.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="Marca" style="text-align: right">
+                        <h:outputText styleClass="texto_tabla_datos_codigo"
+                                      value="#{reg.marca.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Regional" style="text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" 
+                                       value="#{reg.regional.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="Tag Arcom"
+                              style="text-align: right">
+                        <h:outputText value="#{reg.tagArcom}"/>
+                    </p:column>
+
+                    <p:column headerText="Descripción"  
+                              style="text-align: right">
+                        <h:outputText value="#{reg.descripcion}"/>
+                    </p:column>
+
+                    <p:column headerText="Estado"  
+                              style="text-align: right">
+                        <h:outputText value="#{reg.estado.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="" style="width:37px; text-align: right">
+                        <p:commandButton update="@form :frm_lista_movimiento" action="#{activoCtrl.mostrarDatosMov}" icon="ui-icon ui-icon-note" title="Movimientos"
+                                         oncomplete="PF('documentDialog').show()">
+                        </p:commandButton>
+
+                    </p:column>
+
+                    <p:column headerText="" style="width:37px; text-align: right">
+                        <p:commandButton update="@form" process="@this" action="#{activoCtrl.mostrarActivo}" icon="ui-icon ui-icon-folder-open" title="Detalle Activo">
+                        </p:commandButton>
+
+                    </p:column>
+
+                    <p:column headerText="" style="width:37px; text-align: right">
+                        <p:commandButton update="@form" process="@this" action="#{activoCtrl.editarActivo}" icon="ui-icon ui-icon-pencil" title="Editar">
+                        </p:commandButton>
+
+                    </p:column>                   
+
+                    <p:column headerText="" style="width:37px; text-align: right">
+                        <p:commandButton update="@form" process="@this" action="#{activoCtrl.eliminarActivo}" icon="ui-icon ui-icon-trash" title="Eliminar"
+                                         onstart="return confirm('Está seguro que desea eliminar el activo seleccionado?')">
+                        </p:commandButton>
+
+                    </p:column>
+
+
+                    <f:facet name="footer">
+                        <center>
+                            <h:panelGrid columns="5" style="width: 500px;" styleClass="noBorders">
+                                <p:commandButton value="Atrás" action='#{activoCtrl.mostrarDatos("anterior")}'
+                                                 update="idListaActivos" />
+                                <p:outputLabel value="Página  " style="width: 150px;" />
+                                <p:selectOneMenu value="#{activoCtrl.paginaSeleccionada}" style="width: 150px;">
+                                    <p:ajax listener='#{activoCtrl.mostrarDatos("cmb_paginador")}' event="valueChange" update="idListaActivos" />
+                                    <f:selectItems value="#{activoCtrl.listaPaginas}" 
+                                                   var="cp" 
+                                                   itemLabel="#{cp}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="  de #{activoCtrl.totalPaginas}" style="width: 150px;"/>
+
+                                <p:commandButton value="Siguiente" action='#{activoCtrl.mostrarDatos("siguiente")}'
+                                                 update="idListaActivos" />
+                            </h:panelGrid>
+
+                        </center>
+                    </f:facet>
+                </p:dataTable> 
+
+                <p:commandButton 
+                    icon="ui-icon-folder-open" value="Nuevo Activo" 
+                    actionListener="#{activoCtrl.nuevoActivo()}" id="btn_nuevo"
+                    update="@form" process="@this"
+                    style="width: 150px;"                                                  
+                    >
+                </p:commandButton>
+
+                <p:panel header="Detalle del Activo" rendered="#{activoCtrl.bolMostrar}" id="idDetalleActivo"> 
+                    <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
+                        <h:outputLabel value="Id: "/>
+                        <p:outputLabel value="#{activoCtrl.activo.id}"/>
+
+                        <h:outputText value="Tipo Activo: " />
+                        <p:outputLabel value="#{activoCtrl.activo.tipoactivo.nombre}"/> 
+
+                        <h:outputText value="Marca: " />
+                        <p:outputLabel value="#{activoCtrl.activo.marca.nombre}"/> 
+
+                        <h:outputText value="Modelo: " />
+                        <p:outputLabel value="#{activoCtrl.activo.modelo.nombre}"/> 
+
+                        <h:outputText value="Tag Arcom: " />
+                        <p:outputLabel value="#{activoCtrl.activo.tagArcom}"/> 
+
+                        <h:outputText value="Número Serie: " />
+                        <p:outputLabel value="#{activoCtrl.activo.numSerie}"/> 
+
+                        <h:outputText value="Descripción: " />
+                        <p:outputLabel value="#{activoCtrl.activo.descripcion}"/> 
+
+                        <h:outputText value="Regional: " />
+                        <p:outputLabel value="#{activoCtrl.activo.regional.nombre}"/> 
+
+                        <h:outputText value="Ubicación: " />
+                        <p:outputLabel value="#{activoCtrl.activo.ubicacion.nombre}"/> 
+
+                        <h:outputText value="Estado: " />
+                        <p:outputLabel value="#{activoCtrl.activo.estado.nombre}"/> 
+
+                        <h:outputText value="Vigencia: " />
+                        <p:outputLabel value="#{activoCtrl.activo.vigencia}"/>                         
+
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton value="Imprmir" 
+                                                 icon="ui-icon-print"
+                                                 onclick="window.print();"
+                                                 style="width: 100px;"/>
+                                <p:spacer width="15"></p:spacer>
+                                <p:commandButton 
+                                    icon="ui-icon-folder-open" value="Cancelar" 
+                                    actionListener="#{activoCtrl.cancelarActivo}" 
+                                    update="@form" process="@this"
+                                    style="width: 150px;"                                                  
+                                    >
+                                </p:commandButton>
+                            </center>
+                        </f:facet>
+                    </h:panelGrid>
+                </p:panel> 
+
+
+                <p:panel header="Datos Activo" rendered="#{activoCtrl.bolMostrarEditar}" id="idDatosActivo">
+                    <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
+                        <h:outputLabel value="Id: "/>                                    
+                        <p:inputText value="#{activoCtrl.activoEditar.id}" readonly="true"/>
+
+                        <h:outputText value="Tipo Activo: " />
+
+                        <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
+                            <h:selectOneMenu id="tipo_activo" 
+                                             value="#{activoCtrl.activoEditar.tipoactivo.id}"
+                                             style="width: 250px;">                                        
+                                <f:selectItems value="#{activoCtrl.listaTipoActivo}" 
+                                               var="TipoActivoVar" 
+                                               itemLabel="#{TipoActivoVar.nombre}" 
+                                               itemValue="#{TipoActivoVar.id}" />
+                            </h:selectOneMenu>
+
+                            <p:commandButton value="Agregar" actionListener="#{activoCtrl.nuevoTipoActivo()}" 
+                                             icon="ui-icon-circle-plus"
+                                             update=":frm_catalogo" style="width: 100px;"
+                                             oncomplete="PF('documentDialogCatalogo').show()"/>
+                        </h:panelGrid>
+                        <h:outputText value="Marca: " />
+                        <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
+                            <h:selectOneMenu id="ctg_marca" 
+                                             value="#{activoCtrl.activoEditar.marca.id}"
+                                             style="width: 250px;">                                        
+                                <f:selectItems value="#{activoCtrl.listaMarca}" 
+                                               var="MarcaVar" 
+                                               itemLabel="#{MarcaVar.nombre}" 
+                                               itemValue="#{MarcaVar.id}" />
+                            </h:selectOneMenu>
+                            <p:commandButton value="Agregar" actionListener="#{activoCtrl.nuevaMarca()}" 
+                                             icon="ui-icon-circle-plus"
+                                             update=":frm_catalogo" style="width: 100px;"
+                                             oncomplete="PF('documentDialogCatalogo').show()"/>
+                        </h:panelGrid>
+
+                        <h:outputText value="Modelo: " />
+                        <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
+                            <h:selectOneMenu id="ctg_modelo" 
+                                             value="#{activoCtrl.activoEditar.modelo.id}"
+                                             >                                        
+                                <f:selectItems value="#{activoCtrl.listaModelo}" 
+                                               var="ModeloVar" 
+                                               itemLabel="#{ModeloVar.nombre}" 
+                                               itemValue="#{ModeloVar.id}" />
+                            </h:selectOneMenu>
+
+                            <p:commandButton value="Agregar" actionListener="#{activoCtrl.nuevoModelo()}" 
+                                             icon="ui-icon-circle-plus"
+                                             update=":frm_catalogo" style="width: 100px;"
+                                             oncomplete="PF('documentDialogCatalogo').show()"/>
+                        </h:panelGrid>
+
+
+                        <h:outputText value="Tag Arcom: " />
+                        <p:inputText value="#{activoCtrl.activoEditar.tagArcom}" size="40"/> 
+
+                        <h:outputText value="Número Serie: " />
+                        <p:inputText value="#{activoCtrl.activoEditar.numSerie}" size="40"/> 
+
+                        <h:outputText value="Descripción: " />
+                        <h:inputTextarea cols="20" rows="2" value="#{activoCtrl.activoEditar.descripcion}"/> 
+
+                        <h:outputText value="Regional: " />                                    
+                        <h:selectOneMenu id="ctg_regional" 
+                                         value="#{activoCtrl.activoEditar.regional.id}"
+                                         style="width: 250px;">                                        
+                            <f:selectItems value="#{activoCtrl.listaRegionalInv}" 
+                                           var="RegionalVar" 
+                                           itemLabel="#{RegionalVar.nombre}" 
+                                           itemValue="#{RegionalVar.id}" />
+                        </h:selectOneMenu>
+
+                        <h:outputText value="Ubicación: " />
+                        <h:selectOneMenu id="ctg_ubicacion" 
+                                         value="#{activoCtrl.activoEditar.ubicacion.id}"
+                                         style="width: 250px;">                                        
+                            <f:selectItems value="#{activoCtrl.listaUbicacion}" 
+                                           var="UbicacionVar" 
+                                           itemLabel="#{UbicacionVar.nombre}" 
+                                           itemValue="#{UbicacionVar.id}" />
+                        </h:selectOneMenu>
+
+                        <h:outputText value="Estado: " />                                    
+                        <h:selectOneMenu id="ctg_estado" 
+                                         value="#{activoCtrl.activoEditar.estado.id}"
+                                         >                                        
+                            <f:selectItems value="#{activoCtrl.listaEstado}" 
+                                           var="EstadoVar" 
+                                           itemLabel="#{EstadoVar.nombre}" 
+                                           itemValue="#{EstadoVar.id}" />
+                        </h:selectOneMenu>
+
+                        <h:outputText value="Vigencia: " />
+                        <p:selectOneRadio id="radioVigente" value="#{activoCtrl.activoEditar.vigencia}" >
+                            <f:selectItem itemLabel="Si" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneRadio>
+
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton icon="ui-icon-folder-open" value="Guardar" 
+                                                 actionListener="#{activoCtrl.guardarActivo}"
+                                                 update=":form"
+                                                 style="width: 150px;"                                                  
+                                                 >
+                                </p:commandButton>
+                                <p:spacer width="15"></p:spacer>
+                                <p:commandButton 
+                                    icon="ui-icon-folder-open" value="Cancelar" 
+                                    actionListener="#{activoCtrl.cancelarActivo}" 
+                                    update="@form" process="@this"
+                                    style="width: 150px;"                                                  
+                                    >
+                                </p:commandButton>
+                            </center>
+                        </f:facet>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+
+
+            <p:dialog id="dialog" header="Listado de Movimientos" showEffect="fade" widgetVar="documentDialog" modal="true" resizable="false" width="90%" height="100%">  
+                <h:form id="frm_lista_movimiento">                 
+
+                        <h:panelGrid id="panelTablaClasesMov"  >
+
+                            <p:panel>
+                                <p:dataTable var="item" value="#{activoCtrl.listaMovimiento}"
+                                             selectionMode="single" 
+                                             selection="#{activoCtrl.movimiento}" 
+                                             rowKey="#{item.id}"
+                                             emptyMessage="No existen datos"
+                                             rows="5" paginator="true"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10">
+                                    
+                                    <p:column  style="text-align: center;">
+                                        <f:facet name="header">
+                                            <h:outputText value="Código"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.id}"/>
+                                    </p:column>                          
+                                    <p:column  style="text-align: center;">
+                                        <f:facet name="header">
+                                            <h:outputText value="Persona Entrega"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.personaEntrega}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <f:facet name="header">
+                                            <h:outputText value="Persona Recibe"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.personaRecibe}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.fecha}">
+                                            <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <f:facet name="header">
+                                            <h:outputText value="Activo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.fkActivo.id}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <f:facet name="header">
+                                            <h:outputText value="Observación"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.observacion}"/>
+                                    </p:column>
+                                    <p:column style="width:24px">
+                                        <p:commandLink update=":frm_lista_movimiento" title="Editar" styleClass="ui-icon ui-icon-pencil" action="#{activoCtrl.editarMovimiento}">
+                                            <f:setPropertyActionListener value="#{item}" target="#{activoCtrl.movimiento}" />
+                                        </p:commandLink>
+                                    </p:column>
+
+                                    <p:column style="width:24px">
+                                        <p:commandLink update=":frm_lista_movimiento" title="Eliminar" styleClass="ui-icon ui-icon-trash" action="#{activoCtrl.eliminarMovimiento}"  onstart="return confirm('Está seguro que desea eliminar el activo seleccionado?')">
+                                            <f:setPropertyActionListener value="#{item}" target="#{activoCtrl.movimiento}" />
+
+                                        </p:commandLink>
+                                    </p:column>
+
+                                </p:dataTable>
+
+                               
+                                    <p:commandButton 
+                                        icon="ui-icon-folder-open" value="Nuevo Movimiento" 
+                                        actionListener="#{activoCtrl.nuevoMovimiento()}" id="btn_nuevoMov"
+                                        update=":frm_lista_movimiento"
+                                        style="width: 150px;"                                                  
+                                        >
+                                    </p:commandButton> 
+                                   
+
+                                  
+                            </p:panel>
+                            <!--    <p:messages />   -->
+                        </h:panelGrid>
+                  
+
+                        <p:panel header="Datos Movimiento" rendered="#{activoCtrl.bolMostrarEditarMov}">
+                            <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
+                                <h:outputLabel value="Id: "/>                                    
+                                <p:inputText value="#{activoCtrl.movimientoEditar.id}" readonly="true"/>
+
+                                <h:outputText value="Persona Entrega: " />
+                                <p:inputText value="#{activoCtrl.movimientoEditar.personaEntrega}" size="40"/> 
+
+                                <h:outputText value="Persona Recibe: " />
+                                <p:inputText value="#{activoCtrl.movimientoEditar.personaRecibe}" size="40"/> 
+
+                                <h:outputText value="Fecha " />                                   
+                                <p:calendar id="fechaMov" 
+                                            value="#{activoCtrl.movimientoEditar.fecha}" 
+                                            locale="es" navigator="true" pattern="yyyy-MMM-dd"
+                                            required="true" requiredMessage="El campo fecha es requerido."
+                                            /> 
+
+                                <h:outputText value="Observación " />                                    
+                                <h:inputTextarea cols="20" rows="3"  id="parteResolutiva" 
+                                                 value="#{activoCtrl.movimientoEditar.observacion}" />  
+
+                                <f:facet name="footer">
+                                    <center>
+                                        <p:commandButton icon="ui-icon-folder-open" value="Guardar" 
+                                                         actionListener="#{activoCtrl.guardarMovimiento}"
+                                                         update=":frm_lista_movimiento"
+                                                         style="width: 150px;"                                                  
+                                                         >
+                                        </p:commandButton> 
+                                        <p:spacer width="15"></p:spacer>
+                                        <p:commandButton 
+                                            icon="ui-icon-folder-open" value="Cancelar" 
+                                            actionListener="#{activoCtrl.cancelarMovimiento}" 
+                                            update=":frm_lista_movimiento"
+                                            style="width: 150px;"                                                  
+                                            >
+                                        </p:commandButton>
+                                    </center>
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:panel>
+  
+
+                </h:form> 
+            </p:dialog> 
+
+            <p:dialog id="dialog_catalogo" header="Datos del Registro" showEffect="fade" widgetVar="documentDialogCatalogo" modal="true" resizable="false" width="50%" height="100%">  
+                <h:form id="frm_catalogo"> 
+
+                    <table border="1px" style="border: 1px; border-style: solid;" width="100%">
+                        <tr>
+                            <td height="300" valign="top">
+                        <p:panel header="Datos">
+                            <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
+                                <h:outputText value="Nombre: " />
+                                <p:inputText value="#{activoCtrl.catalogoEdit.nombre}" size="40" required="true"/> 
+
+                                <h:outputText value="Descripción: " />
+                                <p:inputText value="#{activoCtrl.catalogoEdit.descripcion}" size="40" required="true"/> 
+
+                                <f:facet name="footer">
+                                    <center>
+                                        <p:commandButton icon="ui-icon-folder-open" value="Guardar" 
+                                                         actionListener="#{activoCtrl.guardarCatalogo}"
+                                                         update=":form"                                                                 
+                                                         style="width: 150px;"                                                  
+                                                         >
+                                        </p:commandButton> 
+                                    </center>
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:panel>
+                        </td>
+                        </tr>
+                    </table>
+                </h:form> 
+            </p:dialog>
+
+
+
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -217,7 +217,7 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
 
     @Override
     public int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento, boolean registrosPorRegional) {
-        String jpql = "select co from ContratoOperacion co, ConcesionMinera cm where co.codigoConcesion.codigoConcesion = cm.codigoConcesion \n"
+        String jpql = "select co.codigoContratoOperacion from ContratoOperacion co, ConcesionMinera cm where co.codigoConcesion.codigoConcesion = cm.codigoConcesion \n"
                 + " and 1=1 and co.codigoArcom like :codigoArcomCO \n";
 //        if (registrosPorRegional == true) {
 //            jpql += "and cm.codigoProvincia in (select lcr.localidad.codigoLocalidad from LocalidadRegional lcr where lcr.regional.codigoRegional = \n"
