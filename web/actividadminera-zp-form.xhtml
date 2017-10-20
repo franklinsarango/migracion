@@ -271,11 +271,25 @@
                         <p:column style="text-align: left">
                             <p:selectOneMenu id="estadolegal" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
                                              value="#{actividadMineraZPCtrl.fichaTecnica.estadoLegal}" requiredMessage="Debe seleccionar un estado legal">
-                                <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Seleccione un estado legal..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{actividadMineraZPCtrl.estadosLegal}"
                                                var="estadoLegal"
                                                itemLabel="#{estadoLegal.nombre}"
                                                itemValue="#{estadoLegal}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right"><p:outputLabel value="Tipo de inspección:"/></p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="tipoInspeccion" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                             value="#{actividadMineraZPCtrl.fichaTecnica.tipoInspeccion}" requiredMessage="Debe seleccionar un tipo de inspección">
+                                <f:selectItem itemLabel="Seleccione un tipo de inspección..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{actividadMineraZPCtrl.tiposInspeccion}"
+                                               var="tipoInspeccion"
+                                               itemLabel="#{tipoInspeccion.nombre}"
+                                               itemValue="#{tipoInspeccion}"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>

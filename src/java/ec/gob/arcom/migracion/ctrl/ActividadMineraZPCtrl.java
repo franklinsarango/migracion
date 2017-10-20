@@ -142,6 +142,7 @@ public class ActividadMineraZPCtrl extends BaseCtrl {
     private List<CatalogoDetalle> sistemasExplotacion;
     private List<CatalogoDetalle> operacionesMineras;
     private List<CatalogoDetalle> estadosLegal;
+    private List<CatalogoDetalle> tiposInspeccion;
     private List<DetalleFichaTecnicaWrapper> operacionesMinerasWrapper;
     private List<DetalleFichaTecnica> sociosLaborMinera;
     private List<DetalleFichaTecnica> coordenadasActividadMinera;
@@ -178,7 +179,7 @@ public class ActividadMineraZPCtrl extends BaseCtrl {
     
     @PostConstruct
     private void inicializar() {
-//        login.setCodigoUsuario(1689L);
+        //login.setCodigoUsuario(1689L);
         cargarFichasTecnicas();
     }
     
@@ -576,6 +577,20 @@ public class ActividadMineraZPCtrl extends BaseCtrl {
             }
         }
         return estadosLegal;
+    }
+    
+    public List<CatalogoDetalle> getTiposInspeccion() {
+        if (tiposInspeccion == null) {
+            tiposInspeccion = new ArrayList<>();
+            Catalogo catalogo = catalogoServicio.findByNemonico("TIPOINS");
+            if (catalogo != null) {
+                List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+                for (CatalogoDetalle catDet : tipoServCat) {
+                    tiposInspeccion.add(catDet);
+                }
+            }
+        }
+        return tiposInspeccion;
     }
     
     public List<Localidad> getProvincias() {

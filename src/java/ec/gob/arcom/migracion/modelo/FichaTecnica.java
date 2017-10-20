@@ -205,6 +205,10 @@ public class FichaTecnica implements Serializable {
     @ManyToOne
     private CatalogoDetalle estadoLegal;
     
+    @JoinColumn(name = "codigo_tipo_inspeccion", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle tipoInspeccion;
+    
     /////////////////////////////////////////////
     
     @Column(name = "estado_registro")
@@ -683,7 +687,14 @@ public class FichaTecnica implements Serializable {
     public void setUsuarioModificacion(Usuario usuarioModificacion) {
         this.usuarioModificacion = usuarioModificacion;
     }
-    
+
+    public CatalogoDetalle getTipoInspeccion() {
+        return tipoInspeccion;
+    }
+
+    public void setTipoInspeccion(CatalogoDetalle tipoInspeccion) {
+        this.tipoInspeccion = tipoInspeccion;
+    }
     
     @Override
     public String toString() {
