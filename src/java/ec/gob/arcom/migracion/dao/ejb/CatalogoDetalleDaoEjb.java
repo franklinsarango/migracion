@@ -29,7 +29,7 @@ public class CatalogoDetalleDaoEjb extends GenericDaoEjbEl<CatalogoDetalle, Long
     public List<CatalogoDetalle> findByCatalogo(Long codigoCatalogo) {
         StringBuilder hql = new StringBuilder(100);
         hql.append("select cd from CatalogoDetalle cd where ");
-        hql.append("cd.codigoCatalogo.codigoCatalogo = :codigoCatalogo and cd.estadoRegistro = true");
+        hql.append("cd.codigoCatalogo.codigoCatalogo = :codigoCatalogo and cd.estadoRegistro = true ORDER BY cd.nombre");
 
         Query query = em.createQuery(hql.toString());
         query.setParameter("codigoCatalogo", codigoCatalogo);

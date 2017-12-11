@@ -267,18 +267,28 @@
                         </h:panelGrid>
                         
                         <h:panelGroup id="mae">
-                            <h:outputText value="MAE:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
+                            <p:outputLabel for="idMae" value="MAE:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
                         </h:panelGroup>
                         <h:panelGroup id="mae2">
-                            <p:selectBooleanCheckbox value="#{plantaBeneficioCtrl.plantaBeneficio.mae}" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
+                            <p:selectOneMenu id="idMae" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoMae.codigoCatalogoDetalle}" 
+                                             required="true" requiredMessage="Estado MAE es requerido" style="width: 93%"
+                                             rendered="#{!plantaBeneficioCtrl.concesionMinera}">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosMae}" />                            
+                            </p:selectOneMenu> 
                         </h:panelGroup>
 
                         <h:panelGroup id="senagua">
-                            <h:outputText value="SENAGUA:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
+                            <p:outputLabel for="idSenagua" value="SENAGUA:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
                         </h:panelGroup>
                         <h:panelGroup id="senagua2">
-                            <p:selectBooleanCheckbox value="#{plantaBeneficioCtrl.plantaBeneficio.senagua}" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
-                        </h:panelGroup>
+                            <p:selectOneMenu id="idSenagua" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoSenagua.codigoCatalogoDetalle}" 
+                                             required="true" requiredMessage="Estado SENAGUA es requerido" style="width: 93%"
+                                             rendered="#{!plantaBeneficioCtrl.concesionMinera}">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosSenagua}" />                            
+                            </p:selectOneMenu>  
+                        </h:panelGroup>                                                                                                
 
                         <h:panelGroup id="obsAdm">
                             <h:outputText value="Observaciones generales:"/>

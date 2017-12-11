@@ -127,6 +127,8 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
                 plantaBeneficio.setEstadoPlanta(new CatalogoDetalle());
                 plantaBeneficio.setCodigoProcedenciaMaterial(new CatalogoDetalle());
                 plantaBeneficio.setTipoPersona("PNA");
+                plantaBeneficio.setCodigoMae(new CatalogoDetalle());
+                plantaBeneficio.setCodigoSenagua(new CatalogoDetalle());
                 codigoArcomNull = true;
             } else {
                 plantaBeneficio = plantaBeneficioDao.findByPk(idPlantaBeneficio);
@@ -154,7 +156,13 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
                 } else {
                     concesionMinera = false;
                     tipoMineria = "pb";
-                }                
+                }
+                if (plantaBeneficio.getCodigoMae()== null) {
+                    plantaBeneficio.setCodigoMae(new CatalogoDetalle());
+                }
+                if (plantaBeneficio.getCodigoSenagua()== null) {
+                    plantaBeneficio.setCodigoSenagua(new CatalogoDetalle());
+                }
                 if (plantaBeneficio.getCodigoConcesionUbicacionPlanta() != null) {
                     if (listaConcesiones == null) {
                         listaConcesiones = new ArrayList<>();

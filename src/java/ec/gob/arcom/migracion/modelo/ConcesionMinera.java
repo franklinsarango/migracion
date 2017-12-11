@@ -230,6 +230,10 @@ public class ConcesionMinera implements Serializable {
     @Column(name = "fecha_archivo")
     @Temporal(TemporalType.DATE)
     private Date fechaArchivo;
+    @Column(name = "codigo_mae")
+    private Long codigoMae;
+    @Column(name = "codigo_senagua")
+    private Long codigoSenagua;
     
     @Transient
     private PersonaNatural personaNaturalTransient;
@@ -774,6 +778,7 @@ public class ConcesionMinera implements Serializable {
                 + ", obsActosAdmPrevios=" + obsActosAdmPrevios + ", observacionGeneral=" + observacionGeneral + ", sector=" + sector + ", mae=" + mae + ", senagua=" + senagua
                 + ", migrada=" + migrada + ", fechaInforme=" + fechaInforme + ", codigoCasilleroLocalidad=" + (codigoCasilleroLocalidad != null ? codigoCasilleroLocalidad.getCodigoLocalidad() : null) 
                 + ", numeroResolucionArchivo=" + numeroResolucionArchivo + ", fechaResolucionArchivo=" + fechaResolucionArchivo + ", fechaArchivo=" + fechaArchivo 
+                + ", codigoMae=" + (codigoMae != null ? codigoMae: null) + ", codigoSenagua=" + (codigoSenagua != null ? codigoSenagua : null)
                 + ", numeroResolucionCambioRegimen=" + numeroResolucionCambioRegimen +", fechaOtorgamientoCambioRegimen=" + fechaOtorgamientoCambioRegimen +", fechaInscripcionCambioRegimen=" + fechaInscripcionCambioRegimen +", litispendencia=" + litispendencia+ '}';
     }
 
@@ -1097,6 +1102,23 @@ public class ConcesionMinera implements Serializable {
      */
     public void setFechaArchivo(Date fechaArchivo) {
         this.fechaArchivo = fechaArchivo;
+    }    
+
+    public Long getCodigoMae() {
+        return codigoMae;
     }
 
+    public void setCodigoMae(Long codigoMae) {
+        this.codigoMae = codigoMae;
+    }
+
+    public Long getCodigoSenagua() {
+        return codigoSenagua;
+    }
+
+    public void setCodigoSenagua(Long codigoSenagua) {
+        this.codigoSenagua = codigoSenagua;
+    }
+
+    
 }

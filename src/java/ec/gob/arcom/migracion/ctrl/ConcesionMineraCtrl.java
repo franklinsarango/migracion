@@ -194,6 +194,8 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                 concesionMinera.setCodigoTipoMaterial(new Catalogo());
                 concesionMinera.setCodigoMaterialInteres(new CatalogoDetalle());
                 concesionMinera.setCodigoZona(new CatalogoDetalle());
+//                concesionMinera.setCodigoMae(new CatalogoDetalle());
+//                concesionMinera.setCodigoSenagua(new CatalogoDetalle());
                 areaMinera = new AreaMinera();
                 areaMinera.setCodigoLocalidad(new Localidad());
                 //solicitud = new Solicitud();
@@ -229,6 +231,12 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                     provincia.setCodigoLocalidad(concesionMinera.getCodigoProvincia().longValue());
                     concesionMinera.setCodigoCasilleroLocalidad(provincia);
                 }
+//                if (concesionMinera.getCodigoMae()== null) {
+//                    concesionMinera.setCodigoMae(new CatalogoDetalle());
+//                }
+//                if (concesionMinera.getCodigoSenagua()== null) {
+//                    concesionMinera.setCodigoSenagua(new CatalogoDetalle());
+//                }
                 //solicitud = solicitudServicio.obtenerPorCodigoArcom(concesionMinera.getCodigoArcom());
                 //solicitudAnterior = solicitudServicio.obtenerPorCodigoArcom(concesionMinera.getCodigoArcom());
                 /*if (concesionMinera.getDocumentoConcesionarioPrincipal() != null

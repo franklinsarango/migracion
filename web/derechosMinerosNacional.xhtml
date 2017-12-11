@@ -453,7 +453,20 @@
                             <p:inputText value="#{derechosMinerosCtrl.concesionMinera.fechaInscripcionSustitucion}" 
                                          readonly="true" size="40">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </p:inputText>                                                      
+                            <h:outputText value="Resolución Archivo:" />
+                            <p:inputText value="#{derechosMinerosCtrl.concesionMinera.numeroResolucionArchivo}" 
+                                         readonly="true" size="40"/>
+                            <h:outputText value="Fecha Resolución Archivo:" />
+                            <p:inputText value="#{derechosMinerosCtrl.concesionMinera.fechaResolucionArchivo}" 
+                                         readonly="true" size="40">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </p:inputText>
+                            <h:outputText value="Fecha Inscripción Archivo:"/>
+                            <p:inputText value="#{derechosMinerosCtrl.concesionMinera.fechaArchivo}" 
+                                         readonly="true" size="40">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </p:inputText>                                                        
                         </h:panelGrid>
                         <h:panelGrid columns="2" columnClasses="form-label, form-input">
                             <p:outputLabel value="Zona:"></p:outputLabel>
@@ -490,10 +503,18 @@
                             <p:inputText value="#{derechosMinerosCtrl.concesionMinera.codigoTipoMaterial.nombre}" readonly="true"/>
                             <h:outputText value="Mineral Interés:"/>
                             <p:inputText value="#{derechosMinerosCtrl.concesionMinera.codigoMaterialInteres.nombre}" readonly="true"/>
-                            <h:outputText value="MAE:" />
-                            <p:selectBooleanCheckbox value="#{derechosMinerosCtrl.concesionMinera.mae}" disabled="true"/>
-                            <h:outputText value="SENAGUA:" />
-                            <p:selectBooleanCheckbox value="#{derechosMinerosCtrl.concesionMinera.senagua}" disabled="true"/>
+                            <h:outputText value="MAE:" />                            
+                            <p:selectOneMenu id="idMae" value="#{derechosMinerosCtrl.concesionMinera.codigoMae}" disabled="true"
+                                             required="true" requiredMessage="Estado MAE es requerido" style="width: 93%">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosMae}" />                            
+                            </p:selectOneMenu>
+                            <h:outputText value="SENAGUA:" />                            
+                            <p:selectOneMenu id="idSenagua" value="#{derechosMinerosCtrl.concesionMinera.codigoSenagua}" disabled="true"
+                                         required="true" requiredMessage="Estado SENAGUA es requerido" style="width: 93%">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosSenagua}" />                            
+                        </p:selectOneMenu>
                             <h:outputText value="LITISPENDENCIA:" />
                             <p:selectBooleanCheckbox value="#{derechosMinerosCtrl.concesionMinera.litispendencia}" disabled="true"/>
                             <h:outputText value="Fecha Creación Sol.:"/>
@@ -503,7 +524,7 @@
                             </p:inputText>
                             <h:outputText value="Observaciones generales:" />
                             <p:inputTextarea value="#{derechosMinerosCtrl.concesionMinera.observacionGeneral}" 
-                                             readonly="true" style="width: 40;"/>
+                                             readonly="true" style="width: 60px; height: 10px;" cols="39" rows="3"/>
                             <h:outputText value="Ver Coordenadas:" />
                         <p:commandButton update=":formCoordenadas" icon="ui-icon-folder-open" title="Coordenadas"
                                          oncomplete="PF('dlgCoordenadas').show();return false;"></p:commandButton>
@@ -555,12 +576,25 @@
                                          readonly="true" size="40">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </p:inputText>
-                        </h:panelGrid>
-                        <h:panelGrid columns="2" columnClasses="form-label, form-input">
                             <h:outputText value="Fecha Inscribe:" />
                             <p:inputText value="#{derechosMinerosCtrl.licenciaComercializacion.fechaInscribe}" readonly="true">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </p:inputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" columnClasses="form-label, form-input" style="width: 500px">                            
+                            <h:outputText value="Resolución Archivo:" />
+                            <p:inputText value="#{derechosMinerosCtrl.licenciaComercializacion.numeroResolucionArchivo}" 
+                                         readonly="true" size="40"/>
+                            <h:outputText value="Fecha Resolución Archivo:" />
+                            <p:inputText value="#{derechosMinerosCtrl.licenciaComercializacion.fechaResolucionArchivo}" 
+                                         readonly="true" size="40">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </p:inputText>
+                            <h:outputText value="Fecha Inscripción Archivo:"/>
+                            <p:inputText value="#{derechosMinerosCtrl.licenciaComercializacion.fechaArchivo}" 
+                                         readonly="true" size="40">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </p:inputText> 
                             <h:outputText value="Provincia:" />
                             <p:inputText value="#{derechosMinerosCtrl.licenciaComercializacion.provinciaString}" readonly="true"/>
                             <h:outputText value="Cantón:" />
@@ -630,14 +664,27 @@
                                          readonly="true" size="40">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </p:inputText>
-                        </h:panelGrid>
-                        <h:panelGrid columns="2" columnClasses="form-label, form-input">
                             <h:outputText value="Fecha Inscribe:" />
                             <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.fechaInscribe}" readonly="true">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </p:inputText>
                             <h:outputText value="Estado:" />
                             <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.estadoPlanta.nombre}" readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" columnClasses="form-label, form-input" style="width: 500px">                            
+                            <h:outputText value="Resolución Archivo:" />
+                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.numeroResolucionArchivo}" 
+                                         readonly="true" size="40"/>
+                            <h:outputText value="Fecha Resolución Archivo:" />
+                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.fechaResolucionArchivo}" 
+                                         readonly="true" size="40">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </p:inputText>
+                            <h:outputText value="Fecha Inscripción Archivo:"/>
+                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.fechaArchivo}" 
+                                         readonly="true" size="40">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </p:inputText> 
                             <h:outputText value="Procedencia Material:" />
                             <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.codigoProcedenciaMaterial.nombre}" readonly="true"/>
                             <h:outputText value="Provincia:" />
@@ -647,9 +694,9 @@
                             <h:outputText value="Parroquia:" />
                             <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.parroquiaString}" readonly="true"/>
                             <h:outputText value="MAE:" />
-                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.maeString}" readonly="true"/>
+                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.codigoMae.nombre}" readonly="true"/>
                             <h:outputText value="SENAGUA:" />
-                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.senaguaString}" readonly="true"/>
+                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.codigoSenagua.nombre}" readonly="true"/>
                             <h:outputText value="Observaciones generales:" />
                             <p:inputTextarea value="#{derechosMinerosCtrl.plantaBeneficio.observacionGeneral}" cols="47" maxlength="200"
                                              readonly="true"/>

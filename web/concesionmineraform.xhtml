@@ -357,11 +357,19 @@
                             <f:selectItems value="#{concesionMineraCtrl.tipoMaterialDetalle}"/>
                         </p:selectOneMenu>
 
-                        <h:outputText value="MAE:" />
-                        <p:selectBooleanCheckbox value="#{concesionMineraCtrl.concesionMinera.mae}" />
+                        <p:outputLabel for="idMae" value="MAE:" />
+                        <p:selectOneMenu id="idMae" value="#{concesionMineraCtrl.concesionMinera.codigoMae}" 
+                                         required="true" requiredMessage="Estado MAE es requerido" style="width: 93%">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosMae}" />                            
+                        </p:selectOneMenu>                        
 
-                        <h:outputText value="SENAGUA:" />
-                        <p:selectBooleanCheckbox value="#{concesionMineraCtrl.concesionMinera.senagua}" />
+                        <p:outputLabel for="idSenagua" value="SENAGUA:" />
+                        <p:selectOneMenu id="idSenagua" value="#{concesionMineraCtrl.concesionMinera.codigoSenagua}" 
+                                         required="true" requiredMessage="Estado SENAGUA es requerido" style="width: 93%">
+                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                            <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosSenagua}" />                            
+                        </p:selectOneMenu>  
                         
                         <h:outputText value="Litispendencia:" />
                         <p:selectBooleanCheckbox value="#{concesionMineraCtrl.concesionMinera.litispendencia}" />

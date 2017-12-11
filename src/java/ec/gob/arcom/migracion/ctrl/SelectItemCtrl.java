@@ -62,6 +62,8 @@ public class SelectItemCtrl {
     private List<SelectItem> tiposMineria;
     private List<SelectItem> regionales;
     private List<SelectItem> estadosCodigoCatalogo19;
+    private List<SelectItem> estadosActosAdministrativosMae;
+    private List<SelectItem> estadosActosAdministrativosSenagua;
     private List<SelectItem> fasesCodigoCatalogo;
     private List<SelectItem> tipoMineriaNemonicoCatalogo;
     private List<SelectItem> regionalesCodigoCatalogo;
@@ -186,12 +188,46 @@ public class SelectItemCtrl {
             }
         }
         return estadosCodigoCatalogo19;
-    }
+    }        
 
     public void setEstadosCodigoCatalogo19(List<SelectItem> estadosCodigoCatalogo19) {
         this.estadosCodigoCatalogo19 = estadosCodigoCatalogo19;
     }
 
+    public List<SelectItem> getEstadosActosAdministrativosMae() {
+        if (estadosActosAdministrativosMae == null) {
+            estadosActosAdministrativosMae = new ArrayList<>();
+            Catalogo catalogoEstado = catalogoServicio.findByNemonico("ESTACTADM");
+            List<CatalogoDetalle> estadosCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogoEstado.getCodigoCatalogo());
+
+            for (CatalogoDetalle estado : estadosCat) {
+                estadosActosAdministrativosMae.add(new SelectItem(estado.getCodigoCatalogoDetalle(), estado.getNombre().toUpperCase()));
+            }
+        }
+        return estadosActosAdministrativosMae;
+    }
+    
+    public void setEstadosActosAdministrativosMae(List<SelectItem> estadosActosAdministrativosMae) {
+        this.estadosActosAdministrativosMae = estadosActosAdministrativosMae;
+    }
+    
+    public List<SelectItem> getEstadosActosAdministrativosSenagua() {
+        if (estadosActosAdministrativosSenagua == null) {
+            estadosActosAdministrativosSenagua = new ArrayList<>();
+            Catalogo catalogoEstado = catalogoServicio.findByNemonico("ESTACTADM");
+            List<CatalogoDetalle> estadosCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogoEstado.getCodigoCatalogo());
+
+            for (CatalogoDetalle estado : estadosCat) {
+                estadosActosAdministrativosSenagua.add(new SelectItem(estado.getCodigoCatalogoDetalle(), estado.getNombre().toUpperCase()));
+            }
+        }
+        return estadosActosAdministrativosSenagua;
+    }
+    
+    public void setEstadosActosAdministrativosSenagua(List<SelectItem> estadosActosAdministrativosSenagua) {
+        this.estadosActosAdministrativosSenagua = estadosActosAdministrativosSenagua;
+    }
+    
     public List<SelectItem> getFasesCodigoCatalogo() {
         if (fasesCodigoCatalogo == null) {
             fasesCodigoCatalogo = new ArrayList<>();
