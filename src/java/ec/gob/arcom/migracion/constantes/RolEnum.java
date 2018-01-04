@@ -30,7 +30,8 @@ public enum RolEnum
     ROL_DIRECTOR_JURIDICO("DIJRD","Director Jurídico","INT",15L),
     ROL_RECEPCIONISTA_SUBSECRETARIA_GENERAL("RECEPSUBREG","Recepcionista Subsecretaría General","INT",16L),
     ROL_ABOGADO_SUBSECRETARIA_MINAS("ABGSRMN","Abogado de la Subsecretaría de Minas","INT",22L),
-    ROL_ASISTENTE_SUBSECRETARIA("ASISUBSE","Asistente de la Subsecretaría","INT",29L);
+    ROL_ASISTENTE_SUBSECRETARIA("ASISUBSE","Asistente de la Subsecretaría","INT",29L),
+    ROL_ASISTENTE_TALENTO_HUMANO("ASISTH","Asistente Talento Humano","INT",32L);
    
     
     

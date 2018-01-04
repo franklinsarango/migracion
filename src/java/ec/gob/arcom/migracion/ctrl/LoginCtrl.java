@@ -67,6 +67,7 @@ public class LoginCtrl extends BaseCtrl {
     private boolean tecnicoCatastroNacional;
     private boolean coordinadorRegional;
     private boolean directorEjecutivo;
+    private boolean asistenteTalentoHumano;
     private boolean usuarioEnami;
     
     //PERMISOS
@@ -217,6 +218,11 @@ public class LoginCtrl extends BaseCtrl {
                             this.abogado = true;
                         } else {
                             this.abogado = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ASISTENTE_TALENTO_HUMANO.getNemonico())){
+                            this.asistenteTalentoHumano = true;
+                        } else {
+                            this.asistenteTalentoHumano = false;
                         }
                         if(usRol.getRol().getNemonico().equals(RolEnum.ROL_COORDINADOR_REGIONAL.getNemonico())){
                             this.coordinadorRegional = true;
@@ -475,6 +481,14 @@ public class LoginCtrl extends BaseCtrl {
         this.directorEjecutivo = directorEjecutivo;
     }
 
+    public boolean isAsistenteTalentoHumano() {
+        return asistenteTalentoHumano;
+    }
+
+    public void setAsistenteTalentoHumano(boolean asistenteTalentoHumano) {
+        this.asistenteTalentoHumano = asistenteTalentoHumano;
+    }
+    
     /**
      * @return the abogado
      */

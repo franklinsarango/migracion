@@ -143,6 +143,29 @@ public class ReporteCtrl extends BaseCtrl {
         System.out.println("urlReporte: " + urlReporte);
     }
     
+    public void generarReporteObligacionesEconomicasResPatentesBirt() {
+        System.out.println("entra generarReporteObligacionesEconomicasResPatentesBirt");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/ComprobatesPago/resumen_patentes.rptdesign&"
+                + "codigoRegional=" + prefijoRegionalFiltro + "&__format=pdf";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
+    public void generarReporteObligacionesEconomicasResUtilidadesBirt() {
+        System.out.println("entra generarReporteObligacionesEconomicasResUtilidadesBirt");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/ComprobatesPago/resumen_utilidades.rptdesign&"
+                + "codigoRegional=" + prefijoRegionalFiltro + "&__format=pdf";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    public void generarReporteObligacionesEconomicasResRegaliasBirt() {
+        System.out.println("entra generarReporteObligacionesEconomicasResRegaliasBirt");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/ComprobatesPago/resumen_regalias.rptdesign&"
+                + "codigoRegional=" + prefijoRegionalFiltro + "&__format=pdf";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
     public void generarReporteContratosOperacionBirt() {
         System.out.println("entra generarReporteContratosOperacionBirt");
         urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
@@ -349,9 +372,17 @@ public class ReporteCtrl extends BaseCtrl {
             generarReportePlantasBeneficioBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS.getCodigo())) {
             generarReporteDerechosMinerosConsolidadosBirt();
+        } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE.getCodigo())) {
+            generarReporteAutogestion();
         } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())) {
             generarReporteObligacionesEconomicasBirt();
-        }  else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())) {
+        } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getCodigo())) {
+            generarReporteObligacionesEconomicasResPatentesBirt();
+        } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_UTILIDADES.getCodigo())) {
+            generarReporteObligacionesEconomicasResUtilidadesBirt();
+        } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_REGALIAS.getCodigo())) {
+            generarReporteObligacionesEconomicasResRegaliasBirt();
+        } else if (codigoTipoMineria.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getCodigo())) {
             generarReporteContratosOperacionBirt();
         }  else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CONSOLIDADO_CONCESIONES.getCodigo())) {
             generarReporteConsolidadoConcesionesBirt();
@@ -408,7 +439,11 @@ public class ReporteCtrl extends BaseCtrl {
                     || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM.getCodigo())
                     || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN.getCodigo())
                     || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())
-                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())) {
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_UTILIDADES.getCodigo())
+                    || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_REGALIAS.getCodigo())
+                    ) {
 
                 boolean encontrado = false;
                 for (SelectItem selectItem : regionales) {
@@ -432,7 +467,11 @@ public class ReporteCtrl extends BaseCtrl {
                 || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART.getCodigo())
                 || codigoTipoMineria.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR.getCodigo())
                 || codigoTipoMineria.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE.getCodigo())
-                || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())) {
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_UTILIDADES.getCodigo())
+                || codigoTipoMineria.equals(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_REGALIAS.getCodigo())
+                ) {
             setMostrarFiltroRegional(true);
             setMostrarSubTipoReporteOperativo(false);
             setMostrarFiltroAnio(false);
@@ -494,6 +533,9 @@ public class ReporteCtrl extends BaseCtrl {
                 }
             }
             tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getDescripcion()));
+            tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getDescripcion()));
+            tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_UTILIDADES.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_UTILIDADES.getDescripcion()));
+            tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_REGALIAS.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_REGALIAS.getDescripcion()));
         }
         return tipoSolicitudes;
     }

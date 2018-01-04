@@ -179,6 +179,21 @@
                         </h:panelGrid>
                     </h:commandLink>
                     
+                    <h:commandLink action="web/vacaciones-home?faces-redirect=true" title="Solicitud de Vacaciones">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/vacaciones.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Solicitud de Vacaciones"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+                    
+                    <h:commandLink action="web/vacaciones-admin?faces-redirect=true" title="Administrador RRHH" 
+                                   rendered="#{loginCtrl.asistenteTalentoHumano}">
+                        <h:panelGrid class="botonHome">
+                            <h:graphicImage value="web/resources/images/admin_rrhh.png" style="width: 95px; height: 95px"/>
+                            <h:outputText value="Administrador RRHH"/>
+                        </h:panelGrid>
+                    </h:commandLink>
+                    
                     <h:commandLink action="web/reporteForm?faces-redirect=true" title="Generar Reporte"
                                    rendered="#{!(loginCtrl.usuarioLectura or loginCtrl.usuarioEnami)}">
                         <h:panelGrid class="botonHome">

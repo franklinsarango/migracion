@@ -108,13 +108,19 @@
                         <h:panelGroup id="botones" style="display:block; text-align:center">
                             <h:commandButton value="Generar" 
                                              actionListener="#{reporteCtrl.generarReporte}" 
-                                             rendered="#{reporteCtrl.codigoTipoMineria != 10003}"/>
+                                             rendered="#{!(reporteCtrl.codigoTipoMineria == 10003 or 
+                                                         reporteCtrl.codigoTipoMineria == 100011 or
+                                                         reporteCtrl.codigoTipoMineria == 100012 or
+                                                         reporteCtrl.codigoTipoMineria == 100013)}"/>
                             <p:commandButton update="@form"
                                              value="Generar"
                                              title="Comprobante" 
                                              oncomplete="PF('visorTramite').show();return false;"
-                                             actionListener="#{reporteCtrl.generarReporteAutogestion}"
-                                             rendered="#{reporteCtrl.codigoTipoMineria == 10003}"/>
+                                             actionListener="#{reporteCtrl.generarReporte}"
+                                             rendered="#{reporteCtrl.codigoTipoMineria == 10003 or 
+                                                         reporteCtrl.codigoTipoMineria == 100011 or
+                                                         reporteCtrl.codigoTipoMineria == 100012 or
+                                                         reporteCtrl.codigoTipoMineria == 100013}"/>
                             <p:commandButton value="Cancelar" action="index.xhtml?faces-redirect=true" immediate="true"/>
                         </h:panelGroup>
                     </f:facet>
