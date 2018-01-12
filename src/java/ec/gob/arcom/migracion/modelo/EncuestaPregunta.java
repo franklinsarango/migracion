@@ -31,7 +31,7 @@ import javax.persistence.TemporalType;
 @Table(name = "encuesta_pregunta", catalog = "arcom_catmin", schema = "encmin")
 @NamedQueries({
     @NamedQuery(name = "EncuestaPregunta.findAll", query = "SELECT r FROM EncuestaPregunta r"),
-    @NamedQuery(name = "EncuestaPregunta.findByCodigoEncuesta", query = "SELECT ep FROM EncuestaPregunta ep WHERE ep.codigoEncuesta = :codigoEncuesta and ep.estadoRegistro = TRUE")})
+    @NamedQuery(name = "EncuestaPregunta.findByCodigoEncuesta", query = "SELECT ep FROM EncuestaPregunta ep WHERE ep.codigoEncuesta = :codigoEncuesta and ep.estadoRegistro = TRUE order by ep.codigoPregunta.descripcion")})
 public class EncuestaPregunta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

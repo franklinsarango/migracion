@@ -83,7 +83,7 @@ public class EncuestaCtrl extends BaseCtrl {
             System.out.println("Numero Documento: " + numeroDocumento);
             listaPreguntasDto = new ArrayList<>();
 
-            this.encuesta = encuestaServicio.findByCodigoEncuesta(1L);
+            this.encuesta = encuestaServicio.findByCodigoEncuesta(Long.valueOf(codigoEncuesta));
             List<EncuestaPregunta> listaPreguntas = encuestaPreguntaServicio.findByCodigoEncuesta(encuesta);
             for (EncuestaPregunta pregunta : listaPreguntas) {
                 //NO SE INSERTAN LAS PREGUNTAS TIPO TEXTO

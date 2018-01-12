@@ -44,6 +44,9 @@ public class Pregunta implements Serializable {
     private String descripcion;
     @Column(name = "nemonico")
     private String nemonico;
+    @JoinColumn(name = "codigo_tipo_pregunta", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle codigoTipoPregunta;
     @Column(name = "estado_registro")
     private Boolean estadoRegistro;
     @Column(name = "fecha_creacion")
@@ -157,6 +160,20 @@ public class Pregunta implements Serializable {
      */
     public void setNemonico(String nemonico) {
         this.nemonico = nemonico;
+    }
+
+    /**
+     * @return the codigoTipoPregunta
+     */
+    public CatalogoDetalle getCodigoTipoPregunta() {
+        return codigoTipoPregunta;
+    }
+
+    /**
+     * @param codigoTipoPregunta the codigoTipoPregunta to set
+     */
+    public void setCodigoTipoPregunta(CatalogoDetalle codigoTipoPregunta) {
+        this.codigoTipoPregunta = codigoTipoPregunta;
     }
 
 }

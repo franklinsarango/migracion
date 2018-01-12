@@ -24,11 +24,26 @@
                                  var="requisito" emptyMessage="No se ha encontrado datos" editable="true">
                         <p:column headerText="Pregunta">
                             <p:outputLabel value="#{requisito.pregunta.descripcion}" style="font-size: 14px;"/>
-                            <h:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                            <h:panelGrid columns="2" styleClass="panel_grid_center" columnClasses="form-label-width, form-input"
+                                         rendered="#{requisito.pregunta.codigoTipoPregunta.nemonico == 'TIPOENCRB'}">
                                 <p:selectOneRadio id="city" value="#{requisito.codigoOpcion}"  layout="grid" columns="6" style="width: 300px;">
                                     <f:selectItems value="#{requisito.listaOpciones}" var="c" itemLabel="#{c.descripcion}" itemValue="#{c.codigoOpcion}"/>
                                     <p:ajax event="change" listener="#{encuestaCtrl.seleccionarOpcion(requisito.codigoOpcion)}" />
                                 </p:selectOneRadio>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" styleClass="panel_grid_center" 
+                                         rendered="#{requisito.pregunta.codigoTipoPregunta.nemonico == 'TIPOENCLD'}">
+
+                                <p:selectOneMenu id="idLista" style="width:300px;" 
+                                                 value="#{requisito.codigoOpcion}"
+                                                 converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="El campo Periodo es requerido" >
+                                    <f:ajax   render="idLista"  execute="@this" listener="#{encuestaCtrl.seleccionarOpcion(requisito.codigoOpcion)}"  />
+                                    <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                    <f:selectItems value="#{requisito.listaOpciones}" var="c" 
+                                                   itemLabel="#{c.descripcion}" 
+                                                   itemValue="#{c.codigoOpcion}"/>
+                                </p:selectOneMenu>
+                                                                                               
                             </h:panelGrid>
                             <br/>
                         </p:column>
