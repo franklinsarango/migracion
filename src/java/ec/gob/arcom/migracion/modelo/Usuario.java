@@ -120,40 +120,11 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "codigo_localidad", referencedColumnName = "codigo_localidad")
     @ManyToOne
     private Localidad codigoLocalidad;
+    @Column(name = "correo_electronico_personal")
+    private String correoElectronicoPersonal;
     @Transient
     private String nombresCompletos;
-    
-    
-    //CAMPOS PARA EL CONTROL DE VACACIONES
-    @JoinColumn(name = "codigo_tipo_cargo", referencedColumnName = "codigo_catalogo_detalle")
-    @ManyToOne
-    private CatalogoDetalle tipoCargo;
-    
-    @JoinColumn(name = "codigo_tipo_contrato", referencedColumnName = "codigo_catalogo_detalle")
-    @ManyToOne
-    private CatalogoDetalle tipoContrato;
-    
-    @JoinColumn(name = "codigo_denominacion_cargo", referencedColumnName = "codigo_catalogo_detalle")
-    @ManyToOne
-    private CatalogoDetalle denominacionCargo;
-    
-    @JoinColumn(name = "codigo_modalidad_contrato", referencedColumnName = "codigo_catalogo_detalle")
-    @ManyToOne
-    private CatalogoDetalle modalidadContrato;
-    
-    @Column(name = "fecha_nacimiento")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date fechaNacimiento;
-    
-    @Column(name = "fecha_ingreso")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date fechaIngreso;
-    
-    @Column(name = "fecha_salida")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date fechaSalida;
-    
-    
+      
     public Usuario() {
     }
 
@@ -167,6 +138,14 @@ public class Usuario implements Serializable {
         this.nombre = nombre;
         this.apellido = apellido;
         this.login = login;
+    }
+
+    public String getCorreoElectronicoPersonal() {
+        return correoElectronicoPersonal;
+    }
+
+    public void setCorreoElectronicoPersonal(String correoElectronicoPersonal) {
+        this.correoElectronicoPersonal = correoElectronicoPersonal;
     }
 
     public Long getCodigoUsuario() {
@@ -388,63 +367,16 @@ public class Usuario implements Serializable {
         this.nombresCompletos = nombresCompletos;
     }
     
+    @Transient
+    private Contrato contrato;
     
-    public CatalogoDetalle getTipoCargo() {
-        return tipoCargo;
-    }
-
-    public void setTipoCargo(CatalogoDetalle tipoCargo) {
-        this.tipoCargo = tipoCargo;
-    }
-
-    public CatalogoDetalle getTipoContrato() {
-        return tipoContrato;
-    }
-
-    public void setTipoContrato(CatalogoDetalle tipoContrato) {
-        this.tipoContrato = tipoContrato;
-    }
-
-    public CatalogoDetalle getDenominacionCargo() {
-        return denominacionCargo;
-    }
-
-    public void setDenominacionCargo(CatalogoDetalle denominacionCargo) {
-        this.denominacionCargo = denominacionCargo;
-    }
-
-    public CatalogoDetalle getModalidadContrato() {
-        return modalidadContrato;
-    }
-
-    public void setModalidadContrato(CatalogoDetalle modalidadContrato) {
-        this.modalidadContrato = modalidadContrato;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public Date getFechaIngreso() {
-        return fechaIngreso;
-    }
-
-    public void setFechaIngreso(Date fechaIngreso) {
-        this.fechaIngreso = fechaIngreso;
-    }
-
-    public Date getFechaSalida() {
-        return fechaSalida;
-    }
-
-    public void setFechaSalida(Date fechaSalida) {
-        this.fechaSalida = fechaSalida;
+    public Contrato getContrato() {
+        return contrato;
     }
     
+    public void setContrato(Contrato contrato) {
+        this.contrato = contrato;
+    }
     
     @Override
     public int hashCode() {

@@ -27,7 +27,7 @@ public class SecuenciaDaoEjb extends GenericDaoEjbEl<Secuencia, Long> implements
     @Override
     public Secuencia obtenerPorTabla(String nombreTabla) {
         try {
-            String hql = "select s from Secuencia s where s.tabla = :nombreTabla";
+            String hql = "select s from Secuencia s where s.tabla= :nombreTabla";
             Query query = em.createQuery(hql);
             query.setParameter("nombreTabla", nombreTabla);
             Secuencia secuencia = (Secuencia) query.getSingleResult();
@@ -41,7 +41,7 @@ public class SecuenciaDaoEjb extends GenericDaoEjbEl<Secuencia, Long> implements
     @Override
     public Secuencia obtenerPorNemonico(String nemonico) {
         try {
-            String hql = "select s from Secuencia s where s.nemonico = :nemonico";
+            String hql = "select s from Secuencia s where s.nemonico= :nemonico";
             Query query = em.createQuery(hql);
             query.setParameter("nemonico", nemonico);
             Secuencia secuencia = (Secuencia) query.getSingleResult();
@@ -51,5 +51,4 @@ public class SecuenciaDaoEjb extends GenericDaoEjbEl<Secuencia, Long> implements
             return null;
         }
     }
-
 }

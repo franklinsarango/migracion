@@ -5,7 +5,11 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-
+    
+    <f:metadata>
+        <f:viewAction action="#{vacacionCtrl.checkPageUpdate()}" onPostback="true"/>
+    </f:metadata>
+    
     <ui:composition template="/templates/vacaciones-template.xhtml">
         <ui:define name="title">
             <h:outputText value="Vacaciones"/>
@@ -15,53 +19,53 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="activitiesform">
-                <p:panelGrid id="top-menu" styleClass="panelSinBorde-02">
-                    <p:row>
-                        <p:column style="text-align: left; width: 25%">
-                            <p:commandLink id="dynaButton" styleClass="lnkexport" rendered="true" type="button" immediate="true">
-                                <h:graphicImage value="resources/images/report-icon.png" width="16"/>
-                                <h:outputLabel value="&#160;Acciones"/>
-                            </p:commandLink>
-                            <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
-                                <p:menuitem value="Editar usuario" action="#{vacacionCtrl.newSolicitudAction()}" immediate="true" update="@form"/>
-                                <p:menuitem value="Tareas" action="vacaciones-home?faces-redirect=true" immediate="true"/>
-                            </p:tieredMenu>
-                        </p:column>
-                        
-                        <p:column style="text-align: center; padding-top: 0px; padding-bottom: 0px; width: 50%">
-                            <p:outputLabel id="entityname" value="Gestión de Vacaciones - ARCOM" style="font-weight: bolder; font-size: large"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right; width: 25%">
-                            <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir">
-                                    <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
-                                    <br/>
-                                    <h:outputText value="Inicio"/>
-                            </h:commandLink>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="3" style="padding-top: 0px; padding-bottom: 0px; width: 100%">
-                            <p:separator style="width: 100%;"/>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+                <ui:include src="vacaciones-admin-menu.xhtml"/>
                 
-                <p:panelGrid styleClass="panelSinBorde-02">
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel value="Usuarios"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <p:dataTable emptyMessage="No se encontraron usuarios">
-                                
-                            </p:dataTable>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
-                    
+                <p:tabView id="tabulador" activeIndex="0" >
+                    <p:tab id="tabTask" title="TAREAS">
+                        <f:facet name="title">
+                            <p:graphicImage value="./resources/images/task-icon.png" width="25" height="25"/>
+                            <p:spacer width="10" height="10"/>
+                            <h:outputText value="TAREAS"/>
+                        </f:facet>
+                        
+                        <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage="" widgetVar="tareastable">
+                            <p:column headerText="Nro." style="width:50px;text-align: right">
+                                <p:outputLabel value="#{tarea.numeroSolicitud}"/>
+                            </p:column>
+                            <p:column headerText="Funcionario">
+                                <p:outputLabel value="#{tarea.usuario.nombresCompletos.toUpperCase()}"/>
+                            </p:column>
+                            <p:column headerText="Unidad Administrativa"
+                                      filterBy="#{tarea.contrato.departamento.codigoDepartamento}" filterMatchMode="exact">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('tareastable').filter()">
+                                        <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItems value="#{vacacionCtrl.departamentosFilter}"/>
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <p:outputLabel value="#{tarea.contrato.departamento.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Tipo formulario">
+                                <p:outputLabel value="#{tarea.tipoFormulario.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Motivo">
+                                <p:outputLabel value="#{tarea.tipoLicencia.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estadoLicencia)}"/>
+                            </p:column>
+                            <p:column headerText="Fecha solicitud">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
+                            </p:column>
+                            <p:column headerText="Ver" style="width:50px;text-align: center">
+                                <p:commandButton icon="ui-icon-check" title="Ver"
+                                                 action="#{vacacionCtrl.visualizarTarea(tarea)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+                
             </h:form>
         </ui:define>
     </ui:composition>

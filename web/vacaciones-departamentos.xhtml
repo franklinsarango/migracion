@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/vacaciones-template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Vacaciones"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+            
+            <h:form id="departamentosform">
+                <ui:include src="vacaciones-admin-menu.xhtml"/>
+                
+                <p:panelGrid styleClass="pg-center" style="width: 960px">
+                    <p:row>
+                        <p:column style="text-align: center; background-color: lightblue">
+                            <p:outputLabel value="DEPARTAMENTOS" style="font-weight: bolder; font-size: small;"/>
+                        </p:column>
+                    </p:row>
+                    
+                    
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:dataTable id="departamentosdt" value="#{vacacionCtrl.departamentos}" var="dep">
+                                <p:column headerText="Nombre" style="text-align: left">
+                                    <p:outputLabel value="#{dep.nombre.toUpperCase()}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Jefe" style="text-align: left">
+                                    <p:outputLabel value="#{dep.jefe.nombresCompletos.toUpperCase()}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Editar" style="width:40px;text-align: center">
+                                    <p:commandButton icon="ui-icon-pencil" title="Editar departamento"
+                                             actionListener="#{vacacionCtrl.editDepartamentoAction(dep)}"
+                                             update=":departamentoform"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
+                <p:panelGrid styleClass="pg-center" style="width: 960px"> 
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column style="text-align: center" colspan="5">
+                                <p:commandButton value="Cancelar" action="#{vacacionCtrl.cancelAdminAction()}" immediate="true" style="width: 85px"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+            
+            <!-- FORMULARIO DEPARTAMENTO -->
+            <p:dialog id="departamentofrm" widgetVar="departamentofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Departamento">
+                <h:form id="departamentoform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel value="Nombre:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:inputText value="#{vacacionCtrl.departamento.nombre}" readonly="true" styleClass="inputtext-form"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right"><p:outputLabel for="jefedep" value="Jefe:"/></p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="jefedep" styleClass="onemenu-form" required="true"
+                                                 requiredMessage="Debe seleccionar un tipo formulario" converter="#{usuarioConverter}"
+                                                 value="#{vacacionCtrl.departamento.jefe}">
+                                    <f:selectItem itemLabel="Seleccione un jefe..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.usuarios}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:commandButton value="Guardar" title="Guardar" actionListener="#{vacacionCtrl.updateDepartamentoAction()}"
+                                                 oncomplete="PF('departamentofrmwg').hide();"
+                                                 update=":departamentosform:departamentosdt"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>

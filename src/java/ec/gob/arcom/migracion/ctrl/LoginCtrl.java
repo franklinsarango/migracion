@@ -16,7 +16,7 @@ import ec.gob.arcom.migracion.servicio.RegionalServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioRolServicio;
 import ec.gob.arcom.migracion.util.LDAPConexion;
 import ec.gob.arcom.migracion.util.SSHA;
-import ec.gob.arcom.migracionsadmin.utils.FacesUtil;
+import ec.gob.arcom.migracion.util.FacesUtil;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;

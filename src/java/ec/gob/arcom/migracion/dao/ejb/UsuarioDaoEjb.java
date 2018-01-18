@@ -8,6 +8,9 @@ package ec.gob.arcom.migracion.dao.ejb;
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
 import ec.gob.arcom.migracion.modelo.Usuario;
+import ec.gob.arcom.migracion.modelo.UsuarioRol;
+import ec.gob.arcom.migracion.modelo.Rol;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
@@ -68,6 +71,72 @@ public class UsuarioDaoEjb extends GenericDaoEjbEl<Usuario, Long> implements
             return listaFinal;
         } catch (Exception ex) {
             System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public Usuario findByDocumento(String documento) {
+        try {
+            Query query= em.createQuery("Select u from Usuario u where u.estadoRegistro= :estado and u.numeroDocumento= :documento");
+            query.setParameter("estado", true);
+            query.setParameter("documento", documento);
+            return (Usuario) query.getResultList().get(0);
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public List<Usuario> listar() {
+        try {
+            Query query= em.createQuery("Select u from Usuario u where u.estadoRegistro= :estado order by u.nombre ASC");
+            query.setParameter("estado", true);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    /*@Override
+    public List<Usuario> listarUsuariosInternos() {
+        try {
+            Query query= em.createNativeQuery("select u.* from catmin.usuario u, catmin.usuario_rol ur, catmin.rol r where u.codigo_usuario = ur.codigo_usuario "
+                    + "and r.codigo_rol = ur.codigo_rol "
+                    + "and ur.estado_registro = true "
+                    + "and r.nemonico not in ('UEXT', 'ABGSRMN', 'ADMIN', 'GADADMI', 'ADMINGPS', 'AGEADU', 'GADAUDI', 'JEFETRANS', 'PROGPS', 'GADRECE', 'RCSBGN', 'GADRESP', 'SNACON', 'SNDESA', 'SUBSECREGION', 'USUARIO') "
+                    + "and u.estado_registro = true order by u.nombre ASC");
+            List<Object[]> result= query.getResultList();
+            List<Usuario> usuarios= new ArrayList<>();
+            for(Object[] fila : result ) {
+                Usuario u= new Usuario();
+                u.setCodigoUsuario(fila[0] != null ? Long.valueOf(fila[0].toString()) : null);
+                u.setTipoUsuario(fila[1] != null ? fila[1].toString() : null);
+                u.setNumeroDocumento(fila[2] != null ? fila[2].toString() : null);
+                u.setNombre(fila[3] != null ? fila[3].toString() : null);
+                u.setApellido(fila[4] != null ? fila[4].toString() : null);
+                usuarios.add(u);
+            }
+            return usuarios;
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
+    }*/
+    
+    @Override
+    public List<Usuario> listarUsuariosInternos() {
+        try {
+            Query query= em.createQuery("select u from Usuario u, UsuarioRol ur, Rol r where u.codigoUsuario = ur.usuario.codigoUsuario "
+                    + "and r.codigoRol = ur.rol.codigoRol "
+                    + "and ur.estadoRegistro = true "
+                    + "and r.nemonico not in ('UEXT', 'ABGSRMN', 'ADMIN', 'GADADMI', 'ADMINGPS', 'AGEADU', 'GADAUDI', 'JEFETRANS', 'PROGPS', 'GADRECE', 'RCSBGN', 'GADRESP', 'SNACON', 'SNDESA', 'SUBSECREGION', 'USUARIO') "
+                    + "and u.estadoRegistro = true order by u.nombre ASC");
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
         }
         return null;
     }

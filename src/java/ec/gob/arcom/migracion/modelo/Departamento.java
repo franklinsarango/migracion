@@ -40,6 +40,9 @@ public class Departamento implements Serializable {
     @Column(name= "nemonico")
     private String nemonico;
     
+    @JoinColumn(name = "codigo_jefe", referencedColumnName = "codigo_usuario")
+    @ManyToOne
+    private Usuario jefe;
 
     @Column(name = "estado_registro")
     private Boolean estadoRegistro;
@@ -89,6 +92,14 @@ public class Departamento implements Serializable {
         this.nemonico = nemonico;
     }
 
+    public Usuario getJefe() {
+        return jefe;
+    }
+
+    public void setJefe(Usuario jefe) {
+        this.jefe = jefe;
+    }
+    
     public Boolean getEstadoRegistro() {
         return estadoRegistro;
     }

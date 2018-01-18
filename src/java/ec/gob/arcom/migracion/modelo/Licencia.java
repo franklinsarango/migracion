@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 /**
  *
@@ -32,7 +34,7 @@ public class Licencia implements Serializable {
     private Long codigoLicencia;
     
     @Column(name= "numero_solicitud")
-    private String numeroSolicitud;
+    private Long numeroSolicitud;
     
     @JoinColumn(name = "codigo_formulario", referencedColumnName = "codigo_catalogo_detalle")
     @ManyToOne
@@ -50,25 +52,22 @@ public class Licencia implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaSolicitud;
     
-    @Column(name = "fecha_salida")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date fechaSalida;
+    @Column(name = "fecha_hora_salida")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date fechaHoraSalida;
     
-    @Column(name = "fecha_retorno")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date fechaRetorno;
-    
-    @Column(name = "horas_licencia")
-    private Long horasLicencia;
+    @Column(name = "fecha_hora_retorno")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date fechaHoraRetorno;
     
     @Column(name = "dias_licencia")
-    private Long diasLicencia;
+    private BigDecimal diasLicencia;
     
     @Column(name = "dias_disponible")
-    private Long diasDisponibles;
+    private BigDecimal diasDisponibles;
     
     @Column(name = "saldo_vacaciones")
-    private Long saldoVacaciones;
+    private BigDecimal saldoVacaciones;
     
     @JoinColumn(name = "estado_licencia", referencedColumnName = "codigo_catalogo_detalle")
     @ManyToOne
@@ -102,11 +101,6 @@ public class Licencia implements Serializable {
     @Column(name = "asunto_institucional")
     private String asuntoInstitucional;
     
-    @JoinColumn(name = "codigo_periodo", referencedColumnName = "codigo_catalogo_detalle")
-    @ManyToOne
-    private CatalogoDetalle periodo;
-    
-    
     @Column(name = "estado_registro")
     private Boolean estadoRegistro;
     @Column(name = "fecha_creacion")
@@ -121,8 +115,7 @@ public class Licencia implements Serializable {
     @JoinColumn(name = "usuario_modificacion", referencedColumnName = "codigo_usuario")
     @ManyToOne
     private Usuario usuarioModificacion;
-    
-    
+
     public Long getCodigoLicencia() {
         return codigoLicencia;
     }
@@ -131,11 +124,11 @@ public class Licencia implements Serializable {
         this.codigoLicencia = codigoLicencia;
     }
 
-    public String getNumeroSolicitud() {
+    public Long getNumeroSolicitud() {
         return numeroSolicitud;
     }
 
-    public void setNumeroSolicitud(String numeroSolicitud) {
+    public void setNumeroSolicitud(Long numeroSolicitud) {
         this.numeroSolicitud = numeroSolicitud;
     }
 
@@ -171,51 +164,43 @@ public class Licencia implements Serializable {
         this.fechaSolicitud = fechaSolicitud;
     }
 
-    public Date getFechaSalida() {
-        return fechaSalida;
+    public Date getFechaHoraSalida() {
+        return fechaHoraSalida;
     }
 
-    public void setFechaSalida(Date fechaSalida) {
-        this.fechaSalida = fechaSalida;
+    public void setFechaHoraSalida(Date fechaHoraSalida) {
+        this.fechaHoraSalida = fechaHoraSalida;
     }
 
-    public Date getFechaRetorno() {
-        return fechaRetorno;
+    public Date getFechaHoraRetorno() {
+        return fechaHoraRetorno;
     }
 
-    public void setFechaRetorno(Date fechaRetorno) {
-        this.fechaRetorno = fechaRetorno;
+    public void setFechaHoraRetorno(Date fechaHoraRetorno) {
+        this.fechaHoraRetorno = fechaHoraRetorno;
     }
 
-    public Long getHorasLicencia() {
-        return horasLicencia;
-    }
-
-    public void setHorasLicencia(Long horasLicencia) {
-        this.horasLicencia = horasLicencia;
-    }
-
-    public Long getDiasLicencia() {
+    public BigDecimal getDiasLicencia() {
         return diasLicencia;
     }
 
-    public void setDiasLicencia(Long diasLicencia) {
+    public void setDiasLicencia(BigDecimal diasLicencia) {
         this.diasLicencia = diasLicencia;
     }
 
-    public Long getDiasDisponibles() {
+    public BigDecimal getDiasDisponibles() {
         return diasDisponibles;
     }
 
-    public void setDiasDisponibles(Long diasDisponibles) {
+    public void setDiasDisponibles(BigDecimal diasDisponibles) {
         this.diasDisponibles = diasDisponibles;
     }
 
-    public Long getSaldoVacaciones() {
+    public BigDecimal getSaldoVacaciones() {
         return saldoVacaciones;
     }
 
-    public void setSaldoVacaciones(Long saldoVacaciones) {
+    public void setSaldoVacaciones(BigDecimal saldoVacaciones) {
         this.saldoVacaciones = saldoVacaciones;
     }
 
@@ -291,14 +276,6 @@ public class Licencia implements Serializable {
         this.asuntoInstitucional = asuntoInstitucional;
     }
 
-    public CatalogoDetalle getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(CatalogoDetalle periodo) {
-        this.periodo = periodo;
-    }
-
     public Boolean getEstadoRegistro() {
         return estadoRegistro;
     }
@@ -339,6 +316,16 @@ public class Licencia implements Serializable {
         this.usuarioModificacion = usuarioModificacion;
     }
     
+    @Transient
+    private Contrato contrato;
+    
+    public Contrato getContrato() {
+        return contrato;
+    }
+    
+    public void setContrato(Contrato contrato) {
+        this.contrato = contrato;
+    }
     
     @Override
     public int hashCode() {

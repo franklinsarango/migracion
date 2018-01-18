@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:form id="saldos-view-form">
+        <p:panelGrid styleClass="pg-center" style="width: 930px">
+            <p:row>
+                <p:column style="text-align: right">
+                    <p:outputLabel value="Saldo actual en días" style="font-weight: bolder; font-size: medium;"/>
+                </p:column>
+                <p:column style="text-align: left">
+                    <p:outputLabel value="#{vacacionCtrl.saldoActual}" style="font-weight: bolder; font-size: medium;"/>
+                </p:column>
+            </p:row>
+
+            <p:row>
+                <p:column colspan="2" style="text-align: center;">
+                    <p:dataTable id="misTareas" value="#{vacacionCtrl.saldos}" var="tarea" emptyMessage="" widgetVar="saldostable">
+                        <p:column headerText="Nro." style="width:50px;text-align: right">
+                            <p:outputLabel value="#{tarea.numeroSolicitud}"/>
+                        </p:column>
+                        <p:column headerText="Funcionario">
+                            <p:outputLabel value="#{tarea.usuario.nombresCompletos.toUpperCase()}"/>
+                        </p:column>
+                        <p:column headerText="Tipo formulario">
+                            <p:outputLabel value="#{tarea.tipoFormulario.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Motivo">
+                            <p:outputLabel value="#{tarea.tipoLicencia.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Estado">
+                            <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estadoLicencia)}"/>
+                        </p:column>
+                        <p:column headerText="Fecha solicitud">
+                            <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
+                        </p:column>
+                        <p:column headerText="Fecha inicio">
+                            <p:outputLabel value="#{vacacionCtrl.obtenerFechaHoraConFormato(tarea.fechaHoraSalida)}"/>
+                        </p:column>
+                        <p:column headerText="Fecha fin">
+                            <p:outputLabel value="#{vacacionCtrl.obtenerFechaHoraConFormato(tarea.fechaHoraRetorno)}"/>
+                        </p:column>
+                        <p:column headerText="Dias solicitados">
+                            <p:outputLabel value="#{vacacionCtrl.obtenerFormatoDecimal(tarea.diasLicencia)}"/>
+                        </p:column>
+                        <p:column headerText="Saldo">
+                            <p:outputLabel value="#{vacacionCtrl.obtenerFormatoDecimal(tarea.saldoVacaciones)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+    </h:form>
+</html>

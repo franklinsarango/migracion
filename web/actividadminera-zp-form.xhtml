@@ -1046,7 +1046,14 @@
                     
                     <p:row>
                         <p:column colspan="2" style="text-align: center">
-                            <p:inputTextarea value="#{actividadMineraZPCtrl.fichaTecnica.observacionesFichaTecnica}" styleClass="inputtextarea-form-02"/>
+                            <p:inputTextarea value="#{actividadMineraZPCtrl.fichaTecnica.observacionesFichaTecnica}" styleClass="inputtextarea-form-02"
+                                             maxlength="2000" counter="contadorAccionesRealizadas" counterTemplate="{0} caracteres restantes."/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: left; padding-left: 35px;" colspan="2">
+                            <p:outputLabel id="contadorAccionesRealizadas" style="font-size: 9px"/>
                         </p:column>
                     </p:row>
                     

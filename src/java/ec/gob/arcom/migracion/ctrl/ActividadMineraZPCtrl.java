@@ -688,6 +688,10 @@ public class ActividadMineraZPCtrl extends BaseCtrl {
     ///////////////////////////////////////////////////////
     
     public String newFichaTecnicaAction() {
+        if(login==null) {
+            return "login";
+        }
+            
         edit= false;
         showUploadPanel= false;
         this.fichaTecnica= new FichaTecnica();

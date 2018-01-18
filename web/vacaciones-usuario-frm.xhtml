@@ -15,42 +15,12 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="activitiesform">
-                <p:panelGrid id="top-menu" styleClass="panelSinBorde-02">
-                    <p:row>
-                        <p:column style="text-align: left; width: 25%">
-                            <p:commandLink id="dynaButton" styleClass="lnkexport" rendered="true" type="button" immediate="true">
-                                <h:graphicImage value="resources/images/report-icon.png" width="16"/>
-                                <h:outputLabel value="&#160;Acciones"/>
-                            </p:commandLink>
-                            <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
-                                <p:menuitem value="Nueva solicitud" action="#{vacacionCtrl.newSolicitudAction()}" immediate="true" update="@form"/>
-                                <p:menuitem value="Tareas" action="vacaciones-home?faces-redirect=true" immediate="true"/>
-                            </p:tieredMenu>
-                        </p:column>
-                        
-                        <p:column style="text-align: center; padding-top: 0px; padding-bottom: 0px; width: 50%">
-                            <p:outputLabel id="entityname" value="Gestión de Vacaciones - ARCOM" style="font-weight: bolder; font-size: large"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right; width: 25%">
-                            <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir">
-                                    <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
-                                    <br/>
-                                    <h:outputText value="Inicio"/>
-                            </h:commandLink>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="3" style="padding-top: 0px; padding-bottom: 0px; width: 100%">
-                            <p:separator style="width: 100%;"/>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+                <ui:include src="vacaciones-admin-menu.xhtml"/>
                 
                 <p:panelGrid styleClass="pg-center" style="background: transparent">
                     <p:row>
                         <p:column colspan="3" style="text-align: center;">
-                            <p:outputLabel value="EDITAR INFORMACIÓN DEL USUARIO" style="font-weight: bolder; font-size: medium;"/>
+                            <p:outputLabel value="EDITAR INFORMACIÓN DEL FUNCIONARIO" style="font-weight: bolder; font-size: medium;"/>
                         </p:column>
                     </p:row>
                     
@@ -59,16 +29,17 @@
                             <p:outputLabel for="numDocumento" value="Número de documento:"/>
                         </p:column>
                         <p:column style="text-align: left">
-                            <p:inputText id="numDocumento" value="#{vacacionCtrl.licencia.numeroSolicitud}"
+                            <p:inputText id="numDocumento" value="#{vacacionCtrl.documentoBuscar}"
                                            styleClass="inputtext-form"/>
                         </p:column> 
                         <p:column style="text-align: left">
-                            <p:commandButton value="Buscar"/>
+                            <p:commandButton value="Buscar" actionListener="#{vacacionCtrl.buscarUsuario()}"
+                                             update="@form :vacaciones-busqueda-frm" process="numDocumento @this"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
                 
-                <p:panelGrid styleClass="pg-center" style="width: 930px">
+                <p:panelGrid styleClass="pg-center" style="width: 960px">
                     <p:row>
                         <p:column colspan="5" style="text-align: center; background-color: lightblue">
                             <p:outputLabel value="DATOS PERSONALES" style="font-weight: bolder; font-size: small;"/>
@@ -81,7 +52,7 @@
                         </p:column>
                         <p:column style="text-align: left">
                             <p:inputText id="cedula" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.numeroDocumento}" readonly="true"/>
+                                         value="#{vacacionCtrl.usuarioEditar.numeroDocumento}" readonly="true"/>
                         </p:column>
                         
                         <p:column>
@@ -89,10 +60,11 @@
                         </p:column>
                         
                         <p:column style="text-align: right">
-                            <p:outputLabel for="unidadAdm" value="Unidad administrativa:"/>
+                            <p:outputLabel for="telefono" value="Telefono fijo:"/>
                         </p:column>
                         <p:column style="text-align: left">
-                            <p:inputText id="unidadAdm" styleClass="inputtext-form" readonly="true"/>
+                            <p:inputText id="telefono" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.usuarioEditar.telefono}" readonly="true"/>
                         </p:column>
                     </p:row>
                     
@@ -102,139 +74,7 @@
                         </p:column>
                         <p:column style="text-align: left">
                             <p:inputText id="nombre" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.nombre.toUpperCase()}" readonly="true"/>
-                        </p:column>
-                        
-                        <p:column>
-                            <p:spacer width="10"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="puesto" value="Puesto:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="puesto" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.tipoCargo}" readonly="true"/>
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="apellido" value="Apellido:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="apellido" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.apellido.toUpperCase()}" readonly="true"/>
-                        </p:column>
-                        
-                        <p:column>
-                            <p:spacer width="10"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="fechaNacimiento" value="Fecha de nacimiento:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="fechaNacimiento" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.licencia.fechaSolicitud)}" readonly="true"/>
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="genero" value="Genero:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="genero" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.apellido.toUpperCase()}" readonly="true"/>
-                        </p:column>
-                        
-                        <p:column>
-                            <p:spacer width="10"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="pais" value="País:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="pais" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.licencia.fechaSolicitud)}" readonly="true"/>
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="provincia" value="Provincia:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="provincia" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.apellido.toUpperCase()}" readonly="true"/>
-                        </p:column>
-                        
-                        <p:column>
-                            <p:spacer width="10"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="canton" value="Cantón:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="canton" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.licencia.fechaSolicitud)}" readonly="true"/>
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="parroquia" value="Parroquia:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="parroquia" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.apellido.toUpperCase()}" readonly="true"/>
-                        </p:column>
-                        
-                        <p:column>
-                            <p:spacer width="10"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="sector" value="Sector:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="sector" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.licencia.fechaSolicitud)}" readonly="true"/>
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="casillero" value="Casillero judicial:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="casillero" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.apellido.toUpperCase()}" readonly="true"/>
-                        </p:column>
-                        
-                        <p:column>
-                            <p:spacer width="10"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="email" value="Correo electrónico:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="email" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.licencia.fechaSolicitud)}" readonly="true"/>
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="telefono" value="Telefono fijo:"/>
-                        </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="telefono" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.apellido.toUpperCase()}" readonly="true"/>
+                                         value="#{vacacionCtrl.usuarioEditar.nombre.toUpperCase()}" readonly="true"/>
                         </p:column>
                         
                         <p:column>
@@ -246,17 +86,17 @@
                         </p:column>
                         <p:column style="text-align: left">
                             <p:inputText id="celular" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.licencia.fechaSolicitud)}" readonly="true"/>
+                                         value="#{vacacionCtrl.usuarioEditar.celular}" readonly="true"/>
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column style="text-align: right">
-                            <p:outputLabel for="direccion" value="Dirección:"/>
+                            <p:outputLabel for="apellido" value="Apellido:"/>
                         </p:column>
                         <p:column style="text-align: left">
-                            <p:inputTextarea id="direccion" value="#{vacacionCtrl.licencia.observaciones}"
-                                                 styleClass="inputtextarea-form"/>
+                            <p:inputText id="apellido" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.usuarioEditar.apellido.toUpperCase()}" readonly="true"/>
                         </p:column>
                         
                         <p:column>
@@ -264,13 +104,308 @@
                         </p:column>
                         
                         <p:column style="text-align: right">
-                            <p:spacer width="10"/>
+                            <p:outputLabel for="email" value="Correo electrónico:"/>
                         </p:column>
                         <p:column style="text-align: left">
+                            <p:inputText id="email" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.usuarioEditar.correoElectronico}" readonly="true"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="provincia" value="Provincia:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="provincia" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerNombreLocalidad(vacacionCtrl.usuarioEditar.codigoProvincia)}" readonly="true"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <p:spacer width="10"/>
+                        </p:column>
+                        
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="canton" value="Cantón:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="canton" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerNombreLocalidad(vacacionCtrl.usuarioEditar.codigoCanton)}" readonly="true"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="parroquia" value="Parroquia:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="parroquia" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.usuarioEditar.codigoParroquia}" readonly="true"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <p:spacer width="10"/>
+                        </p:column>
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="emailPersonal" value="Correo electrónico personal:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="emailPersonal" value="#{vacacionCtrl.usuarioEditar.correoElectronicoPersonal}" required="true"
+                                         styleClass="inputtext-form" validatorMessage="El correo ingresado no es válido" requiredMessage="Correo electronico personal es requerido">
+                                <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?"/>
+                            </p:inputText>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right" rowspan="2">
+                            <p:outputLabel for="direccion" value="Dirección:"/>
+                        </p:column>
+                        <p:column style="text-align: left" rowspan="2">
+                            <p:inputTextarea id="direccion" value="#{vacacionCtrl.usuarioEditar.direccion}"
+                                                 styleClass="inputtextarea-form" readonly="true"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <p:spacer width="10"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <p:spacer width="10"/>
+                        </p:column>
+                        <p:column>
                             <p:spacer width="10"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
+                <p:spacer height="10" width="10"/>
+                <p:panelGrid styleClass="pg-center" style="width: 960px">
+                    <p:row>
+                        <p:column>
+                            <p:commandButton value="Nuevo contrato" title="Nuevo contrato" actionListener="#{vacacionCtrl.newContratoAction()}" update=":contratoform :growl" process="@this"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
+                <p:dataTable id="contratos" value="#{vacacionCtrl.contratos}" var="contrato" emptyMessage="" style="width: 960px; margin: 0 auto">
+                    <p:column headerText="Régimen de contratación" style="text-align: center">
+                        <p:outputLabel value="#{contrato.regimenContratacion.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Tipo contrato" style="text-align: center">
+                        <p:outputLabel value="#{contrato.tipoContrato.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Modalidad contrato" style="text-align: center">
+                        <p:outputLabel value="#{contrato.modalidadContrato.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Unidad administrativa" style="text-align: center">
+                        <p:outputLabel value="#{contrato.departamento.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Cargo" style="text-align: center">
+                        <p:outputLabel value="#{contrato.tipoCargo.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Fecha ingreso" style="text-align: center">
+                        <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(contrato.fechaIngreso)}"/>
+                    </p:column>
+                    <p:column headerText="Horario almuerzo" style="text-align: center">
+                        <p:outputLabel value="#{contrato.horarioAlmuerzo.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Finalizar" style="width:50px;text-align: center">
+                        <p:commandButton icon="ui-icon-cancel" title="Finalizar contrato" actionListener="#{vacacionCtrl.finalizarContratoAction()}"
+                                         update=":endcontratoform :growl" process="@this"/>
+                    </p:column>
+                    <p:column headerText="Eliminar" style="width:50px;text-align: center">
+                        <p:commandButton icon="ui-icon-pencil" title="Eliminar" actionListener="#{vacacionCtrl.deleteContratoAction(contrato)}"
+                                         update=":activitiesform:contratos :growl" process="@this"/>
+                    </p:column>
+                </p:dataTable>
+                
+                <p:spacer height="10" width="10"/>
+                
+                <h:panelGroup>
+                    <p:panelGrid styleClass="pg-center" style="width: 960px" rendered="#{vacacionCtrl.showButtonPanel02}">
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column style="text-align: center" colspan="5">
+                                    <p:commandButton value="Guardar" action="#{vacacionCtrl.updateUsuarioAction()}" style="width: 85px" update=":activitiesform"/>
+                                    <p:spacer width="10"/>
+                                    <p:commandButton value="Cancelar" action="#{vacacionCtrl.cancelAdminAction()}" immediate="true" style="width: 85px"/>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </h:form>
+            
+            <!-- FORMULARIO CONTRATO -->
+            <p:dialog id="contratofrm" widgetVar="contratofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Contrato">
+                <h:form id="contratoform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="regimenContratacion" value="Régimen de contratación:"/>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="regimenContratacion" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                 value="#{vacacionCtrl.contrato.regimenContratacion}">
+                                    <f:selectItem itemLabel="Seleccione un régimen de contrato..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.regimenesContratacion}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+
+                            <p:column>
+                                <p:spacer width="10"/>
+                            </p:column>
+
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="tipoContrato" value="Tipo de contrato:"/>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="tipoContrato" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                 value="#{vacacionCtrl.contrato.tipoContrato}">
+                                    <f:selectItem itemLabel="Seleccione un tipo de contrato..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.tiposContrato}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="modContrato" value="Modalidad de contrato:"/>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="modContrato" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                 value="#{vacacionCtrl.contrato.modalidadContrato}">
+                                    <f:selectItem itemLabel="Seleccione una modalidad de contrato..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.tiposModalidadContrato}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            
+                            <p:column>
+                                <p:spacer width="10"/>
+                            </p:column> 
+                            
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="unidadAdm" value="Unidad administrativa:"/>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="unidadAdm" styleClass="onemenu-form" required="true" converter="#{departamentoConverter}"
+                                                 value="#{vacacionCtrl.contrato.departamento}">
+                                    <f:selectItem itemLabel="Seleccione una unidad administrativa..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.unidadesAdministrativas}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="tipoCargo" value="Cargo:"/>
+                            </p:column>
+                            <p:column style="text-align: left">                            
+                                <p:selectOneMenu id="tipoCargo" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                 value="#{vacacionCtrl.contrato.tipoCargo}">
+                                    <f:selectItem itemLabel="Seleccione un cargo..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.tiposCargo}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+
+                            <p:column>
+                                <p:spacer width="10"/>
+                            </p:column>
+
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="fechaIngreso" value="Fecha de ingreso:"/>
+                            </p:column>
+                            <p:column style="text-align: left">                            
+                                <p:calendar id="fechaIngreso" styleClass="calendar-form"
+                                                readonlyInput="true" required="true" requiredMessage="El campo fecha ingreso es requerido"
+                                                maxdate="#{vacacionCtrl.fechaMaxima}" navigator="true" pattern="dd-MM-yyyy"
+                                                value="#{vacacionCtrl.contrato.fechaIngreso}" locale="es"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="horarioAlmuerzo" value="Horario de almuerzo:"/>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                <p:selectOneMenu id="horarioAlmuerzo" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                 value="#{vacacionCtrl.contrato.horarioAlmuerzo}">
+                                    <f:selectItem itemLabel="Seleccione un horario..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.horariosAlmuerzo}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+
+                            <p:column>
+                                <p:spacer width="10"/>
+                            </p:column>
+                            
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="saldoVacacion" value="Saldo de vacaciones:"/>
+                            </p:column>
+                            <p:column style="text-align: left">                            
+                                <pe:inputNumber id="saldoVacacion" minValue="0" decimalPlaces="2" value="#{vacacionCtrl.saldoVacacionContrato}"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="5" style="text-align: center">
+                                <p:commandButton value="Aceptar" title="Aceptar" actionListener="#{vacacionCtrl.addContratoAction()}" update="contratoform :activitiesform:contratos"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- REALIZAR BUSQUEDA DE FUNCIONARIO -->
+            <p:dialog id="busquedafrm" widgetVar="busquedafrmwg" header="Búsqueda" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true" width="850" height="500">
+                <ui:include src="vacaciones-search-edit-usr-frm.xhtml"/>
+            </p:dialog>
+            
+            <!-- FORMULARIO FINALIZAR CONTRATO -->
+            <p:dialog id="endcontratofrm" widgetVar="endcontratofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Finalizar contrato">
+                <h:form id="endcontratoform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="saldoVacacion" value="Saldo de vacaciones:"/>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                <pe:inputNumber id="saldoVacacion" minValue="0" decimalPlaces="2" value="#{vacacionCtrl.contrato.saldoVacaciones}" readOnly="true"/>
+                            </p:column>
+
+                            <p:column>
+                                <p:spacer width="10"/>
+                            </p:column>
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="fechaSalida" value="Fecha de salida:"/>
+                            </p:column>
+                            <p:column style="text-align: left">                            
+                                <p:calendar id="fechaSalida" styleClass="calendar-form"
+                                                readonlyInput="true" required="true" requiredMessage="El campo fecha salida es requerido"
+                                                maxdate="#{vacacionCtrl.fechaMaxima}" navigator="true" pattern="dd-MM-yyyy"
+                                                value="#{vacacionCtrl.contrato.fechaSalida}" locale="es"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="5" style="text-align: center">
+                                <p:commandButton value="Finalizar" title="Finalizar" actionListener="#{vacacionCtrl.confirmarEliminarContrato()}" update="endcontratoform :activitiesform:contratos"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- CONFIRMAR FINALIZAR CONTRATO -->
+            <h:form>
+                <p:confirmDialog id="deloperativodlg" showEffect="fade" hideEffect="fade" widgetVar="enddlgwg" header="Confirmar finalizar contrato"
+                                 message="¿Esta seguro de finalizar el contrato?">
+                    <p:commandButton value="Si" icon="ui-icon-check" oncomplete="PF('enddlgwg').hide()"
+                                     actionListener="#{vacacionCtrl.finalizarContrato()}" update=":endcontratoform :activitiesform:contratos"/>
+                    <p:commandButton value="No" icon="ui-icon-close" oncomplete="PF('enddlgwg').hide()"/>
+                </p:confirmDialog>
             </h:form>
         </ui:define>
     </ui:composition>

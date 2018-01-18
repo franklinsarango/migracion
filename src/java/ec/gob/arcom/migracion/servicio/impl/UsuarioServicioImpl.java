@@ -42,4 +42,19 @@ public class UsuarioServicioImpl extends GenericServiceImpl<Usuario, Long>
     public List<Usuario> findByTipoUsuarioCampoReservado3(String tipoUsuario) {
         return usuarioDao.findByTipoUsuarioCampoReservado3(tipoUsuario);
     }
+
+    @Override
+    public Usuario findByDocumento(String documento) {
+        return usuarioDao.findByDocumento(documento);
+    }
+
+    @Override
+    public List<Usuario> listar() {
+        return usuarioDao.listar();
+    }
+
+    @Override
+    public List<Usuario> listarUsuariosInternos() {
+        return usuarioDao.listarUsuariosInternos();
+    }
 }

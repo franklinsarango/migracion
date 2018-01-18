@@ -64,8 +64,85 @@ h2 {
     background-color: orange;
 }
 
+.img_header {
+    width: 270px;
+    height: 82px;
+    padding-top: 10px;
+}
+
 .img_header_2 {
     float: right;
+}
+
+.img-profile {
+    width: 38px;
+    height: 50px;
+}
+
+.profile {
+    text-align: right;
+    width: 38px;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.profile-01 {
+    text-align: right;
+    vertical-align: bottom;
+    width: 5%;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+.profile-02 {
+    text-align: left;
+    vertical-align: bottom;
+    padding-bottom: 0;
+}
+
+.profile-03 {
+    text-align: right;
+    vertical-align: top;
+    width: 5%;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+}
+
+.profile-04 {
+    text-align: left;
+    vertical-align: top;
+    padding-top: 10px;
+}
+
+.profile-back {
+    background-image: url("../images/profile-back.png");
+    background-repeat: no-repeat;
+    background-position-y: top;
+    width: 280px;
+}
+
+.pg-center-header {
+    width: 100%;
+}
+
+/*Sirve para quitar el borde del panel grid*/
+.pg-center-header.ui-panelgrid>*>tr,
+.pg-center-header.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.pg-center-profile {
+    margin: 0 auto;
+}
+
+/*Sirve para quitar el borde del panel grid*/
+.pg-center-profile.ui-panelgrid>*>tr,
+.pg-center-profile.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+    background: transparent;
 }
 
 .panel_grid_center {
@@ -381,6 +458,7 @@ h2 {
 .inputtextarea-form {
     width: 270px !important;
     height: 85px !important;
+    max-height: 85px !important;
 }
 
 .inputtextarea-form-02 {

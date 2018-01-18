@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/vacaciones-template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Vacaciones"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+            
+            <h:form id="activitiesform">
+                <ui:include src="vacaciones-menu.xhtml"/>
+                
+                <p:tabView id="tabulador">
+                    <p:tab id="tabTask" title="TRÁMITES ATENDIDOS">
+                        <f:facet name="title">
+                            <p:graphicImage value="./resources/images/request-icon.png" width="25" height="25"/>
+                            <p:spacer width="10" height="10"/>
+                            <h:outputText value="TRÁMITES ATENDIDOS"/>
+                        </f:facet>
+                        
+                        <p:dataTable id="tramitesAtendidos" value="#{vacacionCtrl.tramitesAtendidos}" var="tramite" emptyMessage="">
+                            <p:column headerText="Nro." style="width:50px;text-align: right">
+                                <p:outputLabel value="#{tramite.numeroSolicitud}"/>
+                            </p:column>
+                            <p:column headerText="Funcionario">
+                                <p:outputLabel value="#{tramite.usuario.nombresCompletos.toUpperCase()}"/>
+                            </p:column>
+                            <p:column headerText="Tipo formulario">
+                                <p:outputLabel value="#{tramite.tipoFormulario.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Motivo">
+                                <p:outputLabel value="#{tramite.tipoLicencia.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tramite.estadoLicencia)}"/>
+                            </p:column>
+                            <p:column headerText="Fecha solicitud">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tramite.fechaSolicitud)}"/>
+                            </p:column>
+                            <p:column headerText="Ver" style="width:50px;text-align: center">
+                                <p:commandButton icon="ui-icon-newwin" title="Ver" actionListener="#{vacacionCtrl.showSolicitudAction(tramite)}" update=":view-licencia-form"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+            
+            <!-- VER HISTORIAL DE LICENCIA -->
+            <p:dialog id="historialfrm" widgetVar="historialfrmwg" header="Licencia" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true">
+                <ui:include src="vacaciones-licencia-view-frm.xhtml"/>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>

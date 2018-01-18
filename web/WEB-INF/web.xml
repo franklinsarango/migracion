@@ -42,7 +42,14 @@
         <error-code>500</error-code>
         <location>/web/404.xhtml</location>
     </error-page>
-
+    
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/web/login.xhtml</location>
+    </error-page>
+    
+    
+    
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>start</param-value>

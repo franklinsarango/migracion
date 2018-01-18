@@ -73,7 +73,12 @@ public enum ConstantesEnum {
     URL_APP_PROD("", "http://172.16.30.246:8381", null), 
     URL_BASE("", "http://181.211.37.233:8384", null), 
     URL_PROD_REPORTES("", "http://www.controlminero.gob.ec:8080", null),
-    URL_BASE_DESARROLLO("", "http://181.211.37.237:8380", null);
+    URL_BASE_DESARROLLO("", "http://181.211.37.237:8380", null),
+    
+    //PARA ENVIO DE CORREO ELECTRONICO
+    IP_SERVIDOR_CORREO("", "10.10.6.6", null),
+    PORT_SERVIDOR_CORREO("", "25", null),
+    REMITENTE_CORREO_VACACIONES("", "talento.humano@controlminero.gob.ec", null);
     
     private String nemonico;
     private String descripcion;

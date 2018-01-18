@@ -15,37 +15,7 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="activitiesform">
-                <p:panelGrid id="top-menu" styleClass="panelSinBorde-02">
-                    <p:row>
-                        <p:column style="text-align: left; width: 25%">
-                            <p:commandLink id="dynaButton" styleClass="lnkexport" rendered="true" type="button" immediate="true">
-                                <h:graphicImage value="resources/images/report-icon.png" width="16"/>
-                                <h:outputLabel value="&#160;Acciones"/>
-                            </p:commandLink>
-                            <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
-                                <p:menuitem value="Nueva solicitud" action="#{vacacionCtrl.newSolicitudAction()}" immediate="true" update="@form"/>
-                                <p:menuitem value="Tareas" action="vacaciones-home?faces-redirect=true" immediate="true"/>
-                            </p:tieredMenu>
-                        </p:column>
-                        
-                        <p:column style="text-align: center; padding-top: 0px; padding-bottom: 0px; width: 50%">
-                            <p:outputLabel id="entityname" value="Gestión de Vacaciones - ARCOM" style="font-weight: bolder; font-size: large"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right; width: 25%">
-                            <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir">
-                                    <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
-                                    <br/>
-                                    <h:outputText value="Inicio"/>
-                            </h:commandLink>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="3" style="padding-top: 0px; padding-bottom: 0px; width: 100%">
-                            <p:separator style="width: 100%;"/>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+                <ui:include src="vacaciones-menu.xhtml"/>
                 
                 <p:panelGrid styleClass="pg-center" style="width: 930px">
                     <p:row>
@@ -104,7 +74,8 @@
                             <p:outputLabel for="unidadAdm" value="Unidad administrativa:"/>
                         </p:column>
                         <p:column style="text-align: left">
-                            <p:inputText id="unidadAdm" styleClass="inputtext-form" readonly="true"/>
+                            <p:inputText id="unidadAdm" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.contrato.departamento.nombre}" readonly="true"/>
                         </p:column>
                     </p:row>
                     
@@ -126,7 +97,7 @@
                         </p:column>
                         <p:column style="text-align: left">
                             <p:inputText id="puesto" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.licencia.usuario.tipoCargo}" readonly="true"/>
+                                         value="#{vacacionCtrl.contrato.tipoCargo.nombre}" readonly="true"/>
                         </p:column>
                     </p:row>
                     
@@ -148,7 +119,29 @@
                         </p:column>
                         <p:column style="text-align: left">
                             <p:inputText id="provincia" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.obtenerNombreLocalidad(vacacionCtrl.licencia.usuario.codigoParroquia)}" readonly="true"/>
+                                         value="#{vacacionCtrl.obtenerNombreLocalidad(vacacionCtrl.licencia.usuario.codigoProvincia)}" readonly="true"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="fechaIngreso" value="Fecha de ingreso:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="fechaIngreso" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.contrato.fechaIngreso)}" readonly="true"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <p:spacer width="10"/>
+                        </p:column>
+                        
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="fechaSolicitud" value="Fecha de solicitud:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="fechaSolicitud" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.licencia.fechaSolicitud)}" readonly="true"/>
                         </p:column>
                     </p:row>
                     
@@ -162,7 +155,7 @@
                                                  value="#{vacacionCtrl.licencia.tipoLicencia}">
                                 <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{vacacionCtrl.tiposLicencia}"/>
-                                <p:ajax listener="#{vacacionCtrl.showFormPanel()}" update="grouppanel vacacionTitle calamidadTitle"/>
+                                <p:ajax listener="#{vacacionCtrl.showFormPanel()}" update="grouppanel vacacionTitle calamidadTitle fechaInicioC fechaFinC"/>
                             </p:selectOneMenu>
                         </p:column>
                         
@@ -170,12 +163,11 @@
                             <p:spacer width="10"/>
                         </p:column>
                         
-                        <p:column style="text-align: right">
-                            <p:outputLabel for="fechaSolicitud" value="Fecha de solicitud:"/>
+                        <p:column>
+                            <p:spacer width="10"/>
                         </p:column>
-                        <p:column style="text-align: left">
-                            <p:inputText id="fechaSolicitud" styleClass="inputtext-form"
-                                         value="#{vacacionCtrl.obtenerFechaConFormato(vacacionCtrl.licencia.fechaSolicitud)}" readonly="true"/>
+                        <p:column>
+                            <p:spacer width="10"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -194,93 +186,91 @@
                                 <p:outputLabel for="diasDisponibles" value="Días disponibles:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:inputText id="diasDisponibles" styleClass="inputtext-form"/>
+                                <p:inputText id="diasDisponibles" styleClass="inputtext-form" value="#{vacacionCtrl.obtenerFormatoDecimal(vacacionCtrl.licencia.diasDisponibles)}" readonly="true"/>
                             </p:column>
 
                             <p:column>
                                 <p:spacer width="10"/>
                             </p:column>
-
+                            
                             <p:column style="text-align: right">
-                                <p:outputLabel for="periodo" value="Periodo:"/>
+                                <p:outputLabel for="diasLicencia" value="Dias solicitados:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:inputText id="periodo" styleClass="inputtext-form"/>
+                                <p:inputText id="diasLicencia" styleClass="inputtext-form" value="#{vacacionCtrl.obtenerFormatoDecimal(vacacionCtrl.licencia.diasLicencia)}" readonly="true"/>
                             </p:column>
                         </p:row>
 
                         <p:row>
                             <p:column style="text-align: right">
-                                <p:outputLabel for="fechaInicio" value="Fecha de inicio:"/>
+                                <p:outputLabel for="fechaInicio" value="Fecha y hora de inicio de vacaciones:"/>
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:calendar id="fechaInicio" styleClass="calendar-form"
                                             readonlyInput="true" required="true" requiredMessage="El campo fecha inicio es requerido"
-                                            mindate="#{vacacionCtrl.fechaMinimaInicio}" navigator="true" pattern="dd-MM-yyyy"
-                                            value="#{vacacionCtrl.licencia.fechaSalida}" locale="es"/>
+                                            navigator="true" pattern="#{vacacionCtrl.calendarPattern}" minHour="8" maxHour="17" disabledWeekends="true"
+                                            mindate="#{vacacionCtrl.fechaMinima}"
+                                            value="#{vacacionCtrl.licencia.fechaHoraSalida}" locale="es">
+                                    <p:ajax event="dateSelect" listener="#{vacacionCtrl.obtenerSaldoVacaciones()}" process="tipoFormulario fechaInicio fechaFin" update="tipoFormulario fechaInicio fechaFin saldoVacacion diasLicencia"/>
+                                </p:calendar>
                             </p:column>
 
                             <p:column>
                                 <p:spacer width="10"/>
                             </p:column>
-
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="fechaFin" value="Fecha de fin:"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:calendar id="fechaFin" styleClass="calendar-form"
-                                            readonlyInput="true" required="true" requiredMessage="El campo fecha fin es requerido"
-                                            mindate="#{vacacionCtrl.fechaMinimaFin}" navigator="true" pattern="dd-MM-yyyy"
-                                            value="#{vacacionCtrl.licencia.fechaRetorno}" locale="es"/>
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="horaSalida" value="Hora salida:" rendered="#{vacacionCtrl.showHour}"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:calendar id="horaSalida" styleClass="calendar-form" rendered="#{vacacionCtrl.showHour}"
-                                            readonlyInput="true" required="true" requiredMessage="El campo hora salida es requerido"
-                                            navigator="true" pattern="HH:mm" timeOnly="true" minHour="8" maxHour="17"
-                                            title="Seleccione la hora de salida" locale="es" stepMinute="5"/>
-                            </p:column>
-
-                            <p:column>
-                                    <p:spacer width="10"/>
-                            </p:column>
-
-                            <p:column style="text-align: right">
-                                    <p:outputLabel for="horaRetorno" value="Hora retorno:" rendered="#{vacacionCtrl.showHour}"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:calendar id="horaRetorno" styleClass="calendar-form" rendered="#{vacacionCtrl.showHour}"
-                                            readonlyInput="true" required="true" requiredMessage="El campo hora retorno es requerido"
-                                            navigator="true" pattern="HH:mm" timeOnly="true" minHour="8" maxHour="17"
-                                            title="Seleccione la hora de retorno" locale="es" stepMinute="5"/>
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="observacion" value="Observaciones:"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:inputTextarea id="observacion" value="#{vacacionCtrl.licencia.observaciones}"
-                                                 styleClass="inputtextarea-form"/>
-                            </p:column>
-
-                            <p:column>
-                                    <p:spacer width="10"/>
-                            </p:column>
-
+                            
                             <p:column style="text-align: right">
                                 <p:outputLabel for="saldoVacacion" value="Saldo de vacaciones:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:inputText id="saldoVacacion" styleClass="inputtext-form"/>
+                                <p:inputText id="saldoVacacion" styleClass="inputtext-form" value="#{vacacionCtrl.obtenerFormatoDecimal(vacacionCtrl.licencia.saldoVacaciones)}" readonly="true"/>
                             </p:column>
                         </p:row>
+                       
+                        <p:row>
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="fechaFin" value="Fecha y hora de fin de vacaciones:"/>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                <p:calendar id="fechaFin" styleClass="calendar-form"
+                                            readonlyInput="true" required="true" requiredMessage="El campo fecha fin es requerido"
+                                            navigator="true" pattern="#{vacacionCtrl.calendarPattern}" minHour="8" maxHour="17" disabledWeekends="true"
+                                            mindate="#{vacacionCtrl.fechaMinima}"
+                                            value="#{vacacionCtrl.licencia.fechaHoraRetorno}" locale="es">
+                                    <p:ajax event="dateSelect" listener="#{vacacionCtrl.obtenerSaldoVacaciones()}" process="tipoFormulario fechaInicio fechaFin" update="tipoFormulario fechaInicio fechaFin saldoVacacion diasLicencia"/>
+                                </p:calendar>
+                            </p:column>
+                            
+                            <p:column>
+                                    <p:spacer width="10"/>
+                            </p:column>
+                            
+                            <p:column style="text-align: right">
+                                <p:outputLabel for="observacion" value="Observaciones:"/>
+                            </p:column>
+                            <p:column style="text-align: left" rowspan="2">
+                                <p:inputTextarea id="observacion" value="#{vacacionCtrl.licencia.observaciones}"
+                                                 styleClass="inputtextarea-form"/>
+                            </p:column>
+                        </p:row>
+                       
+                       <p:row>
+                            <p:column>
+                                    <p:spacer width="10"/>
+                            </p:column>
+                            <p:column>
+                                    <p:spacer width="10"/>
+                            </p:column>
+                            
+                            <p:column>
+                                    <p:spacer width="10"/>
+                            </p:column>
+                            
+                            <p:column>
+                                    <p:spacer width="10"/>
+                            </p:column>
+                        </p:row>
+                       
                    </p:panelGrid>
                    
                    <!-- PANEL PARA CALAMIDAD -->
@@ -293,33 +283,16 @@
 
                         <p:row>
                             <p:column style="text-align: right">
-                                <p:outputLabel for="diasDisponiblesC" value="Días disponibles:"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:inputText id="diasDisponiblesC" styleClass="inputtext-form"/>
-                            </p:column>
-
-                            <p:column>
-                                <p:spacer width="10"/>
-                            </p:column>
-
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="periodoC" value="Periodo:"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:inputText id="periodoC" styleClass="inputtext-form"/>
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column style="text-align: right">
                                 <p:outputLabel for="fechaInicioC" value="Fecha de inicio:"/>
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:calendar id="fechaInicioC" styleClass="calendar-form"
                                             readonlyInput="true" required="true" requiredMessage="El campo fecha inicio es requerido"
-                                            mindate="#{vacacionCtrl.fechaMinimaInicio}" navigator="true" pattern="dd-MM-yyyy"
-                                            value="#{vacacionCtrl.licencia.fechaSalida}" locale="es"/>
+                                            navigator="true" pattern="#{vacacionCtrl.calendarPattern}" minHour="8" maxHour="17" disabledWeekends="true"
+                                            mindate="#{vacacionCtrl.fechaMinima}"
+                                            value="#{vacacionCtrl.licencia.fechaHoraSalida}" locale="es">
+                                    <p:ajax event="dateSelect" listener="#{vacacionCtrl.validarFechas()}" process="tipoFormulario fechaInicioC fechaFinC" update="tipoFormulario fechaInicioC fechaFinC"/>
+                                </p:calendar>
                             </p:column>
 
                             <p:column>
@@ -332,34 +305,11 @@
                             <p:column style="text-align: left">
                                 <p:calendar id="fechaFinC" styleClass="calendar-form"
                                             readonlyInput="true" required="true" requiredMessage="El campo fecha fin es requerido"
-                                            mindate="#{vacacionCtrl.fechaMinimaFin}" navigator="true" pattern="dd-MM-yyyy"
-                                            value="#{vacacionCtrl.licencia.fechaRetorno}" locale="es"/>
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="horaSalidaC" value="Hora salida:" rendered="#{vacacionCtrl.showHour}"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:calendar id="horaSalidaC" styleClass="calendar-form" rendered="#{vacacionCtrl.showHour}"
-                                            readonlyInput="true" required="true" requiredMessage="El campo hora salida es requerido"
-                                            navigator="true" pattern="HH:mm" timeOnly="true" minHour="8" maxHour="17"
-                                            title="Seleccione la hora de salida" locale="es" stepMinute="5"/>
-                            </p:column>
-
-                            <p:column>
-                                    <p:spacer width="10"/>
-                            </p:column>
-
-                            <p:column style="text-align: right">
-                                    <p:outputLabel for="horaRetornoC" value="Hora retorno:" rendered="#{vacacionCtrl.showHour}"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:calendar id="horaRetornoC" styleClass="calendar-form" rendered="#{vacacionCtrl.showHour}"
-                                            readonlyInput="true" required="true" requiredMessage="El campo hora retorno es requerido"
-                                            navigator="true" pattern="HH:mm" timeOnly="true" minHour="8" maxHour="17"
-                                            title="Seleccione la hora de retorno" locale="es" stepMinute="5"/>
+                                            navigator="true" pattern="#{vacacionCtrl.calendarPattern}" minHour="8" maxHour="17" disabledWeekends="true"
+                                            mindate="#{vacacionCtrl.fechaMinima}"
+                                            value="#{vacacionCtrl.licencia.fechaHoraRetorno}" locale="es">
+                                    <p:ajax event="dateSelect" listener="#{vacacionCtrl.validarFechas()}" process="tipoFormulario fechaInicioC fechaFinC" update="tipoFormulario fechaInicioC fechaFinC"/>
+                                </p:calendar>
                             </p:column>
                         </p:row>
 
@@ -369,6 +319,7 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:inputTextarea id="observacionC" value="#{vacacionCtrl.licencia.observaciones}"
+                                                 required="true" requiredMessage="El campo observaciones es requerido"
                                                  styleClass="inputtextarea-form"/>
                             </p:column>
                             
@@ -392,27 +343,7 @@
                                 <p:outputLabel id="institucionalTitle" value="#{vacacionCtrl.motivoLicencia}" style="font-weight: bolder; font-size: small;"/>
                             </p:column>
                         </p:row>
-
-                        <p:row>
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="diasDisponiblesI" value="Días disponibles:"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:inputText id="diasDisponiblesI" styleClass="inputtext-form"/>
-                            </p:column>
-
-                            <p:column>
-                                <p:spacer width="10"/>
-                            </p:column>
-
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="periodoI" value="Periodo:"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:inputText id="periodoI" styleClass="inputtext-form"/>
-                            </p:column>
-                        </p:row>
-
+                       
                         <p:row>
                             <p:column style="text-align: right">
                                 <p:outputLabel for="fechaInicioI" value="Fecha de inicio:"/>
@@ -420,8 +351,11 @@
                             <p:column style="text-align: left">
                                 <p:calendar id="fechaInicioI" styleClass="calendar-form"
                                             readonlyInput="true" required="true" requiredMessage="El campo fecha inicio es requerido"
-                                            mindate="#{vacacionCtrl.fechaMinimaInicio}" navigator="true" pattern="dd-MM-yyyy"
-                                            value="#{vacacionCtrl.licencia.fechaSalida}" locale="es"/>
+                                            navigator="true" pattern="#{vacacionCtrl.calendarPattern}" minHour="8" maxHour="17" disabledWeekends="true"
+                                            mindate="#{vacacionCtrl.fechaMinima}"
+                                            value="#{vacacionCtrl.licencia.fechaHoraSalida}" locale="es">
+                                    <p:ajax event="dateSelect" listener="#{vacacionCtrl.validarFechas()}" process="tipoFormulario fechaInicioI fechaFinI" update="tipoFormulario fechaInicioI fechaFinI"/>
+                                </p:calendar>
                             </p:column>
 
                             <p:column>
@@ -434,34 +368,11 @@
                             <p:column style="text-align: left">
                                 <p:calendar id="fechaFinI" styleClass="calendar-form"
                                             readonlyInput="true" required="true" requiredMessage="El campo fecha fin es requerido"
-                                            mindate="#{vacacionCtrl.fechaMinimaFin}" navigator="true" pattern="dd-MM-yyyy"
-                                            value="#{vacacionCtrl.licencia.fechaRetorno}" locale="es"/>
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="horaSalidaI" value="Hora salida:" rendered="#{vacacionCtrl.showHour}"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:calendar id="horaSalidaI" styleClass="calendar-form" rendered="#{vacacionCtrl.showHour}"
-                                            readonlyInput="true" required="true" requiredMessage="El campo hora salida es requerido"
-                                            navigator="true" pattern="HH:mm" timeOnly="true" minHour="8" maxHour="17"
-                                            title="Seleccione la hora de salida" locale="es" stepMinute="5"/>
-                            </p:column>
-
-                            <p:column>
-                                    <p:spacer width="10"/>
-                            </p:column>
-
-                            <p:column style="text-align: right">
-                                    <p:outputLabel for="horaRetornoI" value="Hora retorno:" rendered="#{vacacionCtrl.showHour}"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <p:calendar id="horaRetornoI" styleClass="calendar-form" rendered="#{vacacionCtrl.showHour}"
-                                            readonlyInput="true" required="true" requiredMessage="El campo hora retorno es requerido"
-                                            navigator="true" pattern="HH:mm" timeOnly="true" minHour="8" maxHour="17"
-                                            title="Seleccione la hora de retorno" locale="es" stepMinute="5"/>
+                                            navigator="true" pattern="#{vacacionCtrl.calendarPattern}" minHour="8" maxHour="17" disabledWeekends="true"
+                                            mindate="#{vacacionCtrl.fechaMinima}"
+                                            value="#{vacacionCtrl.licencia.fechaHoraRetorno}" locale="es">
+                                    <p:ajax event="dateSelect" listener="#{vacacionCtrl.validarFechas()}" process="tipoFormulario fechaInicioI fechaFinI" update="tipoFormulario fechaInicioI fechaFinI"/>
+                                </p:calendar>
                             </p:column>
                         </p:row>
                        
@@ -488,10 +399,10 @@
                             <p:column style="text-align: left">
                                 <p:selectOneMenu id="cantonC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
                                                  value="#{vacacionCtrl.licencia.cantonComision}">
-                                <f:selectItem itemLabel="Seleccione un cantón..." itemValue="#{null}" noSelectionOption="true"/>
-                                <f:selectItems value="#{vacacionCtrl.cantones}"/>
-                                <p:ajax  listener="#{vacacionCtrl.cargaParroquias}" update="parroquiaC"/>
-                            </p:selectOneMenu>
+                                    <f:selectItem itemLabel="Seleccione un cantón..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.cantones}"/>
+                                    <p:ajax  listener="#{vacacionCtrl.cargaParroquias}" update="parroquiaC"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                        
@@ -516,7 +427,39 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:inputTextarea id="descripcion" value="#{vacacionCtrl.licencia.asuntoInstitucional}"
+                                                 required="true" requiredMessage="El campo descripción es requerido"
                                                      styleClass="inputtextarea-form"/>
+                            </p:column>
+                        </p:row>
+                   </p:panelGrid>
+                   
+                   <p:panelGrid styleClass="pg-center" style="width: 930px" rendered="#{vacacionCtrl.showButtonPanel}">
+                       <p:row>
+                           <p:column colspan="2" style="text-align: center; background-color: lightblue">
+                               <p:outputLabel value="ARCHIVOS ADJUNTOS" style="font-weight: bolder; font-size: small;"/>
+                           </p:column>
+                       </p:row>
+                       
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:commandButton value="Cargar archivo" oncomplete="PF('archivosfrmwg').show();" immediate="true"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:spacer width="10" height="10"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <h:panelGroup id="filelistpanel">
+                                    <p:dataList id="filelistUpload" value="#{vacacionCtrl.archivosParaCargar}" var="newfile" styleClass="size_uploadfiles"
+                                                emptyMessage="No se encontraron archivos" rendered="#{vacacionCtrl.showUploadPanel}" rowIndexVar="row">
+                                    <p:outputLabel value="#{row + 1}"/>
+                                    <p:spacer width="10" height="10"/>
+                                    <p:outputLabel value="#{newfile.fileName}"/>
+                                </p:dataList>
+                                </h:panelGroup>
                             </p:column>
                         </p:row>
                    </p:panelGrid>
@@ -525,7 +468,7 @@
                         <f:facet name="footer">
                                 <p:row>
                                     <p:column style="text-align: center" colspan="5">
-                                        <p:commandButton value="Enviar" style="width: 85px"/>
+                                        <p:commandButton value="Enviar" style="width: 85px" update="@form" action="#{vacacionCtrl.saveSolicitudAction()}"/>
                                         <p:spacer width="10"/>
                                         <p:commandButton value="Cancelar" action="#{vacacionCtrl.cancelAction()}" immediate="true" style="width: 85px"/>
                                     </p:column>
@@ -534,6 +477,25 @@
                    </p:panelGrid>
                 </h:panelGroup>
             </h:form>
+            
+            <!-- CARGA DE ARCHIVOS -->
+            <p:dialog id="archivosfrm" widgetVar="archivosfrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Cargar archivos">
+                <h:form id="archivosform">
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:fileUpload id="fuadjuntos" mode="advanced" sizeLimit="3145728" allowTypes="/(\.|\/)(pdf|PDF)$/"
+                                              invalidSizeMessage="Su archivo excede el tamaño permitido de 3MB"
+                                              invalidFileMessage="Solo puede subir archivos PDF"
+                                              cancelLabel="Cancelar" uploadLabel="Subir" label="Examinar"
+                                              fileUploadListener="#{vacacionCtrl.addArchivos}"
+                                              update=":activitiesform:filelistpanel :growl"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </html>

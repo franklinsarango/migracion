@@ -5,6 +5,10 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
+    
+    <f:metadata>
+        <f:viewAction action="#{vacacionCtrl.checkPageUpdate()}" onPostback="true"/>
+    </f:metadata>
 
     <ui:composition template="/templates/vacaciones-template.xhtml">
         <ui:define name="title">
@@ -15,37 +19,7 @@
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
             
             <h:form id="activitiesform">
-                <p:panelGrid id="top-menu" styleClass="panelSinBorde-02">
-                    <p:row>
-                        <p:column style="text-align: left; width: 25%">
-                            <p:commandLink id="dynaButton" styleClass="lnkexport" rendered="true" type="button" immediate="true">
-                                <h:graphicImage value="resources/images/report-icon.png" width="16"/>
-                                <h:outputLabel value="&#160;Acciones"/>
-                            </p:commandLink>
-                            <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
-                                <p:menuitem value="Nueva solicitud" action="#{vacacionCtrl.newSolicitudAction()}" immediate="true" update="@form"/>
-                                <p:menuitem value="Tareas" action="vacaciones-home?faces-redirect=true" immediate="true"/>
-                            </p:tieredMenu>
-                        </p:column>
-                        
-                        <p:column style="text-align: center; padding-top: 0px; padding-bottom: 0px; width: 50%">
-                            <p:outputLabel id="entityname" value="Gestión de Vacaciones - ARCOM" style="font-weight: bolder; font-size: large"/>
-                        </p:column>
-                        
-                        <p:column style="text-align: right; width: 25%">
-                            <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir">
-                                    <h:graphicImage value="resources/images/home.png" title="Inicio" style="width: 30px; height: 30px"/>
-                                    <br/>
-                                    <h:outputText value="Inicio"/>
-                            </h:commandLink>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="3" style="padding-top: 0px; padding-bottom: 0px; width: 100%">
-                            <p:separator style="width: 100%;"/>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+                <ui:include src="vacaciones-menu.xhtml"/>
                 
                 <p:tabView id="tabulador" activeIndex="0" >
                     <p:tab id="tabTask" title="TAREAS">
@@ -54,20 +28,143 @@
                             <p:spacer width="10" height="10"/>
                             <h:outputText value="TAREAS"/>
                         </f:facet>
-                        <!-- ui:include src="ordenmantenimiento.xhtml"/-->
+                        
+                        <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage="">
+                            <p:column headerText="Nro." style="width:50px;text-align: right">
+                                <p:outputLabel value="#{tarea.numeroSolicitud}"/>
+                            </p:column>
+                            <p:column headerText="Funcionario">
+                                <p:outputLabel value="#{tarea.usuario.nombresCompletos.toUpperCase()}"/>
+                            </p:column>
+                            <p:column headerText="Tipo formulario">
+                                <p:outputLabel value="#{tarea.tipoFormulario.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Motivo">
+                                <p:outputLabel value="#{tarea.tipoLicencia.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estadoLicencia)}"/>
+                            </p:column>
+                            <p:column headerText="Fecha solicitud">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
+                            </p:column>
+                            <p:column headerText="Ver" style="width:50px;text-align: center">
+                                <p:commandButton icon="ui-icon-check" title="Ver"
+                                                 action="#{vacacionCtrl.visualizarTarea(tarea)}"/>
+                            </p:column>
+                        </p:dataTable>
                     </p:tab>
                     
-                    <p:tab id="tabActivities" title="ACTIVIDADES">
+                    <p:tab id="tabActivities" title="HISTORIAL">
                         <f:facet name="title">
-                            <p:graphicImage value="./resources/images/task-icon.png" width="25" height="25"/>
+                            <p:graphicImage value="./resources/images/request-icon.png" width="25" height="25"/>
                             <p:spacer width="10" height="10"/>
-                            <h:outputText value="ACTIVIDADES"/>
+                            <h:outputText value="HISTORIAL"/>
                         </f:facet>
-                        <!-- ui:include src="ordenmantenimiento.xhtml"/-->
+                        
+                        <p:panelGrid styleClass="pg-center" style="width: 930px">
+                            <p:row>
+                                <p:column style="text-align: right">
+                                    <p:outputLabel value="Saldo actual en días" style="font-weight: bolder; font-size: medium;"/>
+                                </p:column>
+                                <p:column style="text-align: left">
+                                    <p:outputLabel value="#{vacacionCtrl.saldoActual}" style="font-weight: bolder; font-size: medium;"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        
+                        <p:dataTable id="misSolicitudes" value="#{vacacionCtrl.historial}" var="sol" emptyMessage="">
+                            <p:column headerText="Nro." style="width:50px;text-align: right">
+                                <p:outputLabel value="#{sol.numeroSolicitud}"/>
+                            </p:column>
+                            <p:column headerText="Funcionario">
+                                <p:outputLabel value="#{sol.usuario.nombresCompletos.toUpperCase()}"/>
+                            </p:column>
+                            <p:column headerText="Tipo formulario">
+                                <p:outputLabel value="#{sol.tipoFormulario.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Motivo">
+                                <p:outputLabel value="#{sol.tipoLicencia.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(sol.estadoLicencia)}"/>
+                            </p:column>
+                            <p:column headerText="Fecha solicitud">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(sol.fechaSolicitud)}"/>
+                            </p:column>
+                            <p:column headerText="Dias solicitados">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFormatoDecimal(sol.diasLicencia)}"/>
+                            </p:column>
+                            <p:column headerText="Ver" style="width:50px;text-align: center">
+                                <p:commandButton icon="ui-icon-newwin" title="Ver" actionListener="#{vacacionCtrl.showSolicitudAction(sol)}" update=":view-licencia-form"/>
+                            </p:column>
+                            <p:column headerText="Imprimir" style="width:50px;text-align: center">
+                                <p:commandButton update=":visorSolicitudDlg"
+                                                 icon="ui-icon-print"
+                                                 title="Imprimir solictud"
+                                                 oncomplete="PF('visorSolicitudDlgWg').show();return false;"
+                                                 actionListener="#{vacacionCtrl.imprimirSolicitudPDF(sol)}"
+                                                 rendered="#{vacacionCtrl.allowPrint(sol)}"/>
+                            </p:column>
+                            <p:column headerText="Desistir" style="width:50px;text-align: center">
+                                <p:commandButton icon="ui-icon-cancel" title="Desistir" rendered="#{vacacionCtrl.showDesistirOption(sol)}"
+                                                 actionListener="#{vacacionCtrl.showDesistirAction(sol)}" update="misSolicitudes"/>
+                            </p:column>
+                        </p:dataTable>
                     </p:tab>
                 </p:tabView>
                     
             </h:form>
+            
+            <!-- VER HISTORIAL DE LICENCIA -->
+            <p:dialog id="historialfrm" widgetVar="historialfrmwg" header="Licencia" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true">
+                <ui:include src="vacaciones-licencia-view-frm.xhtml"/>
+            </p:dialog>
+            
+            <p:dialog id="desistirfrm" widgetVar="desistirfrmwg" header="Desistir solicitud" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true">
+                <h:form>
+                    <p:panelGrid styleClass="pg-center">
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center;">
+                                <p:outputLabel value="Observación de desistimiento"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center;">
+                                <p:inputTextarea id="observacionDesistir" value="#{vacacionCtrl.observacionDesistir}" style="width: 600px !important; max-height: 150px !important"
+                                                 required="true" requiredMessage="El campo observación desistimiento es requerido"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align: right;">
+                                <p:commandButton value="Aceptar" actionListener="#{vacacionCtrl.saveDesistimientoAction()}" update=":activitiesform:tabulador:misSolicitudes"/>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                <p:commandButton value="Cancelar" oncomplete="PF('desistirfrmwg').hide();" immediate="true" update=":activitiesform:tabulador:misSolicitudes"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!--       D I A L O G O S       -->
+            <!--             D E             -->
+            <!--      I M P R E S I O N      -->
+            
+            <!-- IMPRIMIR SOLICITUD -->
+            <p:dialog id="visorSolicitudDlg" header="Solicitud"
+                      widgetVar="visorSolicitudDlgWg" width="95%" height="600px"
+                      showEffect="fade" draggable="false"
+                      resizable="false" modal="true" >
+                <iframe frameborder="0"
+                        src="#{vacacionCtrl.urlFormatoImprimir}"
+                        name="frameSolicitud" id="frameSolicitud" scrolling="auto"
+                        width="100%" height="98%"
+                        marginheight="0" marginwidth="0">
+                </iframe>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </html>

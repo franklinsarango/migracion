@@ -24,4 +24,8 @@ public class DateUtil {
         }
         return "";
     }
+    
+    public static String obtenerFechaHoraConFormato(Date fecha) {
+        return obtenerFechaConFormato("yyyy-MM-dd HH:mm:ss", fecha);
+    }
 }

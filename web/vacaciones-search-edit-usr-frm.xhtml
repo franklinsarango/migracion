@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:form id="vacaciones-busqueda-frm">
+        <p:outputLabel value="Valor a buscar: "/>
+        <p:inputText value="#{vacacionCtrl.textoBuscar}">
+            <p:ajax event="keyup" update="funcionarios" listener="#{vacacionCtrl.filtrarFuncionarios()}"/>
+        </p:inputText>
+
+        <p:dataTable id="funcionarios" value="#{vacacionCtrl.funcionarios}" var="funcionario" emptyMessage="" widgetVar="funcionariostable"
+                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="10,25,50" rows="10" paginator="true">
+            <p:column headerText="Nro. documento" style="width:90px;text-align: center">
+                <p:outputLabel value="#{funcionario.numeroDocumento}"/>
+            </p:column>
+            <p:column headerText="Funcionario">
+                <p:outputLabel value="#{funcionario.nombresCompletos.toUpperCase()}"/>
+            </p:column>
+            <p:column headerText="Unidad Administrativa"
+                      filterBy="#{funcionario.contrato.departamento.codigoDepartamento}" filterMatchMode="exact">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('funcionariostable').filter()">
+                        <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{vacacionCtrl.departamentosFilter}"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <p:outputLabel value="#{funcionario.contrato.departamento.nombre}"/>
+            </p:column>
+            <p:column headerText="Fecha de Ingreso">
+                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(funcionario.contrato.fechaIngreso)}"/>
+            </p:column>
+            <p:column headerText="Saldo actual">
+                <p:outputLabel value="#{vacacionCtrl.obtenerSaldoActualPorFuncionario(funcionario)}"/>
+            </p:column>
+            <p:column headerText="Seleccionar" style="width:70px;text-align: center">
+                <p:commandButton icon="ui-icon-check" title="Seleccionar" actionListener="#{vacacionCtrl.setFuncionarioEditar(funcionario)}" update=":activitiesform"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</html>
