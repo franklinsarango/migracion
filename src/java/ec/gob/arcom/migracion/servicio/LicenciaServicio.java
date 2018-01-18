@@ -25,7 +25,9 @@ public interface LicenciaServicio extends GenericService<Licencia, Long> {
 
     public List<Licencia> listarSolicitudesExcluyendoEstado(Long codigoUsuario, CatalogoDetalle estadoLicencia);
 
-    public List<Licencia> listarTareasJefe(Long jefatura, CatalogoDetalle estadoLicencia);
+    public List<Licencia> listarTareasJefePorDepartamento(Long jefatura, CatalogoDetalle estadoLicencia);
+    
+    public List<Licencia> listarTareasJefe(Long codigoJefe, CatalogoDetalle estadoLicencia);
 
     public List<Licencia> listarTareasFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia);
 

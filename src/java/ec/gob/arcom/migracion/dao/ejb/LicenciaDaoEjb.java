@@ -62,12 +62,26 @@ public class LicenciaDaoEjb extends GenericDaoEjbEl<Licencia, Long> implements L
     }
 
     @Override
-    public List<Licencia> listarTareasJefe(Long jefatura, CatalogoDetalle estadoLicencia) {
+    public List<Licencia> listarTareasJefePorDepartamento(Long jefatura, CatalogoDetalle estadoLicencia) {
         try {
             //Query query= em.createQuery("Select lic from Licencia lic where lic.estadoRegistro= :estado and lic.usuario.departamento.codigoDepartamento= :jefatura and lic.estadoLicencia= :estadoLicencia order by lic.numeroSolicitud ASC");
             Query query= em.createQuery("Select lic from Licencia lic, Contrato c where lic.estadoRegistro= :estado and c.estadoRegistro= :estado and c.usuario.codigoUsuario= lic.usuario.codigoUsuario and c.departamento.codigoDepartamento= :jefatura and lic.estadoLicencia= :estadoLicencia order by lic.numeroSolicitud ASC");
             query.setParameter("estado", true);
             query.setParameter("jefatura", jefatura);
+            query.setParameter("estadoLicencia", estadoLicencia);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Licencia> listarTareasJefe(Long codigoJefe, CatalogoDetalle estadoLicencia) {
+        try {
+            Query query= em.createQuery("Select lic from Licencia lic, Contrato c where lic.estadoRegistro= :estado and c.estadoRegistro= :estado and c.usuario.codigoUsuario= lic.usuario.codigoUsuario and c.departamento.jefe.codigoUsuario= :codigoJefe and lic.estadoLicencia= :estadoLicencia order by lic.numeroSolicitud ASC");
+            query.setParameter("estado", true);
+            query.setParameter("codigoJefe", codigoJefe);
             query.setParameter("estadoLicencia", estadoLicencia);
             return query.getResultList();
         } catch(Exception ex) {

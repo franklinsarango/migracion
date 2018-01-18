@@ -1074,7 +1074,7 @@ public class VacacionCtrl {
         if(login.getCodigoUsuario()!=null) {
             boolean esJefe= comprobarEsJefe();
             if(esJefe) {
-                tareas= licenciaServicio.listarTareasJefe(jefatura, catalogoDetalleServicio.obtenerPorNemonico("ESTENTRA").get(0));
+                tareas= licenciaServicio.listarTareasJefe(login.getCodigoUsuario(), catalogoDetalleServicio.obtenerPorNemonico("ESTENTRA").get(0));
             } else {
                 boolean esAsistenteTH= comprobarEsAsistenteTH();
                 if(esAsistenteTH) {

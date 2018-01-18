@@ -46,8 +46,13 @@ public class LicenciaServicioImpl extends GenericServiceImpl<Licencia, Long> imp
     }
 
     @Override
-    public List<Licencia> listarTareasJefe(Long jefatura, CatalogoDetalle estadoLicencia) {
-        return licenciaDao.listarTareasJefe(jefatura, estadoLicencia);
+    public List<Licencia> listarTareasJefePorDepartamento(Long jefatura, CatalogoDetalle estadoLicencia) {
+        return licenciaDao.listarTareasJefePorDepartamento(jefatura, estadoLicencia);
+    }
+    
+    @Override
+    public List<Licencia> listarTareasJefe(Long codigoJefe, CatalogoDetalle estadoLicencia) {
+        return licenciaDao.listarTareasJefe(codigoJefe, estadoLicencia);
     }
 
     @Override
