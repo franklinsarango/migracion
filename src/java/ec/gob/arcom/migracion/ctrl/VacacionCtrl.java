@@ -10,6 +10,7 @@ import ec.gob.arcom.migracion.alfresco.bean.AlfrescoDocumentBean;
 import ec.gob.arcom.migracion.alfresco.bean.AlfrescoFileBean;
 import ec.gob.arcom.migracion.alfresco.service.AlfrescoService;
 import ec.gob.arcom.migracion.alfresco.util.AlfrescoFileUtil;
+import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.mail.MailSender;
 import ec.gob.arcom.migracion.modelo.Adjunto;
 import ec.gob.arcom.migracion.modelo.Catalogo;
@@ -1440,19 +1441,20 @@ public class VacacionCtrl {
     }
     
     public void imprimirSolicitudPDF(Licencia l) {
-        if(l!=null && l.getTipoLicencia().getValor().equals("GRUPO_1")) {
-            urlFormatoImprimir= "../../birt/frameset?__report=report/vacaciones/solicitud-vacacion.rptdesign&codigo_licencia="
+        urlFormatoImprimir = ConstantesEnum.URL_PROD_REPORTES.getDescripcion();
+        if (l != null && l.getTipoLicencia().getValor().equals("GRUPO_1")) {
+            urlFormatoImprimir = urlFormatoImprimir + "/birt/frameset?__report=report/vacaciones/solicitud-vacacion.rptdesign&codigo_licencia="
                     + l.getCodigoLicencia() + "&__format=pdf";
-        } else if(l!=null && l.getTipoLicencia().getValor().equals("GRUPO_2")) {
-            urlFormatoImprimir= "../../birt/frameset?__report=report/vacaciones/solicitud-calamidad-domestica.rptdesign&codigo_licencia="
+        } else if (l != null && l.getTipoLicencia().getValor().equals("GRUPO_2")) {
+            urlFormatoImprimir = urlFormatoImprimir + "/birt/frameset?__report=report/vacaciones/solicitud-calamidad-domestica.rptdesign&codigo_licencia="
                     + l.getCodigoLicencia() + "&__format=pdf";
-        } else if(l!=null && l.getTipoLicencia().getValor().equals("GRUPO_3")) {
-            urlFormatoImprimir= "../../birt/frameset?__report=report/vacaciones/solicitud-asunto-institucional.rptdesign&codigo_licencia="
+        } else if (l != null && l.getTipoLicencia().getValor().equals("GRUPO_3")) {
+            urlFormatoImprimir = urlFormatoImprimir + "/birt/frameset?__report=report/vacaciones/solicitud-asunto-institucional.rptdesign&codigo_licencia="
                     + l.getCodigoLicencia() + "&__format=pdf";
         }
         System.out.println(urlFormatoImprimir);
     }
-    
+
     public boolean showDesistirOption(Licencia l) {
         if(l.getEstadoLicencia().equals(catalogoDetalleServicio.obtenerPorNemonico("ESTENTRA").get(0)) ||
                 l.getEstadoLicencia().equals(catalogoDetalleServicio.obtenerPorNemonico("ESTOTOR").get(0))) {
