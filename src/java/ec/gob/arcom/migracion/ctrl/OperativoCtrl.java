@@ -74,11 +74,7 @@ public class OperativoCtrl extends BaseCtrl {
     public static final String TIPODETENIDO= "TIPOINFDETOPE";
     public static final String TIPODEPOSITARIO= "TIPOINFDEPMAQ";
     public static final String TIPOSELLO= "TIPOINFSELL";
-    public static final String INSERT= "INSERT";
-    public static final String UPDATE=  "UPDATE";
-    public static final String DELETE= "DELETE";
-    
-    
+
     @EJB
     private OperativoServicio operativoServicio;
     @EJB
@@ -715,8 +711,9 @@ public class OperativoCtrl extends BaseCtrl {
             
             //SE ELIMINA LE OPERATTIVO
             operativoServicio.delete(operativo.getCodigoOperativo());
-
-            saveAuditoria(DELETE, operativo, new Operativo());
+            Auditoria a= new Auditoria(Auditoria.DELETE, operativo, new Operativo(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            //saveAuditoria(Auditoria.DELETE, operativo, new Operativo());
             obtenerOperativos();
             mostrarMensaje(FacesMessage.SEVERITY_INFO, "Operativo eliminado correctamente");
         }
@@ -805,7 +802,9 @@ public class OperativoCtrl extends BaseCtrl {
         detallesOperativo.remove(detalle);
         if(detalle.getCodigoDetalleOperativo()!=null) {
             detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
-            saveAuditoria(DELETE, detalle, new DetalleOperativo());
+            Auditoria a= new Auditoria(Auditoria.DELETE, detalle, new DetalleOperativo(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            //saveAuditoria(Auditoria.DELETE, detalle, new DetalleOperativo());
         }
     }
     
@@ -822,7 +821,9 @@ public class OperativoCtrl extends BaseCtrl {
         detallesOperativo.remove(detalle);
         if(detalle.getCodigoDetalleOperativo()!=null) {
             detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
-            saveAuditoria(DELETE, detalle, new DetalleOperativo());
+            Auditoria a= new Auditoria(Auditoria.DELETE, detalle, new DetalleOperativo(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            //saveAuditoria(Auditoria.DELETE, detalle, new DetalleOperativo());
         }
     }
     
@@ -840,7 +841,9 @@ public class OperativoCtrl extends BaseCtrl {
         maquinarias.remove(maq);
         if(maq.getCodigoMaquinaria()!=null) {
             maquinariaConcesionServicio.delete(maq.getCodigoMaquinaria());
-            saveAuditoria(DELETE, maq, new MaquinariaConcesion());
+            Auditoria a= new Auditoria(Auditoria.DELETE, maq, new MaquinariaConcesion(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            //saveAuditoria(Auditoria.DELETE, maq, new MaquinariaConcesion());
         }
     }
     
@@ -890,7 +893,9 @@ public class OperativoCtrl extends BaseCtrl {
         detallesOperativo.remove(detalle);
         if(detalle.getCodigoDetalleOperativo()!=null) {
             detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
-            saveAuditoria(DELETE, detalle, new DetalleOperativo());
+            Auditoria a= new Auditoria(Auditoria.DELETE, detalle, new DetalleOperativo(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            //saveAuditoria(Auditoria.DELETE, detalle, new DetalleOperativo());
         }
     }
     
@@ -947,7 +952,10 @@ public class OperativoCtrl extends BaseCtrl {
             operativo.setFechaResolucionAdministrativo(null);
         }
         operativoServicio.create(operativo);
-        saveAuditoria(INSERT, operativo, new Operativo());
+        Auditoria a= new Auditoria(Auditoria.INSERT, operativo, new Operativo(), login.getCodigoUsuario());
+        auditoriaServicio.create(a);
+        
+        //saveAuditoria(Auditoria.INSERT, operativo, new Operativo());
         
         for(DetalleOperativo detope : coordenadasOperativo) {
             detallesOperativo.add(detope);
@@ -959,7 +967,9 @@ public class OperativoCtrl extends BaseCtrl {
             detope.setFechaCreacion(Calendar.getInstance().getTime());
             detope.setUsuarioCreacion(usrCreacion);
             detalleOperativoServicio.create(detope);
-            saveAuditoria(INSERT, detope, new DetalleOperativo());
+            a= new Auditoria(Auditoria.INSERT, detope, new DetalleOperativo(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            //saveAuditoria(Auditoria.INSERT, detope, new DetalleOperativo());
         }
         return true;
     }
@@ -971,7 +981,10 @@ public class OperativoCtrl extends BaseCtrl {
             mc.setUsuarioCreacion(BigInteger.valueOf(login.getCodigoUsuario()));
             mc.setOperativo(operativo);
             maquinariaConcesionServicio.create(mc);
-            saveAuditoria(INSERT, mc, new MaquinariaConcesion());
+            
+            Auditoria a= new Auditoria(Auditoria.INSERT, mc, new MaquinariaConcesion(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            //saveAuditoria(INSERT, mc, new MaquinariaConcesion());
         }
         return true;
     }
@@ -1001,7 +1014,9 @@ public class OperativoCtrl extends BaseCtrl {
             operativo.setFechaResolucionAdministrativo(null);
         }
         operativoServicio.update(operativo);
-        saveAuditoria(UPDATE, operativo, anterior);
+        Auditoria a= new Auditoria(Auditoria.UPDATE, operativo, anterior, login.getCodigoUsuario());
+        auditoriaServicio.create(a);
+        //saveAuditoria(UPDATE, operativo, anterior);
         
         if(coordenadasEditadas) {
             for(DetalleOperativo detope : detallesOperativo) {
@@ -1021,12 +1036,16 @@ public class OperativoCtrl extends BaseCtrl {
                 detope.setFechaModificacion(Calendar.getInstance().getTime());
                 detope.setUsuarioModificacion(usr);
                 detalleOperativoServicio.update(detope);
-                saveAuditoria(UPDATE, detope, detopeAnterior);
+                a= new Auditoria(Auditoria.UPDATE, detope, detopeAnterior, login.getCodigoUsuario());
+                auditoriaServicio.create(a);
+                //saveAuditoria(UPDATE, detope, detopeAnterior);
             } else {
                 detope.setFechaCreacion(Calendar.getInstance().getTime());
                 detope.setUsuarioCreacion(usr);
                 detalleOperativoServicio.create(detope);
-                saveAuditoria(INSERT, detope, new DetalleOperativo());
+                a= new Auditoria(Auditoria.INSERT, detope, new DetalleOperativo(), login.getCodigoUsuario());
+                auditoriaServicio.create(a);
+                //saveAuditoria(INSERT, detope, new DetalleOperativo());
             }
         }
         return true;
@@ -1041,17 +1060,22 @@ public class OperativoCtrl extends BaseCtrl {
                 mc.setFechaModificacion(Calendar.getInstance().getTime());
                 mc.setUsuarioModificacion(BigInteger.valueOf(login.getCodigoUsuario()));
                 maquinariaConcesionServicio.update(mc);
-                saveAuditoria(UPDATE, mc, mcAnterior);
+                Auditoria a= new Auditoria(Auditoria.UPDATE, mc, mcAnterior, login.getCodigoUsuario());
+                auditoriaServicio.create(a);
+                //saveAuditoria(UPDATE, mc, mcAnterior);
             } else {
                 mc.setFechaCreacion(Calendar.getInstance().getTime());
                 mc.setUsuarioCreacion(BigInteger.valueOf(login.getCodigoUsuario()));
                 maquinariaConcesionServicio.create(mc);
-                saveAuditoria(INSERT, mc, new MaquinariaConcesion());
+                Auditoria a= new Auditoria(Auditoria.INSERT, mc, new MaquinariaConcesion(), login.getCodigoUsuario());
+                auditoriaServicio.create(a);
+                //saveAuditoria(INSERT, mc, new MaquinariaConcesion());
             }
         }
         return true;
     }
     
+    /*
     private void saveAuditoria(String accion, Operativo nuevo, Operativo anterior) {
         Auditoria auditoria = new Auditoria();
         auditoria.setAccion(accion);
@@ -1093,6 +1117,7 @@ public class OperativoCtrl extends BaseCtrl {
         }
         auditoriaServicio.create(auditoria);
     }
+    */
     
     private void finalizarGuardado() {
         RequestContext.getCurrentInstance().execute("PF('operativofrmwg').hide();");
@@ -1447,7 +1472,9 @@ public class OperativoCtrl extends BaseCtrl {
         detallesOperativo.remove(detalle);
         if(detalle.getCodigoDetalleOperativo()!=null) {
             detalleOperativoServicio.delete(detalle.getCodigoDetalleOperativo());
-            saveAuditoria(DELETE, detalle, new DetalleOperativo());
+            Auditoria a= new Auditoria(Auditoria.DELETE, detalle, new DetalleOperativo(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            //saveAuditoria(DELETE, detalle, new DetalleOperativo());
         }
     }
     

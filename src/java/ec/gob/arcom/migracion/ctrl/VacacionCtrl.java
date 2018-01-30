@@ -13,6 +13,7 @@ import ec.gob.arcom.migracion.alfresco.util.AlfrescoFileUtil;
 import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.mail.MailSender;
 import ec.gob.arcom.migracion.modelo.Adjunto;
+import ec.gob.arcom.migracion.modelo.Auditoria;
 import ec.gob.arcom.migracion.modelo.Catalogo;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.Contrato;
@@ -25,6 +26,7 @@ import ec.gob.arcom.migracion.modelo.Secuencia;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.modelo.UsuarioRol;
 import ec.gob.arcom.migracion.servicio.AdjuntoServicio;
+import ec.gob.arcom.migracion.servicio.AuditoriaServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoServicio;
 import ec.gob.arcom.migracion.servicio.ContratoServicio;
@@ -91,6 +93,8 @@ public class VacacionCtrl {
     private ContratoServicio contratoServicio;
     @EJB
     private GestionVacacionServicio gestionVacacionServicio;
+    @EJB
+    private AuditoriaServicio auditoriaServicio;
     
     private Licencia licencia;
     private Date fechaMinima;
@@ -829,18 +833,26 @@ public class VacacionCtrl {
     
     public String updateUsuarioAction() {
         if(usuarioEditar!=null) {
+            Usuario anterior= usuarioServicio.findByPk(usuarioEditar.getCodigoUsuario());
             usuarioServicio.update(usuarioEditar);
+            Auditoria a= new Auditoria(Auditoria.UPDATE, usuarioEditar, anterior, login.getCodigoUsuario());
+            auditoriaServicio.create(a);
             if(contrato!=null) {
                 if(contrato.getCodigoContrato()!=null) {
                     contrato.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
                     contrato.setFechaModificacion(Calendar.getInstance().getTime());
+                    Contrato cAnterior= contratoServicio.findByPk(contrato.getCodigoContrato());
                     contratoServicio.update(contrato);
+                    a= new Auditoria(Auditoria.UPDATE, contrato, cAnterior, login.getCodigoUsuario());
+                    auditoriaServicio.create(a);
                 } else {
                     contrato.setUsuario(usuarioEditar);
                     contrato.setEstadoRegistro(true);
                     contrato.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
                     contrato.setFechaCreacion(Calendar.getInstance().getTime());
                     contratoServicio.create(contrato);
+                    a= new Auditoria(Auditoria.INSERT, contrato, new Contrato(), login.getCodigoUsuario());
+                    auditoriaServicio.create(a);
                     licenciaServicio.inicializarVacaciones(usuarioEditar.getCodigoUsuario(), saldoVacacionContrato);
                 }
             }
@@ -1054,6 +1066,8 @@ public class VacacionCtrl {
         licencia.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
 
         licenciaServicio.create(licencia);
+        Auditoria a= new Auditoria(Auditoria.INSERT, licencia, new Licencia(), login.getCodigoUsuario());
+        auditoriaServicio.create(a);
         try {
             guardarAdjuntos();
         } catch(Exception ex) {
@@ -1151,10 +1165,6 @@ public class VacacionCtrl {
             } else {
                 calendarPattern= "dd-MM-yyyy HH:mm";
             }
-            
-            
-            
-            
             return "vacaciones-licencia-subsanar-frm";
         } else {
             this.aprobado= true;
@@ -1164,6 +1174,7 @@ public class VacacionCtrl {
     }
     
     public String saveAprobacionJefeAction() {
+        Licencia anterior= licenciaServicio.findByPk(licencia.getCodigoLicencia());
         if(aprobado) {
             licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTOTOR").get(0));
             sendNewTaskMsgTH(licencia);
@@ -1188,6 +1199,8 @@ public class VacacionCtrl {
         licencia.setFechaModificacion(Calendar.getInstance().getTime());
         licencia.setUsuarioModificacion(u);
         licenciaServicio.update(licencia);
+        Auditoria a= new Auditoria(Auditoria.UPDATE, licencia, anterior, u.getCodigoUsuario());
+        auditoriaServicio.create(a);
         FacesUtil.showInfoMessage("Aviso", "Tarea realizada correctamente");
         return resetAction();
     }
@@ -1207,6 +1220,7 @@ public class VacacionCtrl {
     }
     
     public String saveSubsanacionFuncionarioAction() {
+        Licencia anterior= licenciaServicio.findByPk(licencia.getCodigoLicencia());
         Long fechaI= licencia.getFechaHoraSalida().getTime();
         Long fechaF= licencia.getFechaHoraRetorno().getTime();
             
@@ -1238,6 +1252,8 @@ public class VacacionCtrl {
             licencia.setFechaHoraRetorno(c.getTime());
         }
         licenciaServicio.update(licencia);
+        Auditoria a= new Auditoria(Auditoria.UPDATE, licencia, anterior, login.getCodigoUsuario());
+        auditoriaServicio.create(a);
         try {
             guardarAdjuntos();
         } catch(Exception ex) {
@@ -1300,19 +1316,25 @@ public class VacacionCtrl {
     }
     
     public String saveLegalizacionTHAction() {
+        Licencia anterior= licenciaServicio.findByPk(licencia.getCodigoLicencia());
         if(archivosParaCargar.size()>0) {
             licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTINSC").get(0));
             licencia.setFechaModificacion(Calendar.getInstance().getTime());
             licencia.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
             licenciaServicio.update(licencia);
+            Auditoria a= new Auditoria(Auditoria.UPDATE, licencia, anterior, login.getCodigoUsuario());
+            auditoriaServicio.create(a);
             if(licencia.getTipoLicencia().equals(catalogoDetalleServicio.obtenerPorNemonico("MOTPERVAC").get(0))) {
                 Usuario usrlogged= usuarioServicio.findByPk(login.getCodigoUsuario());
                 GestionVacacion gvOld= gestionVacacionServicio.findByUser(licencia.getUsuario().getCodigoUsuario());
+                GestionVacacion gvAnterior= gestionVacacionServicio.findByUser(licencia.getUsuario().getCodigoUsuario());
                 GestionVacacion gv= gvOld;
                 gvOld.setEstadoRegistro(false);
                 gvOld.setFechaModificacion(Calendar.getInstance().getTime());
                 gvOld.setUsuarioModificacion(usrlogged);
                 gestionVacacionServicio.update(gvOld);
+                a= new Auditoria(Auditoria.UPDATE, gvOld, gvAnterior, login.getCodigoUsuario());
+                auditoriaServicio.create(a);
                 
                 gv.setSaldoAnterior(gv.getSaldoActual());;
                 gv.setSaldoActual(licencia.getSaldoVacaciones());
@@ -1323,6 +1345,8 @@ public class VacacionCtrl {
                 gv.setFechaCreacion(Calendar.getInstance().getTime());
                 gv.setUsuarioCreacion(usrlogged);
                 gestionVacacionServicio.create(gv);
+                a= new Auditoria(Auditoria.INSERT, gv, new GestionVacacion(), login.getCodigoUsuario());
+                auditoriaServicio.create(a);
             }
             try {
                 guardarAdjuntos();
@@ -1470,11 +1494,14 @@ public class VacacionCtrl {
     }
     
     public void saveDesistimientoAction() {
+        Licencia anterior= licenciaServicio.findByPk(licencia.getCodigoLicencia());
         Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
         String observacionFinal= licencia.getObservaciones() + " \n \n Desistimiento por: \n " + observacionDesistir + " \n Funcionario: \n " + usr.getNumeroDocumento() + " \n " + usr.getNombresCompletos();
         this.licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTARCHIV").get(0));
         this.licencia.setObservaciones(observacionFinal);
         licenciaServicio.update(licencia);
+        Auditoria a= new Auditoria(Auditoria.UPDATE, licencia, anterior, login.getCodigoUsuario());
+        auditoriaServicio.create(a);
         RequestContext.getCurrentInstance().execute("PF('desistirfrmwg').hide();");
         FacesUtil.showInfoMessage("Aviso", "Desistimiento realizado correctamente");
     }
@@ -1612,14 +1639,19 @@ public class VacacionCtrl {
         licencia.setFechaCreacion(Calendar.getInstance().getTime());
         licencia.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
         licenciaServicio.create(licencia);
+        Auditoria a= new Auditoria(Auditoria.INSERT, licencia, new Licencia(), login.getCodigoUsuario());
+        auditoriaServicio.create(a);
         if(licencia.getTipoLicencia().equals(catalogoDetalleServicio.obtenerPorNemonico("MOTPERVAC").get(0))) {
             Usuario usrlogged= usuarioServicio.findByPk(login.getCodigoUsuario());
             GestionVacacion gvOld= gestionVacacionServicio.findByUser(licencia.getUsuario().getCodigoUsuario());
+            GestionVacacion gvAnterior= gestionVacacionServicio.findByUser(licencia.getUsuario().getCodigoUsuario());
             GestionVacacion gv= gvOld;
             gvOld.setEstadoRegistro(false);
             gvOld.setFechaModificacion(Calendar.getInstance().getTime());
             gvOld.setUsuarioModificacion(usrlogged);
             gestionVacacionServicio.update(gvOld);
+            a= new Auditoria(Auditoria.UPDATE, gvOld, gvAnterior, login.getCodigoUsuario());
+            auditoriaServicio.create(a);
 
             gv.setSaldoAnterior(gv.getSaldoActual());;
             gv.setSaldoActual(licencia.getSaldoVacaciones());
@@ -1630,6 +1662,8 @@ public class VacacionCtrl {
             gv.setFechaCreacion(Calendar.getInstance().getTime());
             gv.setUsuarioCreacion(usrlogged);
             gestionVacacionServicio.create(gv);
+            a= new Auditoria(Auditoria.INSERT, gv, new GestionVacacion(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);
         }
         
         try {
@@ -1781,11 +1815,18 @@ public class VacacionCtrl {
     }
     
     public void finalizarContrato() {
+        Contrato cAnterior= contratoServicio.findByPk(contrato.getCodigoContrato());
         contrato.setEstadoRegistro(false);
         GestionVacacion gv= gestionVacacionServicio.findByUser(usuarioEditar.getCodigoUsuario());
+        GestionVacacion gvAnterior= gestionVacacionServicio.findByUser(usuarioEditar.getCodigoUsuario());
         gv.setEstadoRegistro(false);
         contratoServicio.update(contrato);
         gestionVacacionServicio.update(gv);
+        Auditoria a= new Auditoria(Auditoria.UPDATE, contrato, cAnterior, login.getCodigoUsuario());
+        auditoriaServicio.create(a);
+        a= new Auditoria(Auditoria.UPDATE, gv, gvAnterior, login.getCodigoUsuario());
+        auditoriaServicio.create(a);
+        
         contratos= contratoServicio.listarPorUsuario(usuarioEditar);
         if(contratos.size()>0) {
             contrato= contratos.get(0);

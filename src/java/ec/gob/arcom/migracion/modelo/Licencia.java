@@ -350,6 +350,33 @@ public class Licencia implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.gob.arcom.migracion.modelo.Licencia[ id=" + codigoLicencia + " ]";
+        String response;
+        response= "Licencia_vacaciones{" + 
+                "codigoLicencia=" + codigoLicencia + 
+                ", numeroSolicitud=" + numeroSolicitud + 
+                ", tipoFormulario=" + (tipoFormulario != null ? tipoFormulario.getCodigoCatalogoDetalle() : null) + 
+                ", tipoLicencia=" + (tipoLicencia != null ? tipoLicencia.getCodigoCatalogoDetalle() : null) + 
+                ", usuario=" + usuario + 
+                ", fechaSolicitud=" + (fechaSolicitud != null ? fechaSolicitud : null) +
+                ", fechaHoraSalida=" + (fechaHoraSalida != null ? fechaHoraSalida : null) + 
+                ", fechaHoraRetorno=" + (fechaHoraRetorno != null ? fechaHoraRetorno : null) + 
+                ", diasLicencia=" + diasLicencia + 
+                ", saldoVacaciones=" + saldoVacaciones + 
+                ", estadoLicencia=" + (estadoLicencia != null ? estadoLicencia.getCodigoCatalogoDetalle() : null) + 
+                ", usuarioAprobacion=" + usuarioAprobacion + 
+                ", observaciones=" + observaciones + 
+                ", observacionesJefatura=" + observacionesJefatura + 
+                ", observacionesRecursosHumanos=" + observacionesRecursoHumanos + 
+                ", provinciaComision=" + (provinciaComision != null ? provinciaComision.getCodigoLocalidad() : null) +
+                ", cantonComision=" + (cantonComision != null ? cantonComision.getCodigoLocalidad() : null) +
+                ", parroquiaComision=" + (parroquiaComision != null ? parroquiaComision.getCodigoLocalidad() : null) +
+                ", asuntoInstitucional=" + asuntoInstitucional + 
+                ", estadoRegistro=" + estadoRegistro + 
+                ", fechaCreacion=" + fechaCreacion + 
+                ", usuarioCreacion=" + usuarioCreacion + 
+                ", fechaModificacion=" + fechaModificacion + 
+                ", usuarioModificacion=" + usuarioModificacion +
+                 "}";
+        return response;
     }
 }

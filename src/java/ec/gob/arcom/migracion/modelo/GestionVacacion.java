@@ -209,7 +209,24 @@ public class GestionVacacion implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.gob.arcom.migracion.modelo.GestionVacacion[ id=" + codigoGestionVacacion + " ]";
+        String response;
+        response= "Gestion_vacacion{" + 
+                "codigoGestionVacacion=" + codigoGestionVacacion + 
+                ", usuario=" + usuario + 
+                ", contrato=" + (contrato != null ? contrato.getCodigoCatalogoDetalle() : null) + 
+                ", licencia=" + (licencia != null ? licencia.getCodigoLicencia() : null) + 
+                ", saldoAnterior=" + saldoAnterior + 
+                ", saldoActual=" + saldoActual + 
+                ", diasIncrementados=" + diasIncrementados + 
+                ", diasDecrementados=" + diasDecrementados + 
+                ", fechaCorte=" + (fechaCorte != null ? fechaCorte : null) + 
+                ", estadoRegistro=" + estadoRegistro + 
+                ", fechaCreacion=" + fechaCreacion + 
+                ", usuarioCreacion=" + usuarioCreacion + 
+                ", fechaModificacion=" + fechaModificacion + 
+                ", usuarioModificacion=" + usuarioModificacion +
+                 "}";
+        return response;
     }
     
 }

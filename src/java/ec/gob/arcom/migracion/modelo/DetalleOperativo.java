@@ -257,53 +257,13 @@ public class DetalleOperativo implements Serializable {
         String response;
         response= "DetalleOperativo{" + 
                 "codigoDetalleOperativo=" + codigoDetalleOperativo + ", operativo=" + operativo.getCodigoOperativo() +
-                ", tipoInformacionRegistro=" + tipoInformacionRegistro.getCodigoCatalogoDetalle() + ", tipoInstitucion=" + obtenerTipoInstitucion() +
+                ", tipoInformacionRegistro=" + tipoInformacionRegistro.getCodigoCatalogoDetalle() + ", tipoInstitucion=" + (tipoInstitucion != null ? tipoInstitucion : null) +
                 ", numeroPersonas=" + numeroPersonas + ", descripcionInstitucion=" + descripcionInstitucion + ", nombre" + nombre + ", apellido=" + apellido + 
-                ", numeroDocumento=" + numeroDocumento + ", tipoDepositario=" + obtenerTipoDepositario() + ", descripcionDepositario=" + descripcionDepositario +
-                ", numeroCoordenada=" + numeroCoordenada + ", utmEste=" + utmEste + ", utmNorte=" + utmNorte + ", tipoSello=" + obtenerTipoSello() + 
+                ", numeroDocumento=" + numeroDocumento + ", tipoDepositario=" + (tipoDepositario != null ? tipoDepositario : null) + ", descripcionDepositario=" + descripcionDepositario +
+                ", numeroCoordenada=" + numeroCoordenada + ", utmEste=" + utmEste + ", utmNorte=" + utmNorte + ", tipoSello=" + (tipoSello != null ? tipoSello : null) + 
                 ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion + 
-                ", fechaModificacion=" + obtenerFechaModificacion() + ", usuarioModificacion=" + obtenerUsuarioModificacion() +
+                ", fechaModificacion=" + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion +
                  "}";
         return response;
-    }
-    
-    private String obtenerTipoInstitucion() {
-        if(tipoInstitucion==null) {
-            return "";
-        } else {
-            return tipoInstitucion.getCodigoCatalogoDetalle() + "";
-        }
-    }
-    
-    private String obtenerTipoDepositario() {
-        if(tipoDepositario==null) {
-            return "";
-        } else {
-            return tipoDepositario.getCodigoCatalogoDetalle() + "";
-        }
-    }
-    
-    private String obtenerTipoSello() {
-        if(tipoSello==null) {
-            return "";
-        } else {
-            return tipoSello.getCodigoCatalogoDetalle() + "";
-        }
-    }
-    
-    private String obtenerFechaModificacion() {
-        if(fechaModificacion==null) {
-            return "";
-        } else {
-            return fechaModificacion.toString();
-        }
-    }
-    
-    private String obtenerUsuarioModificacion() {
-        if(usuarioModificacion==null) {
-            return "";
-        } else {
-            return usuarioModificacion.getNumeroDocumento();
-        }
     }
 }

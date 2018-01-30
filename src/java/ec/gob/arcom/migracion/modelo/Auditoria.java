@@ -7,6 +7,7 @@ package ec.gob.arcom.migracion.modelo;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,6 +32,10 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Auditoria.findAll", query = "SELECT a FROM Auditoria a")})
 public class Auditoria implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final String INSERT= "INSERT";
+    public static final String UPDATE=  "UPDATE";
+    public static final String DELETE= "DELETE";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -56,6 +61,19 @@ public class Auditoria implements Serializable {
     private String codigoTabla;
     
     public Auditoria() {
+    }
+    
+    public Auditoria(String accion, Object actionObj, Object anterior, Long codigoUsuario) {
+        this.accion= accion;
+        this.fecha= Calendar.getInstance().getTime();
+        this.usuario= BigInteger.valueOf(codigoUsuario);
+        this.detalleAnterior= actionObj.toString();
+        if(accion.equals(Auditoria.UPDATE)) {
+            detalleAnterior= anterior.toString();
+            detalleCambios= actionObj.toString();
+        } else {
+            detalleCambios= null;
+        }
     }
 
     public Auditoria(Long codigoAuditoria) {
