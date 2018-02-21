@@ -187,14 +187,13 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
 
     public String guardarRegistro() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
-        System.out.println("licenciaComercializacion.getEstadoLicencia().getCodigoCatalogoDetalle(): " + licenciaComercializacion.getEstadoLicencia().getCodigoCatalogoDetalle());
-        /*if (licenciaComercializacion.getFechaOtorga() != null) {
-            if (licenciaComercializacion.getFechaOtorga().after(licenciaComercializacion.getFechaInscribe())) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "Fecha de otorgamiento debe ser menor o igual a la fecha de inscripción", null));
-                return null;
-            }
-        }*/
+        
+        String mensajeError = validarCampos();
+        if(mensajeError != null){           
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, mensajeError, null));        
+            return null;
+        }               
+        
         if (licenciaComercializacion.getCodigoMineralInteres().getCodigoCatalogoDetalle().equals(1000L)) {
             licenciaComercializacion.setCodigoMineralInteres(null);
         }
@@ -238,6 +237,32 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
         return "licenciascomercializacion";
     }
 
+    public String validarCampos() {
+        String mensajeError = null;
+
+        //SE VALIDA EL CAMPO FECHA DE OTORGAMIENTO
+        if (licenciaComercializacion.getEstadoLicencia() != null && licenciaComercializacion.getEstadoLicencia().getNemonico().equals(ConstantesEnum.EST_OTORGADO.getNemonico())) {
+            if (!(licenciaComercializacion.getFechaOtorga() != null)) {
+                return "Fecha de Otorgamiento es Obligatorio";
+            }
+        }
+
+        //SE VALIDA EL CAMPO FECHA INSCRITO
+        if (licenciaComercializacion.getEstadoLicencia() != null && licenciaComercializacion.getEstadoLicencia().getNemonico().equals(ConstantesEnum.EST_INSCRITO.getNemonico())) {
+            if (!(licenciaComercializacion.getFechaOtorga() != null)) {
+                return "Fecha de Otorgamiento es Obligatorio";
+            }
+            if (!(licenciaComercializacion.getFechaInscribe() != null)) {
+                return "Fecha de Inscripción es Obligatorio";
+            }
+            if (licenciaComercializacion.getFechaOtorga().after(licenciaComercializacion.getFechaInscribe())) {
+                return "Fecha de Otorgamiento debe ser menor o igual a la fecha de Inscripción";
+            }
+        }
+
+        return mensajeError;
+    }
+    
     public List<SelectItem> getProvincias() {
         if (provincias == null) {
             provincias = new ArrayList<>();

@@ -433,6 +433,13 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         System.out.println("codigoRegimen: " + concesionMinera.getCodigoRegimen().getCodigoRegimen());
         System.out.println("codigoFase: " + concesionMinera.getCodigoFase().getCodigoFase());
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
+        
+        String mensajeError = validarCampos();
+        if(mensajeError != null){           
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, mensajeError, null));        
+            return null;
+        }
+        
         LocalidadRegional localidadRegional = localidadRegionalServicio
                 .obtenerPorCodigoLocalidad(Long.valueOf(concesionMinera.getCodigoProvincia().toString()));
         Regional regional = regionalServicio.findByPk(localidadRegional.getLocalidadRegionalPK().getCodigoRegional());
@@ -667,6 +674,32 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         //return "concesionesmineras";
     }
 
+    public String validarCampos() {
+        String mensajeError = null;
+
+        //SE VALIDA EL CAMPO FECHA DE OTORGAMIENTO
+        if (concesionMinera.getEstadoConcesion()!= null && concesionMinera.getEstadoConcesion().getNemonico().equals(ConstantesEnum.EST_OTORGADO.getNemonico())) {
+            if (!(concesionMinera.getFechaOtorga() != null)) {
+                return "Fecha de Otorgamiento es Obligatorio";
+            }
+        }
+
+        //SE VALIDA EL CAMPO FECHA INSCRITO
+        if (concesionMinera.getEstadoConcesion()!= null && concesionMinera.getEstadoConcesion().getNemonico().equals(ConstantesEnum.EST_INSCRITO.getNemonico())) {
+            if (!(concesionMinera.getFechaOtorga() != null)) {
+                return "Fecha de Otorgamiento es Obligatorio";
+            }
+            if (!(concesionMinera.getFechaInscribe() != null)) {
+                return "Fecha de Inscripción es Obligatorio";
+            }
+            if (concesionMinera.getFechaOtorga().after(concesionMinera.getFechaInscribe())) {
+                return "Fecha de Otorgamiento debe ser menor o igual a la fecha de Inscripción";
+            }
+        }
+
+        return mensajeError;
+    }
+    
     public List<SelectItem> getProvincias() {
         if (provincias == null) {
             provincias = new ArrayList<>();

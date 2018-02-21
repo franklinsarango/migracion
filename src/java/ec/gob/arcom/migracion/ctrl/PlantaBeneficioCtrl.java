@@ -222,16 +222,17 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
 
     public String guardarRegistro() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
-        /*if (plantaBeneficio.getFechaOtorga() != null && plantaBeneficio.getFechaInscribe() != null) {
-            if (plantaBeneficio.getFechaOtorga().after(plantaBeneficio.getFechaInscribe())) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "Fecha de otorgamiento debe ser menor o igual a la fecha de inscripción", null));
-                return null;
-            }
-        }*/
+        
         if (plantaBeneficio.getEstadoPlanta().getCodigoCatalogoDetalle() == null) {
             plantaBeneficio.setEstadoPlanta(null);
         }
+        
+        String mensajeError = validarCampos();
+        if(mensajeError != null){           
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, mensajeError, null));        
+            return null;
+        }
+        
         try {
             //SE AGREGA LA CONCESION DONDE ESTA UBICADA LA PLANTA DE BENEFICIO
             plantaBeneficio.setCodigoConcesionUbicacionPlanta(null);
@@ -301,6 +302,32 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
             ex.printStackTrace();
         }
         return "plantasbeneficio";
+    }
+    
+    public String validarCampos(){        
+        String mensajeError = null;
+        
+        //SE VALIDA EL CAMPO FECHA DE OTORGAMIENTO
+        if (plantaBeneficio.getEstadoPlanta() != null && plantaBeneficio.getEstadoPlanta().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_OTORGADO.getCodigo())) {
+            if (!(plantaBeneficio.getFechaOtorga() != null)) {
+                return "Fecha de Otorgamiento es Obligatorio";                
+            }
+        }
+        
+        //SE VALIDA EL CAMPO FECHA INSCRITO
+        if (plantaBeneficio.getEstadoPlanta() != null && plantaBeneficio.getEstadoPlanta().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_INSCRITO.getCodigo())) {
+            if (!(plantaBeneficio.getFechaOtorga() != null)) {
+                return "Fecha de Otorgamiento es Obligatorio";                
+            }
+            if (!(plantaBeneficio.getFechaInscribe() != null)) {
+                return "Fecha de Inscripción es Obligatorio";                
+            }
+            if (plantaBeneficio.getFechaOtorga().after(plantaBeneficio.getFechaInscribe())) {
+                return "Fecha de Otorgamiento debe ser menor o igual a la fecha de Inscripción";                
+            }
+        }
+                
+        return mensajeError;        
     }
 
     public void generarCodigoArcomContrato() {
