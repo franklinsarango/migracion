@@ -1019,10 +1019,18 @@ public class OperativoCtrl extends BaseCtrl {
         //saveAuditoria(UPDATE, operativo, anterior);
         
         if(coordenadasEditadas) {
+            List<DetalleOperativo> coordenadasRemover= new ArrayList();
             for(DetalleOperativo detope : detallesOperativo) {
-                if(detope.getTipoInformacionRegistro().equals(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFCOOR").get(0)))
+                if(detope.getTipoInformacionRegistro().equals(catalogoDetalleServicio.obtenerPorNemonico("TIPOINFCOOR").get(0))) {
+                    coordenadasRemover.add(detope);
                     detalleOperativoServicio.delete(detope.getCodigoDetalleOperativo());
+                }
             }
+            
+            for(DetalleOperativo detope : coordenadasRemover) {
+                detallesOperativo.remove(detope);
+            }
+            
             for(DetalleOperativo detope : coordenadasOperativo) {
                 detallesOperativo.add(detope);
             }

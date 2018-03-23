@@ -395,9 +395,15 @@ public class Operativo implements Serializable {
     public String toString() {
         String response;
         response= "Operativo{" + 
-                "codigoOperativo=" + codigoOperativo + ", tipoOperativo=" + tipoOperativo.getCodigoCatalogoDetalle() + 
-                ", regional=" + regional.getCodigoRegional() + ", provincia=" + provincia.getCodigoLocalidad() + ", canton=" + canton.getCodigoLocalidad() + 
-                ", parroquia=" + parroquia.getCodigoLocalidad() + ", sector=" + sector + ", utmEste=" + utmEste + ", utmNorte=" + utmNorte + 
+                "codigoOperativo=" + codigoOperativo + 
+                ", tipoOperativo=" + tipoOperativo.getCodigoCatalogoDetalle() + 
+                ", regional=" + regional.getCodigoRegional() +
+                ", provincia=" + provincia.getCodigoLocalidad() +
+                ", canton=" + canton.getCodigoLocalidad() + 
+                ", parroquia=" + parroquia.getCodigoLocalidad() +
+                ", sector=" + sector +
+                ", utmEste=" + utmEste +
+                ", utmNorte=" + utmNorte + 
                 ", tipoSello=" + (tipoSello != null ? tipoSello.getCodigoCatalogoDetalle() : null) + 
                 ", numeroSello=" + (numeroSello != null ? numeroSello : null) + 
                 ", fechaInformeMae=" + (fechaInformeMae != null ? fechaInformeMae : null) + 

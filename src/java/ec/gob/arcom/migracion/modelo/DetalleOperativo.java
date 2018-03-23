@@ -256,13 +256,26 @@ public class DetalleOperativo implements Serializable {
     public String toString() {
         String response;
         response= "DetalleOperativo{" + 
-                "codigoDetalleOperativo=" + codigoDetalleOperativo + ", operativo=" + operativo.getCodigoOperativo() +
-                ", tipoInformacionRegistro=" + tipoInformacionRegistro.getCodigoCatalogoDetalle() + ", tipoInstitucion=" + (tipoInstitucion != null ? tipoInstitucion : null) +
-                ", numeroPersonas=" + numeroPersonas + ", descripcionInstitucion=" + descripcionInstitucion + ", nombre" + nombre + ", apellido=" + apellido + 
-                ", numeroDocumento=" + numeroDocumento + ", tipoDepositario=" + (tipoDepositario != null ? tipoDepositario : null) + ", descripcionDepositario=" + descripcionDepositario +
-                ", numeroCoordenada=" + numeroCoordenada + ", utmEste=" + utmEste + ", utmNorte=" + utmNorte + ", tipoSello=" + (tipoSello != null ? tipoSello : null) + 
-                ", estadoRegistro=" + estadoRegistro + ", fechaCreacion=" + fechaCreacion + ", usuarioCreacion=" + usuarioCreacion + 
-                ", fechaModificacion=" + fechaModificacion + ", usuarioModificacion=" + usuarioModificacion +
+                "codigoDetalleOperativo=" + codigoDetalleOperativo +
+                ", operativo=" + operativo.getCodigoOperativo() +
+                ", tipoInformacionRegistro=" + (tipoInformacionRegistro != null ? tipoInformacionRegistro.getCodigoCatalogoDetalle() : null) +
+                ", tipoInstitucion=" + (tipoInstitucion != null ? tipoInstitucion : null) +
+                ", numeroPersonas=" + numeroPersonas +
+                ", descripcionInstitucion=" + descripcionInstitucion +
+                ", nombre" + nombre +
+                ", apellido=" + apellido + 
+                ", numeroDocumento=" + numeroDocumento +
+                ", tipoDepositario=" + (tipoDepositario != null ? tipoDepositario : null) +
+                ", descripcionDepositario=" + descripcionDepositario +
+                ", numeroCoordenada=" + numeroCoordenada +
+                ", utmEste=" + utmEste +
+                ", utmNorte=" + utmNorte +
+                ", tipoSello=" + (tipoSello != null ? tipoSello : null) + 
+                ", estadoRegistro=" + estadoRegistro +
+                ", fechaCreacion=" + fechaCreacion +
+                ", usuarioCreacion=" + usuarioCreacion + 
+                ", fechaModificacion=" + fechaModificacion +
+                ", usuarioModificacion=" + usuarioModificacion +
                  "}";
         return response;
     }

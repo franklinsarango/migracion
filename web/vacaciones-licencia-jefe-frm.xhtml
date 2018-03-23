@@ -273,7 +273,7 @@
                                 <p:calendar id="fechaInicioC" styleClass="calendar-form"
                                             readonlyInput="true" required="true" requiredMessage="El campo fecha inicio es requerido"
                                             navigator="true" pattern="dd-MM-yyyy HH:mm" minHour="8" maxHour="17" disabledWeekends="true"
-                                            value="#{vacacionCtrl.licencia.fechaHoraSalida}" locale="es"/>
+                                            value="#{vacacionCtrl.licencia.fechaHoraSalida}" locale="es" readonly="true"/>
                             </p:column>
 
                             <p:column>
@@ -287,7 +287,7 @@
                                 <p:calendar id="fechaFinC" styleClass="calendar-form"
                                             readonlyInput="true" required="true" requiredMessage="El campo fecha fin es requerido"
                                             navigator="true" pattern="dd-MM-yyyy HH:mm" minHour="8" maxHour="17" disabledWeekends="true"
-                                            value="#{vacacionCtrl.licencia.fechaHoraRetorno}" locale="es"/>
+                                            value="#{vacacionCtrl.licencia.fechaHoraRetorno}" locale="es" readonly="true"/>
                             </p:column>
                         </p:row>
 
@@ -297,7 +297,7 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:inputTextarea id="observacionC" value="#{vacacionCtrl.licencia.observaciones}"
-                                                 styleClass="inputtextarea-form"/>
+                                                 styleClass="inputtextarea-form" readonly="true"/>
                             </p:column>
                             
                             <p:column>
@@ -353,7 +353,7 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:selectOneMenu id="provinciaC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.provinciaComision}">
+                                                 value="#{vacacionCtrl.licencia.provinciaComision}" disabled="true">
                                 <f:selectItem itemLabel="Seleccione una provincia..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{vacacionCtrl.provincias}"/>
                                 <p:ajax  listener="#{vacacionCtrl.cargaCantones}" update="cantonC parroquiaC"/>
@@ -369,7 +369,7 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:selectOneMenu id="cantonC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.cantonComision}">
+                                                 value="#{vacacionCtrl.licencia.cantonComision}" disabled="true">
                                     <f:selectItem itemLabel="Seleccione un cantón..." itemValue="#{null}" noSelectionOption="true"/>
                                     <f:selectItems value="#{vacacionCtrl.cantones}"/>
                                     <p:ajax  listener="#{vacacionCtrl.cargaParroquias}" update="parroquiaC"/>
@@ -383,7 +383,7 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:selectOneMenu id="parroquiaC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.parroquiaComision}">
+                                                 value="#{vacacionCtrl.licencia.parroquiaComision}" disabled="true">
                                 <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{vacacionCtrl.parroquias}"/>
                             </p:selectOneMenu>
@@ -398,7 +398,7 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:inputTextarea id="descripcion" value="#{vacacionCtrl.licencia.asuntoInstitucional}"
-                                                     styleClass="inputtextarea-form"/>
+                                                 styleClass="inputtextarea-form" readonly="true"/>
                             </p:column>
                         </p:row>
                    </p:panelGrid>

@@ -116,7 +116,7 @@ public class LoginCtrl extends BaseCtrl {
         }
 
         try {
-            result = this.obtenerUsuario(userName, userPassword);
+            result = this.obtenerUsuario(userName.trim(), userPassword);
             if (result) {
                 HttpSession session = FacesUtil.getSession();
                 session.setAttribute("codigoUsuario", codigoUsuario);
@@ -133,7 +133,7 @@ public class LoginCtrl extends BaseCtrl {
                     "¡ERROR!", "Usuario o clave incorrectos"));
         } catch (LDAPException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "¡ERROR!", ex.getMessage()));
+                    "¡ERROR!", "Usuario o clave incorrectos"));
             ex.printStackTrace();
         }
         return null;
@@ -255,6 +255,8 @@ public class LoginCtrl extends BaseCtrl {
                     }
                     return true;
                 }
+            } else {
+                FacesUtil.showErrorMessage("No existe el usuario", "");
             }
         } catch (LDAPException ex) {
             ex.printStackTrace();
