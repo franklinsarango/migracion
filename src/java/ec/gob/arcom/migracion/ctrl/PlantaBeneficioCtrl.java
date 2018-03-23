@@ -127,8 +127,8 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
                 plantaBeneficio.setEstadoPlanta(new CatalogoDetalle());
                 plantaBeneficio.setCodigoProcedenciaMaterial(new CatalogoDetalle());
                 plantaBeneficio.setTipoPersona("PNA");
-                plantaBeneficio.setCodigoMae(new CatalogoDetalle());
-                plantaBeneficio.setCodigoSenagua(new CatalogoDetalle());
+//                plantaBeneficio.setCodigoMae(new CatalogoDetalle());
+//                plantaBeneficio.setCodigoSenagua(new CatalogoDetalle());
                 codigoArcomNull = true;
             } else {
                 plantaBeneficio = plantaBeneficioDao.findByPk(idPlantaBeneficio);
@@ -157,12 +157,12 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
                     concesionMinera = false;
                     tipoMineria = "pb";
                 }
-                if (plantaBeneficio.getCodigoMae()== null) {
-                    plantaBeneficio.setCodigoMae(new CatalogoDetalle());
-                }
-                if (plantaBeneficio.getCodigoSenagua()== null) {
-                    plantaBeneficio.setCodigoSenagua(new CatalogoDetalle());
-                }
+//                if (plantaBeneficio.getCodigoMae()== null) {
+//                    plantaBeneficio.setCodigoMae(new CatalogoDetalle());
+//                }
+//                if (plantaBeneficio.getCodigoSenagua()== null) {
+//                    plantaBeneficio.setCodigoSenagua(new CatalogoDetalle());
+//                }
                 if (plantaBeneficio.getCodigoConcesionUbicacionPlanta() != null) {
                     if (listaConcesiones == null) {
                         listaConcesiones = new ArrayList<>();
@@ -310,7 +310,7 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
         //SE VALIDA EL CAMPO FECHA DE OTORGAMIENTO
         if (plantaBeneficio.getEstadoPlanta() != null && plantaBeneficio.getEstadoPlanta().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_OTORGADO.getCodigo())) {
             if (!(plantaBeneficio.getFechaOtorga() != null)) {
-                return "Fecha de Otorgamiento es Obligatorio";                
+                return "Fecha de Otorgamiento es Obligatorio.";                
             }
         }
         

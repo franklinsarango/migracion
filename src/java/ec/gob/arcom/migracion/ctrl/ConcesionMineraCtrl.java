@@ -431,7 +431,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
 
     public String guardarRegistro() {
         System.out.println("codigoRegimen: " + concesionMinera.getCodigoRegimen().getCodigoRegimen());
-        System.out.println("codigoFase: " + concesionMinera.getCodigoFase().getCodigoFase());
+        System.out.println("codigoFase: " + concesionMinera.getCodigoFase().getCodigoFase());        
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
         
         String mensajeError = validarCampos();
@@ -678,14 +678,14 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         String mensajeError = null;
 
         //SE VALIDA EL CAMPO FECHA DE OTORGAMIENTO
-        if (concesionMinera.getEstadoConcesion()!= null && concesionMinera.getEstadoConcesion().getNemonico().equals(ConstantesEnum.EST_OTORGADO.getNemonico())) {
+        if (concesionMinera.getEstadoConcesion()!= null && concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_OTORGADO.getCodigo())) {
             if (!(concesionMinera.getFechaOtorga() != null)) {
-                return "Fecha de Otorgamiento es Obligatorio";
+                return "Fecha de Otorgamiento es Obligatorio.";
             }
         }
 
         //SE VALIDA EL CAMPO FECHA INSCRITO
-        if (concesionMinera.getEstadoConcesion()!= null && concesionMinera.getEstadoConcesion().getNemonico().equals(ConstantesEnum.EST_INSCRITO.getNemonico())) {
+        if (concesionMinera.getEstadoConcesion()!= null && concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_INSCRITO.getCodigo())) {
             if (!(concesionMinera.getFechaOtorga() != null)) {
                 return "Fecha de Otorgamiento es Obligatorio";
             }

@@ -270,7 +270,7 @@
                             <p:outputLabel for="idMae" value="MAE:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
                         </h:panelGroup>
                         <h:panelGroup id="mae2">
-                            <p:selectOneMenu id="idMae" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoMae.codigoCatalogoDetalle}" 
+                            <p:selectOneMenu id="idMae" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoMae}" 
                                              required="true" requiredMessage="Estado MAE es requerido" style="width: 93%"
                                              rendered="#{!plantaBeneficioCtrl.concesionMinera}">
                                 <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
@@ -282,7 +282,7 @@
                             <p:outputLabel for="idSenagua" value="SENAGUA:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"/>
                         </h:panelGroup>
                         <h:panelGroup id="senagua2">
-                            <p:selectOneMenu id="idSenagua" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoSenagua.codigoCatalogoDetalle}" 
+                            <p:selectOneMenu id="idSenagua" value="#{plantaBeneficioCtrl.plantaBeneficio.codigoSenagua}" 
                                              required="true" requiredMessage="Estado SENAGUA es requerido" style="width: 93%"
                                              rendered="#{!plantaBeneficioCtrl.concesionMinera}">
                                 <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />

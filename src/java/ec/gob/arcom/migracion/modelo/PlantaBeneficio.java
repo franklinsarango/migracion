@@ -214,12 +214,10 @@ public class PlantaBeneficio implements Serializable {
     @Column(name = "fecha_archivo")
     @Temporal(TemporalType.DATE)
     private Date fechaArchivo;
-    @JoinColumn(name = "codigo_mae", referencedColumnName = "codigo_catalogo_detalle")
-    @ManyToOne
-    private CatalogoDetalle codigoMae;
-    @JoinColumn(name = "codigo_senagua", referencedColumnName = "codigo_catalogo_detalle")
-    @ManyToOne
-    private CatalogoDetalle codigoSenagua;
+    @Column(name = "codigo_mae")
+    private Long codigoMae;
+    @Column(name = "codigo_senagua")
+    private Long codigoSenagua;
     
     @Transient
     private boolean concesionMinera;
@@ -748,7 +746,7 @@ public class PlantaBeneficio implements Serializable {
                 + ", observacionGeneral=" + observacionGeneral + ", correoElectronico=" + correoElectronico
                 + ", codigoProcedenciaMaterial=" + (codigoProcedenciaMaterial != null ? codigoProcedenciaMaterial.getCodigoCatalogoDetalle() : null) + ", zona=" + zona + ", plazo=" + plazo + ", tipoPersona=" + tipoPersona 
                 + ", numeroResolucionArchivo=" + numeroResolucionArchivo + ", fechaResolucionArchivo=" + fechaResolucionArchivo + ", fechaArchivo=" + fechaArchivo
-                + ", codigoMae=" + (codigoMae != null ? codigoMae.getCodigoCatalogoDetalle() : null) + ", codigoSenagua=" + (codigoSenagua != null ? codigoSenagua.getCodigoCatalogoDetalle() : null)
+                + ", codigoMae=" + (codigoMae != null ? codigoMae: null) + ", codigoSenagua=" + (codigoSenagua != null ? codigoSenagua: null)
                 + ", codigoConcesionUbicacionPlanta=" + (codigoConcesionUbicacionPlanta != null ? codigoConcesionUbicacionPlanta.getCodigoConcesion(): null) + ", migrada=" + migrada + '}';
     }
 
@@ -981,19 +979,19 @@ public class PlantaBeneficio implements Serializable {
         this.fechaArchivo = fechaArchivo;
     }
 
-    public CatalogoDetalle getCodigoMae() {
+    public Long getCodigoMae() {
         return codigoMae;
     }
 
-    public void setCodigoMae(CatalogoDetalle codigoMae) {
+    public void setCodigoMae(Long codigoMae) {
         this.codigoMae = codigoMae;
     }
 
-    public CatalogoDetalle getCodigoSenagua() {
+    public Long getCodigoSenagua() {
         return codigoSenagua;
     }
 
-    public void setCodigoSenagua(CatalogoDetalle codigoSenagua) {
+    public void setCodigoSenagua(Long codigoSenagua) {
         this.codigoSenagua = codigoSenagua;
     }
 

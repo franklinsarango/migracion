@@ -241,14 +241,14 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
         String mensajeError = null;
 
         //SE VALIDA EL CAMPO FECHA DE OTORGAMIENTO
-        if (licenciaComercializacion.getEstadoLicencia() != null && licenciaComercializacion.getEstadoLicencia().getNemonico().equals(ConstantesEnum.EST_OTORGADO.getNemonico())) {
+        if (licenciaComercializacion.getEstadoLicencia() != null && licenciaComercializacion.getEstadoLicencia().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_OTORGADO.getCodigo())) {
             if (!(licenciaComercializacion.getFechaOtorga() != null)) {
-                return "Fecha de Otorgamiento es Obligatorio";
+                return "Fecha de Otorgamiento es Obligatorio.";
             }
         }
 
         //SE VALIDA EL CAMPO FECHA INSCRITO
-        if (licenciaComercializacion.getEstadoLicencia() != null && licenciaComercializacion.getEstadoLicencia().getNemonico().equals(ConstantesEnum.EST_INSCRITO.getNemonico())) {
+        if (licenciaComercializacion.getEstadoLicencia() != null && licenciaComercializacion.getEstadoLicencia().getCodigoCatalogoDetalle().equals(ConstantesEnum.EST_INSCRITO.getCodigo())) {
             if (!(licenciaComercializacion.getFechaOtorga() != null)) {
                 return "Fecha de Otorgamiento es Obligatorio";
             }

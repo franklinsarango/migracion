@@ -336,12 +336,10 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
         } else {
             sql = sql + "    fecha_archivo = null ,\n";
         }
-        if (plantaBeneficio.getCodigoMae()!= null && plantaBeneficio.getCodigoMae().getCodigoCatalogoDetalle() != null) {
-            sql = sql + "    codigo_mae = " + plantaBeneficio.getCodigoMae().getCodigoCatalogoDetalle() + ",\n";
-        }
-        if (plantaBeneficio.getCodigoSenagua()!= null && plantaBeneficio.getCodigoSenagua().getCodigoCatalogoDetalle() != null) {
-            sql = sql + "    codigo_senagua = " + plantaBeneficio.getCodigoSenagua().getCodigoCatalogoDetalle() + ",\n";
-        }
+        
+        sql = sql + "    codigo_mae = " + plantaBeneficio.getCodigoMae() + ",\n";
+        sql = sql + "    codigo_senagua = " + plantaBeneficio.getCodigoSenagua() + ",\n";
+        
         if (plantaBeneficio.getTipoPersona() != null) {
             sql = sql + "    tipo_persona = '" + plantaBeneficio.getTipoPersona() + "',\n";
         }
