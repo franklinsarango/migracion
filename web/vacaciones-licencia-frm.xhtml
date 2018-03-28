@@ -383,10 +383,10 @@
                             <p:column style="text-align: left">
                                 <p:selectOneMenu id="provinciaC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
                                                  value="#{vacacionCtrl.licencia.provinciaComision}">
-                                <f:selectItem itemLabel="Seleccione una provincia..." itemValue="#{null}" noSelectionOption="true"/>
-                                <f:selectItems value="#{vacacionCtrl.provincias}"/>
-                                <p:ajax  listener="#{vacacionCtrl.cargaCantones}" update="cantonC parroquiaC"/>
-                            </p:selectOneMenu>
+                                    <f:selectItem itemLabel="Seleccione una provincia..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.provincias}"/>
+                                    <p:ajax  listener="#{vacacionCtrl.cargaCantones}" update="cantonC parroquiaC"/>
+                                </p:selectOneMenu>
                             </p:column>
 
                             <p:column>

@@ -1126,6 +1126,8 @@ public class VacacionCtrl {
     
     public String visualizarTarea(Licencia l) {
         this.licencia= l;
+        this.cantones= null;this.parroquias= null;
+        getCantones();getParroquias();
         motivoLicencia= licencia.getTipoLicencia().getNombre();
         contrato= contratoServicio.listarPorUsuario(licencia.getUsuario()).get(0);
         archivosCargados= obtenerArchivosCargados(licencia);

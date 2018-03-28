@@ -352,12 +352,7 @@
                                 <p:outputLabel for="provinciaC" value="Provincia comisión:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:selectOneMenu id="provinciaC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.provinciaComision}" disabled="true">
-                                <f:selectItem itemLabel="Seleccione una provincia..." itemValue="#{null}" noSelectionOption="true"/>
-                                <f:selectItems value="#{vacacionCtrl.provincias}"/>
-                                <p:ajax  listener="#{vacacionCtrl.cargaCantones}" update="cantonC parroquiaC"/>
-                            </p:selectOneMenu>
+                                <p:outputLabel id="provinciaC" value="#{vacacionCtrl.licencia.provinciaComision.nombre.toUpperCase()}" style="font-weight: bolder"/>
                             </p:column>
 
                             <p:column>
@@ -368,12 +363,7 @@
                                 <p:outputLabel for="cantonC" value="Cantón comisión:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:selectOneMenu id="cantonC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.cantonComision}" disabled="true">
-                                    <f:selectItem itemLabel="Seleccione un cantón..." itemValue="#{null}" noSelectionOption="true"/>
-                                    <f:selectItems value="#{vacacionCtrl.cantones}"/>
-                                    <p:ajax  listener="#{vacacionCtrl.cargaParroquias}" update="parroquiaC"/>
-                                </p:selectOneMenu>
+                                <p:outputLabel id="cantonC" value="#{vacacionCtrl.licencia.cantonComision.nombre.toUpperCase()}" style="font-weight: bolder"/>
                             </p:column>
                         </p:row>
                        
@@ -382,11 +372,7 @@
                                 <p:outputLabel for="parroquiaC" value="Parroquia comisión:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:selectOneMenu id="parroquiaC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.parroquiaComision}" disabled="true">
-                                <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
-                                <f:selectItems value="#{vacacionCtrl.parroquias}"/>
-                            </p:selectOneMenu>
+                                <p:outputLabel id="parroquiaC" value="#{vacacionCtrl.licencia.parroquiaComision.nombre.toUpperCase()}" style="font-weight: bolder"/>
                             </p:column>
 
                             <p:column>
