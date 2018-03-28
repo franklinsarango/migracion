@@ -29,14 +29,18 @@
                             <h:outputText value="TAREAS"/>
                         </f:facet>
                         
-                        <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage="" widgetVar="tareastable">
-                            <p:column headerText="Nro." style="width:50px;text-align: right">
+                        <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage="" widgetVar="tareastable"
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
+                            
+                            <p:column headerText="Nro." style="width:50px;text-align: right" sortBy="#{tarea.numeroSolicitud}">
                                 <p:outputLabel value="#{tarea.numeroSolicitud}"/>
                             </p:column>
-                            <p:column headerText="Funcionario">
+                            <p:column headerText="Funcionario" sortBy="#{tarea.usuario.codigoUsuario}">
                                 <p:outputLabel value="#{tarea.usuario.nombresCompletos.toUpperCase()}"/>
                             </p:column>
-                            <p:column headerText="Unidad Administrativa"
+                            <p:column headerText="Unidad Administrativa" sortBy="#{tarea.contrato.departamento.codigoDepartamento}"
                                       filterBy="#{tarea.contrato.departamento.codigoDepartamento}" filterMatchMode="exact">
                                 <f:facet name="filter">
                                     <p:selectOneMenu onchange="PF('tareastable').filter()">
@@ -46,16 +50,16 @@
                                 </f:facet>
                                 <p:outputLabel value="#{tarea.contrato.departamento.nombre}"/>
                             </p:column>
-                            <p:column headerText="Tipo formulario">
+                            <p:column headerText="Tipo formulario" sortBy="#{tarea.tipoFormulario.codigoCatalogoDetalle}">
                                 <p:outputLabel value="#{tarea.tipoFormulario.nombre}"/>
                             </p:column>
                             <p:column headerText="Motivo">
                                 <p:outputLabel value="#{tarea.tipoLicencia.nombre}"/>
                             </p:column>
-                            <p:column headerText="Estado">
+                            <p:column headerText="Estado" sortBy="#{tarea.estadoLicencia.codigoCatalogoDetalle}">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estadoLicencia)}"/>
                             </p:column>
-                            <p:column headerText="Fecha solicitud">
+                            <p:column headerText="Fecha solicitud" sortBy="#{tarea.fechaSolicitud}">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
                             </p:column>
                             <p:column headerText="Ver" style="width:50px;text-align: center">
