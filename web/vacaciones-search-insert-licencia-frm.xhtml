@@ -9,8 +9,9 @@
     <h:form id="vacaciones-busqueda-frm">
         <p:outputLabel value="Valor a buscar: "/>
         <p:inputText value="#{vacacionCtrl.textoBuscar}">
-            <p:ajax event="keyup" update="funcionarios" listener="#{vacacionCtrl.filtrarFuncionarios()}"/>
+            <p:ajax event="blur" update="funcionarios" listener="#{vacacionCtrl.filtrarFuncionarios()}"/>
         </p:inputText>
+        <p:commandButton value="Buscar" actionListener="#{vacacionCtrl.filtrarFuncionarios()}"/>
 
         <p:dataTable id="funcionarios" value="#{vacacionCtrl.funcionarios}" var="funcionario" emptyMessage="" widgetVar="funcionariostable"
                      currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
