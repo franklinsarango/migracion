@@ -9,6 +9,7 @@ package ec.gob.arcom.migracion.ctrl;
 import ec.gob.arcom.dinardap_sri.client.DinardapClient;
 import ec.gob.arcom.dinardap_sri.client.RequestFactory;
 import ec.gob.arcom.migracion.modelo.ConcesionPagoSri;
+import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.servicio.ConcesionMineraServicio;
 import ec.gob.arcom.migracion.servicio.ConcesionPagoSriServicio;
 import ec.gob.dinardap.interoperabilidad.interoperador.Columna;
@@ -17,8 +18,12 @@ import ec.gob.dinardap.interoperabilidad.interoperador.Fila;
 import ec.gob.dinardap.interoperabilidad.interoperador.Paquete;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -45,6 +50,7 @@ public class DinardapSriController {
     
     private List<Entidad> entidades;
     private List<Fila> filas;
+    private List<Fila> filteredFilas;
     private List<Columna> columnas;
     private String consulta;
     private String valorBuscar;
@@ -60,6 +66,10 @@ public class DinardapSriController {
     private String anioFiscal;
     private String mensaje;
     private boolean razonSocialSelected= false;
+    private List<SelectItem> codigosImpuesto;
+    private List<SelectItem> aniosFiscal833;
+    private List<SelectItem> mesesFiscal833;
+    
     /**
      * Creates a new instance of DinardapSriController
      */
@@ -241,6 +251,14 @@ public class DinardapSriController {
         this.filas = filas;
     }
 
+    public List<Fila> getFilteredFilas() {
+        return filteredFilas;
+    }
+
+    public void setFilteredFilas(List<Fila> filteredFilas) {
+        this.filteredFilas = filteredFilas;
+    }
+    
     public List<Columna> getColumnas() {
         return columnas;
     }
@@ -250,7 +268,10 @@ public class DinardapSriController {
     }
     
     public String obtenerValor(Columna c) {
-        return c.getValor();
+        if(c!=null) {
+            return c.getValor();
+        }
+        return "";
     }
 
     public boolean isTabla625() {
@@ -396,5 +417,106 @@ public class DinardapSriController {
         } else {
             razonSocialSelected= false;
         }
+    }
+    
+    public Date obtenerFechaOrdenar(String valor) throws ParseException {
+        if(valor!=null && valor.length()>0) {
+            try {
+                return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(valor);
+            } catch(Exception ex) {
+                System.out.println("Error al dar formato a la fecha: " + valor);
+                System.out.println(ex.toString());
+            }
+        }
+        return Calendar.getInstance().getTime();
+    }
+    
+    public List<SelectItem> getCodigosImpuesto() {
+        codigosImpuesto= new ArrayList<>();
+        if(filas!=null) {
+            for(Fila f : filas) {
+                String v= f.getColumnas().getColumna().get(8).getValor();
+                if(v!=null && v.length()>0) {
+                    boolean agregar= true;
+                    
+                    for(SelectItem ci : codigosImpuesto) {
+                        if(ci.getValue().equals(v)) {
+                            agregar= false;
+                            break;
+                        }
+                    }
+                    if(agregar) {
+                        codigosImpuesto.add(new SelectItem(v, v));
+                    }
+                }
+            }
+        }
+        return codigosImpuesto;
+    }
+    
+    public List<SelectItem> getAniosFiscal833() {
+        aniosFiscal833= new ArrayList<>();
+        if(filas!=null) {
+            for(Fila f : filas) {
+                String v= f.getColumnas().getColumna().get(6).getValor();
+                if(v!=null && v.length()>0) {
+                    boolean agregar= true;
+                    
+                    for(SelectItem ci : aniosFiscal833) {
+                        if(ci.getValue().equals(v)) {
+                            agregar= false;
+                            break;
+                        }
+                    }
+                    if(agregar) {
+                        aniosFiscal833.add(new SelectItem(v, v));
+                    }
+                }
+            }
+            aniosFiscal833= ordenarLista(aniosFiscal833);
+        }
+        return aniosFiscal833;
+    }
+    public List<SelectItem> getMesesFiscal833() {
+        mesesFiscal833= new ArrayList<>();
+        if(filas!=null) {
+            for(Fila f : filas) {
+                String v= f.getColumnas().getColumna().get(7).getValor();
+                if(v!=null && v.length()>0) {
+                    boolean agregar= true;
+                    
+                    for(SelectItem ci : mesesFiscal833) {
+                        if(ci.getValue().equals(v)) {
+                            agregar= false;
+                            break;
+                        }
+                    }
+                    if(agregar) {
+                        mesesFiscal833.add(new SelectItem(v, v));
+                    }
+                }
+            }
+            mesesFiscal833= ordenarLista(mesesFiscal833);
+        }
+        
+        return mesesFiscal833;
+    }
+    
+    // Inicio del metodo de ordenamiento de la Burbuja
+    public List<SelectItem> ordenarLista(List<SelectItem> lista) {        
+        for (int i = 1; i <= lista.size(); i++) {
+            for (int j = 0; j < lista.size() - i; j++) {
+                int valor = j + 1;
+                if (lista.get(j).getLabel().compareTo(lista.get(valor).getLabel()) > 0) {
+                    SelectItem item = new SelectItem();
+                    item = lista.get(j);
+                    SelectItem item2 = new SelectItem();
+                    item2 = lista.get(valor);
+                    lista.set(j, item2);
+                    lista.set(valor, item);
+                }
+            }
+        }
+        return lista;
     }
 }

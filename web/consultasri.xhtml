@@ -31,7 +31,8 @@
                             <p:watermark id="busquedawm" for="busqueda" value="#{dinardapSriController.obtenerMensajeMarcaAgua()}"/>
                         </p:column>
                         <p:column>
-                            <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultar()}" update=":tablePanel :entityname :consulta625 :consulta626 :consulta627 :consulta628 :consulta833 consultafrm"/>
+                            <p:commandButton value="Consultar" actionListener="#{dinardapSriController.consultar()}" 
+                                             update=":tablas:tablePanel :entityname :tablas:consulta625 :tablas:consulta626 :tablas:consulta627 :tablas:consulta628 :tablas:consulta833 consultafrm"/>
                         </p:column>
                         <p:column style="width: 100%; text-align: right">
                             <h:commandLink action="index?faces-redirect=true" title="Inicio" styleClass="boton_salir" immediate="true">
@@ -46,7 +47,7 @@
                         <p:column colspan="2">
                             <p:commandButton value="Tabla de categorías RISE" actionListener="#{dinardapSriController.consultarRise()}"
                                            style="font-weight: bolder; width: 200px" immediate="true"
-                                           update=":tablePanel :entityname :consulta625 :consulta626 :consulta627 :consulta628 :consulta833 consultafrm"/>
+                                           update=":tablas:tablePanel :entityname :tablas:consulta625 :tablas:consulta626 :tablas:consulta627 :tablas:consulta628 :tablas:consulta833 consultafrm"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -95,8 +96,8 @@
             <center>
                 <p:outputLabel id="entityname" value="#{dinardapSriController.nombreEntidad}" style="font-weight: bolder; font-size: large"/>
             </center>
-            
-            <p:panelGrid id="tablePanel" columns="1" styleClass="panelSinBorde">
+            <h:form id="tablas">
+            <h:panelGroup id="tablePanel" layout="block" style="width: 100%">
                 <p:dataTable id="consulta625" emptyMessage="No hay resultados..."
                          var="fila625" value="#{dinardapSriController.filas}"
                          scrollable="true" scrollWidth="95%" rendered="#{dinardapSriController.tabla625}"
@@ -126,10 +127,18 @@
                     </p:column>
                 </p:dataTable>
                 
-                <p:dataTable id="consulta833" emptyMessage="No hay resultados..."
+                <p:dataTable id="consulta833" emptyMessage="No hay resultados..." rowIndexVar="row"
                              var="fila833" value="#{dinardapSriController.filas}"
-                             scrollable="true" scrollWidth="79%" rendered="#{dinardapSriController.tabla833}"
-                             styleClass="consulta833" style="width: 100%">
+                             scrollable="true" rendered="#{dinardapSriController.tabla833}"
+                             styleClass="consulta833" widgetVar="consulta833wg"
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="10,20,50" rows="20" paginator="true" filteredValue="#{dinardapSriController.filteredFilas}">
+                    
+                    <p:column headerText="No" style="width: 25px">
+                        <h:outputText value="#{row + 1}"/>
+                    </p:column>
+                    
                     <p:column headerText="Número formulario" style="width: 100px;">
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(0))}"/>
                     </p:column>
@@ -150,27 +159,52 @@
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(4))}"/>
                     </p:column>
 
-                    <p:column headerText="Razón social" style="width: 200px;">
+                    <p:column headerText="Razón social" style="width: 220px;">
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(5))}"/>
                     </p:column>
 
-                    <p:column headerText="Año fiscal" style="width: 100px;">
+                    <p:column headerText="Año fiscal" style="width: 100px;"
+                              filterBy="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(6))}" filterMatchMode="exact"
+                              sortBy="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(6))}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('consulta833wg').filter()">
+                                <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dinardapSriController.aniosFiscal833}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(6))}"/>
                     </p:column>
                     
-                    <p:column headerText="Mes fiscal" style="width: 100px;">
+                    <p:column headerText="Mes fiscal" style="width: 100px;"
+                              filterBy="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(7))}" filterMatchMode="exact"
+                              sortBy="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(7))}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('consulta833wg').filter()">
+                                <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dinardapSriController.mesesFiscal833}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(7))}"/>
                     </p:column>
                     
-                    <p:column headerText="Código impuesto" style="width: 100px;">
+                    <p:column headerText="Código impuesto" style="width: 100px;"
+                              filterBy="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(8))}" filterMatchMode="exact"
+                              sortBy="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(8))}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('consulta833wg').filter()">
+                                <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dinardapSriController.codigosImpuesto}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(8))}"/>
                     </p:column>
                     
-                    <p:column headerText="Fecha recaudación" style="width: 100px;">
+                    <p:column headerText="Fecha recaudación" style="width: 100px;"
+                              sortBy="#{dinardapSriController.obtenerFechaOrdenar(dinardapSriController.obtenerValor(fila833.columnas.columna.get(9)))}">
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(9))}"/>
                     </p:column>
                     
-                    <p:column headerText="Total pagado" style="width: 100px;">
+                    <p:column headerText="Total pagado" style="width: 120px;">
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila833.columnas.columna.get(10))}"/>
                     </p:column>
                     
@@ -179,10 +213,18 @@
                     </p:column>
                 </p:dataTable>
                 
-                <p:dataTable id="consulta626" emptyMessage="No hay resultados..."
+                <p:dataTable id="consulta626" emptyMessage="No hay resultados..." rowIndexVar="row"
                              var="fila626" value="#{dinardapSriController.filas}"
-                             scrollable="true" scrollWidth="45%" rendered="#{dinardapSriController.tabla626}"
-                             styleClass="consulta626">
+                             scrollable="true" rendered="#{dinardapSriController.tabla626}"
+                             styleClass="consulta626"
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="10,20,50" rows="20" paginator="true" filteredValue="#{dinardapSriController.filteredFilas}">
+                    
+                    <p:column headerText="No" style="width: 25px">
+                        <h:outputText value="#{row + 1}"/>
+                    </p:column>
+                    
                     <p:column headerText="Número formulario" style="width: 100px;">
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(0))}"/>
                     </p:column>
@@ -345,7 +387,8 @@
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila628.columnas.columna.get(1))}"/>
                     </p:column>
                 </p:dataTable>
-            </p:panelGrid>
+            </h:panelGroup>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>

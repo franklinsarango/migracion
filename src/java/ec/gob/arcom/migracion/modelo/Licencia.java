@@ -26,6 +26,15 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "licencia", schema = "arcom")
 public class Licencia implements Serializable {
+    /*
+    Estados
+    241 TRAMITE         ESTENTRA    TRAMITE
+    242 OTORGADA        ESTOTOR     APROBADA
+    243 INSCRITA        ESTINSC     FINALIZADA
+    246 ARCHIVADA       ESTARCHIV   ARCHIVADA/DISISTIDO/NO APROBADA/RECHAZADA
+    755 SUBSANACION     ESTNOTOR    SUBSANACION
+    */
+    
     private static final long serialVersionUID = 1L;
     
     @Id

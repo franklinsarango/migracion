@@ -756,6 +756,10 @@ public class VacacionCtrl {
             showInstitucionalPanel= false;
             showButtonPanel= true;
             fechaMinima= Calendar.getInstance().getTime();
+            licencia.setFechaHoraSalida(null);
+            licencia.setFechaHoraRetorno(null);
+            licencia.setDiasLicencia(null);
+            licencia.setSaldoVacaciones(null);
         } else if (licencia.getTipoLicencia().getValor().equals("GRUPO_2")) {
             showVacacionPanel= false;
             showCalamidadPanel= true;
@@ -890,6 +894,7 @@ public class VacacionCtrl {
     private BigDecimal obtenerDiasDisponibles(Long codigoUsuario) {
         Date f= Calendar.getInstance().getTime();
         String result= licenciaServicio.obtenerDiasDisponibles(codigoUsuario, DateUtil.obtenerFechaHoraConFormato(f), DateUtil.obtenerFechaHoraConFormato(f));
+        System.out.println(result);
         if(result!=null) {
             String[] resultados= result.split("\\|");
             String[] disponibles= resultados[0].split(":");
@@ -1056,6 +1061,13 @@ public class VacacionCtrl {
             } else if(days.compareTo(new BigDecimal(1))==1) {
                 licencia.setFechaHoraRetorno(null);
                 FacesUtil.showErrorMessage("Error", "Los días no pueden exceder de 2 para permiso ocasional");
+                return null;
+            }
+        }
+        
+        if(licencia.getTipoLicencia().getValor().equals("GRUPO_1")) {
+            if(licencia.getDiasLicencia()==null && licencia.getSaldoVacaciones()==null) {
+                FacesUtil.showErrorMessage("No se calculó el saldo de vacaciones", "Vuelva a seleccionar las fechas para realizar el cálculo");
                 return null;
             }
         }
@@ -1338,8 +1350,10 @@ public class VacacionCtrl {
                 a= new Auditoria(Auditoria.UPDATE, gvOld, gvAnterior, login.getCodigoUsuario());
                 auditoriaServicio.create(a);
                 
-                gv.setSaldoAnterior(gv.getSaldoActual());;
-                gv.setSaldoActual(licencia.getSaldoVacaciones());
+                gv.setSaldoAnterior(gv.getSaldoActual());
+                //gv.setSaldoActual(licencia.getSaldoVacaciones());
+                //Restar los dias de la licencia del saldo actual de gestion vacacion a la fecha.
+                gv.setSaldoActual(gv.getSaldoActual().subtract(licencia.getDiasLicencia()));
                 gv.setLicencia(licencia);
                 gv.setDiasIncrementados(null);
                 gv.setDiasDecrementados(licencia.getDiasLicencia());
@@ -1803,9 +1817,28 @@ public class VacacionCtrl {
     
     public void finalizarContratoAction() {
         if(contrato.getCodigoContrato()!=null) {
-            GestionVacacion gv= gestionVacacionServicio.findByUser(usuarioEditar.getCodigoUsuario());
-            contrato.setSaldoVacaciones(gv.getSaldoActual());
-            RequestContext.getCurrentInstance().execute("PF('endcontratofrmwg').show();");
+            //Obtener los estados a excluir: 
+            List<CatalogoDetalle> estadosExcluir= new ArrayList<>();
+            
+            Catalogo catalogo = catalogoServicio.findByNemonico("ESTAREA");
+            if (catalogo != null) {
+                List<CatalogoDetalle> catalogos = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+                for(CatalogoDetalle catdet : catalogos) {
+                    String nemonico= catdet.getNemonico();
+                    if(nemonico.equals("ESTINSC") ||  nemonico.equals("ESTARCHIV")) {
+                        estadosExcluir.add(catdet);
+                    }
+                }
+            }
+            List<Licencia> solicitudesVigentes= licenciaServicio.listarSolicitudesExcluyendoEstado(contrato.getUsuario().getCodigoUsuario(), estadosExcluir);
+            
+            if(solicitudesVigentes.size()>0) {
+                FacesUtil.showErrorMessage("Error", "No fuede finalizar este contrato, mientras aun hay solicitudes vigentes");
+            } else {
+                GestionVacacion gv= gestionVacacionServicio.findByUser(usuarioEditar.getCodigoUsuario());
+                contrato.setSaldoVacaciones(gv.getSaldoActual());
+                RequestContext.getCurrentInstance().execute("PF('endcontratofrmwg').show();");
+            }
         } else {
             FacesUtil.showErrorMessage("Error", "No fuede finalizar este contrato, en su lugar puede eliminarlo");
         }
