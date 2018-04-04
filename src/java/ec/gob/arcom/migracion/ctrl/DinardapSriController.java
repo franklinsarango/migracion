@@ -69,6 +69,8 @@ public class DinardapSriController {
     private List<SelectItem> codigosImpuesto;
     private List<SelectItem> aniosFiscal833;
     private List<SelectItem> mesesFiscal833;
+    private List<SelectItem> aniosFiscal626;
+    private List<SelectItem> mesesFiscal626;
     
     /**
      * Creates a new instance of DinardapSriController
@@ -500,6 +502,54 @@ public class DinardapSriController {
         }
         
         return mesesFiscal833;
+    }
+    
+    public List<SelectItem> getAniosFiscal626() {
+        aniosFiscal626= new ArrayList<>();
+        if(filas!=null) {
+            for(Fila f : filas) {
+                String v= f.getColumnas().getColumna().get(5).getValor();
+                if(v!=null && v.length()>0) {
+                    boolean agregar= true;
+                    
+                    for(SelectItem ci : aniosFiscal626) {
+                        if(ci.getValue().equals(v)) {
+                            agregar= false;
+                            break;
+                        }
+                    }
+                    if(agregar) {
+                        aniosFiscal626.add(new SelectItem(v, v));
+                    }
+                }
+            }
+            aniosFiscal626= ordenarLista(aniosFiscal626);
+        }
+        return aniosFiscal626;
+    }
+    public List<SelectItem> getMesesFiscal626() {
+        mesesFiscal626= new ArrayList<>();
+        if(filas!=null) {
+            for(Fila f : filas) {
+                String v= f.getColumnas().getColumna().get(6).getValor();
+                if(v!=null && v.length()>0) {
+                    boolean agregar= true;
+                    
+                    for(SelectItem ci : mesesFiscal626) {
+                        if(ci.getValue().equals(v)) {
+                            agregar= false;
+                            break;
+                        }
+                    }
+                    if(agregar) {
+                        mesesFiscal626.add(new SelectItem(v, v));
+                    }
+                }
+            }
+            mesesFiscal626= ordenarLista(mesesFiscal626);
+        }
+        
+        return mesesFiscal626;
     }
     
     // Inicio del metodo de ordenamiento de la Burbuja

@@ -897,8 +897,10 @@ public class VacacionCtrl {
         System.out.println(result);
         if(result!=null) {
             String[] resultados= result.split("\\|");
-            String[] disponibles= resultados[0].split(":");
-            return new BigDecimal(disponibles[1].trim());
+            if(resultados.length>1) {
+                String[] disponibles= resultados[0].split(":");
+                return new BigDecimal(disponibles[1].trim());
+            }
         }
         return BigDecimal.ZERO;
     }

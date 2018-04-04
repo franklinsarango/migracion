@@ -216,7 +216,7 @@
                 <p:dataTable id="consulta626" emptyMessage="No hay resultados..." rowIndexVar="row"
                              var="fila626" value="#{dinardapSriController.filas}"
                              scrollable="true" rendered="#{dinardapSriController.tabla626}"
-                             styleClass="consulta626"
+                             styleClass="consulta626" widgetVar="consulta626wg"
                              currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                              rowsPerPageTemplate="10,20,50" rows="20" paginator="true" filteredValue="#{dinardapSriController.filteredFilas}">
@@ -245,11 +245,27 @@
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(4))}"/>
                     </p:column>
 
-                    <p:column headerText="Año fiscal" style="width: 100px;">
+                    <p:column headerText="Año fiscal" style="width: 100px;"
+                              filterBy="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(5))}" filterMatchMode="exact"
+                              sortBy="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(5))}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('consulta626wg').filter()">
+                                <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dinardapSriController.aniosFiscal626}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(5))}"/>
                     </p:column>
 
-                    <p:column headerText="Mes fiscal" style="width: 100px;">
+                    <p:column headerText="Mes fiscal" style="width: 100px;"
+                              filterBy="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(6))}" filterMatchMode="exact"
+                              sortBy="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(6))}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('consulta626wg').filter()">
+                                <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dinardapSriController.mesesFiscal626}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila626.columnas.columna.get(6))}"/>
                     </p:column>
 
@@ -314,10 +330,18 @@
                     </p:column>
                 </p:dataTable>
             
-                <p:dataTable id="consulta627" emptyMessage="No hay resultados..."
+                <p:dataTable id="consulta627" emptyMessage="No hay resultados..." rowIndexVar="row"
                              var="fila627" value="#{dinardapSriController.filas}"
-                             scrollable="true" scrollWidth="65%" rendered="#{dinardapSriController.tabla627}"
-                             styleClass="consulta627">
+                             scrollable="true" rendered="#{dinardapSriController.tabla627}"
+                             styleClass="consulta627" widgetVar="consulta627wg"
+                             currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="10,20,50" rows="20" paginator="true" filteredValue="#{dinardapSriController.filteredFilas}">
+                    
+                    <p:column headerText="No" style="width: 25px">
+                        <h:outputText value="#{row + 1}"/>
+                    </p:column>
+                    
                     <p:column headerText="Número formulario" style="width: 100px;">
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(0))}"/>
                     </p:column>
@@ -342,7 +366,15 @@
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(5))}"/>
                     </p:column>
 
-                    <p:column headerText="Año fiscal" style="width: 100px;">
+                    <p:column headerText="Año fiscal" style="width: 100px;"
+                              filterBy="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(6))}" filterMatchMode="exact"
+                              sortBy="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(6))}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('consulta627wg').filter()">
+                                <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dinardapSriController.aniosFiscal833}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
                         <h:outputText value="#{dinardapSriController.obtenerValor(fila627.columnas.columna.get(6))}"/>
                     </p:column>
 
