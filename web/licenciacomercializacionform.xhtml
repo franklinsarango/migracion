@@ -153,8 +153,8 @@
                         <h:panelGroup id="fecArchivo2">
                             <p:calendar id="fecArchivo" required="true" requiredMessage="Fecha Archivo es requerido"
                                         value="#{licenciaComercializacionCtrl.licenciaComercializacion.fechaArchivo}" placeholder="aaaa-mm-dd" navigator="true"
-                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
-                                        rendered="#{licenciaComercializacionCtrl.esEstadoArchivado}"/>
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" maxdate="#{licenciaComercializacionCtrl.fechaActual}"
+                                        rendered="#{licenciaComercializacionCtrl.esEstadoArchivado}" disabled="#{!licenciaComercializacionCtrl.editarFechaArchivo}"/>
                         </h:panelGroup>
                         
                         <p:outputLabel for="somProvincia01" value="Provincia:"></p:outputLabel>

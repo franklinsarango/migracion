@@ -47,5 +47,5 @@ public interface ConcesionMineraDao extends GenericDao<ConcesionMinera, Long> {
 
     public String obtenerCodigoArcom(Long codigoConcesion);
 
-    public String obtenerRegionalConcesion(Long codigo);
+    public String obtenerRegionalConcesion(Long codigo);        
 }

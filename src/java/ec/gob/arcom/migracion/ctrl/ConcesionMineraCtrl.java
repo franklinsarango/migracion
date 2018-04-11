@@ -168,10 +168,22 @@ public class ConcesionMineraCtrl extends BaseCtrl {
 
     private boolean tipoSolMineriaArtesanal;
     private int cantidadMaquinaria = 1;
-    //private Resolucion resolucion;
+    private Date fechaActual;
+    private boolean editarFechaArchivo;    
+    private String tituloLista;
     
     private boolean esEstadoArchivado;
     private List<CoordenadaArea> coordenadasPorArea;
+    
+    @PostConstruct
+    public void init() {
+        fechaActual = new Date();
+        if(login.isRegistroMineroNacional()){
+           tituloLista = "Lista de Concesiones Mineras - Nacional";
+        }else{
+            tituloLista = "Lista de Concesiones Mineras - Regional " + login.getRegional();
+        }
+    }
     
     public ConcesionMinera getConcesionMinera() {
         if (concesionMinera == null) {
@@ -198,7 +210,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
 //                concesionMinera.setCodigoSenagua(new CatalogoDetalle());
                 areaMinera = new AreaMinera();
                 areaMinera.setCodigoLocalidad(new Localidad());
-                //solicitud = new Solicitud();
+                //solicitud = new Solicitud();               
             } else {
                 System.out.println("entra else getConcesion");
                 System.out.println("idconcesionMinera: " + idconcesionMinera);
@@ -231,29 +243,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                     provincia.setCodigoLocalidad(concesionMinera.getCodigoProvincia().longValue());
                     concesionMinera.setCodigoCasilleroLocalidad(provincia);
                 }
-//                if (concesionMinera.getCodigoMae()== null) {
-//                    concesionMinera.setCodigoMae(new CatalogoDetalle());
-//                }
-//                if (concesionMinera.getCodigoSenagua()== null) {
-//                    concesionMinera.setCodigoSenagua(new CatalogoDetalle());
-//                }
-                //solicitud = solicitudServicio.obtenerPorCodigoArcom(concesionMinera.getCodigoArcom());
-                //solicitudAnterior = solicitudServicio.obtenerPorCodigoArcom(concesionMinera.getCodigoArcom());
-                /*if (concesionMinera.getDocumentoConcesionarioPrincipal() != null
-                        && concesionMinera.getDocumentoConcesionarioPrincipal().length() == 10) {
-                    tipoPersona = "N";
-                    PersonaNatural personaNatural = personaNaturalServicio
-                            .findByNumeroDocumento(concesionMinera.getDocumentoConcesionarioPrincipal());
-                    concesionMinera.setPersonaNaturalTransient(personaNatural);
-                    concesionMinera.getPersonaNaturalTransient();
-                } else if (concesionMinera.getDocumentoConcesionarioPrincipal() != null
-                        && concesionMinera.getDocumentoConcesionarioPrincipal().length() == 13) {
-                    tipoPersona = "J";
-                    PersonaJuridica personaJuridica = personaJuridicaServicio
-                            .findByRuc(concesionMinera.getDocumentoConcesionarioPrincipal());
-                    concesionMinera.setPersonaJuridicaTransient(personaJuridica);
-                    concesionMinera.getPersonaJuridicaTransient();
-                }*/
+
                 if (concesionMinera.getDocumentoConcesionarioPrincipal() != null) {
                     PersonaNatural personaNatural = personaNaturalServicio.findByNumeroDocumento(concesionMinera.getDocumentoConcesionarioPrincipal());
                     if (personaNatural != null) {
@@ -278,13 +268,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                 if (concesionMinera.getCodigoZona() == null) {
                     concesionMinera.setCodigoZona(new CatalogoDetalle());
                 }
-                /*if (solicitud.getTipoPersona() != null) {
-                 if (solicitud.getTipoPersona().equals("PNA")) {
-                 tipoPersona = "N";
-                 } else if (solicitud.getTipoPersona().equals("PJU")) {
-                 tipoPersona = "J";
-                 }
-                 }*/
+
                 System.out.println("concesionMinera.getCodigoConcesion(): " + concesionMinera.getCodigoConcesion());
                 areaMinera = areaMineraServicio.obtenerPorConcesionMinera(concesionMinera.getCodigoConcesion());
                 areaMineraAnterior = areaMineraServicio.obtenerPorConcesionMinera(concesionMinera.getCodigoConcesion());
@@ -391,13 +375,17 @@ public class ConcesionMineraCtrl extends BaseCtrl {
     }
 
     public List<ConcesionMineraDto> presentarListaRegistros() {
-        return concesionMineraServicio.obtenerRegistrosPorUsuario(login.getUserName(), codigoFiltro, cedulaTitularFiltro, nombreAreaFiltro);
+        String usuarioRegistrador = login.getUserName();
+        if(login.isRegistroMineroNacional()){
+            usuarioRegistrador = "-1";
+        }
+        return concesionMineraServicio.obtenerRegistrosPorUsuario(usuarioRegistrador, codigoFiltro, cedulaTitularFiltro, nombreAreaFiltro);
     }
 
     public void buscar() {
         listaRegistros = null;
         getListaRegistros();
-    }
+    }    
 
     public String editarRegistro() {
         mostrarCoordenadas = true;
@@ -489,94 +477,14 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         } else {
             concesionMinera.setCodigoFormaExplotacion(null);
         }
-
-        /*if (concesionMinera.getFechaInforme() == null) {
-         try {
-         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-         String dateInString = "01/01/1800";
-         Date date = formatter.parse(dateInString);
-         concesionMinera.setFechaInforme(date);
-         } catch (Exception e) {
-         e.printStackTrace();
-         }
-         }
-
-         if (concesionMinera.getFechaInicioConcesion() != null) {
-         if (concesionMinera.getFechaInforme().after(concesionMinera.getFechaOtorga())) {
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-         "Fecha de informe debe ser menor o igual a la fecha de otorgamiento", null));
-         return null;
-         }
-         }*/
-        /*if (concesionMinera.getFechaOtorga() != null) {
-         if (concesionMinera.getFechaOtorga().after(concesionMinera.getFechaInscribe())) {
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-         "Fecha de otorgamiento debe ser menor o igual a la fecha de inscripción", null));
-         return null;
-         }
-         }*/
-        //solicitud.setNombreArea(concesionMinera.getNombreConcesion());
-        //solicitud.setCasilleroJudicial(concesionMinera.getCasilleroJudicial());
-        //solicitud.setDocumentoSolicitante(concesionMinera.getDocumentoConcesionarioPrincipal());
-        /*if (concesionMinera.getDocumentoConcesionarioPrincipal().length() == 10) {
-            solicitud.setTipoDocumento("Cedula");
-        } else if (concesionMinera.getDocumentoConcesionarioPrincipal().length() == 13) {
-            solicitud.setTipoDocumento("Ruc");
-        }
-        if (tipoPersona.equals("N")) {
-            solicitud.setTipoPersona("PNA");
-        } else if (tipoPersona.equals("J")) {
-            solicitud.setTipoPersona("PJU");
-        }*/
+        
         concesionMinera.setNombreConcesionarioPrincipal(concesionMinera.getNombreTitular());
         concesionMinera.setApellidoConcesionarioPrincipal(concesionMinera.getApellidoTitular());
-        //solicitud.setCampoReservado10(concesionMinera.getCodigoArcom());
-        //solicitud.setPlazoConcesion(concesionMinera.getPlazoConcesion());
-        //solicitud.setCodigoCensal(concesionMinera.getCodigoCensal());
         concesionMinera.setCodigoRegional(regional);
-        //concesionMinera.setNumeroHectareasConcesion(solicitud.getNumeroHectareas());
-        //concesionMinera.getCodigoTipoMineria().setCodigoTipoMineria(tipoMineria.getCodigoTipoMineria());
-        //concesionMinera.setCodigoZona(codigoZona);
         concesionMinera.setFechaModificacion(new Date());
         concesionMinera.setUsuarioCreacion(BigInteger.valueOf(-1));
         concesionMinera.setUsuarioModificacion(BigInteger.valueOf(us.getCodigoUsuario()));
-        //solicitud.setTipoMaterial(concesionMinera.getTipoMaterial());
-        //solicitud.setMaterialInteres(concesionMinera.getMaterialInteres());
-        //solicitud.setCodigoProvincia(concesionMinera.getCodigoProvincia());
-        //solicitud.setCodigoCanton(concesionMinera.getCodigoCanton());
-        //solicitud.setCodigoParroquia(concesionMinera.getCodigoParroquia());
-        //solicitud.setFechaModificacion(new Date());
-        ///olicitud.setUsuarioCreacion(BigInteger.valueOf(-1));
-        //solicitud.setUsuarioModificacion(BigInteger.valueOf(us.getCodigoUsuario()));
-        //solicitud.setMigrada(true);
-        //CatalogoDetalle estadoArea = new CatalogoDetalle();
-        /*if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConversionEstadosEnum.CADUCADO.getCodigo4())) {
-         estadoArea.setCodigoCatalogoDetalle(ConversionEstadosEnum.CADUCADO.getCodigo19());
-         }*/
-        /*if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConversionEstadosEnum.INSCRITA.getCodigo4())) {
-            estadoArea.setCodigoCatalogoDetalle(ConversionEstadosEnum.INSCRITA.getCodigo19());
-        }
-        if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConversionEstadosEnum.OTORGADO.getCodigo4())) {
-            estadoArea.setCodigoCatalogoDetalle(ConversionEstadosEnum.OTORGADO.getCodigo19());
-        }*/
-        /*if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConversionEstadosEnum.SOLICITUD_EXPIRADA.getCodigo4())) {
-         estadoArea.setCodigoCatalogoDetalle(ConversionEstadosEnum.SOLICITUD_EXPIRADA.getCodigo19());
-         }*/
-        /*if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConversionEstadosEnum.TRAMITE.getCodigo4())) {
-            estadoArea.setCodigoCatalogoDetalle(ConversionEstadosEnum.TRAMITE.getCodigo19());
-        }
-        if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConversionEstadosEnum.ACUMULADA.getCodigo4())) {
-            estadoArea.setCodigoCatalogoDetalle(ConversionEstadosEnum.ACUMULADA.getCodigo19());
-        }
-        if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConversionEstadosEnum.ARCHIVADA.getCodigo4())) {
-            estadoArea.setCodigoCatalogoDetalle(ConversionEstadosEnum.ARCHIVADA.getCodigo19());
-        }
-        if (concesionMinera.getEstadoConcesion().getCodigoCatalogoDetalle().equals(ConversionEstadosEnum.SUSPENDIDO.getCodigo4())) {
-            estadoArea.setCodigoCatalogoDetalle(ConversionEstadosEnum.SUSPENDIDO.getCodigo19());
-        }
-        if (estadoArea.getCodigoCatalogoDetalle() == null) {
-            estadoArea = null;
-        }*/
+        
         areaMinera.setEstadoArea(concesionMinera.getEstadoConcesion());
         areaMinera.setCodigoConcesion(concesionMinera);
         areaMinera.setNombreAreaMinera(concesionMinera.getNombreConcesion());
@@ -1311,6 +1219,14 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                 esEstadoArchivado = false;
             }
         }
+        
+        if(login.isRegistroMineroNacional() == true) {
+            editarFechaArchivo = true;
+        } else if (concesionMinera.getFechaArchivo() == null) {
+            editarFechaArchivo = true;
+        } else {
+            editarFechaArchivo = false;
+        }
     }
     
     public void validarRegimenFase() {
@@ -1641,4 +1557,30 @@ public class ConcesionMineraCtrl extends BaseCtrl {
     public void setEsEstadoArchivado(boolean esEstadoArchivado) {
         this.esEstadoArchivado = esEstadoArchivado;
     }
+
+    public Date getFechaActual() {
+        return fechaActual;
+    }
+
+    public void setFechaActual(Date fechaActual) {
+        this.fechaActual = fechaActual;
+    }
+
+    public boolean isEditarFechaArchivo() {
+        return editarFechaArchivo;
+    }
+
+    public void setEditarFechaArchivo(boolean editarFechaArchivo) {
+        this.editarFechaArchivo = editarFechaArchivo;
+    }
+
+    public String getTituloLista() {
+        return tituloLista;
+    }
+
+    public void setTituloLista(String tituloLista) {
+        this.tituloLista = tituloLista;
+    }
+       
+    
 }

@@ -34,6 +34,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -112,8 +113,22 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
     private ConcesionMinera concesionMineraPB;
     private boolean concesionMinera;
     private boolean esEstadoArchivado;
+    
+    private Date fechaActual;
+    private boolean editarFechaArchivo;
+    private String tituloLista;
 
     private Secuencia secuenciaConcesionMineraPB;
+    
+    @PostConstruct
+    public void init() {
+        fechaActual = new Date();
+        if(login.isRegistroMineroNacional()){
+           tituloLista = "Lista de Plantas Beneficio - Nacional";
+        }else{
+            tituloLista = "Lista de Plantas Beneficio - Regional " + login.getRegional();
+        }
+    }
     
     public PlantaBeneficio getPlantaBeneficio() {
         if (plantaBeneficio == null) {
@@ -433,11 +448,12 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
     }
 
     public List<PlantaBeneficioDto> getListaRegistros() {
-        System.out.println("codigoFiltro: " + codigoFiltro);
-        System.out.println("cedulaTitularFiltro: " + cedulaTitularFiltro);
-        if (listaRegistros == null) {
-            System.out.println("entra if");
-            listaRegistros = plantaBeneficioServicio.obtenerListaPlantas(codigoFiltro, cedulaTitularFiltro, login.getUserName());
+        String usuarioRegistrador = login.getUserName();
+        if(login.isRegistroMineroNacional()){
+            usuarioRegistrador = "-1";
+        }
+        if (listaRegistros == null) {            
+            listaRegistros = plantaBeneficioServicio.obtenerListaPlantas(codigoFiltro, cedulaTitularFiltro, usuarioRegistrador);
         }
         return listaRegistros;
     }
@@ -902,6 +918,14 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
                 esEstadoArchivado = false;
             }
         }
+        
+        if(login.isRegistroMineroNacional() == true) {
+            editarFechaArchivo = true;
+        } else if (plantaBeneficio.getFechaArchivo() == null) {
+            editarFechaArchivo = true;
+        } else {
+            editarFechaArchivo = false;
+        }
     }
     
     public String getTipoMineria() {
@@ -1010,6 +1034,30 @@ public class PlantaBeneficioCtrl extends BaseCtrl {
 
     public void setEsEstadoArchivado(boolean esEstadoArchivado) {
         this.esEstadoArchivado = esEstadoArchivado;
+    }
+
+    public Date getFechaActual() {
+        return fechaActual;
+    }
+
+    public void setFechaActual(Date fechaActual) {
+        this.fechaActual = fechaActual;
+    }
+
+    public boolean isEditarFechaArchivo() {
+        return editarFechaArchivo;
+    }
+
+    public void setEditarFechaArchivo(boolean editarFechaArchivo) {
+        this.editarFechaArchivo = editarFechaArchivo;
+    }
+
+    public String getTituloLista() {
+        return tituloLista;
+    }
+
+    public void setTituloLista(String tituloLista) {
+        this.tituloLista = tituloLista;
     }
     
     

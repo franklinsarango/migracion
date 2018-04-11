@@ -47,7 +47,7 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
     public ConcesionMineraDaoEjb() {
         super(ConcesionMinera.class);
     }
-
+    
     @Override
     public List<ConcesionMineraDto> obtenerRegistrosPorUsuario(String cedulaRuc, String codigoFiltro, String cedulaTitularFiltro, String nombreAreaFiltro) {
         if (codigoFiltro == null || codigoFiltro.trim().isEmpty()) {
@@ -70,8 +70,7 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
                 + "               \n"
                 + "    cm.plazo_concesion,                    cast(null as date) as fecha_informe,                                       \n"
                 + "    \n"
-                + "               (select superficie_area_minera from catmin.catalogo_detalle, catmin.area_minera where codigo_catalogo_detalle = estado_area \n"
-                + "        and codigo_area_minera = (select max(codigo_area_minera) from catmin.area_minera where codigo_concesion = cm.codigo_concesion)) as superficie,\n"
+                + "               cm.numero_hectareas_concesion as superficie,\n"
                 + "               \n"
                 + "                   (select nombre from catmin.catalogo_detalle where codigo_catalogo_detalle = cm.estado_concesion) as estado,\n"
                 + "        \n"
@@ -92,16 +91,13 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
                 + "               cast(null as date) as fecha_sustitucion,\n"
                 + "\n"
                 + "    'C' tipo_tabla \n"
-                + "FROM\n"
-                + "    --catmin.solicitud s,\n"
+                + "FROM\n"                
                 + "    catmin.concesion_minera cm\n"
                 + "    \n"
-                + "where --cm.codigo_arcom = s.campo_reservado_10\n"
-                + " cm.codigo_provincia in (select lcr.codigo_localidad from catmin.localidad_regional lcr where lcr.codigo_regional = "
+                + "where cm.estado_registro = true\n"
+                + " and ('-1' = '" + cedulaRuc + "' or cm.codigo_provincia in (select lcr.codigo_localidad from catmin.localidad_regional lcr where lcr.codigo_regional = "
                 + "(select r.codigo_regional from catmin.regional r, catmin.localidad_regional lr, catmin.usuario where numero_documento = '" + cedulaRuc + "'\n"
-                + "                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia)) "
-//                + "and (cm.migrada = true or cm.estado_concesion = 243) \n"
-                + "and cm.estado_registro = true\n"
+                + "                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia))) "                
                 + "and ('-1' = '" + codigoFiltro + "' or cm.codigo_arcom like '%" + codigoFiltro + "%')\n"
                 + "and ('-1' = '" + cedulaTitularFiltro + "' or cm.documento_concesionario_principal like '%" + cedulaTitularFiltro + "%')\n"
                 + "and ('-1' = '" + nombreAreaFiltro + "' or lower(cm.nombre_concesion) like lower('%" + nombreAreaFiltro + "%'))\n"
@@ -119,15 +115,9 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             cmd.setCodigoArcom(fila[1] != null ? fila[1].toString() : null);
             cmd.setNombreConcesion(fila[2] != null ? fila[2].toString() : null);
             cmd.setCasilleroJudicial(fila[3] != null ? fila[3].toString() : null);
-            //cmd.setDireccion(fila[4] != null ? fila[4].toString() : null);
-            //cmd.setTelefono(fila[5] != null ? fila[5].toString() : null);
-            //cmd.setTitularNombre(fila[6] != null ? fila[6].toString() : null);
             cmd.setTitularDocumento(fila[4] != null ? fila[4].toString() : null);
-            //cmd.setRepLegalNombre(fila[8] != null ? fila[8].toString() : null);
-            //cmd.setRepLegalDocumento(fila[9] != null ? fila[9].toString() : null);
             cmd.setPlazoConcesion(fila[5] != null ? fila[5].toString() : null);
             cmd.setFechaInforme(fila[6] != null ? (Date) fila[6] : null);
-            //cmd.setZona(fila[12] != null ? fila[12].toString() : null);
             cmd.setSuperficie(fila[7] != null ? Double.valueOf(fila[7].toString()) : null);
             cmd.setEstadoConcesion(fila[8] != null ? fila[8].toString() : null);
             cmd.setFase(fila[9] != null ? fila[9].toString() : null);
@@ -138,11 +128,6 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             cmd.setProvincia(fila[14] != null ? fila[14].toString() : null);
             cmd.setCanton(fila[15] != null ? fila[15].toString() : null);
             cmd.setParroquia(fila[16] != null ? fila[16].toString() : null);
-            //cmd.setMineral(fila[22] != null ? fila[22].toString() : null);
-            //cmd.setNumeroCoordenada(fila[24] != null ? Integer.valueOf(fila[24].toString()) : null);
-            //cmd.setCoordenadaUtmEste(fila[24] != null ? fila[24].toString() : null);
-            //cmd.setCoordenadaUtmNorte(fila[25] != null ? fila[25].toString() : null);
-            //cmd.setManifiesto(fila[27] != null ? Integer.valueOf(fila[27].toString()) : null);
             cmd.setTipoTabla(fila[18] != null ? fila[18].toString() : null);
             listaFinal.add(cmd);
         }

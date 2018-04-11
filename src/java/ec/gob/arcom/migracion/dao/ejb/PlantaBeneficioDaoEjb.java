@@ -104,8 +104,10 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
                 + "from catmin.planta_beneficio p, catmin.personas per\n"
                 + "where 1 = 1 \n"
                 + "and per.numero_documento = p.numero_documento_representante_legal \n"
-                + "and p.codigo_provincia in (select lcr.codigo_localidad from catmin.localidad_regional lcr where lcr.codigo_regional = (select r.codigo_regional from catmin.regional r, catmin.localidad_regional lr, catmin.usuario where numero_documento = '" + usuario +"'\n" +
-"                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia)) and codigo_arcom is not null and p.estado_registro = true \n";
+                + " and ('-1' = '" + usuario + "' or p.codigo_provincia in (select lcr.codigo_localidad from catmin.localidad_regional lcr where lcr.codigo_regional = \n"
+                + "(select r.codigo_regional from catmin.regional r, catmin.localidad_regional lr, catmin.usuario where numero_documento = '" + usuario +"'\n" +
+"                                 and r.codigo_regional = lr.codigo_regional and lr.codigo_localidad = codigo_provincia)))  \n"
+                + "and codigo_arcom is not null and p.estado_registro = true \n";
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
             sql = sql + "and codigo_arcom like '%" + codigoArcom + "%'\n";
             //sql.concat("and codigo_arcom like '%").concat(codigoArcom).concat("%'\n");

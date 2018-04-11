@@ -25,6 +25,7 @@ public enum RolEnum
     ROL_TECNICO_CATASTRO("TECNICOCAT","Técnico de Catastro","INT",11L),
     ROL_TECNICO_CATASTRO_NACIONAL("TECCATNAC","Tecnico de Catastro Nacional","INT",29L),
     ROL_REGISTRADOR_REGIONAL("RGRGNL","Registrador Regional","INT",24L),
+    ROL_REGISTRADOR_NACIONAL("RGRNAC","Registrador Nacional","INT",23L),
     ROL_ABOGADO_NACIONAL("ABOGNACIO","Abogado Nacional","INT",25L),
     ROL_DIRECTOR_EJECUTIVO("DIRECEJECUT","Director Ejecutivo","INT",26L),
     ROL_DIRECTOR_JURIDICO("DIJRD","Director Jurídico","INT",15L),

@@ -271,10 +271,10 @@
                             <p:outputLabel for="fecArchivo" value="Fecha Inscripción Archivo:" rendered="#{concesionMineraCtrl.esEstadoArchivado}"></p:outputLabel>
                         </h:panelGroup>
                         <h:panelGroup id="fecArchivo2">
-                            <p:calendar id="fecArchivo" required="true" requiredMessage="Fecha Archivo es requerido"
+                            <p:calendar id="fecArchivo" required="true" requiredMessage="Fecha Inscripción Archivo es requerido"
                                         value="#{concesionMineraCtrl.concesionMinera.fechaArchivo}" placeholder="aaaa-mm-dd" navigator="true"
-                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
-                                        rendered="#{concesionMineraCtrl.esEstadoArchivado}"/>
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" maxdate="#{concesionMineraCtrl.fechaActual}"
+                                        rendered="#{concesionMineraCtrl.esEstadoArchivado}" disabled="#{!concesionMineraCtrl.editarFechaArchivo}"/>
                         </h:panelGroup>
                         
                         <h:panelGroup id="numResolCambioRegimen1">

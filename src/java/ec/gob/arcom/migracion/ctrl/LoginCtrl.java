@@ -234,7 +234,7 @@ public class LoginCtrl extends BaseCtrl {
                         } else {
                             this.directorEjecutivo = false;
                         }
-                        if (uBd.getCampoReservado01() != null && uBd.getCampoReservado01().equals("RMN")) {
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_REGISTRADOR_NACIONAL.getNemonico())){
                             this.registroMineroNacional = true;
                         } else {
                             this.registroMineroNacional = false;

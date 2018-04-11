@@ -30,6 +30,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -98,7 +99,20 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
     private PersonaJuridica personaJuridica;
     
     private boolean esEstadoArchivado;
+    private Date fechaActual;
+    private boolean editarFechaArchivo;  
+    private String tituloLista;
 
+    @PostConstruct
+    public void init() {
+        fechaActual = new Date();
+        if(login.isRegistroMineroNacional()){
+           tituloLista = "Lista de Licencias de Comercialización - Nacional";
+        }else{
+            tituloLista = "Lista de Licencias de Comercialización - Regional " + login.getRegional();
+        }
+    }
+    
     public LicenciaComercializacion getLicenciaComercializacion() {
         if (licenciaComercializacion == null) {
             String licenciaComercializacionId = getHttpServletRequestParam("idItem");
@@ -348,8 +362,12 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
     }
 
     public List<LicenciaComercializacionDto> getListaRegistros() {
+        String usuarioRegistrador = login.getUserName();
+        if(login.isRegistroMineroNacional()){
+            usuarioRegistrador = "-1";
+        }
         if (listaRegistros == null) {
-            listaRegistros = licenciaComercializacionServicio.obtenerListaLicencias(codigoFiltro, cedulaTitularFiltro, login.getUserName());
+            listaRegistros = licenciaComercializacionServicio.obtenerListaLicencias(codigoFiltro, cedulaTitularFiltro, usuarioRegistrador);
         }
         return listaRegistros;
     }
@@ -796,6 +814,14 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
                 esEstadoArchivado = false;
             }
         }
+        
+        if(login.isRegistroMineroNacional() == true) {
+            editarFechaArchivo = true;
+        } else if (licenciaComercializacion.getFechaArchivo() == null) {
+            editarFechaArchivo = true;
+        } else {
+            editarFechaArchivo = false;
+        }
     }
 
     public boolean isEsEstadoArchivado() {
@@ -804,6 +830,30 @@ public class LicenciaComercializacionCtrl extends BaseCtrl {
 
     public void setEsEstadoArchivado(boolean esEstadoArchivado) {
         this.esEstadoArchivado = esEstadoArchivado;
+    }
+
+    public Date getFechaActual() {
+        return fechaActual;
+    }
+
+    public void setFechaActual(Date fechaActual) {
+        this.fechaActual = fechaActual;
+    }
+
+    public boolean isEditarFechaArchivo() {
+        return editarFechaArchivo;
+    }
+
+    public void setEditarFechaArchivo(boolean editarFechaArchivo) {
+        this.editarFechaArchivo = editarFechaArchivo;
+    }
+
+    public String getTituloLista() {
+        return tituloLista;
+    }
+
+    public void setTituloLista(String tituloLista) {
+        this.tituloLista = tituloLista;
     }
     
     

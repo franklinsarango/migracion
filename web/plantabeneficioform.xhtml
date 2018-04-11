@@ -188,8 +188,8 @@
                         <h:panelGroup id="fecArchivo2">
                             <p:calendar id="fecArchivo" required="true" requiredMessage="Fecha Archivo es requerido"
                                         value="#{plantaBeneficioCtrl.plantaBeneficio.fechaArchivo}" placeholder="aaaa-mm-dd" navigator="true"
-                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" 
-                                        rendered="#{plantaBeneficioCtrl.esEstadoArchivado}"/>
+                                        locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" maxdate="#{plantaBeneficioCtrl.fechaActual}"
+                                        rendered="#{plantaBeneficioCtrl.esEstadoArchivado}" disabled="#{!plantaBeneficioCtrl.editarFechaArchivo}"/>
                         </h:panelGroup>
                         
                         <p:outputLabel for="somProcedencia" value="Procedencia Material:"></p:outputLabel>

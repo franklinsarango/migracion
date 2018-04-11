@@ -50,7 +50,7 @@
                     </h:panelGroup>
                 </h:panelGrid>
 
-                <h1 class="titulo_centrado">Lista de Concesiones Mineras - Regional #{concesionMineraCtrl.login.regional}</h1>
+                <h1 class="titulo_centrado" >#{concesionMineraCtrl.tituloLista}</h1>
 
                 <p:dataTable id="amdt" var="reg" value="#{concesionMineraCtrl.listaRegistros}" rows="20" 
                              paginator="true"

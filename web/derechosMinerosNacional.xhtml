@@ -102,11 +102,11 @@
                     <p:column headerText="NOMBRE AREA">
                         <h:outputText value="#{reg.nombreDerechoMinero}" style="font-size: 10px"/>
                     </p:column>
-                    
+
                     <p:column headerText="NUM. DOCUMENTO REP. LEGAL">
                         <h:outputText value="#{reg.numDocumentoRepLegal}" style="font-size: 10px"/>
                     </p:column>
-                    
+
                     <p:column headerText="REGIONAL">
                         <h:outputText value="#{reg.regional}" style="font-size: 10px"/>
                     </p:column>
@@ -158,19 +158,19 @@
                                          oncomplete="PF('visorReporte').show();return false;"></p:commandButton>
                     </p:column>
                 </p:dataTable>
-                
+
                 <p:dialog id="dlgCotitulares" header="Cotitulares" 
                           widgetVar="visorTramite" width="95%" height="600px"  
                           showEffect="fade" draggable="false" 
                           resizable="false" modal="true" >
-                        <iframe frameborder="0"
-                                src="#{derechosMinerosCtrl.urlCotitulares}"
-                                name="frameTareas" id="frameTareas" scrolling="auto" 
-                                width="100%" height="98%" 
-                                marginheight="0" marginwidth="0">
-                        </iframe>
+                    <iframe frameborder="0"
+                            src="#{derechosMinerosCtrl.urlCotitulares}"
+                            name="frameTareas" id="frameTareas" scrolling="auto" 
+                            width="100%" height="98%" 
+                            marginheight="0" marginwidth="0">
+                    </iframe>
                 </p:dialog>
-                
+
                 <p:dialog id="dlgReporte" header="Reporte" 
                           widgetVar="visorReporte" width="95%" height="600px"  
                           showEffect="fade" draggable="false" 
@@ -180,19 +180,19 @@
                             <p:separator></p:separator>
                             <p:commandButton onclick="javascript:window.history.back();" value="Volver a la Lista de Informes" 
                                              icon="ui-icon-arrowreturnthick-1-w" title="Volver">
-                                
+
                             </p:commandButton>
                             <p:separator></p:separator>
                         </h:panelGroup>
                     </h:form>
-                        <iframe frameborder="0"
-                                src="#{derechosMinerosCtrl.urlReporte}"
-                                name="frameReporte" id="frameTareas" scrolling="auto" 
-                                width="100%" height="90%" 
-                                marginheight="0" marginwidth="0">
-                        </iframe>
+                    <iframe frameborder="0"
+                            src="#{derechosMinerosCtrl.urlReporte}"
+                            name="frameReporte" id="frameTareas" scrolling="auto" 
+                            width="100%" height="90%" 
+                            marginheight="0" marginwidth="0">
+                    </iframe>
                 </p:dialog>
-                
+
             </h:form>
 
             <p:dialog header="Concesión Minera" widgetVar="dlgSadmin" modal="false" 
@@ -476,11 +476,11 @@
                             </p:selectOneRadio>
                             <p:outputLabel value="Superficie (Hectáreas):"></p:outputLabel>
                             <p:inputText value="#{derechosMinerosCtrl.concesionMinera.numeroHectareasConcesion}" 
-                                            readonly="true"/>
+                                         readonly="true"/>
 
                             <p:outputLabel value="Volumen total (m3):"></p:outputLabel>
                             <p:inputText value="#{derechosMinerosCtrl.concesionMinera.volumenTotalExplotacion}" 
-                                            readonly="true"/>
+                                         readonly="true"/>
                             <h:outputText value="Estado:"/>
                             <p:inputText value="#{derechosMinerosCtrl.concesionMinera.estadoConcesion.nombre}" readonly="true"/>
                             <h:outputText value="Tipo Solicitud:"/>
@@ -511,10 +511,10 @@
                             </p:selectOneMenu>
                             <h:outputText value="SENAGUA:" />                            
                             <p:selectOneMenu id="idSenagua" value="#{derechosMinerosCtrl.concesionMinera.codigoSenagua}" disabled="true"
-                                         required="true" requiredMessage="Estado SENAGUA es requerido" style="width: 93%">
-                            <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
-                            <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosSenagua}" />                            
-                        </p:selectOneMenu>
+                                             required="true" requiredMessage="Estado SENAGUA es requerido" style="width: 93%">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosSenagua}" />                            
+                            </p:selectOneMenu>
                             <h:outputText value="LITISPENDENCIA:" />
                             <p:selectBooleanCheckbox value="#{derechosMinerosCtrl.concesionMinera.litispendencia}" disabled="true"/>
                             <h:outputText value="Fecha Creación Sol.:"/>
@@ -526,9 +526,9 @@
                             <p:inputTextarea value="#{derechosMinerosCtrl.concesionMinera.observacionGeneral}" 
                                              readonly="true" style="width: 60px; height: 10px;" cols="39" rows="3"/>
                             <h:outputText value="Ver Coordenadas:" />
-                        <p:commandButton update=":formCoordenadas" icon="ui-icon-folder-open" title="Coordenadas"
-                                         oncomplete="PF('dlgCoordenadas').show();return false;"></p:commandButton>
-                    
+                            <p:commandButton update=":formCoordenadas" icon="ui-icon-folder-open" title="Coordenadas"
+                                             oncomplete="PF('dlgCoordenadas').show();return false;"></p:commandButton>
+
                         </h:panelGrid>
                     </h:panelGrid>
                 </h:form>
@@ -693,10 +693,18 @@
                             <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.cantonString}" readonly="true"/>
                             <h:outputText value="Parroquia:" />
                             <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.parroquiaString}" readonly="true"/>
-                            <h:outputText value="MAE:" />
-                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.codigoMae.nombre}" readonly="true"/>
-                            <h:outputText value="SENAGUA:" />
-                            <p:inputText value="#{derechosMinerosCtrl.plantaBeneficio.codigoSenagua.nombre}" readonly="true"/>
+                            <h:outputText value="MAE:" />                            
+                            <p:selectOneMenu id="idMae" value="#{derechosMinerosCtrl.plantaBeneficio.codigoMae}" disabled="true"
+                                             required="true" requiredMessage="Estado MAE es requerido" style="width: 93%">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosMae}" />                            
+                            </p:selectOneMenu>
+                            <h:outputText value="SENAGUA:" />                            
+                            <p:selectOneMenu id="idSenagua" value="#{derechosMinerosCtrl.plantaBeneficio.codigoSenagua}" disabled="true"
+                                             required="true" requiredMessage="Estado SENAGUA es requerido" style="width: 93%">
+                                <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
+                                <f:selectItems value="#{selectItemCtrl.estadosActosAdministrativosSenagua}" />
+                            </p:selectOneMenu>                                                                                                                
                             <h:outputText value="Observaciones generales:" />
                             <p:inputTextarea value="#{derechosMinerosCtrl.plantaBeneficio.observacionGeneral}" cols="47" maxlength="200"
                                              readonly="true"/>
@@ -704,7 +712,7 @@
                     </h:panelGrid>
                 </h:form>
             </p:dialog>
-            
+
             <p:dialog header="Coordenadas" widgetVar="dlgCoordenadas" modal="true" dynamic="true" resizable="true" draggable="false" width="951px" height="424px">
                 <h:form id="formCoordenadas">
                     <p:growl id="message2" showDetail="true" />       
@@ -722,7 +730,7 @@
                     </p:dataTable>
                 </h:form>
             </p:dialog>
-            
+
         </ui:define>
     </ui:composition>
 </html>
