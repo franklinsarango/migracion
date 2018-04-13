@@ -126,6 +126,7 @@ public class Usuario implements Serializable {
     private String nombresCompletos;
       
     public Usuario() {
+        
     }
 
     public Usuario(Long codigoUsuario) {

@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.servicio;
 import com.saviasoft.persistence.util.service.GenericService;
 import ec.gob.arcom.migracion.modelo.GestionVacacion;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.ejb.Local;
 
 /**
@@ -18,5 +19,7 @@ import javax.ejb.Local;
 public interface GestionVacacionServicio extends GenericService<GestionVacacion, Long> {
 
     public GestionVacacion findByUser(Long codigoUsuario);
+
+    public GestionVacacion findByUserAndFechaCorte(Long codigoUsuario, Date fechaSalida);
     
 }

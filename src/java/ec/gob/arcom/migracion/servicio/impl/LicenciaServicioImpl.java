@@ -8,7 +8,9 @@ package ec.gob.arcom.migracion.servicio.impl;
 import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.LicenciaDao;
+import ec.gob.arcom.migracion.dto.LicenciaVacacionDto;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
+import ec.gob.arcom.migracion.modelo.Contrato;
 import ec.gob.arcom.migracion.modelo.Licencia;
 import javax.ejb.Stateless;
 import ec.gob.arcom.migracion.servicio.LicenciaServicio;
@@ -31,13 +33,8 @@ public class LicenciaServicioImpl extends GenericServiceImpl<Licencia, Long> imp
     }
 
     @Override
-    public String obtenerDiasDisponibles(Long codigoUsuario, String fechaSalida, String fechaRetorno) {
-        return licenciaDao.obtenerDiasDisponibles(codigoUsuario, fechaSalida, fechaRetorno);
-    }
-
-    @Override
-    public String obtenerPeriodos(Long codigoUsuario, Long dias) {
-        return licenciaDao.obtenerPeriodos(codigoUsuario, dias);
+    public String obtenerDiasDisponibles(Long codigoUsuario, String fechaSalida, String fechaRetorno, Long codigoLicencia) {
+        return licenciaDao.obtenerDiasDisponibles(codigoUsuario, fechaSalida, fechaRetorno, codigoLicencia);
     }
 
     @Override
@@ -51,8 +48,8 @@ public class LicenciaServicioImpl extends GenericServiceImpl<Licencia, Long> imp
     }
     
     @Override
-    public List<Licencia> listarTareasJefe(Long codigoJefe, CatalogoDetalle estadoLicencia) {
-        return licenciaDao.listarTareasJefe(codigoJefe, estadoLicencia);
+    public List<LicenciaVacacionDto> listarTareasJefe(Long codigoJefe, String nemonico) {
+        return licenciaDao.listarTareasJefe(codigoJefe, nemonico);
     }
 
     @Override
@@ -88,6 +85,16 @@ public class LicenciaServicioImpl extends GenericServiceImpl<Licencia, Long> imp
     @Override
     public List<Licencia> listarLicenciasFinalizadasPorFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia) {
         return licenciaDao.listarLicenciasFinalizadasPorFuncionario(codigoUsuario, estadoLicencia);
+    }
+
+    @Override
+    public List<LicenciaVacacionDto> listarTareas(Long codigoUsuario, String nemonico) {
+        return licenciaDao.listarTareas(codigoUsuario, nemonico);
+    }
+
+    @Override
+    public BigDecimal obtenerSaldoFinal(Contrato contrato) {
+        return licenciaDao.obtenerSaldoFinal(contrato);
     }
     
 }

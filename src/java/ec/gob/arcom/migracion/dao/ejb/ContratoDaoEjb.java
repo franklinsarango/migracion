@@ -35,4 +35,16 @@ public class ContratoDaoEjb extends GenericDaoEjbEl<Contrato, Long> implements C
         }
         return null;
     }
+
+    @Override
+    public List<Contrato> listar() {
+        try {
+            Query query= em.createQuery("Select c from Contrato c where c.estadoRegistro= :estado order by c.codigoContrato ASC");
+            query.setParameter("estado", true);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
+    }
 }

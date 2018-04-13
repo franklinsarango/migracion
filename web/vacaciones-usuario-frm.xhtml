@@ -369,17 +369,7 @@
                     <p:panelGrid styleClass="pg-center">
                         <p:row>
                             <p:column style="text-align: right">
-                                <p:outputLabel for="saldoVacacion" value="Saldo de vacaciones:"/>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                <pe:inputNumber id="saldoVacacion" minValue="0" decimalPlaces="2" value="#{vacacionCtrl.contrato.saldoVacaciones}" readOnly="true"/>
-                            </p:column>
-
-                            <p:column>
-                                <p:spacer width="10"/>
-                            </p:column>
-                            <p:column style="text-align: right">
-                                <p:outputLabel for="fechaSalida" value="Fecha de salida:"/>
+                                <p:outputLabel for="fechaSalida" value="Ingrese la fecha de salida:"/>
                             </p:column>
                             <p:column style="text-align: left">                            
                                 <p:calendar id="fechaSalida" styleClass="calendar-form"
@@ -390,7 +380,7 @@
                         </p:row>
                         
                         <p:row>
-                            <p:column colspan="5" style="text-align: center">
+                            <p:column colspan="2" style="text-align: center">
                                 <p:commandButton value="Finalizar" title="Finalizar" actionListener="#{vacacionCtrl.confirmarEliminarContrato()}" update="endcontratoform :activitiesform:contratos"/>
                             </p:column>
                         </p:row>
@@ -402,9 +392,9 @@
             <h:form>
                 <p:confirmDialog id="deloperativodlg" showEffect="fade" hideEffect="fade" widgetVar="enddlgwg" header="Confirmar finalizar contrato"
                                  message="¿Esta seguro de finalizar el contrato?">
-                    <p:commandButton value="Si" icon="ui-icon-check" oncomplete="PF('enddlgwg').hide()"
+                    <p:commandButton value="Si" icon="ui-icon-check" oncomplete="PF('enddlgwg').hide();PF('endcontratofrmwg').hide();"
                                      actionListener="#{vacacionCtrl.finalizarContrato()}" update=":endcontratoform :activitiesform:contratos"/>
-                    <p:commandButton value="No" icon="ui-icon-close" oncomplete="PF('enddlgwg').hide()"/>
+                    <p:commandButton value="No" icon="ui-icon-close" oncomplete="PF('enddlgwg').hide();PF('endcontratofrmwg').hide();"/>
                 </p:confirmDialog>
             </h:form>
         </ui:define>

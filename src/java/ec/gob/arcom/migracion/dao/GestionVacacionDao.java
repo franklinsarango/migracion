@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.dao;
 import com.saviasoft.persistence.util.dao.GenericDao;
 import ec.gob.arcom.migracion.modelo.GestionVacacion;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.ejb.Local;
 
 /**
@@ -18,5 +19,7 @@ import javax.ejb.Local;
 public interface GestionVacacionDao extends GenericDao<GestionVacacion, Long> {
 
     public GestionVacacion findByUser(Long codigoUsuario);
+
+    public GestionVacacion findByUserAndFechaCorte(Long codigoUsuario, Date fechaSalida);
     
 }

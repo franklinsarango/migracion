@@ -19,5 +19,7 @@ import javax.ejb.Local;
 public interface ContratoDao extends GenericDao<Contrato, Long> {
 
     public List<Contrato> listarPorUsuario(Usuario usuario);
+
+    public List<Contrato> listar();
     
 }

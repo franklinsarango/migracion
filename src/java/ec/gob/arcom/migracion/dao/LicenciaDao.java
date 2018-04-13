@@ -6,7 +6,9 @@
 package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
+import ec.gob.arcom.migracion.dto.LicenciaVacacionDto;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
+import ec.gob.arcom.migracion.modelo.Contrato;
 import ec.gob.arcom.migracion.modelo.Licencia;
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,15 +21,13 @@ import javax.ejb.Local;
 @Local
 public interface LicenciaDao extends GenericDao<Licencia, Long> {
 
-    public String obtenerDiasDisponibles(Long codigoUsuario, String fechaSalida, String fechaRetorno);
-
-    public String obtenerPeriodos(Long codigoUsuario, Long dias);
+    public String obtenerDiasDisponibles(Long codigoUsuario, String fechaSalida, String fechaRetorno, Long codigoLicencia);
 
     public List<Licencia> listarSolicitudesExcluyendoEstado(Long codigoUsuario, CatalogoDetalle estadoLicencia);
     
     public List<Licencia> listarTareasJefePorDepartamento(Long jefatura, CatalogoDetalle estadoLicencia);
     
-    public List<Licencia> listarTareasJefe(Long codigoJefe, CatalogoDetalle estadoLicencia);
+    public List<LicenciaVacacionDto> listarTareasJefe(Long codigoJefe, String nemonico);
 
     public List<Licencia> listarTareasFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia);
 
@@ -42,5 +42,9 @@ public interface LicenciaDao extends GenericDao<Licencia, Long> {
     public void inicializarVacaciones(Long codigoUsuario, BigDecimal saldoVacacionContrato);
 
     public List<Licencia> listarLicenciasFinalizadasPorFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia);
+
+    public List<LicenciaVacacionDto> listarTareas(Long codigoUsuario, String nemonico);
+
+    public BigDecimal obtenerSaldoFinal(Contrato contrato);
     
 }

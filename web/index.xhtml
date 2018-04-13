@@ -179,7 +179,8 @@
                         </h:panelGrid>
                     </h:commandLink>
                     
-                    <h:commandLink action="web/vacaciones-home?faces-redirect=true" title="Solicitud de Vacaciones">
+                    <h:commandLink action="web/vacaciones-home?faces-redirect=true" title="Solicitud de Vacaciones" actionListener="#{vacacionCtrl.setTH()}">
+                        <f:param name="th" value="false"/>
                         <h:panelGrid class="botonHome">
                             <h:graphicImage value="web/resources/images/vacaciones.png" style="width: 95px; height: 95px"/>
                             <h:outputText value="Solicitud de Vacaciones"/>
@@ -187,7 +188,8 @@
                     </h:commandLink>
                     
                     <h:commandLink action="web/vacaciones-admin?faces-redirect=true" title="Administrador RRHH" 
-                                   rendered="#{loginCtrl.asistenteTalentoHumano}">
+                                   rendered="#{loginCtrl.asistenteTalentoHumano}" actionListener="#{vacacionCtrl.setTH()}">
+                        <f:param name="th" value="true"/>
                         <h:panelGrid class="botonHome">
                             <h:graphicImage value="web/resources/images/admin_rrhh.png" style="width: 95px; height: 95px"/>
                             <h:outputText value="Administrador RRHH"/>

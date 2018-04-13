@@ -34,16 +34,16 @@
                                 <p:outputLabel value="#{tarea.numeroSolicitud}"/>
                             </p:column>
                             <p:column headerText="Funcionario">
-                                <p:outputLabel value="#{tarea.usuario.nombresCompletos.toUpperCase()}"/>
+                                <p:outputLabel value="#{tarea.funcionario}"/>
                             </p:column>
                             <p:column headerText="Tipo formulario">
-                                <p:outputLabel value="#{tarea.tipoFormulario.nombre}"/>
+                                <p:outputLabel value="#{tarea.tipoFormulario}"/>
                             </p:column>
                             <p:column headerText="Motivo">
-                                <p:outputLabel value="#{tarea.tipoLicencia.nombre}"/>
+                                <p:outputLabel value="#{tarea.motivo}"/>
                             </p:column>
                             <p:column headerText="Estado">
-                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estadoLicencia)}"/>
+                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estado)}"/>
                             </p:column>
                             <p:column headerText="Fecha solicitud">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
@@ -87,10 +87,16 @@
                                 <p:outputLabel value="#{sol.tipoLicencia.nombre}"/>
                             </p:column>
                             <p:column headerText="Estado">
-                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(sol.estadoLicencia)}"/>
+                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(sol.estadoLicencia.nombre)}"/>
                             </p:column>
                             <p:column headerText="Fecha solicitud">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(sol.fechaSolicitud)}"/>
+                            </p:column>
+                            <p:column headerText="Fecha inicio">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaHoraConFormato(sol.fechaHoraSalida)}"/>
+                            </p:column>
+                            <p:column headerText="Fecha fin">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaHoraConFormato(sol.fechaHoraRetorno)}"/>
                             </p:column>
                             <p:column headerText="Dias solicitados">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFormatoDecimal(sol.diasLicencia)}"/>
@@ -108,7 +114,7 @@
                             </p:column>
                             <p:column headerText="Desistir" style="width:50px;text-align: center">
                                 <p:commandButton icon="ui-icon-cancel" title="Desistir" rendered="#{vacacionCtrl.showDesistirOption(sol)}"
-                                                 actionListener="#{vacacionCtrl.showDesistirAction(sol)}" update="misSolicitudes"/>
+                                                 actionListener="#{vacacionCtrl.showDesistirAction(sol)}" update="misSolicitudes :desistirform"/>
                             </p:column>
                         </p:dataTable>
                     </p:tab>
@@ -122,7 +128,7 @@
             </p:dialog>
             
             <p:dialog id="desistirfrm" widgetVar="desistirfrmwg" header="Desistir solicitud" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true">
-                <h:form>
+                <h:form id="desistirform">
                     <p:panelGrid styleClass="pg-center">
                         <p:row>
                             <p:column colspan="2" style="text-align: center;">

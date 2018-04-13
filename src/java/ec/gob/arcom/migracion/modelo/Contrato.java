@@ -88,6 +88,30 @@ public class Contrato implements Serializable {
     @JoinColumn(name = "usuario_modificacion", referencedColumnName = "codigo_usuario")
     @ManyToOne
     private Usuario usuarioModificacion;
+    
+    public Contrato() {
+        
+    }
+    
+    public Contrato(Contrato c) {
+        this.codigoContrato= c.getCodigoContrato();
+        this.usuario= c.getUsuario();
+        this.tipoContrato= c.getTipoContrato();
+        this.regimenContratacion= c.getRegimenContratacion();
+        this.modalidadContrato= c.getModalidadContrato();
+        this.tipoCargo= c.getTipoCargo();
+        this.departamento= c.getDepartamento();
+        this.fechaIngreso= c.getFechaIngreso();
+        this.fechaSalida= c.getFechaSalida();
+        this.saldoVacaciones= c.getSaldoVacaciones();
+        this.motivoSalida= c.getMotivoSalida();
+        this.horarioAlmuerzo= c.getHorarioAlmuerzo();
+        this.estadoRegistro= c.getEstadoRegistro();
+        this.fechaCreacion= c.getFechaCreacion();
+        this.usuarioCreacion= c.getUsuarioCreacion();
+        this.fechaModificacion= c.getFechaModificacion();
+        this.usuarioModificacion= c.getUsuarioModificacion();
+    }
 
     public Long getCodigoContrato() {
         return codigoContrato;

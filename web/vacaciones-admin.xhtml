@@ -37,33 +37,33 @@
                             <p:column headerText="Nro." style="width:50px;text-align: right" sortBy="#{tarea.numeroSolicitud}">
                                 <p:outputLabel value="#{tarea.numeroSolicitud}"/>
                             </p:column>
-                            <p:column headerText="Funcionario" sortBy="#{tarea.usuario.codigoUsuario}">
-                                <p:outputLabel value="#{tarea.usuario.nombresCompletos.toUpperCase()}"/>
+                            <p:column headerText="Funcionario" sortBy="#{tarea.funcionario}">
+                                <p:outputLabel value="#{tarea.funcionario}"/>
                             </p:column>
-                            <p:column headerText="Unidad Administrativa" sortBy="#{tarea.contrato.departamento.codigoDepartamento}"
-                                      filterBy="#{tarea.contrato.departamento.codigoDepartamento}" filterMatchMode="exact">
+                            <p:column headerText="Unidad Administrativa" sortBy="#{tarea.unidadAdministrativa}"
+                                      filterBy="#{tarea.unidadAdministrativa}" filterMatchMode="exact">
                                 <f:facet name="filter">
                                     <p:selectOneMenu onchange="PF('tareastable').filter()">
                                         <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
                                         <f:selectItems value="#{vacacionCtrl.departamentosFilter}"/>
                                     </p:selectOneMenu>
                                 </f:facet>
-                                <p:outputLabel value="#{tarea.contrato.departamento.nombre}"/>
+                                <p:outputLabel value="#{tarea.unidadAdministrativa}"/>
                             </p:column>
-                            <p:column headerText="Tipo formulario" sortBy="#{tarea.tipoFormulario.codigoCatalogoDetalle}">
-                                <p:outputLabel value="#{tarea.tipoFormulario.nombre}"/>
+                            <p:column headerText="Tipo formulario" sortBy="#{tarea.tipoFormulario}">
+                                <p:outputLabel value="#{tarea.tipoFormulario}"/>
                             </p:column>
                             <p:column headerText="Motivo">
-                                <p:outputLabel value="#{tarea.tipoLicencia.nombre}"/>
+                                <p:outputLabel value="#{tarea.motivo}"/>
                             </p:column>
-                            <p:column headerText="Estado" sortBy="#{tarea.estadoLicencia.codigoCatalogoDetalle}">
-                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estadoLicencia)}"/>
+                            <p:column headerText="Estado" sortBy="#{tarea.estado}">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estado)}"/>
                             </p:column>
                             <p:column headerText="Fecha solicitud" sortBy="#{tarea.fechaSolicitud}">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
                             </p:column>
                             <p:column headerText="Ver" style="width:50px;text-align: center">
-                                <p:commandButton icon="ui-icon-check" title="Ver"
+                                <p:commandButton icon="ui-icon-check" title="Ver" process="@this"
                                                  action="#{vacacionCtrl.visualizarTarea(tarea)}"/>
                             </p:column>
                         </p:dataTable>

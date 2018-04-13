@@ -124,7 +124,39 @@ public class Licencia implements Serializable {
     @JoinColumn(name = "usuario_modificacion", referencedColumnName = "codigo_usuario")
     @ManyToOne
     private Usuario usuarioModificacion;
-
+    
+    public Licencia() {
+        
+    }
+    
+    public Licencia(Licencia l) {
+        this.codigoLicencia= l.getCodigoLicencia();
+        this.numeroSolicitud= l.getNumeroSolicitud();
+        this.tipoFormulario= l.getTipoFormulario();
+        this.tipoLicencia= l.getTipoLicencia();
+        this.usuario= l.getUsuario();
+        this.fechaSolicitud= l.getFechaSolicitud();
+        this.fechaHoraSalida= l.getFechaHoraSalida();
+        this.fechaHoraRetorno= l.getFechaHoraRetorno();
+        this.diasLicencia= l.getDiasLicencia();
+        this.diasDisponibles= l.getDiasDisponibles();
+        this.saldoVacaciones= l.getSaldoVacaciones();
+        this.estadoLicencia= l.getEstadoLicencia();
+        this.usuarioAprobacion= l.getUsuarioAprobacion();
+        this.observaciones= l.getObservaciones();
+        this.observacionesJefatura= l.getObservacionesJefatura();
+        this.observacionesRecursoHumanos= l.getObservacionesRecursoHumanos();
+        this.provinciaComision= l.getProvinciaComision();
+        this.cantonComision= l.getCantonComision();
+        this.parroquiaComision= l.getParroquiaComision();
+        this.asuntoInstitucional= l.getAsuntoInstitucional();
+        this.estadoRegistro= l.getEstadoRegistro();
+        this.fechaCreacion= l.getFechaCreacion();
+        this.usuarioCreacion= l.getUsuarioCreacion();
+        this.fechaModificacion= l.getFechaModificacion();
+        this.usuarioModificacion= l.getUsuarioModificacion();
+    }
+    
     public Long getCodigoLicencia() {
         return codigoLicencia;
     }

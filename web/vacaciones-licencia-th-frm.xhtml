@@ -194,12 +194,8 @@
                                 <p:outputLabel for="fechaInicio" value="Fecha de inicio:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:calendar id="fechaInicio" styleClass="calendar-form"
-                                            readonlyInput="true" required="true" requiredMessage="El campo fecha inicio es requerido"
-                                            navigator="true" pattern="dd-MM-yyyy HH:mm" minHour="8" maxHour="17" disabledWeekends="true"
-                                            value="#{vacacionCtrl.licencia.fechaHoraSalida}" locale="es" readonly="true">
-                                    <p:ajax event="dateSelect" listener="#{vacacionCtrl.obtenerSaldoVacaciones()}" process="fechaInicio fechaFin" update="fechaInicio fechaFin saldoVacacion"/>
-                                </p:calendar>
+                                <p:inputText id="fechaInicio" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerFechaHoraConFormato(vacacionCtrl.licencia.fechaHoraSalida)}" readonly="true"/>
                             </p:column>
 
                             <p:column>
@@ -219,12 +215,8 @@
                                 <p:outputLabel for="fechaFin" value="Fecha de fin:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:calendar id="fechaFin" styleClass="calendar-form"
-                                            readonlyInput="true" required="true" requiredMessage="El campo fecha fin es requerido"
-                                            navigator="true" pattern="dd-MM-yyyy HH:mm" minHour="8" maxHour="17" disabledWeekends="true"
-                                            value="#{vacacionCtrl.licencia.fechaHoraRetorno}" locale="es" readonly="true">
-                                    <p:ajax event="dateSelect" listener="#{vacacionCtrl.obtenerSaldoVacaciones()}" process="fechaInicio fechaFin" update="fechaInicio fechaFin saldoVacacion"/>
-                                </p:calendar>
+                                <p:inputText id="fechaFin" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerFechaHoraConFormato(vacacionCtrl.licencia.fechaHoraRetorno)}" readonly="true"/>
                             </p:column>
                             
                             <p:column>
@@ -271,10 +263,8 @@
                                 <p:outputLabel for="fechaInicioC" value="Fecha de inicio:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:calendar id="fechaInicioC" styleClass="calendar-form"
-                                            readonlyInput="true" required="true" requiredMessage="El campo fecha inicio es requerido"
-                                            navigator="true" pattern="dd-MM-yyyy HH:mm" minHour="8" maxHour="17" disabledWeekends="true"
-                                            value="#{vacacionCtrl.licencia.fechaHoraSalida}" locale="es"/>
+                                <p:inputText id="fechaInicioC" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerFechaHoraConFormato(vacacionCtrl.licencia.fechaHoraSalida)}" readonly="true"/>
                             </p:column>
 
                             <p:column>
@@ -285,10 +275,8 @@
                                 <p:outputLabel for="fechaFinC" value="Fecha de fin:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:calendar id="fechaFinC" styleClass="calendar-form"
-                                            readonlyInput="true" required="true" requiredMessage="El campo fecha fin es requerido"
-                                            navigator="true" pattern="dd-MM-yyyy HH:mm" minHour="8" maxHour="17" disabledWeekends="true"
-                                            value="#{vacacionCtrl.licencia.fechaHoraRetorno}" locale="es"/>
+                                <p:inputText id="fechaFinC" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerFechaHoraConFormato(vacacionCtrl.licencia.fechaHoraRetorno)}" readonly="true"/>
                             </p:column>
                         </p:row>
 
@@ -298,7 +286,7 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:inputTextarea id="observacionC" value="#{vacacionCtrl.licencia.observaciones}"
-                                                 styleClass="inputtextarea-form"/>
+                                                 styleClass="inputtextarea-form" readonly="true"/>
                             </p:column>
                             
                             <p:column>
@@ -327,10 +315,8 @@
                                 <p:outputLabel for="fechaInicioI" value="Fecha de inicio:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:calendar id="fechaInicioI" styleClass="calendar-form"
-                                            readonlyInput="true" required="true" requiredMessage="El campo fecha inicio es requerido"
-                                            navigator="true" pattern="dd-MM-yyyy HH:mm" minHour="8" maxHour="17" disabledWeekends="true"
-                                            value="#{vacacionCtrl.licencia.fechaHoraSalida}" locale="es" readonly="true"/>
+                                <p:inputText id="fechaInicioI" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerFechaHoraConFormato(vacacionCtrl.licencia.fechaHoraSalida)}" readonly="true"/>
                             </p:column>
 
                             <p:column>
@@ -341,10 +327,8 @@
                                 <p:outputLabel for="fechaFinI" value="Fecha de fin:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:calendar id="fechaFinI" styleClass="calendar-form"
-                                            readonlyInput="true" required="true" requiredMessage="El campo fecha fin es requerido"
-                                            navigator="true" pattern="dd-MM-yyyy HH:mm" minHour="8" maxHour="17" disabledWeekends="true"
-                                            value="#{vacacionCtrl.licencia.fechaHoraRetorno}" locale="es" readonly="true"/>
+                                <p:inputText id="fechaFinI" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.obtenerFechaHoraConFormato(vacacionCtrl.licencia.fechaHoraRetorno)}" readonly="true"/>
                             </p:column>
                         </p:row>
                        
@@ -353,12 +337,8 @@
                                 <p:outputLabel for="provinciaC" value="Provincia comisión:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:selectOneMenu id="provinciaC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.provinciaComision}">
-                                <f:selectItem itemLabel="Seleccione una provincia..." itemValue="#{null}" noSelectionOption="true"/>
-                                <f:selectItems value="#{vacacionCtrl.provincias}"/>
-                                <p:ajax  listener="#{vacacionCtrl.cargaCantones}" update="cantonC parroquiaC"/>
-                            </p:selectOneMenu>
+                                <p:inputText id="provinciaC" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.licencia.provinciaComision.nombre.toUpperCase()}" readonly="true"/>
                             </p:column>
 
                             <p:column>
@@ -369,12 +349,8 @@
                                 <p:outputLabel for="cantonC" value="Cantón comisión:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:selectOneMenu id="cantonC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.cantonComision}">
-                                    <f:selectItem itemLabel="Seleccione un cantón..." itemValue="#{null}" noSelectionOption="true"/>
-                                    <f:selectItems value="#{vacacionCtrl.cantones}"/>
-                                    <p:ajax  listener="#{vacacionCtrl.cargaParroquias}" update="parroquiaC"/>
-                                </p:selectOneMenu>
+                                <p:inputText id="cantonC" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.licencia.cantonComision.nombre.toUpperCase()}" readonly="true"/>
                             </p:column>
                         </p:row>
                        
@@ -383,11 +359,8 @@
                                 <p:outputLabel for="parroquiaC" value="Parroquia comisión:"/>
                             </p:column>
                             <p:column style="text-align: left">
-                                <p:selectOneMenu id="parroquiaC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
-                                                 value="#{vacacionCtrl.licencia.parroquiaComision}">
-                                <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
-                                <f:selectItems value="#{vacacionCtrl.parroquias}"/>
-                            </p:selectOneMenu>
+                                <p:inputText id="parroquiaC" styleClass="inputtext-form"
+                                         value="#{vacacionCtrl.licencia.parroquiaComision.nombre.toUpperCase()}" readonly="true"/>
                             </p:column>
 
                             <p:column>
@@ -399,7 +372,7 @@
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:inputTextarea id="descripcion" value="#{vacacionCtrl.licencia.asuntoInstitucional}"
-                                                     styleClass="inputtextarea-form"/>
+                                                 styleClass="inputtextarea-form" readonly="true"/>
                             </p:column>
                         </p:row>
                    </p:panelGrid>

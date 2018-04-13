@@ -10,6 +10,7 @@ import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.GestionVacacionDao;
 import ec.gob.arcom.migracion.modelo.GestionVacacion;
 import ec.gob.arcom.migracion.servicio.GestionVacacionServicio;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.ejb.EJB;
 
@@ -30,5 +31,10 @@ public class GestionVacacionServicioImpl extends GenericServiceImpl<GestionVacac
     @Override
     public GestionVacacion findByUser(Long codigoUsuario) {
         return gestionVacacionDao.findByUser(codigoUsuario);
+    }
+
+    @Override
+    public GestionVacacion findByUserAndFechaCorte(Long codigoUsuario, Date fechaSalida) {
+        return gestionVacacionDao.findByUserAndFechaCorte(codigoUsuario, fechaSalida);
     }
 }

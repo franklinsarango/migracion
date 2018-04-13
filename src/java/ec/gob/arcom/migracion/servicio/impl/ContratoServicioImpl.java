@@ -33,4 +33,9 @@ public class ContratoServicioImpl extends GenericServiceImpl<Contrato, Long> imp
     public List<Contrato> listarPorUsuario(Usuario usuario) {
         return contratoDao.listarPorUsuario(usuario);
     }
+
+    @Override
+    public List<Contrato> listar() {
+        return contratoDao.listar();
+    }
 }

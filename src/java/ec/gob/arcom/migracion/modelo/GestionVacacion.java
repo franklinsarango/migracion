@@ -25,8 +25,8 @@ import javax.persistence.Temporal;
 @Entity
 @Table(name = "gestion_vacacion", schema = "arcom")
 public class GestionVacacion implements Serializable {
-
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo_gestion_vacacion")
@@ -74,7 +74,28 @@ public class GestionVacacion implements Serializable {
     @JoinColumn(name = "usuario_modificacion", referencedColumnName = "codigo_usuario")
     @ManyToOne
     private Usuario usuarioModificacion;
-
+    
+    public GestionVacacion() {
+        
+    }
+    
+    public GestionVacacion(GestionVacacion gv) {
+        this.codigoGestionVacacion= gv.getCodigoGestionVacacion();
+        this.usuario= gv.getUsuario();
+        this.contrato= gv.getContrato();
+        this.licencia= gv.getLicencia();
+        this.saldoAnterior= gv.getSaldoAnterior();
+        this.saldoActual= gv.getSaldoActual();
+        this.diasIncrementados= gv.getDiasIncrementados();
+        this.diasDecrementados= gv.getDiasDecrementados();
+        this.fechaCorte= gv.getFechaCorte();
+        this.estadoRegistro= gv.getEstadoRegistro();
+        this.fechaCreacion= gv.getFechaCreacion();
+        this.usuarioCreacion= gv.getUsuarioCreacion();
+        this.fechaModificacion= gv.getFechaModificacion();
+        this.usuarioModificacion= gv.getUsuarioModificacion();
+    }
+    
     public Long getCodigoGestionVacacion() {
         return codigoGestionVacacion;
     }
