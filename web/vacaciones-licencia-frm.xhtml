@@ -413,9 +413,9 @@
                             <p:column style="text-align: left">
                                 <p:selectOneMenu id="parroquiaC" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
                                                  value="#{vacacionCtrl.licencia.parroquiaComision}">
-                                <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
-                                <f:selectItems value="#{vacacionCtrl.parroquias}"/>
-                            </p:selectOneMenu>
+                                    <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.parroquias}"/>
+                                </p:selectOneMenu>
                             </p:column>
 
                             <p:column>

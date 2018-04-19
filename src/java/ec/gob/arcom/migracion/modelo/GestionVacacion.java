@@ -36,9 +36,9 @@ public class GestionVacacion implements Serializable {
     @ManyToOne
     private Usuario usuario;
     
-    @JoinColumn(name = "codigo_contrato", referencedColumnName = "codigo_catalogo_detalle")
+    @JoinColumn(name = "codigo_contrato", referencedColumnName = "codigo_contrato")
     @ManyToOne
-    private CatalogoDetalle contrato;
+    private Contrato contrato;
     
     @JoinColumn(name = "codigo_licencia", referencedColumnName = "codigo_licencia")
     @ManyToOne
@@ -112,11 +112,11 @@ public class GestionVacacion implements Serializable {
         this.usuario = usuario;
     }
 
-    public CatalogoDetalle getContrato() {
+    public Contrato getContrato() {
         return contrato;
     }
 
-    public void setContrato(CatalogoDetalle contrato) {
+    public void setContrato(Contrato contrato) {
         this.contrato = contrato;
     }
 
@@ -234,7 +234,7 @@ public class GestionVacacion implements Serializable {
         response= "Gestion_vacacion{" + 
                 "codigoGestionVacacion=" + codigoGestionVacacion + 
                 ", usuario=" + usuario + 
-                ", contrato=" + (contrato != null ? contrato.getCodigoCatalogoDetalle() : null) + 
+                ", contrato=" + (contrato != null ? contrato.getCodigoContrato() : null) + 
                 ", licencia=" + (licencia != null ? licencia.getCodigoLicencia() : null) + 
                 ", saldoAnterior=" + saldoAnterior + 
                 ", saldoActual=" + saldoActual + 
