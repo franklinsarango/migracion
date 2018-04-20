@@ -140,4 +140,24 @@ public class UsuarioDaoEjb extends GenericDaoEjbEl<Usuario, Long> implements
         }
         return null;
     }
+
+    @Override
+    public List<Usuario> listarUsuariosInternos(Long codigoRegional) {
+        try {
+            Query query= em.createQuery("select u from Usuario u, UsuarioRol ur, Rol r, LocalidadRegional lr, Contrato c where u.codigoUsuario = ur.usuario.codigoUsuario "
+                    + "and r.codigoRol = ur.rol.codigoRol "
+                    + "and ur.estadoRegistro = true "
+                    + "and r.nemonico not in ('UEXT', 'ABGSRMN', 'ADMIN', 'GADADMI', 'ADMINGPS', 'AGEADU', 'GADAUDI', 'JEFETRANS', 'PROGPS', 'GADRECE', 'RCSBGN', 'GADRESP', 'SNACON', 'SNDESA', 'SUBSECREGION', 'USUARIO') "
+                    + "and u.estadoRegistro = true "
+                    + "and u.codigoProvincia = lr.localidad.codigoLocalidad "
+                    + "and lr.regional.codigoRegional = :codigoRegional "
+                    + "and c.usuario.codigoUsuario = u.codigoUsuario and c.estadoRegistro = true "
+                    + "order by u.nombre ASC");
+            query.setParameter("codigoRegional", codigoRegional);
+            return query.getResultList();
+        } catch(Exception ex) {
+           System.out.println(ex.toString());
+        }
+        return null;
+    }
 }

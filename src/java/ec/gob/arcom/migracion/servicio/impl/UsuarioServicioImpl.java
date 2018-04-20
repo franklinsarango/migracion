@@ -57,4 +57,9 @@ public class UsuarioServicioImpl extends GenericServiceImpl<Usuario, Long>
     public List<Usuario> listarUsuariosInternos() {
         return usuarioDao.listarUsuariosInternos();
     }
+
+    @Override
+    public List<Usuario> listarUsuariosInternos(Long codigoRegional) {
+        return usuarioDao.listarUsuariosInternos(codigoRegional);
+    }
 }

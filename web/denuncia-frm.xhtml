@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:composition template="/templates/denuncia-template.xhtml">
+        <ui:define name="title">
+             <h:outputText value="Login Registro de Auditores Tecnico Mineros"/>
+        </ui:define>
+        
+        <ui:define name="content">
+            <p:growl id="growl" autoUpdate="true" showDetail="false"/>
+            
+            <h:form id="denuncia-frm">
+                <p:panelGrid styleClass="pg-center-denuncias">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">
+                                <h:panelGroup style="display:block; text-align:center">
+                                    <p:outputLabel value="Envío de denuncia"></p:outputLabel>
+                                </h:panelGroup>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    
+                    <p:row>
+                        <p:column style="text-align: center" colspan="2">
+                            <p:outputLabel value="DATOS DEL DENUNCIANTE" styleClass="section-header"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right; width: 250px">
+                            <p:outputLabel for="nombre-ante" value="Nombre y Apellido (opcional):"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="nombre-ante" styleClass="inputtext-form"
+                                         value="#{denunciaCtrl.denuncia.nombreDenunciante}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="telefono-ante" value="Teléfono de contacto (opcional):"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="telefono-ante" styleClass="inputtext-form"
+                                         value="#{denunciaCtrl.denuncia.telefonoDenunciante}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="correo-ante" value="Correo electrónico:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="correo-ante" styleClass="inputtext-form" required="true"
+                                         value="#{denunciaCtrl.denuncia.correoDenunciante}" 
+                                         validatorMessage="El correo ingresado no es válido" requiredMessage="Correo electronico es requerido"> 
+                                <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?"/>
+                            </p:inputText>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="tipo-denuncia" value="Tipo denuncia:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="tipo-denuncia" styleClass="onemenu-form" required="true"
+                                                 requiredMessage="Debe seleccionar el tipo de denuncia"
+                                                 value="#{denunciaCtrl.tipoDenuncia}">
+                                <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Minería ilegal" itemValue="Mineria ilegal"/>
+                                <f:selectItem itemLabel="Infracciones de funcionarios" itemValue="Infracciones de funcionarios"/>
+                                <f:selectItem itemLabel="Cohecho" itemValue="Cohecho"/>
+                                <p:ajax listener="#{denunciaCtrl.showFields()}" update="denuncia-panel" process="tipo-denuncia"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                    
+                <h:panelGroup id="denuncia-panel">
+                <p:panelGrid styleClass="pg-center-denuncias">
+                    <p:row rendered="#{denunciaCtrl.showMineriaIlegal}">
+                        <p:column style="text-align: right">
+                            <p:outputLabel value="Lugar:"/>
+                        </p:column>
+                        <p:column>
+                            <p:spacer width="10"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{denunciaCtrl.showMineriaIlegal}">
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="provincia" value="Provincia:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="provincia" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
+                                             value="#{denunciaCtrl.provincia}" requiredMessage="Seleccione una provincia">
+                                    <f:selectItem itemLabel="Seleccione una provincia..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{denunciaCtrl.provincias}"
+                                                   var="prov" itemLabel="#{prov.nombre}" itemValue="#{prov}"/>
+                                    <p:ajax  listener="#{denunciaCtrl.cargaCantones}" update="canton parroquia"/>
+                                </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{denunciaCtrl.showMineriaIlegal}">
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="canton" value="Canton:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="canton" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
+                                             value="#{denunciaCtrl.canton}" requiredMessage="Seleccione un cantón">
+                                <f:selectItem itemLabel="Seleccione un cantón..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{denunciaCtrl.cantones}"
+                                               var="cant" itemLabel="#{cant.nombre}" itemValue="#{cant}"/>
+                                <p:ajax  listener="#{denunciaCtrl.cargaParroquias}" update="parroquia"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{denunciaCtrl.showMineriaIlegal}">
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="parroquia" value="Parroquia:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="parroquia" styleClass="onemenu-form" required="true" converter="#{localidadConverter}"
+                                             value="#{denunciaCtrl.parroquia}" requiredMessage="Seleccione una parroquia">
+                                    <f:selectItem itemLabel="Seleccione una parroquia..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{denunciaCtrl.parroquias}"
+                                                   var="parr" itemLabel="#{parr.nombre}" itemValue="#{parr}"/>
+                                </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{denunciaCtrl.showMineriaIlegal}">
+                        <p:column style="text-align: right">
+                            <p:outputLabel for="sector" value="Sector:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="sector" styleClass="inputtext-form" required="true" requiredMessage="Ingrese un sector"
+                                         value="#{denunciaCtrl.denuncia.sector}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{denunciaCtrl.showInfraccion}">
+                        <p:column style="text-align: center" colspan="2">
+                            <p:outputLabel value="DATOS DEL DENUNCIADO" styleClass="section-header"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{denunciaCtrl.showInfraccion}">
+                        <p:column style="text-align: right; padding-right: 0;">
+                            <p:outputLabel for="coordinacion" value="Coordinación:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="coordinacion" styleClass="onemenu-form" required="true" converter="#{regionalConverter}"
+                                                 requiredMessage="Debe seleccionar una regional"
+                                                 value="#{denunciaCtrl.regional}">
+                                <f:selectItem itemLabel="Seleccione una regional..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{denunciaCtrl.regionales}"
+                                               var="reg" itemLabel="#{reg.descripcionRegional}" itemValue="#{reg}"/>
+                                <p:ajax  listener="#{denunciaCtrl.cargaFuncionarios}" update="nombre-ado"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{denunciaCtrl.showInfraccion}">
+                        <p:column style="text-align: right; padding-right: 0">
+                            <p:outputLabel for="nombre-ado" value="Nombre y Apellido:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:selectOneMenu id="nombre-ado" styleClass="onemenu-form" required="true" var="f" converter="#{usuarioConverter}"
+                                                 requiredMessage="Debe seleccionar un funcionario"
+                                                 value="#{denunciaCtrl.funcionario}">
+                                <f:selectItem itemLabel="Seleccione un funcionario..." itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{denunciaCtrl.funcionarios}"
+                                               var="usr" itemLabel="#{usr.nombresCompletos}" itemValue="#{usr}"/>
+                                <p:column>
+                                    <p:graphicImage library="images/empleados" name="#{denunciaCtrl.getPhoto(f.numeroDocumento)}" width="45" height="69"/>  
+                                </p:column> 
+                                <p:column>
+                                    #{f.nombre} #{f.apellido}
+                                </p:column>
+                                <p:ajax update="photo"/>
+                            </p:selectOneMenu>
+                            <p:spacer width="20"/>
+                            <p:graphicImage id="photo" library="images/empleados" name="#{denunciaCtrl.getPhoto(denunciaCtrl.funcionario.numeroDocumento)}"
+                                        width="45" height="69"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{denunciaCtrl.showCohecho}">
+                        <p:column style="text-align: right; width: 250px">
+                            <p:outputLabel for="nombre-cohecho" value="Nombre persona/empresa involucrada:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputText id="nombre-cohecho" styleClass="inputtext-form" required="true" requiredMessage="Nombre del involucrado es requerido"
+                                         value="#{denunciaCtrl.denuncia.nombreInvolucrado}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right; vertical-align: top; width: 250px">
+                            <p:outputLabel for="detalle" value="Detalle denuncia:"/>
+                        </p:column>
+                        <p:column style="text-align: left">
+                            <p:inputTextarea id="detalle" styleClass="inputtextarea-form" required="true" requiredMessage="Ingresar el detalle"
+                                             value="#{denunciaCtrl.denuncia.detalleDenuncia}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column style="text-align: right">
+                            <p:outputLabel value="Adjuntar Pruebas:"/>
+                        </p:column>
+                        <p:column>
+                            <p:spacer width="10"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center">
+                            <p:commandButton value="Cargar archivo" oncomplete="PF('archivosfrmwg').show();" immediate="true"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <h:panelGroup id="filelistpanel">
+                                <p:dataList id="filelistUpload" value="#{denunciaCtrl.archivosParaCargar}" var="newfile" styleClass="size_uploadfiles"
+                                            emptyMessage="" rowIndexVar="row" style="border: none">
+                                <p:outputLabel value="#{row + 1}"/>
+                                <p:spacer width="10" height="10"/>
+                                <p:outputLabel value="#{newfile.fileName}"/>
+                            </p:dataList>
+                            </h:panelGroup>
+                        </p:column>
+                    </p:row>
+                    
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <h:panelGroup style="display:block; text-align:center">
+                                    <p:commandButton value="Enviar" update="@form" actionListener="#{denunciaCtrl.sendDenuncia()}"/>
+                                </h:panelGroup>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+                </h:panelGroup>
+            </h:form>
+            
+            <!-- CARGA DE ARCHIVOS -->
+            <p:dialog id="archivosfrm" widgetVar="archivosfrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
+                      header="Cargar archivos" styleClass="upload-files">
+                <h:form id="archivosform">
+                    <p:panelGrid styleClass="pg-center-dialog">
+                        <p:row>
+                            <p:column colspan="2" style="text-align: center">
+                                <p:fileUpload id="fuadjuntos" mode="advanced" sizeLimit="3145728" allowTypes="/(\.|\/)(pdf|PDF)$/"
+                                              invalidSizeMessage="Su archivo excede el tamaño permitido de 3MB"
+                                              invalidFileMessage="Solo puede subir archivos PDF"
+                                              cancelLabel="Cancelar" uploadLabel="Subir" label="Examinar"
+                                              fileUploadListener="#{denunciaCtrl.addArchivos}"
+                                              update=":growl :denuncia-frm:filelistpanel"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+

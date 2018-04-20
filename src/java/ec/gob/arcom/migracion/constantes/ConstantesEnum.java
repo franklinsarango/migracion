@@ -79,7 +79,9 @@ public enum ConstantesEnum {
     //PARA ENVIO DE CORREO ELECTRONICO
     IP_SERVIDOR_CORREO("", "10.10.6.6", null),
     PORT_SERVIDOR_CORREO("", "25", null),
-    REMITENTE_CORREO_VACACIONES("", "talento.humano@controlminero.gob.ec", null);
+    REMITENTE_CORREO_VACACIONES("", "talento.humano@controlminero.gob.ec", null),
+    BUZON_DENUNCIAS("","denuncias@controlminero.gob.ec",null),
+    REMITENTE_BUZON_DENUNCIAS("","denuncias@controlminero.gob.ec",null);
     
     private String nemonico;
     private String descripcion;

@@ -5,6 +5,7 @@
  */
 package ec.gob.arcom.migracion.mail;
 
+import ec.gob.arcom.migracion.dto.DenunciaDto;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import java.util.List;
 import java.util.Properties;
@@ -56,6 +57,23 @@ public class MailSender {
                 + "<p>Su solicitud Nro. <strong>" + numSolicitud + "</strong> ha sido " + estadoSolicitud + ", <br/>"
                 + "puede revisarla ingresando al <em>Sistema de Gesti&oacute;n de Permisos y Vacaciones</em>.</p>";
         return textHTML;
+    }
+    
+    public Long sendMailHTML(String asunto, String contenido, String destinatario, String remitente) {
+        Long result= (long) 0;
+        ConnectionData datos= new ConnectionData();
+        try {
+            Message message = new MimeMessage(getSession(datos));
+            message.setFrom(new InternetAddress(remitente));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+            message.setSubject(asunto);
+            message.setContent(contenido, "text/html");
+            Transport.send(message);
+            result= (long) 1;
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
     
     public Long sendMailHTML(String asunto, String contenido, Usuario destinatario) {

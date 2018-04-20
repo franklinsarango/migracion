@@ -28,4 +28,6 @@ public interface UsuarioDao extends GenericDao<Usuario, Long> {
     public List<Usuario> listar();
 
     public List<Usuario> listarUsuariosInternos();
+
+    public List<Usuario> listarUsuariosInternos(Long codigoRegional);
 }

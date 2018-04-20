@@ -640,3 +640,19 @@ a.lnkexport:active {
     color: steelblue;
     font-weight: bold;
 }
+
+.pg-center-denuncias {
+    margin: 0 auto;
+    width: 700px;
+}
+
+/*Sirve para quitar el borde del panel grid*/
+.pg-center-denuncias.ui-panelgrid>*>tr,
+.pg-center-denuncias.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.section-header {
+    font-weight: bolder;
+    font-size: 14px;
+}

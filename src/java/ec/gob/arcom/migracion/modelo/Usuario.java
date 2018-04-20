@@ -85,7 +85,7 @@ public class Usuario implements Serializable {
     @Column(name = "direccion")
     private String direccion;
     @Column(name = "codigo_provincia")
-    private BigInteger codigoProvincia;
+    private Long codigoProvincia;
     @Column(name = "codigo_canton")
     private BigInteger codigoCanton;
     @Column(name = "codigo_parroquia")
@@ -174,7 +174,7 @@ public class Usuario implements Serializable {
     }
 
     public String getNombre() {
-        return nombre;
+        return nombre.toUpperCase();
     }
 
     public void setNombre(String nombre) {
@@ -182,7 +182,7 @@ public class Usuario implements Serializable {
     }
 
     public String getApellido() {
-        return apellido;
+        return apellido.toUpperCase();
     }
 
     public void setApellido(String apellido) {
@@ -245,11 +245,11 @@ public class Usuario implements Serializable {
         this.direccion = direccion;
     }
 
-    public BigInteger getCodigoProvincia() {
+    public Long getCodigoProvincia() {
         return codigoProvincia;
     }
 
-    public void setCodigoProvincia(BigInteger codigoProvincia) {
+    public void setCodigoProvincia(Long codigoProvincia) {
         this.codigoProvincia = codigoProvincia;
     }
 
