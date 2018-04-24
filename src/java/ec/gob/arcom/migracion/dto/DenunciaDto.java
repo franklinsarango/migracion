@@ -5,6 +5,8 @@
  */
 package ec.gob.arcom.migracion.dto;
 
+import ec.gob.arcom.migracion.modelo.Denuncia;
+import ec.gob.arcom.migracion.util.DateUtil;
 import java.util.List;
 
 /**
@@ -12,6 +14,7 @@ import java.util.List;
  * @author mejiaw
  */
 public class DenunciaDto {
+    private String codigoDenuncia;
     private String nombreDenunciante;
     private String telefonoDenunciante;
     private String correoDenunciante;
@@ -21,11 +24,41 @@ public class DenunciaDto {
     private String canton;
     private String parroquia;
     private String sector;
+    private String regional;
     private String nombreInvolucrado;
     private String detalleDenuncia;
     private List<String> adjuntos;
     private String fechaHoraEnvio;
+    
+    public DenunciaDto() {
+        
+    }
+    
+    public DenunciaDto(Denuncia d) {
+        this.codigoDenuncia= d.getCodigoDenuncia().toString();
+        this.nombreDenunciante= (d.getNombreDenunciante() != null ? d.getNombreDenunciante() : "");
+        this.telefonoDenunciante= (d.getTelefonoDenunciante() != null ? d.getTelefonoDenunciante() : "");
+        this.correoDenunciante= d.getEmailDenunciante();
+        this.tipoDenuncia= d.getTipoDenuncia().getNombre();
+        this.nombreDenunciado= (d.getUsuarioInfractor() != null ? d.getUsuarioInfractor().getNombresCompletos().toUpperCase() : "");
+        this.provincia= (d.getProvincia() != null ? d.getProvincia().getNombre() : "");
+        this.canton= (d.getCanton() != null ? d.getCanton().getNombre() : "");
+        this.parroquia= (d.getParroquia() != null ? d.getParroquia().getNombre() : "");
+        this.sector= (d.getSector() != null ? d.getSector() : "");
+        this.regional= (d.getRegional() != null ? d.getRegional().getDescripcionRegional() : "");
+        this.nombreInvolucrado= (d.getNombreInfractor() != null ? d.getNombreInfractor() : "");
+        this.detalleDenuncia= d.getDetalleDenuncia();
+        this.fechaHoraEnvio= DateUtil.obtenerFechaHoraConFormato(d.getFechaCreacion());
+    }
 
+    public String getCodigoDenuncia() {
+        return codigoDenuncia;
+    }
+
+    public void setCodigoDenuncia(String codigoDenuncia) {
+        this.codigoDenuncia = codigoDenuncia;
+    }
+    
     public String getNombreDenunciante() {
         return nombreDenunciante;
     }
@@ -96,6 +129,14 @@ public class DenunciaDto {
 
     public void setSector(String sector) {
         this.sector = sector;
+    }
+    
+    public String getRegional() {
+        return regional;
+    }
+
+    public void setRegional(String regional) {
+        this.regional = regional;
     }
 
     public String getNombreInvolucrado() {

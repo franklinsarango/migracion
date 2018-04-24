@@ -8,14 +8,24 @@ package ec.gob.arcom.migracion.ctrl;
 import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.dto.DenunciaDto;
 import ec.gob.arcom.migracion.mail.MailSender;
+import ec.gob.arcom.migracion.modelo.Adjunto;
+import ec.gob.arcom.migracion.modelo.Catalogo;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
+import ec.gob.arcom.migracion.modelo.Denuncia;
 import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.Regional;
+import ec.gob.arcom.migracion.modelo.Secuencia;
 import ec.gob.arcom.migracion.modelo.Usuario;
+import ec.gob.arcom.migracion.servicio.AdjuntoServicio;
+import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
+import ec.gob.arcom.migracion.servicio.CatalogoServicio;
+import ec.gob.arcom.migracion.servicio.DenunciaServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
 import ec.gob.arcom.migracion.servicio.RegionalServicio;
+import ec.gob.arcom.migracion.servicio.SecuenciaServicio;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
-import ec.gob.arcom.migracion.util.DateUtil;
 import ec.gob.arcom.migracion.util.FacesUtil;
+import ec.gob.arcom.migracion.util.UploadFileManager;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,25 +52,30 @@ public class DenunciaCtrl {
     private LocalidadServicio localidadServicio;
     @EJB
     private RegionalServicio regionalServicio;
+    @EJB
+    private CatalogoServicio catalogoServicio;
+    @EJB
+    private CatalogoDetalleServicio catalogoDetalleServicio;
+    @EJB
+    private DenunciaServicio denunciaServicio;
+    @EJB
+    private SecuenciaServicio secuenciaServicio;
+    @EJB
+    private AdjuntoServicio adjuntoServicio;
     
     private boolean showMineriaIlegal;
     private boolean showInfraccion;
     private boolean showCohecho;
-    private String tipoDenuncia;
     private List<Usuario> funcionarios;
-    private Usuario funcionario;
     private List<UploadedFile> archivosParaCargar;
-    private DenunciaDto denuncia;
+    private Denuncia denuncia;
+    private List<Denuncia> denuncias;
+    private List<CatalogoDetalle> tiposDenuncia;
     private List<Localidad> provincias;
     private List<Localidad> cantones;
     private List<Localidad> parroquias;
-    
     private List<Regional> regionales;
-    private Regional regional;
-    
-    private Localidad provincia;
-    private Localidad canton;
-    private Localidad parroquia;
+    private List<String> listaAdjuntosHtml;
 
     /**
      * Creates a new instance of DenunciaController
@@ -73,7 +88,7 @@ public class DenunciaCtrl {
         showMineriaIlegal= false;
         showInfraccion= false;
         showCohecho=false;
-        denuncia= new DenunciaDto();
+        denuncia= new Denuncia();
     }
 
     public boolean isShowMineriaIlegal() {
@@ -99,38 +114,40 @@ public class DenunciaCtrl {
     public void setShowCohecho(boolean showCohecho) {
         this.showCohecho = showCohecho;
     }
-    
-    public String getTipoDenuncia() {
-        return tipoDenuncia;
-    }
 
-    public void setTipoDenuncia(String tipoDenuncia) {
-        this.tipoDenuncia = tipoDenuncia;
-    }
-
-    public Usuario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Usuario funcionario) {
-        this.funcionario = funcionario;
-    }
-
-    public DenunciaDto getDenuncia() {
+    public Denuncia getDenuncia() {
         return denuncia;
     }
 
-    public void setDenuncia(DenunciaDto denuncia) {
+    public void setDenuncia(Denuncia denuncia) {
         this.denuncia = denuncia;
+    }
+
+    public List<Denuncia> getDenuncias() {
+        return denuncias;
+    }
+
+    public void setDenuncias(List<Denuncia> denuncias) {
+        this.denuncias = denuncias;
+    }
+    
+    public List<CatalogoDetalle> getTiposDenuncia() {
+        if (tiposDenuncia == null) {
+            Catalogo catalogo = catalogoServicio.findByNemonico("TIPODENUN");
+            if (catalogo != null) {
+                tiposDenuncia = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
+            }
+        }
+        return tiposDenuncia;
     }
     
     public List<Usuario> getFuncionarios() {
         if (funcionarios == null) {
             funcionarios= new ArrayList<Usuario>();
-            if(regional==null) {
+            if(denuncia.getRegional()==null) {
                 return funcionarios;
             }
-            funcionarios= usuarioServicio.listarUsuariosInternos(regional.getCodigoRegional());
+            funcionarios= usuarioServicio.listarUsuariosInternos(denuncia.getRegional().getCodigoRegional());
         }
         return funcionarios;
     }
@@ -144,11 +161,11 @@ public class DenunciaCtrl {
     }
 
     public void showFields() {
-        if(tipoDenuncia.equals("Mineria ilegal")) {
+        if(denuncia.getTipoDenuncia().getNemonico().equals("DENMINILE")) {
             showMineriaIlegal= true;
             showInfraccion= false;
             showCohecho= false;
-        } else if (tipoDenuncia.equals("Infracciones de funcionarios")) {
+        } else if (denuncia.getTipoDenuncia().getNemonico().equals("DENINFFUN")) {
             showMineriaIlegal= false;
             showInfraccion= true;
             showCohecho= false;
@@ -165,38 +182,6 @@ public class DenunciaCtrl {
         }
         return regionales;
     }
-
-    public Regional getRegional() {
-        return regional;
-    }
-
-    public void setRegional(Regional regional) {
-        this.regional = regional;
-    }
-    
-    public Localidad getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(Localidad provincia) {
-        this.provincia = provincia;
-    }
-
-    public Localidad getCanton() {
-        return canton;
-    }
-
-    public void setCanton(Localidad canton) {
-        this.canton = canton;
-    }
-
-    public Localidad getParroquia() {
-        return parroquia;
-    }
-
-    public void setParroquia(Localidad parroquia) {
-        this.parroquia = parroquia;
-    }
     
     public List<Localidad> getProvincias() {
         if (provincias == null) {
@@ -209,10 +194,10 @@ public class DenunciaCtrl {
     public List<Localidad> getCantones() {
         if (cantones == null) {
             cantones = new ArrayList();
-            if (provincia == null) {
+            if (denuncia.getProvincia() == null) {
                 return cantones;
             }
-            cantones = localidadServicio.findByLocalidadPadre(BigInteger.valueOf(provincia.getCodigoLocalidad()));
+            cantones = localidadServicio.findByLocalidadPadre(BigInteger.valueOf(denuncia.getProvincia().getCodigoLocalidad()));
         }
         return cantones;
     }
@@ -220,10 +205,10 @@ public class DenunciaCtrl {
     public List<Localidad> getParroquias() {
         if (parroquias == null) {
             parroquias = new ArrayList();
-            if (canton == null) {
+            if (denuncia.getCanton() == null) {
                 return parroquias;
             }
-            parroquias = localidadServicio.findByLocalidadPadre(BigInteger.valueOf(canton.getCodigoLocalidad()));
+            parroquias = localidadServicio.findByLocalidadPadre(BigInteger.valueOf(denuncia.getCanton().getCodigoLocalidad()));
         }
         return parroquias;
     }
@@ -263,57 +248,34 @@ public class DenunciaCtrl {
         RequestContext.getCurrentInstance().execute("PF('archivosfrmwg').hide();");
     }
     
-    public void sendDenuncia() {
-        denuncia.setTipoDenuncia(tipoDenuncia);
-        if(tipoDenuncia.compareTo("Mineria ilegal")==0) {
-            denuncia.setProvincia(provincia.getNombre());
-            denuncia.setCanton(canton.getNombre());
-            denuncia.setParroquia(parroquia.getNombre());
-            denuncia.setNombreDenunciado("");
-            denuncia.setNombreInvolucrado("");
-        } else if(tipoDenuncia.compareTo("Infracciones de funcionarios")==0) {
-            denuncia.setProvincia("");
-            denuncia.setCanton("");
-            denuncia.setParroquia("");
-            denuncia.setSector("");
-            denuncia.setNombreDenunciado(funcionario.getNombresCompletos());
-            denuncia.setNombreInvolucrado("");
-        } else {
-            denuncia.setProvincia("");
-            denuncia.setCanton("");
-            denuncia.setParroquia("");
-            denuncia.setSector("");
-            denuncia.setNombreDenunciado("");
+    public void saveDenuncia() {
+        denuncia.setEstadoRegistro(true);
+        denuncia.setFechaCreacion(Calendar.getInstance().getTime());
+        denuncia.setUsuarioCreacion((long)1);
+        denunciaServicio.create(denuncia);
+        
+        if(archivosParaCargar!=null && archivosParaCargar.size()>0) {
+            guardarAdjuntos(denuncia.getCodigoDenuncia());
         }
         
-        List<String> lista= new ArrayList<String>();
-        if(archivosParaCargar!=null) {
-            for(UploadedFile f : archivosParaCargar) {
-                lista.add(f.getFileName());
-            }
-        }
-        denuncia.setAdjuntos(lista);
-        denuncia.setFechaHoraEnvio(DateUtil.obtenerFechaHoraConFormato(Calendar.getInstance().getTime()));
-        sendMail(denuncia);
+        String msg= "Su denuncia ha sido enviada correctamente <br><br> Número de denuncia: <strong>" + denuncia.getCodigoDenuncia() + "</strong> <br> Teléfono de contacto: 07-3703400 ext. 4146";
         RequestContext.getCurrentInstance().showMessageInDialog(
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Denuncia enviada", "Su denuncia ha sido enviada correctamente"));
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Denuncia enviada", msg));
+        
+        DenunciaDto dto= new DenunciaDto(denuncia);
+        dto.setAdjuntos(listaAdjuntosHtml);
+        sendMail(dto);
         reset();
     }
     
     private void reset() {
-        denuncia= new DenunciaDto();
-        tipoDenuncia= "";
+        denuncia= new Denuncia();
         showMineriaIlegal= false;
         showInfraccion= false;
-        funcionario= null;
         funcionarios= null;
-        provincia= null;
-        canton= null;
-        parroquia= null;
         provincias= null;
         cantones= null;
         parroquias= null;
-        regional= null;
         archivosParaCargar= null;
     }
     
@@ -323,8 +285,10 @@ public class DenunciaCtrl {
     
     private void sendNewDenunciaMsg(String destinatario, DenunciaDto d) {
         MailSender ms= new MailSender();
+        String msg= getNewDenunciaMsg(d);
         try {
             ms.sendMailHTML("Notificación nueva denuncia", getNewDenunciaMsg(d), destinatario, ConstantesEnum.REMITENTE_BUZON_DENUNCIAS.getDescripcion());
+            ms.sendMailHTML("Denuncia recibida", getNewDenunciaMsg(d), d.getCorreoDenunciante(), ConstantesEnum.REMITENTE_BUZON_DENUNCIAS.getDescripcion());
         } catch(Exception ex) {
             System.out.println("Ocurrio un error al enviar el correo: " + ex.toString());
         }
@@ -339,8 +303,12 @@ public class DenunciaCtrl {
     
     public String getNewDenunciaMsg(DenunciaDto d) {
         String textHTML= "<p>";
-        if(d.getTipoDenuncia().equals("Mineria ilegal")) {
+        if(d.getTipoDenuncia().equals("MINERIA ILEGAL")) {
             textHTML+="<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" >"
+                    + "<tr>"
+                    + "<td> <strong>Número denuncia: </strong> </td>"
+                    + "<td> <em> " + d.getCodigoDenuncia() +" </em> </td>"
+                    + "</tr>"
                     + "<tr>"
                     + "<td> <strong>Nombre denunciante: </strong> </td>"
                     + "<td> <em> " + d.getNombreDenunciante() +" </em> </td>"
@@ -385,8 +353,12 @@ public class DenunciaCtrl {
                     + "<br>"
                     + "<strong>Adjuntos: </strong><br>" + listarAdjuntos(d.getAdjuntos())
                     + "<br>";
-        } else if(d.getTipoDenuncia().equals("Infracciones de funcionarios")) {
+        } else if(d.getTipoDenuncia().equals("INFRACCIONES DE FUNCIONARIOS")) {
             textHTML+="<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" >"
+                    + "<tr>"
+                    + "<td> <strong>Número denuncia: </strong> </td>"
+                    + "<td> <em> " + d.getCodigoDenuncia() +" </em> </td>"
+                    + "</tr>"
                     + "<tr>"
                     + "<td> <strong>Nombre denunciante: </strong> </td>"
                     + "<td> <em> " + d.getNombreDenunciante() +" </em> </td>"
@@ -402,6 +374,10 @@ public class DenunciaCtrl {
                     + "<tr>"
                     + "<td> <strong>Tipo denuncia: </strong> </td>"
                     + "<td> <em> " + d.getTipoDenuncia() +" </em> </td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td> <strong>Regional: </strong> </td>"
+                    + "<td> <em> " + d.getRegional() +" </em> </td>"
                     + "</tr>"
                     + "<tr>"
                     + "<td> <strong>Nombre denunciado: </strong> </td>"
@@ -421,6 +397,10 @@ public class DenunciaCtrl {
                     + "<br>";
         } else {
             textHTML+="<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" >"
+                    + "<tr>"
+                    + "<td> <strong>Número denuncia: </strong> </td>"
+                    + "<td> <em> " + d.getCodigoDenuncia() +" </em> </td>"
+                    + "</tr>"
                     + "<tr>"
                     + "<td> <strong>Nombre denunciante: </strong> </td>"
                     + "<td> <em> " + d.getNombreDenunciante() +" </em> </td>"
@@ -457,13 +437,50 @@ public class DenunciaCtrl {
         return textHTML;
     }
     
+    private void listarAdjuntosHTML(List<Adjunto> adjuntos) {
+        listaAdjuntosHtml= new ArrayList<>();
+        if(adjuntos!=null) {
+            for(Adjunto s : adjuntos) {
+                String link=  "<a href=\" " + s.getUrlDocumento() +  "\">" + s.getNombreAdjunto() + "</a>";
+                listaAdjuntosHtml.add(link);
+            }
+        }
+        
+    }
+    
     private String listarAdjuntos(List<String> adjuntos) {
         String lista= "Ninguno";
         if(adjuntos!=null) {
+            lista= "";
             for(String s : adjuntos) {
                 lista+= s + "; <br>";
             }
         }
         return lista;
+    }
+    
+    private void guardarAdjuntos(Long codigoDenuncia) {
+        List<Adjunto> filesForSave= new ArrayList();
+        for(UploadedFile f : archivosParaCargar) {
+            Adjunto adj= UploadFileManager.subirArchivoRepositorio(f, "DENUNCIA", String.valueOf(codigoDenuncia), "DENUNCIA", (long)1);
+            if(adj!=null) {
+                filesForSave.add(adj);
+            }
+        }
+        if(filesForSave.size()>0) {
+            guardarAdjuntos(filesForSave);
+            listarAdjuntosHTML(filesForSave);
+        }
+    }
+    
+    private void guardarAdjuntos(List<Adjunto> files) {
+        for(Adjunto a : files) {
+            Secuencia secuenciaAdjunto= secuenciaServicio.obtenerPorTabla("ADJUNTO");
+            Long value= secuenciaAdjunto.getValor();
+            a.setCodigoAdjunto(value);
+            adjuntoServicio.create(a);
+            secuenciaAdjunto.setValor(value + 1);
+            secuenciaServicio.update(secuenciaAdjunto);
+        }
     }
 }

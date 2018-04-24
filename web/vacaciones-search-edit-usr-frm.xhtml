@@ -7,11 +7,10 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
 
     <h:form id="vacaciones-busqueda-frm">
+        <p:remoteCommand name="search" update="funcionarios" actionListener="#{vacacionCtrl.filtrarFuncionarios()}" />
         <p:outputLabel value="Valor a buscar: "/>
-        <p:inputText value="#{vacacionCtrl.textoBuscar}">
-            <p:ajax event="blur" update="funcionarios" listener="#{vacacionCtrl.filtrarFuncionarios()}"/>
-        </p:inputText>
-        <p:commandButton value="Buscar" actionListener="#{vacacionCtrl.filtrarFuncionarios()}"/>
+        <p:inputText value="#{vacacionCtrl.textoBuscar}" onkeypress="if (event.keyCode === 13) {search();return false;}"/>
+        <p:commandButton value="Buscar" update="funcionarios" actionListener="#{vacacionCtrl.filtrarFuncionarios()}"/>
 
         <p:dataTable id="funcionarios" value="#{vacacionCtrl.funcionarios}" var="funcionario" emptyMessage="" widgetVar="funcionariostable"
                      currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"

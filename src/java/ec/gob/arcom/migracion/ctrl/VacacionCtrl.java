@@ -142,6 +142,7 @@ public class VacacionCtrl {
     //
     private List<Licencia> historial;
     private List<LicenciaVacacionDto> tareas;
+    private List<LicenciaVacacionDto> tareasBk;
     private List<Licencia> tramitesAtendidos;
     private List<Licencia> tramitesAtendidosTH;
     private List<Licencia> saldos;
@@ -1158,6 +1159,10 @@ public class VacacionCtrl {
                     tareas= licenciaServicio.listarTareas(login.getCodigoUsuario(), ConstantesEnum.EST_SUBSANACION.getNemonico());
                 }
             }
+            tareasBk= new ArrayList<>();
+            for(LicenciaVacacionDto tarea : tareas) {
+                tareasBk.add(tarea);
+            }
         } else {
             redirectToLogin();
         }
@@ -1530,6 +1535,7 @@ public class VacacionCtrl {
     
     public void imprimirSolicitudPDF(Licencia l) {
         urlFormatoImprimir = ConstantesEnum.URL_PROD_REPORTES.getDescripcion();
+        //urlFormatoImprimir= "../..";
         if (l != null && l.getTipoLicencia().getValor().equals("GRUPO_1")) {
             urlFormatoImprimir = urlFormatoImprimir + "/birt/frameset?__report=report/vacaciones/solicitud-vacacion.rptdesign&codigo_licencia="
                     + l.getCodigoLicencia() + "&__format=pdf";
@@ -1541,6 +1547,14 @@ public class VacacionCtrl {
                     + l.getCodigoLicencia() + "&__format=pdf";
         }
         System.out.println(urlFormatoImprimir);
+    }
+    
+    public String descargarReporte(Usuario funcionario) {
+        urlFormatoImprimir = ConstantesEnum.URL_PROD_REPORTES.getDescripcion();
+        urlFormatoImprimir = urlFormatoImprimir + "/birt/frameset?__report=report/vacaciones/reporte-por-funcionario.rptdesign&codigoUsuario="
+                    + funcionario.getCodigoUsuario() + "&__format=pdf";
+        System.out.println(urlFormatoImprimir);
+        return urlFormatoImprimir;
     }
 
     public boolean showDesistirOption(Licencia l) {
@@ -1560,7 +1574,7 @@ public class VacacionCtrl {
     public void saveDesistimientoAction() {
         Licencia anterior= new Licencia(licencia);
         Usuario usr= usuarioServicio.findByPk(login.getCodigoUsuario());
-        String observacionFinal= licencia.getObservaciones() + " \n \n Desistimiento por: \n " + observacionDesistir + " \n Funcionario: \n " + usr.getNumeroDocumento() + " \n " + usr.getNombresCompletos();
+        String observacionFinal= licencia.getObservaciones() + " \n \n Desistimiento por: \n " + observacionDesistir + " \n Funcionario: \n " + usr.getNumeroDocumento() + " \n " + usr.getNombresCompletos().toUpperCase();
         this.licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTARCHIV").get(0));
         this.licencia.setObservaciones(observacionFinal);
         licenciaServicio.update(licencia);
@@ -1586,7 +1600,7 @@ public class VacacionCtrl {
     private void sendNewTaskMsg(Usuario destinatario, Licencia l) {
         MailSender ms= new MailSender();
         try {
-            ms.sendMailHTML("Notificación nueva tarea", ms.getNewTaskMsg(destinatario.getNombresCompletos(), l.getNumeroSolicitud().toString(), l.getUsuario().getNombresCompletos()), destinatario);
+            ms.sendMailHTML("Notificación nueva tarea", ms.getNewTaskMsg(destinatario.getNombresCompletos().toUpperCase(), l.getNumeroSolicitud().toString(), l.getUsuario().getNombresCompletos().toUpperCase()), destinatario);
         } catch(Exception ex) {
             System.out.println("Ocurrio un error al enviar el correo: " + ex.toString());
         }
@@ -1603,7 +1617,7 @@ public class VacacionCtrl {
     private void sendNotificationMsg(Usuario destinatario, Licencia l, String estadoSolicitud) {
         MailSender ms= new MailSender();
         try {
-            ms.sendMailHTML("Notificación solicitud", ms.getNotificationMsg(destinatario.getNombresCompletos(), l.getNumeroSolicitud().toString(), estadoSolicitud), destinatario);
+            ms.sendMailHTML("Notificación solicitud", ms.getNotificationMsg(destinatario.getNombresCompletos().toUpperCase(), l.getNumeroSolicitud().toString(), estadoSolicitud), destinatario);
         } catch(Exception ex) {
             System.out.println("Ocurrio un error al enviar el correo: " + ex.toString());
         }
@@ -1806,6 +1820,30 @@ public class VacacionCtrl {
             RequestContext.getCurrentInstance().execute("PF('saldosviewfrmwg').show();");        
         } else {
             FacesUtil.showErrorMessage("Error", "El funcionario aun no tiene un contrato");
+        }
+    }
+    
+    public void filtrarTareas() {
+        try {
+            aplicarFiltroTareas();
+        } catch(Exception ex) {
+            System.out.println(ex.toString());
+        }
+    }
+    
+    private void aplicarFiltroTareas() {
+        tareas.clear();
+        if(textoBuscar!=null && textoBuscar.length()>0) {
+            for(LicenciaVacacionDto tarea : tareasBk) {
+                if(tarea.getNumeroSolicitud().toString().contains(textoBuscar.toUpperCase()) ||
+                        tarea.getFuncionario().toUpperCase().contains(textoBuscar.toUpperCase())) {
+                    tareas.add(tarea);
+                }
+            }
+        } else {
+            for (LicenciaVacacionDto tarea : tareasBk) {
+                tareas.add(tarea);
+            }
         }
     }
     

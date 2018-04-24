@@ -28,6 +28,10 @@
                             <p:spacer width="10" height="10"/>
                             <h:outputText value="TAREAS"/>
                         </f:facet>
+                        <p:remoteCommand name="search" update="misTareas" actionListener="#{vacacionCtrl.filtrarTareas()}" />
+                        <p:outputLabel value="Valor a buscar: "/>
+                        <p:inputText value="#{vacacionCtrl.textoBuscar}" onkeypress="if (event.keyCode === 13) {search();return false;}"/>
+                        <p:commandButton value="Buscar" update="misTareas" actionListener="#{vacacionCtrl.filtrarTareas()}"/>
                         
                         <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage="" widgetVar="tareastable"
                                      currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 

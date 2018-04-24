@@ -25,10 +25,10 @@
                             <h:outputText value="VACACIONES POR FUNCIONARIO"/>
                         </f:facet>
                         
+                        <p:remoteCommand name="search" update="funcionarios" actionListener="#{vacacionCtrl.filtrarFuncionarios()}" />
                         <p:outputLabel value="Valor a buscar: "/>
-                        <p:inputText value="#{vacacionCtrl.textoBuscar}">
-                            <p:ajax event="keyup" update="funcionarios" listener="#{vacacionCtrl.filtrarFuncionarios()}"/>
-                        </p:inputText>
+                        <p:inputText value="#{vacacionCtrl.textoBuscar}" onkeypress="if (event.keyCode === 13) {search();return false;}"/>
+                        <p:commandButton value="Buscar" update="funcionarios" actionListener="#{vacacionCtrl.filtrarFuncionarios()}"/>
                         
                         <p:dataTable id="funcionarios" value="#{vacacionCtrl.funcionarios}" var="funcionario" emptyMessage="" widgetVar="funcionariostable"
                                      currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
@@ -59,6 +59,12 @@
                             <p:column headerText="Ver saldos" style="width:50px;text-align: center">
                                 <p:commandButton icon="ui-icon-newwin" title="Ver saldos" actionListener="#{vacacionCtrl.viewSaldosAction(funcionario)}" update=":saldos-view-form"/>
                             </p:column>
+                            <p:column headerText="Ver reporte" style="width:50px;text-align: center">
+                                <p:commandButton update=":visorReporteDlg" 
+                                                 icon="ui-icon-arrowthickstop-1-s"
+                                                 title="Reporte"
+                                                 actionListener="#{vacacionCtrl.descargarReporte(funcionario)}"/>
+                            </p:column>
                         </p:dataTable>
                     </p:tab>
                 </p:tabView>
@@ -67,6 +73,19 @@
             <!-- VER HISTORIAL DE LICENCIA -->
             <p:dialog id="saldosviewfrm" widgetVar="saldosviewfrmwg" header="Detalle de días utilizados" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true">
                 <ui:include src="vacaciones-saldos-view-frm.xhtml"/>
+            </p:dialog>
+            
+            <!-- IMPRIMIR REPORTE -->
+            <p:dialog id="visorReporteDlg" header="Reporte"
+                      widgetVar="visorReporteDlgWg" width="95%" height="600px"
+                      showEffect="fade" draggable="false"
+                      resizable="false" modal="true" >
+                <iframe frameborder="0"
+                        src="#{vacacionCtrl.urlFormatoImprimir}"
+                        name="frameSolicitud" id="frameSolicitud" scrolling="auto"
+                        width="100%" height="98%"
+                        marginheight="0" marginwidth="0">
+                </iframe>
             </p:dialog>
         </ui:define>
     </ui:composition>
