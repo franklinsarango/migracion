@@ -1188,6 +1188,7 @@ public class VacacionCtrl {
     }
     
     public String visualizarTarea(LicenciaVacacionDto l) {
+        System.out.println("----->" + l.getNumeroSolicitud());
         this.licencia= licenciaServicio.findByPk(l.getCodigoLicencia());
         this.cantones= null;this.parroquias= null;
         //getCantones();getParroquias();
@@ -1549,12 +1550,12 @@ public class VacacionCtrl {
         System.out.println(urlFormatoImprimir);
     }
     
-    public String descargarReporte(Usuario funcionario) {
+    public void descargarReporte(Usuario funcionario) {
         urlFormatoImprimir = ConstantesEnum.URL_PROD_REPORTES.getDescripcion();
         urlFormatoImprimir = urlFormatoImprimir + "/birt/frameset?__report=report/vacaciones/reporte-por-funcionario.rptdesign&codigoUsuario="
                     + funcionario.getCodigoUsuario() + "&__format=pdf";
         System.out.println(urlFormatoImprimir);
-        return urlFormatoImprimir;
+        RequestContext.getCurrentInstance().execute("PF('visorReporteDlgWg').show();");        
     }
 
     public boolean showDesistirOption(Licencia l) {

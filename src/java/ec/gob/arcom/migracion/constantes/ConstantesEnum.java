@@ -40,7 +40,7 @@ public enum ConstantesEnum {
     TIPO_CONTRATOS_OPERACION_REPORTE("CONTRAOPERARPT", "CONTRATOS DE OPERACION", 10002L),
     TIPO_AUTOGESTION_REPORTE("AUTOGREP", "AUTOGESTION", 10003L),
     
-    RPT_USUARIOS_SGM("RPTUSUARIOSSGM", "USUARIOS SGM", 10012L),
+    RPT_USUARIOS_SGM("RPTUSUARIOSSGM", "USUARIOS SGM", 100023L),
     RPT_CONSOLIDADO_CONCESIONES("RPTCONSCONCES", "RPT. CONSOLIDADO CONCESIONES", 10004L),
     RPT_CONSOLIDADO_MINERIA_ARTESANAL("RPTCONSMINART", "RPT. CONSOLIDADO MINERIA ARTESANAL", 10005L),
     RPT_CONSOLIDADO_LIBRE_APROVECHAMIENTO("RPTCONSLIBAPR", "RPT. CONSOLIDADO LIBRE APROVECHAMIENTO", 10006L),
@@ -80,8 +80,10 @@ public enum ConstantesEnum {
     IP_SERVIDOR_CORREO("", "10.10.6.6", null),
     PORT_SERVIDOR_CORREO("", "25", null),
     REMITENTE_CORREO_VACACIONES("", "talento.humano@controlminero.gob.ec", null),
-    BUZON_DENUNCIAS("","denuncias@controlminero.gob.ec",null),
-    REMITENTE_BUZON_DENUNCIAS("","denuncias@controlminero.gob.ec",null);
+    //BUZON_DENUNCIAS("","denuncias@controlminero.gob.ec",null),
+    //REMITENTE_BUZON_DENUNCIAS("","denuncias@controlminero.gob.ec",null);
+    BUZON_DENUNCIAS("","franklin_sarango@controlminero.gob.ec",null),
+    REMITENTE_BUZON_DENUNCIAS("","franklin_sarango@controlminero.gob.ec",null);
     
     private String nemonico;
     private String descripcion;
