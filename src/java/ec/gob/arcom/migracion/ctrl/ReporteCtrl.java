@@ -104,6 +104,20 @@ public class ReporteCtrl extends BaseCtrl {
         }        
     }
     
+    public void generarReporteOperativoMineriaIlegalCoordenaBirt() {
+        System.out.println("entra generarReporteOperativoMineriaIlegalCoordenaBirt");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/operativomineriailegal/operativo_mineriailegal_coor.rptdesign" + "&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
+    public void generarReporteRetencionesAbonosBirt() {
+        System.out.println("entra generarReporteRetencionesAbonosBirt");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/ComprobatesPago/retenciones_abonos.rptdesign";
+        System.out.println("urlReporte: " + urlReporte);
+    }
+    
     public void generarReporteConcesionMineraBirt() {
         System.out.println("entra generarReporteConcesionMineraBirt");
         urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
@@ -398,6 +412,8 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteMedianaGranMineriaCoordenadasBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.RPT_CACASTRO_NACIONAL.getCodigo())) {
             generarReporteCatastroNacionalBirt();
+        }else if (codigoTipoMineria.equals(ConstantesEnum.RPT_RETENCIONES_ABONOS.getCodigo())){
+            generarReporteRetencionesAbonosBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.RPT_USUARIOS_SGM.getCodigo())) {
             generarReporteUsuariosSGMBirt();
         } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL.getCodigo())) {
@@ -406,6 +422,8 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteOpeMinIleMensual();
         } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MAQ.getCodigo())) {
             generarReporteOpeMinIleMaq();
+        } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_COORDENADAS.getCodigo())) {
+            generarReporteOperativoMineriaIlegalCoordenaBirt();
         }
     }
 
@@ -420,7 +438,7 @@ public class ReporteCtrl extends BaseCtrl {
     }
     
     public void listenerSubTipoOperativo() {
-        if(codigoSubTipoOperativo!=null && !codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL.getCodigo())) {
+        if(codigoSubTipoOperativo!=null && !codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL.getCodigo()) && !codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_COORDENADAS.getCodigo())) {
             mostrarFiltroAnio= true;
         } else {
             mostrarFiltroAnio= false;
@@ -537,6 +555,7 @@ public class ReporteCtrl extends BaseCtrl {
             tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getDescripcion()));
             tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_UTILIDADES.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_UTILIDADES.getDescripcion()));
             tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_REGALIAS.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_REGALIAS.getDescripcion()));
+            tipoSolicitudes.add(new SelectItem(ConstantesEnum.RPT_RETENCIONES_ABONOS.getCodigo(), ConstantesEnum.RPT_RETENCIONES_ABONOS.getDescripcion()));
         }
         return tipoSolicitudes;
     }
@@ -547,7 +566,8 @@ public class ReporteCtrl extends BaseCtrl {
             for (ConstantesEnum ce : ConstantesEnum.values()) {
                 if (ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL)
                         || ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MENSUAL)
-                        || ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MAQ)) {
+                        || ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MAQ)
+                        || ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_COORDENADAS)) {
                     subTiposOperativo.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
                 }
             }

@@ -111,7 +111,8 @@
                                              rendered="#{!(reporteCtrl.codigoTipoMineria == 10003 or 
                                                          reporteCtrl.codigoTipoMineria == 100011 or
                                                          reporteCtrl.codigoTipoMineria == 100012 or
-                                                         reporteCtrl.codigoTipoMineria == 100013)}"/>
+                                                         reporteCtrl.codigoTipoMineria == 100013 or 
+                                                         reporteCtrl.codigoTipoMineria == 100014)}"/>
                             <p:commandButton update="@form"
                                              value="Generar"
                                              title="Comprobante" 
@@ -120,7 +121,8 @@
                                              rendered="#{reporteCtrl.codigoTipoMineria == 10003 or 
                                                          reporteCtrl.codigoTipoMineria == 100011 or
                                                          reporteCtrl.codigoTipoMineria == 100012 or
-                                                         reporteCtrl.codigoTipoMineria == 100013}"/>
+                                                         reporteCtrl.codigoTipoMineria == 100013 or
+                                                         reporteCtrl.codigoTipoMineria == 100014}"/>
                             <p:commandButton value="Cancelar" action="index.xhtml?faces-redirect=true" immediate="true"/>
                         </h:panelGroup>
                     </f:facet>
@@ -133,7 +135,7 @@
                             src="#{reporteCtrl.urlReporte}"
                             name="frameTareas" id="frameTareas" scrolling="auto" 
                             width="100%" height="98%" 
-                            marginheight="0" marginwidth="0">
+                                    marginheight="0" marginwidth="0">
                     </iframe>
                 </p:dialog>
                 <p:dialog id="dialoVisorRptCN" header="Reporte Catastro Nacional" widgetVar="visorRptCatastroNacional" width="95%" height="400px"  
