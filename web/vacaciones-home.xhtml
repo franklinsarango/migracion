@@ -104,14 +104,16 @@
                             <p:column headerText="Ver" style="width:50px;text-align: center">
                                 <p:commandButton icon="ui-icon-newwin" title="Ver" actionListener="#{vacacionCtrl.showSolicitudAction(sol)}" update=":view-licencia-form"/>
                             </p:column>
+                            <!--
                             <p:column headerText="Imprimir" style="width:50px;text-align: center">
                                 <p:commandButton update=":visorSolicitudDlg"
                                                  icon="ui-icon-print"
                                                  title="Imprimir solictud"
                                                  oncomplete="PF('visorSolicitudDlgWg').show();return false;"
-                                                 actionListener="#{vacacionCtrl.imprimirSolicitudPDF(sol)}"
-                                                 rendered="#{vacacionCtrl.allowPrint(sol)}"/>
+                                                 actionListener="{vacacionCtrl.imprimirSolicitudPDF(sol)}"
+                                                 rendered="{vacacionCtrl.allowPrint(sol)}"/>
                             </p:column>
+                            <!-->
                             <p:column headerText="Desistir" style="width:50px;text-align: center">
                                 <p:commandButton icon="ui-icon-cancel" title="Desistir" rendered="#{vacacionCtrl.showDesistirOption(sol)}"
                                                  actionListener="#{vacacionCtrl.showDesistirAction(sol)}" update="misSolicitudes :desistirform"/>

@@ -165,7 +165,7 @@ public class LicenciaDaoEjb extends GenericDaoEjbEl<Licencia, Long> implements L
     @Override
     public List<Licencia> listarTramitesAtendidosTH(CatalogoDetalle estadoLicencia) {
         try {
-            Query query= em.createQuery("Select lic from Licencia lic where lic.estadoRegistro= :estado and lic.estadoLicencia= :estadoLicencia order by lic.numeroSolicitud ASC");
+            Query query= em.createQuery("Select lic from Licencia lic where lic.estadoRegistro= :estado and lic.estadoLicencia= :estadoLicencia order by lic.numeroSolicitud DESC");
             query.setParameter("estado", true);
             query.setParameter("estadoLicencia", estadoLicencia);
             return query.getResultList();

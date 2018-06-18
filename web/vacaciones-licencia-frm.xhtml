@@ -20,7 +20,7 @@
                 <p:panelGrid styleClass="pg-center" style="width: 930px">
                     <p:row>
                         <p:column colspan="5" style="text-align: center;">
-                            <p:outputLabel value="SOLICITUD DE LICENCIA" style="font-weight: bolder; font-size: medium;"/>
+                            <p:outputLabel value="SOLICITUD DE PERMISOS/VACACIONES" style="font-weight: bolder; font-size: medium;"/>
                         </p:column>
                     </p:row>
                     
@@ -34,7 +34,7 @@
                                                  value="#{vacacionCtrl.licencia.tipoFormulario}">
                                 <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{vacacionCtrl.tiposFormulario}"/>
-                                <p:ajax listener="#{vacacionCtrl.showHourFields()}" update="grouppanel"/>
+                                <p:ajax listener="#{vacacionCtrl.showHourFields()}" update="grouppanel,licenciaPor"/>
                             </p:selectOneMenu>
                         </p:column>
                         
@@ -147,7 +147,7 @@
                     
                     <p:row>
                         <p:column style="text-align: right">
-                            <p:outputLabel for="licenciaPor" value="Solicitud de licencia por:"/>
+                            <p:outputLabel for="licenciaPor" value="Solicitud por:"/>
                         </p:column>
                         <p:column style="text-align: left">
                             <p:selectOneMenu id="licenciaPor" styleClass="onemenu-form" required="true"

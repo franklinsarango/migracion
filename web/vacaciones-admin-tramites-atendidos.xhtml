@@ -25,7 +25,7 @@
                             <h:outputText value="TRÁMITES ATENDIDOS"/>
                         </f:facet>
                         
-                        <p:dataTable id="tramitesAtendidos" value="#{vacacionCtrl.tramitesAtendidos}" var="tramite" emptyMessage="">
+                        <p:dataTable id="tramitesAtendidos" value="#{vacacionCtrl.tramitesAtendidos}" var="tramite" emptyMessage="" scrollHeight="500" scrollable="true">
                             <p:column headerText="Nro." style="width:50px;text-align: right">
                                 <p:outputLabel value="#{tramite.numeroSolicitud}"/>
                             </p:column>

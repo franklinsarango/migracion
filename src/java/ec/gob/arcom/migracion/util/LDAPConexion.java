@@ -25,7 +25,7 @@ public class LDAPConexion {
             
             // Servidor y puerto ldap
             //lc.connect("servidor_ldap", 389);
-            ldapCon.connect("10.10.6.68", 389);
+            ldapCon.connect("10.10.6.66", 389);
             
             ldapCon.bind(LDAPConnection.LDAP_V3, "cn=Administrador,c=ec", "Latinus01".getBytes("UTF8"));
             System.out.println("Conectado...");

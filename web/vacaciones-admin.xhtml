@@ -5,11 +5,11 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    
+
     <f:metadata>
         <f:viewAction action="#{vacacionCtrl.checkPageUpdate()}" onPostback="true"/>
     </f:metadata>
-    
+
     <ui:composition template="/templates/vacaciones-template.xhtml">
         <ui:define name="title">
             <h:outputText value="Vacaciones"/>
@@ -17,10 +17,10 @@
 
         <ui:define name="content">
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
-            
+
             <h:form id="activitiesform">
                 <ui:include src="vacaciones-admin-menu.xhtml"/>
-                
+
                 <p:tabView id="tabulador" activeIndex="0" >
                     <p:tab id="tabTask" title="TAREAS">
                         <f:facet name="title">
@@ -30,14 +30,20 @@
                         </f:facet>
                         <p:remoteCommand name="search" update="misTareas" actionListener="#{vacacionCtrl.filtrarTareas()}" />
                         <p:outputLabel value="Valor a buscar: "/>
-                        <p:inputText value="#{vacacionCtrl.textoBuscar}" onkeypress="if (event.keyCode === 13) {search();return false;}"/>
+                        <p:inputText value="#{vacacionCtrl.textoBuscar}"/>
                         <p:commandButton value="Buscar" update="misTareas" actionListener="#{vacacionCtrl.filtrarTareas()}"/>
                         
                         <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage="" widgetVar="tareastable"
                                      currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                 rowsPerPageTemplate="10,25,50" rows="25" paginator="true">
-                            
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                     rowsPerPageTemplate="10,25,50" rows="25" paginator="true" paginatorPosition="bottom"
+                                     selectionMode="single"
+                                     selection="#{vacacionCtrl.tareaSeleccionada}" 
+                                     rowKey="#{tarea.numeroSolicitud}"
+                                     > 
+                            <f:facet name="header">
+                                <p:commandButton process="misTareas" icon="ui-icon-check" value="Ver" title="Ver" action="#{vacacionCtrl.visualizarTarea()}"/>
+                            </f:facet>
                             <p:column headerText="Nro." style="width:50px;text-align: right" sortBy="#{tarea.numeroSolicitud}">
                                 <p:outputLabel value="#{tarea.numeroSolicitud}"/>
                             </p:column>
@@ -66,14 +72,14 @@
                             <p:column headerText="Fecha solicitud" sortBy="#{tarea.fechaSolicitud}">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
                             </p:column>
-                            <p:column headerText="Ver" style="width:50px;text-align: center">
-                                <p:commandButton icon="ui-icon-check" title="Ver" process="@this"
-                                                 action="#{vacacionCtrl.visualizarTarea(tarea)}"/>
-                            </p:column>
+                            <!--<p:column headerText="Ver" style="width:50px;text-align: center">
+                                <p:commandButton icon="ui-icon-check" title="Ver"
+                                                 process="@this" action="{vacacionCtrl.visualizarTarea(tarea)}"/>
+                            </p:column>!-->
                         </p:dataTable>
                     </p:tab>
                 </p:tabView>
-                
+
             </h:form>
         </ui:define>
     </ui:composition>
