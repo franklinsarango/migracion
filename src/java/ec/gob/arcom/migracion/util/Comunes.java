@@ -5,6 +5,9 @@
  */
 package ec.gob.arcom.migracion.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author Javier Coronel
@@ -18,6 +21,12 @@ public class Comunes {
         } catch (NumberFormatException nfe) {
             return false;
         }
+    }
+    
+    public static String getFechaString(Date fecha) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaString = sdf.format(fecha);
+        return fechaString;
     }
 
 }

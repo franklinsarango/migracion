@@ -10,6 +10,7 @@ import ec.gob.arcom.migracion.dao.PlantaBeneficioDao;
 import ec.gob.arcom.migracion.dto.PlantaBeneficioDto;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.PlantaBeneficio;
+import ec.gob.arcom.migracion.util.Comunes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -289,12 +290,12 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
             sql = sql + "    codigo_arcom = '" + plantaBeneficio.getCodigoArcom() + "',\n";
         }
         if (plantaBeneficio.getFechaOtorga() != null) {
-            sql = sql + "    fecha_otorga = '" + plantaBeneficio.getFechaOtorga() + "',\n";
+            sql = sql + "    fecha_otorga = '" + Comunes.getFechaString(plantaBeneficio.getFechaOtorga()) + "',\n";
         } else {
             sql = sql + "    fecha_otorga = " + null + ",\n";
         } 
         if (plantaBeneficio.getFechaInscribe() != null) {
-            sql = sql + "    fecha_inscribe = '" + plantaBeneficio.getFechaInscribe() + "',\n";
+            sql = sql + "    fecha_inscribe = '" + Comunes.getFechaString(plantaBeneficio.getFechaInscribe()) + "',\n";
         } else {
             sql = sql + "    fecha_inscribe = " + null + ",\n";
         }
@@ -326,15 +327,13 @@ public class PlantaBeneficioDaoEjb extends GenericDaoEjbEl<PlantaBeneficio, Long
         if (plantaBeneficio.getNumeroResolucionArchivo()!= null) {
             sql = sql + "    numero_resolucion_archivo = '" + plantaBeneficio.getNumeroResolucionArchivo()+ "',\n";
         }
-        if (plantaBeneficio.getFechaResolucionArchivo()!= null) {
-            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
-            sql = sql + "    fecha_resolucion_archivo = '" + formatoDelTexto.format(plantaBeneficio.getFechaResolucionArchivo()) + "',\n";
+        if (plantaBeneficio.getFechaResolucionArchivo()!= null) {            
+            sql = sql + "    fecha_resolucion_archivo = '" + Comunes.getFechaString(plantaBeneficio.getFechaResolucionArchivo()) + "',\n";
         } else {
             sql = sql + "    fecha_resolucion_archivo = null ,\n";
         }
-        if (plantaBeneficio.getFechaArchivo()!= null) {
-            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
-            sql = sql + "    fecha_archivo = '" + formatoDelTexto.format(plantaBeneficio.getFechaArchivo()) + "',\n";
+        if (plantaBeneficio.getFechaArchivo()!= null) {            
+            sql = sql + "    fecha_archivo = '" + Comunes.getFechaString(plantaBeneficio.getFechaArchivo()) + "',\n";
         } else {
             sql = sql + "    fecha_archivo = null ,\n";
         }
