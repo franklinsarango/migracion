@@ -28,15 +28,27 @@
                             <p:spacer width="10" height="10"/>
                             <h:outputText value="TAREAS"/>
                         </f:facet>
-                        <p:remoteCommand name="search" update="misTareas" actionListener="#{vacacionCtrl.filtrarTareas()}" />
-                        <p:outputLabel value="Valor a buscar: "/>
-                        <p:inputText value="#{vacacionCtrl.textoBuscar}"/>
-                        <p:commandButton value="Buscar" update="misTareas" actionListener="#{vacacionCtrl.filtrarTareas()}"/>
-                        
+                        <!--<p:remoteCommand name="search" update="misTareas" actionListener="{vacacionCtrl.filtrarTareas()}" />!-->
+                        <h:panelGrid columns="2">                                                                                    
+                            <p:outputLabel value="Nombre: "/>
+                            <p:inputText value="#{vacacionCtrl.nombreLTarea}"/>
+                            <p:outputLabel value="Número de documento: "/>
+                            <p:inputText value="#{vacacionCtrl.numeroDocumentoLTarea}"/>
+                            <p:outputLabel value="Número de solicitud: "/>
+                            <p:inputText value="#{vacacionCtrl.textoBuscar}"/>
+                            <p:outputLabel value="Unidad administrativa: "/>
+                            <p:selectOneMenu value="#{vacacionCtrl.coordinacionSeleccionadaLTarea}" style="width: 300px;">
+                                <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{vacacionCtrl.departamentosFilter}"/>                                
+                            </p:selectOneMenu>
+                            <br/>
+                            <p:commandButton value="Buscar" update="misTareas" actionListener="#{vacacionCtrl.filtrarTareas()}"/>
+                        </h:panelGrid>
                         <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage="" widgetVar="tareastable"
                                      currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                     rowsPerPageTemplate="10,25,50" rows="25" paginator="true" paginatorPosition="bottom"
+                                     rowsPerPageTemplate="10,25,50" rows="25" paginator="true" 
+                                     paginatorPosition="bottom"
                                      selectionMode="single"
                                      selection="#{vacacionCtrl.tareaSeleccionada}" 
                                      rowKey="#{tarea.numeroSolicitud}"
@@ -44,32 +56,25 @@
                             <f:facet name="header">
                                 <p:commandButton process="misTareas" icon="ui-icon-check" value="Ver" title="Ver" action="#{vacacionCtrl.visualizarTarea()}"/>
                             </f:facet>
-                            <p:column headerText="Nro." style="width:50px;text-align: right" sortBy="#{tarea.numeroSolicitud}">
+                            <p:column headerText="Nro Solicitud" style="width:100px;text-align: right">
                                 <p:outputLabel value="#{tarea.numeroSolicitud}"/>
                             </p:column>
-                            <p:column headerText="Funcionario" sortBy="#{tarea.funcionario}">
+                            <p:column headerText="Funcionario">
                                 <p:outputLabel value="#{tarea.funcionario}"/>
                             </p:column>
-                            <p:column headerText="Unidad Administrativa" sortBy="#{tarea.unidadAdministrativa}"
-                                      filterBy="#{tarea.unidadAdministrativa}" filterMatchMode="exact">
-                                <f:facet name="filter">
-                                    <p:selectOneMenu onchange="PF('tareastable').filter()">
-                                        <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
-                                        <f:selectItems value="#{vacacionCtrl.departamentosFilter}"/>
-                                    </p:selectOneMenu>
-                                </f:facet>
+                            <p:column headerText="Unidad Administrativa">                                      
                                 <p:outputLabel value="#{tarea.unidadAdministrativa}"/>
                             </p:column>
-                            <p:column headerText="Tipo formulario" sortBy="#{tarea.tipoFormulario}">
+                            <p:column headerText="Tipo formulario">
                                 <p:outputLabel value="#{tarea.tipoFormulario}"/>
                             </p:column>
                             <p:column headerText="Motivo">
                                 <p:outputLabel value="#{tarea.motivo}"/>
                             </p:column>
-                            <p:column headerText="Estado" sortBy="#{tarea.estado}">
+                            <p:column headerText="Estado">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estado)}"/>
                             </p:column>
-                            <p:column headerText="Fecha solicitud" sortBy="#{tarea.fechaSolicitud}">
+                            <p:column headerText="Fecha solicitud">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
                             </p:column>
                             <!--<p:column headerText="Ver" style="width:50px;text-align: center">

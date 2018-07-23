@@ -7,10 +7,13 @@ package ec.gob.arcom.migracion.dao.ejb;
 
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.modelo.UsuarioRol;
 import ec.gob.arcom.migracion.modelo.Rol;
 import java.util.ArrayList;
+import ec.gob.arcom.migracion.dto.UsuarioDto;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
@@ -127,14 +130,45 @@ public class UsuarioDaoEjb extends GenericDaoEjbEl<Usuario, Long> implements
     }*/
     
     @Override
-    public List<Usuario> listarUsuariosInternos() {
-        try {
-            Query query= em.createQuery("select u from Usuario u, UsuarioRol ur, Rol r where u.codigoUsuario = ur.usuario.codigoUsuario "
-                    + "and r.codigoRol = ur.rol.codigoRol "
-                    + "and ur.estadoRegistro = true "
-                    + "and r.nemonico not in ('UEXT', 'ABGSRMN', 'ADMIN', 'GADADMI', 'ADMINGPS', 'AGEADU', 'GADAUDI', 'JEFETRANS', 'PROGPS', 'GADRECE', 'RCSBGN', 'GADRESP', 'SNACON', 'SNDESA', 'SUBSECREGION', 'USUARIO') "
-                    + "and u.estadoRegistro = true order by u.nombre ASC");
-            return query.getResultList();
+    public List<UsuarioDto> listarUsuariosInternoExterno(String nombre, String numeroDocumento, int codigoDepartamento) {
+        try {          
+            if (numeroDocumento.equals("")){
+                numeroDocumento = "-1";
+            }
+            if (codigoDepartamento == 0){
+                codigoDepartamento = -1;
+            }
+            int estado_contrato = 573;
+            Query query= em.createNativeQuery(""
+                + "select  u.codigo_usuario, u.numero_documento, upper(u.nombre || ' ' || u.apellido) as funcionario, d.nombre as unidad_administrativa, c.fecha_ingreso, cat.nombre as estado, d.codigo_departamento\n" +
+                "from catmin.usuario u, catmin.usuario_rol ur, catmin.rol r, arcom.contrato c, arcom.departamento d, catmin.catalogo_detalle cat\n" +
+                "where u.codigo_usuario = ur.codigo_usuario \n" +
+                "and c.codigo_usuario = u.codigo_usuario\n" +
+                "and r.codigo_rol = ur.codigo_rol \n" +
+                "and ur.estado_registro = true \n" +
+                "and c.estado_registro = true\n" +
+                "and c.estado_contrato = "+estado_contrato+"\n" +                    
+                "and d.codigo_departamento = c.codigo_departamento\n" +
+                "and cat.codigo_catalogo_detalle = c.estado_contrato\n" +
+                "and (-1 = "+numeroDocumento+" or u.numero_documento = '"+numeroDocumento+"') \n" +
+                "and (-1 = "+codigoDepartamento+" or d.codigo_departamento = "+codigoDepartamento+") \n" +
+                "and ('' = '"+nombre+"' or upper(concat(u.nombre,' ',u.apellido)) like '%"+nombre.toUpperCase()+"%')\n" +
+                "and r.nemonico not in ('ABGSRMN', 'ADMIN', 'GADADMI', 'ADMINGPS', 'AGEADU', 'GADAUDI', 'JEFETRANS', 'PROGPS', 'GADRECE', 'RCSBGN', 'GADRESP', 'SNACON', 'SNDESA', 'SUBSECREGION', 'USUARIO')\n" +
+                "and u.estado_registro = true order by u.nombre asc;");
+                List<Object[]> result = query.getResultList();
+                List<UsuarioDto> usuarios = new ArrayList<>();
+                for(Object[] fila : result ) {
+                    UsuarioDto u= new UsuarioDto();
+                    u.setCodigoUsuario((Long)fila[0]);                    
+                    u.setIdentificacion(fila[1] != null ? fila[1].toString() : "");
+                    u.setNombreFuncionario(fila[2] != null ? fila[2].toString() : "");
+                    u.setUnidadAdministrativa(fila[3] != null ? fila[3].toString() : "");
+                    u.setFechaIngreso((Date)fila[4]);
+                    u.setEstadoContrato(fila[5] != null ? fila[5].toString() : "");
+                    u.setCodigoDepartamento((Long) fila[6]);
+                    usuarios.add(u);
+                }
+                return usuarios;
         } catch(Exception ex) {
            System.out.println(ex.toString());
         }

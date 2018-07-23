@@ -18,7 +18,9 @@ import javax.ejb.Local;
 @Local
 public interface ContratoServicio extends GenericService<Contrato, Long> {
 
-    public List<Contrato> listarPorUsuario(Usuario usuarioEditar);
+    public Contrato contratoUsuarioEstado(Usuario usuario, Long estadoContrato);
+    
+    public List<Contrato> listaContratoUsuarioEstado(Usuario usuario);
 
     public List<Contrato> listar();
     

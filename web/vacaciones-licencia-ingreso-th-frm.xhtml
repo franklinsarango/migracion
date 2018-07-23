@@ -20,7 +20,7 @@
                 <p:panelGrid styleClass="pg-center" style="width: 930px">
                     <p:row>
                         <p:column colspan="5" style="text-align: center;">
-                            <p:outputLabel value="SOLICITUD DE LICENCIA" style="font-weight: bolder; font-size: medium;"/>
+                            <p:outputLabel value="SOLICITUD DE PERMISOS/VACACIONES" style="font-weight: bolder; font-size: medium;"/>
                         </p:column>
                     </p:row>
                     
@@ -34,7 +34,7 @@
                                                  value="#{vacacionCtrl.licencia.tipoFormulario}">
                                 <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{vacacionCtrl.tiposFormulario}"/>
-                                <p:ajax listener="#{vacacionCtrl.showHourFields()}" update="grouppanel"/>
+                                <p:ajax listener="#{vacacionCtrl.showHourFields()}" update="grouppanel licenciaPor"/>
                             </p:selectOneMenu>
                         </p:column>
                         
@@ -173,7 +173,7 @@
                         
                         <p:row>
                             <p:column style="text-align: right">
-                                <p:outputLabel for="licenciaPor" value="Solicitud de licencia por:"/>
+                                <p:outputLabel for="licenciaPor" value="Solicitud por:"/>
                             </p:column>
                             <p:column style="text-align: left">
                                 <p:selectOneMenu id="licenciaPor" styleClass="onemenu-form" required="true"
@@ -487,8 +487,10 @@
                    <p:panelGrid styleClass="pg-center" style="width: 930px" rendered="#{vacacionCtrl.showButtonPanel}">    
                         <f:facet name="footer">
                                 <p:row>
-                                    <p:column style="text-align: center" colspan="5">
-                                        <p:commandButton value="Crear" style="width: 85px" update="@form" action="#{vacacionCtrl.saveIngresoLicenciaAction()}"/>
+                                    <p:column style="text-align: center" colspan="5">                                         
+                                        <p:commandButton value="Incremento" style="width: 85px" update="listaLicenciasfrm" action="#{vacacionCtrl.controlIncremento()}"/>
+                                        <p:spacer width="10"/>
+                                        <p:commandButton value="Decremento" style="width: 85px" update="listaLicenciasfrm" action="#{vacacionCtrl.controlDecremento()}"/>
                                         <p:spacer width="10"/>
                                         <p:commandButton value="Cancelar" action="#{vacacionCtrl.cancelAdminAction()}" immediate="true" style="width: 85px"/>
                                     </p:column>
@@ -496,8 +498,46 @@
                         </f:facet>
                    </p:panelGrid>
                 </h:panelGroup>
+               
+               <p:dialog id="listaLicenciasfrm" widgetVar="listaLicenciasfrmwg" modal="true" resizable="false" width="90%" height="90%"
+                      header="Lista de permisos para subsanar">
+                    <h:form id="listaLicenciaform">                        
+                        <p:dataTable id="misLicenciasSubsanar" value="#{vacacionCtrl.licenciasSubsanar}" var="licencia" emptyMessage=""
+                                     selection="#{vacacionCtrl.licenciasSubsanarSeleccionada}" rowKey="#{licencia.numeroSolicitud}" scrollable="true" scrollHeight="350">
+                            <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                            <p:column headerText="Nro de solicitud">
+                                <p:outputLabel value="#{licencia.numeroSolicitud}"/>
+                            </p:column>
+                            <p:column headerText="Funcionario">
+                                <p:outputLabel value="#{licencia.codigo_contrato.usuario.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Cargo">
+                                <p:outputLabel value="#{licencia.codigo_contrato.tipoCargo.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Tipo formulario">
+                                <p:outputLabel value="#{licencia.tipoFormulario.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Motivo">
+                                <p:outputLabel value="#{licencia.tipoLicencia.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <p:outputLabel value="#{licencia.estadoLicencia.nombre}"/>
+                            </p:column>                            
+                            <p:column headerText="Fecha de salida">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(licencia.fechaHoraSalida)}"/>
+                            </p:column>
+                            <p:column headerText="Fecha de retorno">
+                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(licencia.fechaHoraRetorno)}"/>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton process="misLicenciasSubsanar" update="misLicenciasSubsanar" value="Aceptar" action="#{vacacionCtrl.controlSubsanar()}"/>
+                            </f:facet>
+                        </p:dataTable>                        
+                    </h:form>
+                </p:dialog>
+               
             </h:form>
-            
+                        
             <!-- CARGA DE ARCHIVOS -->
             <p:dialog id="archivosfrm" widgetVar="archivosfrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
                       header="Cargar archivos">

@@ -23,27 +23,27 @@ public interface LicenciaServicio extends GenericService<Licencia, Long> {
 
     public String obtenerDiasDisponibles(Long codigoUsuario, String fechaSalida, String fechaRetorno, Long codigoLicencia);
 
-    public List<Licencia> listarSolicitudesExcluyendoEstado(Long codigoUsuario, CatalogoDetalle estadoLicencia);
+    public List<Licencia> listarSolicitudesExcluyendoEstado(Long codigoUsuario, CatalogoDetalle estadoLicencia, CatalogoDetalle estadoContrato);
 
     public List<Licencia> listarTareasJefePorDepartamento(Long jefatura, CatalogoDetalle estadoLicencia);
     
-    public List<LicenciaVacacionDto> listarTareasJefe(Long codigoJefe, String nemonico);    
+    public List<LicenciaVacacionDto> listarTareasJefe(Long codigoJefe, String nemonico, CatalogoDetalle estadoContrato);    
 
     public List<Licencia> listarTareasFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia);
 
     public List<Licencia> listarTareasTH(CatalogoDetalle estadoLicencia);
     
-    public List<LicenciaVacacionDto> listarTareas(Long codigoUsuario, String nemonico);
+    public List<LicenciaVacacionDto> listarTareas(Long codigoUsuario, String nemonico, CatalogoDetalle estadoContrato, String codigoLicencia, String documento, String nombre, int departamento);
 
     public List<Licencia> listarSolicitudesExcluyendoEstado(Long codigoUsuario, List<CatalogoDetalle> estadosExcluir);
 
-    public List<Licencia> listarTramitesAtendidos(Long codigoUsuario);
+    public List<LicenciaVacacionDto> listarTramitesAtendidos(Long codigoUsuario);
 
-    public List<Licencia> listarTramitesAtendidosTH(CatalogoDetalle estadoLicencia);
+    public List<LicenciaVacacionDto> listarTramitesAtendidosTH(CatalogoDetalle estadoLicencia, String codigoLicencia, String documento, String nombre, String departamento);
 
     public void inicializarVacaciones(Long codigoUsuario, BigDecimal saldoVacacionContrato);
 
-    public List<Licencia> listarLicenciasFinalizadasPorFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia);
+    public List<Licencia> listarLicenciasFinalizadasPorFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia, CatalogoDetalle estadoContrato);
 
     public BigDecimal obtenerSaldoFinal(Contrato contrato);
     

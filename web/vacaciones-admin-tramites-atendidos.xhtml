@@ -13,10 +13,10 @@
 
         <ui:define name="content">
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
-            
+
             <h:form id="activitiesform">
                 <ui:include src="vacaciones-admin-menu.xhtml"/>
-                
+
                 <p:tabView id="tabulador">
                     <p:tab id="tabTask" title="TRÁMITES ATENDIDOS">
                         <f:facet name="title">
@@ -24,34 +24,53 @@
                             <p:spacer width="10" height="10"/>
                             <h:outputText value="TRÁMITES ATENDIDOS"/>
                         </f:facet>
-                        
+
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Nombre: "/>
+                            <p:inputText value="#{vacacionCtrl.nombreTramiAtendi}"/>
+                            <p:outputLabel value="Número de documento: "/>
+                            <p:inputText value="#{vacacionCtrl.numeroDocumentoTramiAtendi}"/>
+                            <p:outputLabel value="Número de solicitud: "/>
+                            <p:inputText value="#{vacacionCtrl.textoBuscarTramiAtendi}"/>
+                            <p:outputLabel value="Unidad administrativa: "/>
+                            <p:selectOneMenu value="#{vacacionCtrl.coordinacionSeleccionadaTraAten}" style="width: 300px;">
+                                <f:selectItem itemLabel="Todo" itemValue="-1" noSelectionOption="true"/>
+                                <f:selectItems value="#{vacacionCtrl.departamentosFilter}"/>                                
+                            </p:selectOneMenu>                                             
+                            <br/>
+                            <p:commandButton value="Buscar" update="tramitesAtendidos" actionListener="#{vacacionCtrl.filtrarFuncionariosTramitesAtendidos()}"/>
+                        </h:panelGrid>
+
                         <p:dataTable id="tramitesAtendidos" value="#{vacacionCtrl.tramitesAtendidos}" var="tramite" emptyMessage="" scrollHeight="500" scrollable="true">
-                            <p:column headerText="Nro." style="width:50px;text-align: right">
+                            <p:column headerText="Nro. Tramite" style="width:100px;text-align: right">
                                 <p:outputLabel value="#{tramite.numeroSolicitud}"/>
                             </p:column>
-                            <p:column headerText="Funcionario">
-                                <p:outputLabel value="#{tramite.usuario.nombresCompletos.toUpperCase()}"/>
+                            <p:column headerText="Funcionario">                                
+                                <p:outputLabel value="#{tramite.funcionario.toUpperCase()}"/>                                
+                            </p:column>
+                            <p:column headerText="Departamento">                                
+                                <p:outputLabel value="#{tramite.unidadAdministrativa}"/>
                             </p:column>
                             <p:column headerText="Tipo formulario">
-                                <p:outputLabel value="#{tramite.tipoFormulario.nombre}"/>
+                                <p:outputLabel value="#{tramite.tipoFormulario}"/>
                             </p:column>
                             <p:column headerText="Motivo">
-                                <p:outputLabel value="#{tramite.tipoLicencia.nombre}"/>
+                                <p:outputLabel value="#{tramite.motivo}"/>
                             </p:column>
                             <p:column headerText="Estado">
-                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tramite.estadoLicencia)}"/>
+                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tramite.estado)}"/>
                             </p:column>
                             <p:column headerText="Fecha solicitud">
-                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tramite.fechaSolicitud)}"/>
+                                <p:outputLabel value="#{tramite.fechaSolicitud}"/>
                             </p:column>
                             <p:column headerText="Ver" style="width:50px;text-align: center">
-                                <p:commandButton icon="ui-icon-newwin" title="Ver" actionListener="#{vacacionCtrl.showSolicitudAction(tramite)}" update=":view-licencia-form"/>
+                                <p:commandButton icon="ui-icon-newwin" title="Ver" actionListener="#{vacacionCtrl.showSolicitudAction(tramite.licencia)}" update=":view-licencia-form"/>
                             </p:column>
                         </p:dataTable>
                     </p:tab>
                 </p:tabView>
             </h:form>
-            
+
             <!-- VER HISTORIAL DE LICENCIA -->
             <p:dialog id="historialfrm" widgetVar="historialfrmwg" header="Licencia" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true">
                 <ui:include src="vacaciones-licencia-view-frm.xhtml"/>

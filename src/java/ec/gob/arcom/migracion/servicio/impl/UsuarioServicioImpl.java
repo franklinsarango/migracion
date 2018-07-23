@@ -9,6 +9,8 @@ import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
+import ec.gob.arcom.migracion.dto.UsuarioDto;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import ec.gob.arcom.migracion.servicio.UsuarioServicio;
 import java.util.List;
@@ -54,8 +56,8 @@ public class UsuarioServicioImpl extends GenericServiceImpl<Usuario, Long>
     }
 
     @Override
-    public List<Usuario> listarUsuariosInternos() {
-        return usuarioDao.listarUsuariosInternos();
+    public List<UsuarioDto> listarUsuariosInternoExterno(String nombre, String numeroDocumento, int codigoDepartamento) {
+        return usuarioDao.listarUsuariosInternoExterno(nombre, numeroDocumento, codigoDepartamento);
     }
 
     @Override

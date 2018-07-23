@@ -5,7 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    
+
     <f:metadata>
         <f:viewAction action="#{vacacionCtrl.checkPageUpdate()}" onPostback="true"/>
     </f:metadata>
@@ -17,10 +17,10 @@
 
         <ui:define name="content">
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
-            
+
             <h:form id="activitiesform">
                 <ui:include src="vacaciones-menu.xhtml"/>
-                
+
                 <p:tabView id="tabulador" activeIndex="0" >
                     <p:tab id="tabTask" title="TAREAS">
                         <f:facet name="title">
@@ -28,14 +28,23 @@
                             <p:spacer width="10" height="10"/>
                             <h:outputText value="TAREAS"/>
                         </f:facet>
-                        
-                        <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage="">
-                            <p:column headerText="Nro." style="width:50px;text-align: right">
+
+                        <p:dataTable id="misTareas" value="#{vacacionCtrl.tareas}" var="tarea" emptyMessage=""
+                                     selectionMode="single"
+                                     selection="#{vacacionCtrl.tareaSeleccionada}" 
+                                     rowKey="#{tarea.numeroSolicitud}">
+                            <f:facet name="header">
+                                <p:commandButton process="misTareas" icon="ui-icon-check" value="Ver" title="Ver" action="#{vacacionCtrl.visualizarTarea()}"/>
+                            </f:facet>
+                            <p:column headerText="Nro de solicitud" style="width:50px;text-align: right">
                                 <p:outputLabel value="#{tarea.numeroSolicitud}"/>
                             </p:column>
                             <p:column headerText="Funcionario">
                                 <p:outputLabel value="#{tarea.funcionario}"/>
                             </p:column>
+                            <p:column headerText="Cargo">
+                                <p:outputLabel value="#{tarea.nombre_cargo}"/>
+                            </p:column>                            
                             <p:column headerText="Tipo formulario">
                                 <p:outputLabel value="#{tarea.tipoFormulario}"/>
                             </p:column>
@@ -48,20 +57,20 @@
                             <p:column headerText="Fecha solicitud">
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>
                             </p:column>
-                            <p:column headerText="Ver" style="width:50px;text-align: center">
+                            <!--<p:column headerText="Ver" style="width:50px;text-align: center">
                                 <p:commandButton icon="ui-icon-check" title="Ver"
-                                                 action="#{vacacionCtrl.visualizarTarea(tarea)}"/>
-                            </p:column>
+                                                 action="#{vacacionCtrl.visualizarTarea()}"/>
+                            </p:column>!-->
                         </p:dataTable>
                     </p:tab>
-                    
+
                     <p:tab id="tabActivities" title="HISTORIAL">
                         <f:facet name="title">
                             <p:graphicImage value="./resources/images/request-icon.png" width="25" height="25"/>
                             <p:spacer width="10" height="10"/>
                             <h:outputText value="HISTORIAL"/>
                         </f:facet>
-                        
+
                         <p:panelGrid styleClass="pg-center" style="width: 930px">
                             <p:row>
                                 <p:column style="text-align: right">
@@ -72,10 +81,19 @@
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
-                        
+
                         <p:dataTable id="misSolicitudes" value="#{vacacionCtrl.historial}" var="sol" emptyMessage="">
-                            <p:column headerText="Nro." style="width:50px;text-align: right">
+                            <p:column headerText="Nro de solicitud" style="width:50px;text-align: right">
                                 <p:outputLabel value="#{sol.numeroSolicitud}"/>
+                            </p:column>
+                            <p:column headerText="Número de contrato">
+                                <p:outputLabel value="#{sol.codigo_contrato.codigoContrato}"/>
+                            </p:column>
+                            <p:column headerText="Cargo">
+                                <p:outputLabel value="#{sol.codigo_contrato.tipoCargo.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Estado Contrato">
+                                <p:outputLabel value="#{sol.codigo_contrato.estado_contrato.nombre}"/>
                             </p:column>
                             <p:column headerText="Funcionario">
                                 <p:outputLabel value="#{sol.usuario.nombresCompletos.toUpperCase()}"/>
@@ -121,14 +139,14 @@
                         </p:dataTable>
                     </p:tab>
                 </p:tabView>
-                    
+
             </h:form>
-            
+
             <!-- VER HISTORIAL DE LICENCIA -->
             <p:dialog id="historialfrm" widgetVar="historialfrmwg" header="Licencia" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true">
                 <ui:include src="vacaciones-licencia-view-frm.xhtml"/>
             </p:dialog>
-            
+
             <p:dialog id="desistirfrm" widgetVar="desistirfrmwg" header="Desistir solicitud" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true">
                 <h:form id="desistirform">
                     <p:panelGrid styleClass="pg-center">
@@ -137,14 +155,14 @@
                                 <p:outputLabel value="Observación de desistimiento"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column colspan="2" style="text-align: center;">
                                 <p:inputTextarea id="observacionDesistir" value="#{vacacionCtrl.observacionDesistir}" style="width: 600px !important; max-height: 150px !important"
                                                  required="true" requiredMessage="El campo observación desistimiento es requerido"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="text-align: right;">
                                 <p:commandButton value="Aceptar" actionListener="#{vacacionCtrl.saveDesistimientoAction()}" update=":activitiesform:tabulador:misSolicitudes"/>
@@ -156,11 +174,11 @@
                     </p:panelGrid>
                 </h:form>
             </p:dialog>
-            
+
             <!--       D I A L O G O S       -->
             <!--             D E             -->
             <!--      I M P R E S I O N      -->
-            
+
             <!-- IMPRIMIR SOLICITUD -->
             <p:dialog id="visorSolicitudDlg" header="Solicitud"
                       widgetVar="visorSolicitudDlgWg" width="95%" height="600px"

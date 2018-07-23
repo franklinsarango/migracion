@@ -6,6 +6,8 @@
 package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
+import ec.gob.arcom.migracion.dto.UsuarioDto;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import java.util.List;
 import javax.ejb.Local;
@@ -27,7 +29,7 @@ public interface UsuarioDao extends GenericDao<Usuario, Long> {
 
     public List<Usuario> listar();
 
-    public List<Usuario> listarUsuariosInternos();
+    public List<UsuarioDto> listarUsuariosInternoExterno(String nombre,String numeroDocumento, int codigoDepartamento);
 
     public List<Usuario> listarUsuariosInternos(Long codigoRegional);
 }

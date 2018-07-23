@@ -7,6 +7,8 @@ package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
+import ec.gob.arcom.migracion.dto.UsuarioDto;
+import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 //import ec.gob.arcom.migracion.dto.UsuarioDto;
 import ec.gob.arcom.migracion.modelo.Usuario;
 import java.math.BigInteger;
@@ -29,7 +31,7 @@ public interface UsuarioServicio extends GenericService<Usuario, Long> {
 
     public List<Usuario> listar();
 
-    public List<Usuario> listarUsuariosInternos();
+    public List<UsuarioDto> listarUsuariosInternoExterno(String nombre, String numeroDocumento, int codigoDepartamento);
 
     public List<Usuario> listarUsuariosInternos(Long codigoRegional);
 }

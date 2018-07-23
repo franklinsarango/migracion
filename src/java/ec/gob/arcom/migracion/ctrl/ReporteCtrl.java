@@ -103,6 +103,13 @@ public class ReporteCtrl extends BaseCtrl {
             ex.printStackTrace();
         }        
     }
+
+    public void generarReporteSaldoVacacionBirt() {
+        System.out.println("entra generarReporteSaldoVacacionBirt");
+        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                + "/birt/frameset?__report=report/vacaciones/reporte-saldo-vacacion.rptdesign" + "&__format=xlsx";
+        System.out.println("urlReporte: " + urlReporte);
+    }                       
     
     public void generarReporteOperativoMineriaIlegalCoordenaBirt() {
         System.out.println("entra generarReporteOperativoMineriaIlegalCoordenaBirt");
@@ -416,6 +423,8 @@ public class ReporteCtrl extends BaseCtrl {
             generarReporteRetencionesAbonosBirt();
         } else if (codigoTipoMineria.equals(ConstantesEnum.RPT_USUARIOS_SGM.getCodigo())) {
             generarReporteUsuariosSGMBirt();
+        } else if (codigoTipoMineria.equals(ConstantesEnum.RPT_SALDO_VACACION.getCodigo())) {
+            generarReporteSaldoVacacionBirt();
         } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_TOTAL.getCodigo())) {
             generarReporteOpeMinIleTotal();
         } else if(codigoTipoMineria.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL.getCodigo()) && codigoSubTipoOperativo.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL_MENSUAL.getCodigo())) {
@@ -521,6 +530,11 @@ public class ReporteCtrl extends BaseCtrl {
         }
     }
     
+    private boolean comprobarEsAsistenteTH() {
+        UsuarioRol ur = usuarioRolServicio.obtenerPorCodigoUsuuario(login.getCodigoUsuario());
+        return ur != null && ur.getRol().getNemonico().equals("ASISTH");
+    }
+    
     public List<SelectItem> getTipoSolicitudes() {
         if (tipoSolicitudes == null) {
             tipoSolicitudes = new ArrayList<>();
@@ -530,7 +544,9 @@ public class ReporteCtrl extends BaseCtrl {
                         (login.isEconomicoNacional() || login.isEconomicoRegional() || login.isTecnicoCatastroNacional() || login.isCoordinadorRegional())) {
                     tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
                 }
-                if (ce.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN)
+                boolean esAsistenteTH = comprobarEsAsistenteTH();
+                if (!esAsistenteTH){
+                    if (ce.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN)
                         || ce.equals(ConstantesEnum.RPT_MEDIANA_GRAN_MINERIA_COORDENADAS)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR)
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM)
@@ -548,8 +564,31 @@ public class ReporteCtrl extends BaseCtrl {
 //                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PROVINCIA)
 //                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_REGIONAL)                
                         || ce.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS)) {
-                    tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
-                }
+                        tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
+                    }
+                }else{
+                    if (ce.equals(ConstantesEnum.TIPO_SOLICITUD_CONS_MIN)
+                        || ce.equals(ConstantesEnum.RPT_MEDIANA_GRAN_MINERIA_COORDENADAS)
+                        || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIB_APR)
+                        || ce.equals(ConstantesEnum.TIPO_SOLICITUD_LIC_COM)
+                        || ce.equals(ConstantesEnum.TIPO_SOLICITUD_MIN_ART)
+                        || ce.equals(ConstantesEnum.TIPO_SOLICITUD_PLAN_BEN)
+                        || ce.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE)
+                        || ce.equals(ConstantesEnum.TIPO_AUTOGESTION_REPORTE)
+                        || ce.equals(ConstantesEnum.RPT_USUARIOS_SGM)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_CONCESIONES)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_MINERIA_ARTESANAL)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LIBRE_APROVECHAMIENTO)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PLANTAS_BENEFICIO)
+                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_LICENCIAS_COMERCIALIZACION)
+                        || ce.equals(ConstantesEnum.RPT_OPERATIVO_MINERIA_ILEGAL)
+//                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_PROVINCIA)
+//                        || ce.equals(ConstantesEnum.RPT_CONSOLIDADO_REGIONAL)                
+                        || ce.equals(ConstantesEnum.TIPO_SOLICITUD_DERECHOS_MINEROS_CONSOLIDADOS)
+                        || ce.equals(ConstantesEnum.RPT_SALDO_VACACION) ) {
+                        tipoSolicitudes.add(new SelectItem(ce.getCodigo(), ce.getDescripcion()));
+                    }
+                }                
             }
             tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS.getDescripcion()));
             tipoSolicitudes.add(new SelectItem(ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getCodigo(),ConstantesEnum.TIPO_OBLIGACIONES_ECONOMICAS_RESUMEN_PATENTES.getDescripcion()));

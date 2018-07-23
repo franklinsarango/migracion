@@ -23,6 +23,8 @@ public class LicenciaVacacionDto {
     String estado;
     Date fechaSolicitud;
     String diasLicencia;
+    String nombre_cargo;
+    Licencia licencia;
     
     public LicenciaVacacionDto() {
         
@@ -99,6 +101,21 @@ public class LicenciaVacacionDto {
     public void setDiasLicencia(String diasLicencia) {
         this.diasLicencia = diasLicencia;
     }
-    
+
+    public String getNombre_cargo() {
+        return nombre_cargo;
+    }
+
+    public void setNombre_cargo(String nombre_cargo) {
+        this.nombre_cargo = nombre_cargo;
+    }
+
+    public Licencia getLicencia() {
+        return licencia;
+    }
+
+    public void setLicencia(Licencia licencia) {
+        this.licencia = licencia;
+    }
     
 }

@@ -7,7 +7,7 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
 
     <h:form id="saldos-view-form">
-        <p:panelGrid styleClass="pg-center" style="width: 930px">
+        <p:panelGrid styleClass="pg-center" style="width: 1200px">
             <p:row>
                 <p:column style="text-align: right">
                     <p:outputLabel value="Saldo actual en días" style="font-weight: bolder; font-size: medium;"/>
@@ -26,6 +26,15 @@
                         <p:column headerText="Funcionario">
                             <p:outputLabel value="#{tarea.usuario.nombresCompletos.toUpperCase()}"/>
                         </p:column>
+                        <p:column headerText="Cargo">
+                            <p:outputLabel value="#{tarea.codigo_contrato.tipoCargo.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Código Contrato">
+                            <p:outputLabel value="#{tarea.codigo_contrato.codigoContrato}"/>
+                        </p:column>
+                        <p:column headerText="Estado Contrato">
+                            <p:outputLabel value="#{tarea.codigo_contrato.estado_contrato.nombre}"/>
+                        </p:column>
                         <p:column headerText="Tipo formulario">
                             <p:outputLabel value="#{tarea.tipoFormulario.nombre}"/>
                         </p:column>
@@ -33,7 +42,7 @@
                             <p:outputLabel value="#{tarea.tipoLicencia.nombre}"/>
                         </p:column>
                         <p:column headerText="Estado">
-                            <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estadoLicencia)}"/>
+                            <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tarea.estadoLicencia.nombre)}"/>
                         </p:column>
                         <p:column headerText="Fecha solicitud">
                             <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tarea.fechaSolicitud)}"/>

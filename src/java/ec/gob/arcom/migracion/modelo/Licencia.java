@@ -57,6 +57,10 @@ public class Licencia implements Serializable {
     @ManyToOne
     private Usuario usuario;
     
+    @JoinColumn (name = "codigo_contrato",  referencedColumnName = "codigo_contrato")
+    @ManyToOne
+    private Contrato codigo_contrato;
+    
     @Column(name = "fecha_solicitud")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaSolicitud;
@@ -356,6 +360,14 @@ public class Licencia implements Serializable {
     public void setUsuarioModificacion(Usuario usuarioModificacion) {
         this.usuarioModificacion = usuarioModificacion;
     }
+
+    public Contrato getCodigo_contrato() {
+        return codigo_contrato;
+    }
+
+    public void setCodigo_contrato(Contrato codigo_contrato) {
+        this.codigo_contrato = codigo_contrato;
+    }        
     
     @Transient
     private Contrato contrato;

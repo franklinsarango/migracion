@@ -38,8 +38,8 @@ public class LicenciaServicioImpl extends GenericServiceImpl<Licencia, Long> imp
     }
 
     @Override
-    public List<Licencia> listarSolicitudesExcluyendoEstado(Long codigoUsuario, CatalogoDetalle estadoLicencia) {
-        return licenciaDao.listarSolicitudesExcluyendoEstado(codigoUsuario, estadoLicencia);
+    public List<Licencia> listarSolicitudesExcluyendoEstado(Long codigoUsuario, CatalogoDetalle estadoLicencia, CatalogoDetalle estadoContrato) {    
+        return licenciaDao.listarSolicitudesExcluyendoEstado(codigoUsuario, estadoLicencia, estadoContrato);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class LicenciaServicioImpl extends GenericServiceImpl<Licencia, Long> imp
     }
     
     @Override
-    public List<LicenciaVacacionDto> listarTareasJefe(Long codigoJefe, String nemonico) {
-        return licenciaDao.listarTareasJefe(codigoJefe, nemonico);
+    public List<LicenciaVacacionDto> listarTareasJefe(Long codigoJefe, String nemonico, CatalogoDetalle estadoContrato) {
+        return licenciaDao.listarTareasJefe(codigoJefe, nemonico, estadoContrato);
     }
 
     @Override
@@ -68,13 +68,13 @@ public class LicenciaServicioImpl extends GenericServiceImpl<Licencia, Long> imp
     }
 
     @Override
-    public List<Licencia> listarTramitesAtendidos(Long codigoUsuario) {
+    public List<LicenciaVacacionDto> listarTramitesAtendidos(Long codigoUsuario) {
         return licenciaDao.listarTramitesAtendidos(codigoUsuario);
     }
 
     @Override
-    public List<Licencia> listarTramitesAtendidosTH(CatalogoDetalle estadoLicencia) {
-        return licenciaDao.listarTramitesAtendidosTH(estadoLicencia);
+    public List<LicenciaVacacionDto> listarTramitesAtendidosTH(CatalogoDetalle estadoLicencia, String codigoLicencia, String documento, String nombre, String departamento) {
+        return licenciaDao.listarTramitesAtendidosTH(estadoLicencia, codigoLicencia, documento, nombre, departamento);
     }
 
     @Override
@@ -83,13 +83,13 @@ public class LicenciaServicioImpl extends GenericServiceImpl<Licencia, Long> imp
     }
 
     @Override
-    public List<Licencia> listarLicenciasFinalizadasPorFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia) {
-        return licenciaDao.listarLicenciasFinalizadasPorFuncionario(codigoUsuario, estadoLicencia);
+    public List<Licencia> listarLicenciasFinalizadasPorFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia, CatalogoDetalle estadoContrato) {
+        return licenciaDao.listarLicenciasFinalizadasPorFuncionario(codigoUsuario, estadoLicencia, estadoContrato);
     }
 
     @Override
-    public List<LicenciaVacacionDto> listarTareas(Long codigoUsuario, String nemonico) {
-        return licenciaDao.listarTareas(codigoUsuario, nemonico);
+    public List<LicenciaVacacionDto> listarTareas(Long codigoUsuario, String nemonico, CatalogoDetalle estadoContrato, String codigoLicencia, String documento, String nombre, int departamento) {
+        return licenciaDao.listarTareas(codigoUsuario, nemonico, estadoContrato, codigoLicencia, documento, nombre, departamento);
     }
 
     @Override

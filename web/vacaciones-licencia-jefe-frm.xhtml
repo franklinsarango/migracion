@@ -20,7 +20,7 @@
                 <p:panelGrid styleClass="pg-center" style="width: 930px">
                     <p:row>
                         <p:column colspan="5" style="text-align: center;">
-                            <p:outputLabel value="SOLICITUD DE LICENCIA" style="font-weight: bolder; font-size: medium;"/>
+                            <p:outputLabel value="SOLICITUD DE PERMISOS/VACACIONES" style="font-weight: bolder; font-size: medium;"/>
                         </p:column>
                     </p:row>
                     
@@ -28,8 +28,8 @@
                         <p:column style="text-align: right">
                             <p:outputLabel for="tipoFormulario" value="Tipo formulario:"/>
                         </p:column>
-                        <p:column style="text-align: left">
-                            <p:outputLabel id="tipoFormulario" value="#{vacacionCtrl.licencia.tipoFormulario.nombre}" />
+                        <p:column style="text-align: left">                            
+                            <p:outputLabel id="tipoFormulario" value="#{vacacionCtrl.obtenerNombreCatalogoDetalle(vacacionCtrl.licencia.tipoFormulario.codigoCatalogoDetalle)}" />
                         </p:column>
                         
                         <p:column>

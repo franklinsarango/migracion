@@ -17,26 +17,26 @@
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                      rowsPerPageTemplate="10,25,50" rows="10" paginator="true">
             <p:column headerText="Nro. documento" style="width:90px;text-align: center">
-                <p:outputLabel value="#{funcionario.numeroDocumento}"/>
+                <p:outputLabel value="#{funcionario.identificacion}"/>
             </p:column>
             <p:column headerText="Funcionario">
-                <p:outputLabel value="#{funcionario.nombresCompletos.toUpperCase()}"/>
+                <p:outputLabel value="#{funcionario.nombreFuncionario.toUpperCase()}"/>
             </p:column>
             <p:column headerText="Unidad Administrativa"
-                      filterBy="#{funcionario.contrato.departamento.codigoDepartamento}" filterMatchMode="exact">
+                      filterBy="#{funcionario.unidadAdministrativa}" filterMatchMode="exact">
                 <f:facet name="filter">
                     <p:selectOneMenu onchange="PF('funcionariostable').filter()">
                         <f:selectItem itemLabel="Todo" itemValue="#{null}" noSelectionOption="true"/>
                         <f:selectItems value="#{vacacionCtrl.departamentosFilter}"/>
                     </p:selectOneMenu>
                 </f:facet>
-                <p:outputLabel value="#{funcionario.contrato.departamento.nombre}"/>
+                <p:outputLabel value="#{funcionario.unidadAdministrativa}"/>
             </p:column>
             <p:column headerText="Fecha de Ingreso">
-                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(funcionario.contrato.fechaIngreso)}"/>
+                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(funcionario.fechaIngreso)}"/>
             </p:column>
             <p:column headerText="Saldo actual">
-                <p:outputLabel value="#{vacacionCtrl.obtenerSaldoActualPorFuncionario(funcionario)}"/>
+                <p:outputLabel value="#{vacacionCtrl.obtenerSaldoActualPorFuncionario(funcionario.codigoUsuario)}"/>
             </p:column>
             <p:column headerText="Seleccionar" style="width:70px;text-align: center">
                 <p:commandButton icon="ui-icon-check" title="Seleccionar" actionListener="#{vacacionCtrl.setFuncionarioIngresarLicencia(funcionario)}" update=":activitiesform"/>

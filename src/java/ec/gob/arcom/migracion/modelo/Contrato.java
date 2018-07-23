@@ -55,6 +55,10 @@ public class Contrato implements Serializable {
     @ManyToOne
     private Departamento departamento;
     
+    @JoinColumn(name = "estado_contrato", referencedColumnName = "codigo_catalogo_detalle")
+    @ManyToOne
+    private CatalogoDetalle estado_contrato;
+    
     @Column(name = "fecha_ingreso")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaIngreso;
@@ -248,7 +252,15 @@ public class Contrato implements Serializable {
     public void setUsuarioModificacion(Usuario usuarioModificacion) {
         this.usuarioModificacion = usuarioModificacion;
     }
-    
+
+    public CatalogoDetalle getEstado_contrato() {
+        return estado_contrato;
+    }
+
+    public void setEstado_contrato(CatalogoDetalle estado_contrato) {
+        this.estado_contrato = estado_contrato;
+    }
+        
     @Override
     public int hashCode() {
         int hash = 0;

@@ -13,24 +13,24 @@
 
         <ui:define name="content">
             <p:growl id="growl" autoUpdate="true" showDetail="true"/>
-            
+
             <h:form id="activitiesform">
-                <ui:include src="vacaciones-admin-menu.xhtml"/>
-                
+                <ui:include src="vacaciones-admin-menu.xhtml"/>                  
+                               
                 <p:panelGrid styleClass="pg-center" style="background: transparent">
                     <p:row>
                         <p:column colspan="3" style="text-align: center;">
                             <p:outputLabel value="EDITAR INFORMACIÓN DEL FUNCIONARIO" style="font-weight: bolder; font-size: medium;"/>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column style="text-align: right">
                             <p:outputLabel for="numDocumento" value="Número de documento:"/>
                         </p:column>
                         <p:column style="text-align: left">
                             <p:inputText id="numDocumento" value="#{vacacionCtrl.documentoBuscar}"
-                                           styleClass="inputtext-form"/>
+                                         styleClass="inputtext-form"/>
                         </p:column> 
                         <p:column style="text-align: left">
                             <p:commandButton value="Buscar" actionListener="#{vacacionCtrl.buscarUsuario()}"
@@ -38,14 +38,14 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-                
+
                 <p:panelGrid styleClass="pg-center" style="width: 960px">
                     <p:row>
                         <p:column colspan="5" style="text-align: center; background-color: lightblue">
                             <p:outputLabel value="DATOS PERSONALES" style="font-weight: bolder; font-size: small;"/>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column style="text-align: right">
                             <p:outputLabel for="cedula" value="CI:"/>
@@ -54,11 +54,11 @@
                             <p:inputText id="cedula" styleClass="inputtext-form"
                                          value="#{vacacionCtrl.usuarioEditar.numeroDocumento}" readonly="true"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:spacer width="10"/>
                         </p:column>
-                        
+
                         <p:column style="text-align: right">
                             <p:outputLabel for="telefono" value="Telefono fijo:"/>
                         </p:column>
@@ -67,7 +67,7 @@
                                          value="#{vacacionCtrl.usuarioEditar.telefono}" readonly="true"/>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column style="text-align: right">
                             <p:outputLabel for="nombre" value="Nombre:"/>
@@ -76,11 +76,11 @@
                             <p:inputText id="nombre" styleClass="inputtext-form"
                                          value="#{vacacionCtrl.usuarioEditar.nombre.toUpperCase()}" readonly="true"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:spacer width="10"/>
                         </p:column>
-                        
+
                         <p:column style="text-align: right">
                             <p:outputLabel for="celular" value="Telefono movil:"/>
                         </p:column>
@@ -89,7 +89,7 @@
                                          value="#{vacacionCtrl.usuarioEditar.celular}" readonly="true"/>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column style="text-align: right">
                             <p:outputLabel for="apellido" value="Apellido:"/>
@@ -98,11 +98,11 @@
                             <p:inputText id="apellido" styleClass="inputtext-form"
                                          value="#{vacacionCtrl.usuarioEditar.apellido.toUpperCase()}" readonly="true"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:spacer width="10"/>
                         </p:column>
-                        
+
                         <p:column style="text-align: right">
                             <p:outputLabel for="email" value="Correo electrónico:"/>
                         </p:column>
@@ -111,7 +111,7 @@
                                          value="#{vacacionCtrl.usuarioEditar.correoElectronico}" readonly="true"/>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column style="text-align: right">
                             <p:outputLabel for="provincia" value="Provincia:"/>
@@ -120,11 +120,11 @@
                             <p:inputText id="provincia" styleClass="inputtext-form"
                                          value="#{vacacionCtrl.obtenerNombreLocalidad(vacacionCtrl.usuarioEditar.codigoProvincia)}" readonly="true"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:spacer width="10"/>
                         </p:column>
-                        
+
                         <p:column style="text-align: right">
                             <p:outputLabel for="canton" value="Cantón:"/>
                         </p:column>
@@ -133,7 +133,7 @@
                                          value="#{vacacionCtrl.obtenerNombreLocalidad(vacacionCtrl.usuarioEditar.codigoCanton)}" readonly="true"/>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column style="text-align: right">
                             <p:outputLabel for="parroquia" value="Parroquia:"/>
@@ -142,7 +142,7 @@
                             <p:inputText id="parroquia" styleClass="inputtext-form"
                                          value="#{vacacionCtrl.obtenerNombreLocalidad(vacacionCtrl.usuarioEditar.codigoParroquia)}" readonly="true"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:spacer width="10"/>
                         </p:column>
@@ -156,20 +156,20 @@
                             </p:inputText>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column style="text-align: right" rowspan="2">
                             <p:outputLabel for="direccion" value="Dirección:"/>
                         </p:column>
                         <p:column style="text-align: left" rowspan="2">
                             <p:inputTextarea id="direccion" value="#{vacacionCtrl.usuarioEditar.direccion}"
-                                                 styleClass="inputtextarea-form" readonly="true"/>
+                                             styleClass="inputtextarea-form" readonly="true"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:spacer width="10"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:spacer width="10"/>
                         </p:column>
@@ -186,8 +186,11 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-                
-                <p:dataTable id="contratos" value="#{vacacionCtrl.contratos}" var="contrato" emptyMessage="" style="width: 960px; margin: 0 auto">
+
+                <p:dataTable id="contratos" value="#{vacacionCtrl.contratos}" var="contrato" emptyMessage="" style="width: 960px; margin: 0 auto" editable="true">
+                    <p:column headerText="Estado del contrato" style="text-align: center">
+                        <p:outputLabel value="#{contrato.estado_contrato.nombre}"/>
+                    </p:column>
                     <p:column headerText="Régimen de contratación" style="text-align: center">
                         <p:outputLabel value="#{contrato.regimenContratacion.nombre}"/>
                     </p:column>
@@ -195,13 +198,46 @@
                         <p:outputLabel value="#{contrato.tipoContrato.nombre}"/>
                     </p:column>
                     <p:column headerText="Modalidad contrato" style="text-align: center">
-                        <p:outputLabel value="#{contrato.modalidadContrato.nombre}"/>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{contrato.modalidadContrato.nombre}"/>
+                            </f:facet>
+                            <f:facet name="input">                                
+                                <p:selectOneMenu id="modContrato" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                 value="#{contrato.modalidadContrato}">
+                                    <f:selectItem itemLabel="Seleccione una modalidad de contrato..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.tiposModalidadContrato}"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>                        
                     </p:column>
                     <p:column headerText="Unidad administrativa" style="text-align: center">
-                        <p:outputLabel value="#{contrato.departamento.nombre}"/>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{contrato.departamento.nombre}"/>
+                            </f:facet>
+                            <f:facet name="input">                                
+                                <p:selectOneMenu id="unidadAdm" styleClass="onemenu-form" required="true" converter="#{departamentoConverter}"
+                                                 value="#{contrato.departamento}">
+                                    <f:selectItem itemLabel="Seleccione una unidad administrativa..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.unidadesAdministrativas}"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>                        
                     </p:column>
                     <p:column headerText="Cargo" style="text-align: center">
-                        <p:outputLabel value="#{contrato.tipoCargo.nombre}"/>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{contrato.tipoCargo.nombre}"/>
+                            </f:facet>
+                            <f:facet name="input">                                
+                                <p:selectOneMenu id="tipoCargo" styleClass="onemenu-form" required="true" converter="#{catalogoDetalleConverter}"
+                                                 value="#{contrato.tipoCargo}">
+                                    <f:selectItem itemLabel="Seleccione un cargo..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{vacacionCtrl.tiposCargo}"/>
+                                </p:selectOneMenu>
+                            </f:facet>    
+                        </p:cellEditor>
                     </p:column>
                     <p:column headerText="Fecha ingreso" style="text-align: center">
                         <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(contrato.fechaIngreso)}"/>
@@ -209,18 +245,21 @@
                     <p:column headerText="Horario almuerzo" style="text-align: center">
                         <p:outputLabel value="#{contrato.horarioAlmuerzo.nombre}"/>
                     </p:column>
+                    <!--<p:column headerText="Editar" style="width:50px; text-align-last: center">
+                        <p:rowEditor />
+                    </p:column>!-->
                     <p:column headerText="Finalizar" style="width:50px;text-align: center">
                         <p:commandButton icon="ui-icon-cancel" title="Finalizar contrato" actionListener="#{vacacionCtrl.finalizarContratoAction()}"
                                          update=":endcontratoform :growl" process="@this"/>
                     </p:column>
-                    <p:column headerText="Eliminar" style="width:50px;text-align: center">
-                        <p:commandButton icon="ui-icon-pencil" title="Eliminar" actionListener="#{vacacionCtrl.deleteContratoAction(contrato)}"
+                    <!--<p:column headerText="Eliminar" style="width:50px;text-align: center">
+                        <p:commandButton icon="ui-icon-pencil" title="Eliminar" actionListener="{vacacionCtrl.deleteContratoAction(contrato)}"
                                          update=":activitiesform:contratos :growl" process="@this"/>
-                    </p:column>
+                    </p:column>!-->
                 </p:dataTable>
-                
+
                 <p:spacer height="10" width="10"/>
-                
+
                 <h:panelGroup>
                     <p:panelGrid styleClass="pg-center" style="width: 960px" rendered="#{vacacionCtrl.showButtonPanel02}">
                         <f:facet name="footer">
@@ -235,10 +274,10 @@
                     </p:panelGrid>
                 </h:panelGroup>
             </h:form>
-            
+
             <!-- FORMULARIO CONTRATO -->
             <p:dialog id="contratofrm" widgetVar="contratofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
-                      header="Contrato">
+                      header="Contrato" closeOnEscape="true">
                 <h:form id="contratoform">
                     <p:panelGrid styleClass="pg-center">
                         <p:row>
@@ -268,7 +307,7 @@
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="text-align: right">
                                 <p:outputLabel for="modContrato" value="Modalidad de contrato:"/>
@@ -280,11 +319,11 @@
                                     <f:selectItems value="#{vacacionCtrl.tiposModalidadContrato}"/>
                                 </p:selectOneMenu>
                             </p:column>
-                            
+
                             <p:column>
                                 <p:spacer width="10"/>
                             </p:column> 
-                            
+
                             <p:column style="text-align: right">
                                 <p:outputLabel for="unidadAdm" value="Unidad administrativa:"/>
                             </p:column>
@@ -296,7 +335,7 @@
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="text-align: right">
                                 <p:outputLabel for="tipoCargo" value="Cargo:"/>
@@ -318,12 +357,12 @@
                             </p:column>
                             <p:column style="text-align: left">                            
                                 <p:calendar id="fechaIngreso" styleClass="calendar-form"
-                                                readonlyInput="true" required="true" requiredMessage="El campo fecha ingreso es requerido"
-                                                maxdate="#{vacacionCtrl.fechaMaxima}" navigator="true" pattern="dd-MM-yyyy"
-                                                value="#{vacacionCtrl.contrato.fechaIngreso}" locale="es"/>
+                                            readonlyInput="true" required="true" requiredMessage="El campo fecha ingreso es requerido"
+                                            maxdate="#{vacacionCtrl.fechaMaxima}" navigator="true" pattern="dd-MM-yyyy"
+                                            value="#{vacacionCtrl.contrato.fechaIngreso}" locale="es"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="text-align: right">
                                 <p:outputLabel for="horarioAlmuerzo" value="Horario de almuerzo:"/>
@@ -339,7 +378,7 @@
                             <p:column>
                                 <p:spacer width="10"/>
                             </p:column>
-                            
+
                             <p:column style="text-align: right">
                                 <p:outputLabel for="saldoVacacion" value="Saldo de vacaciones:"/>
                             </p:column>
@@ -347,7 +386,7 @@
                                 <pe:inputNumber id="saldoVacacion" minValue="0" decimalPlaces="2" value="#{vacacionCtrl.saldoVacacionContrato}"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column colspan="5" style="text-align: center">
                                 <p:commandButton value="Aceptar" title="Aceptar" actionListener="#{vacacionCtrl.addContratoAction()}" update="contratoform :activitiesform:contratos"/>
@@ -356,12 +395,12 @@
                     </p:panelGrid>
                 </h:form>
             </p:dialog>
-            
+
             <!-- REALIZAR BUSQUEDA DE FUNCIONARIO -->
             <p:dialog id="busquedafrm" widgetVar="busquedafrmwg" header="Búsqueda" resizable="true" modal="true" showEffect="clip" hideEffect="clip" fitViewport="true" width="850" height="500">
                 <ui:include src="vacaciones-search-edit-usr-frm.xhtml"/>
             </p:dialog>
-            
+
             <!-- FORMULARIO FINALIZAR CONTRATO -->
             <p:dialog id="endcontratofrm" widgetVar="endcontratofrmwg" resizable="true" modal="true" showEffect="clip" hideEffect="clip"
                       header="Finalizar contrato">
@@ -373,12 +412,12 @@
                             </p:column>
                             <p:column style="text-align: left">                            
                                 <p:calendar id="fechaSalida" styleClass="calendar-form"
-                                                readonlyInput="true" required="true" requiredMessage="El campo fecha salida es requerido"
-                                                maxdate="#{vacacionCtrl.fechaMaxima}" navigator="true" pattern="dd-MM-yyyy"
-                                                value="#{vacacionCtrl.contrato.fechaSalida}" locale="es"/>
+                                            readonlyInput="true" required="true" requiredMessage="El campo fecha salida es requerido"
+                                            maxdate="#{vacacionCtrl.fechaMaxima}" navigator="true" pattern="dd-MM-yyyy"
+                                            value="#{vacacionCtrl.contrato.fechaSalida}" locale="es"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column colspan="2" style="text-align: center">
                                 <p:commandButton value="Finalizar" title="Finalizar" actionListener="#{vacacionCtrl.confirmarEliminarContrato()}" update="endcontratoform :activitiesform:contratos"/>
@@ -387,7 +426,7 @@
                     </p:panelGrid>
                 </h:form>
             </p:dialog>
-            
+
             <!-- CONFIRMAR FINALIZAR CONTRATO -->
             <h:form>
                 <p:confirmDialog id="deloperativodlg" showEffect="fade" hideEffect="fade" widgetVar="enddlgwg" header="Confirmar finalizar contrato"
