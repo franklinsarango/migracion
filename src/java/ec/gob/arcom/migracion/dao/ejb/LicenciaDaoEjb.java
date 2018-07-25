@@ -250,9 +250,8 @@ public class LicenciaDaoEjb extends GenericDaoEjbEl<Licencia, Long> implements L
     public List<Licencia> listarLicenciasFinalizadasPorFuncionario(Long codigoUsuario, CatalogoDetalle estadoLicencia, CatalogoDetalle estadoContrato) {
         try {
            
-            Query query= em.createQuery("Select lic from Licencia lic, Contrato cont where lic.estadoRegistro= :estado and lic.estadoLicencia= :estadoLicencia and lic.usuario.codigoUsuario= :codigo and lic.codigo_contrato.codigoContrato = cont.codigoContrato and cont.estado_contrato= :estadoContrato order by lic.numeroSolicitud ASC");
-            query.setParameter("estado", true);
-            query.setParameter("estadoLicencia", estadoLicencia);
+            Query query= em.createQuery("Select lic from Licencia lic, Contrato cont where lic.estadoRegistro= :estado and lic.usuario.codigoUsuario= :codigo and lic.codigo_contrato.codigoContrato = cont.codigoContrato and cont.estado_contrato= :estadoContrato order by lic.numeroSolicitud ASC");
+            query.setParameter("estado", true);            
             query.setParameter("codigo", codigoUsuario);
             query.setParameter("estadoContrato", estadoContrato);
             return query.getResultList();
