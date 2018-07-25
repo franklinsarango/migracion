@@ -146,15 +146,20 @@ public class UsuarioDaoEjb extends GenericDaoEjbEl<Usuario, Long> implements
                 "and c.codigo_usuario = u.codigo_usuario\n" +
                 "and r.codigo_rol = ur.codigo_rol \n" +
                 "and ur.estado_registro = true \n" +
-                "and c.estado_registro = true\n" +
-                "and c.estado_contrato = "+estado_contrato+"\n" +                    
+                "and c.estado_registro = true\n" +                
                 "and d.codigo_departamento = c.codigo_departamento\n" +
                 "and cat.codigo_catalogo_detalle = c.estado_contrato\n" +
                 "and (-1 = "+numeroDocumento+" or u.numero_documento = '"+numeroDocumento+"') \n" +
                 "and (-1 = "+codigoDepartamento+" or d.codigo_departamento = "+codigoDepartamento+") \n" +
                 "and ('' = '"+nombre+"' or upper(concat(u.nombre,' ',u.apellido)) like '%"+nombre.toUpperCase()+"%')\n" +
                 "and r.nemonico not in ('ABGSRMN', 'ADMIN', 'GADADMI', 'ADMINGPS', 'AGEADU', 'GADAUDI', 'JEFETRANS', 'PROGPS', 'GADRECE', 'RCSBGN', 'GADRESP', 'SNACON', 'SNDESA', 'SUBSECREGION', 'USUARIO')\n" +
-                "and u.estado_registro = true order by u.nombre asc;");
+                "and u.estado_registro = true "
+                    + "and c.codigo_contrato in (select c.codigo_contrato from arcom.contrato c where c.estado_contrato = 573 and c.estado_registro = true\n" +
+                    "union\n" +
+                    "select min(codigo_contrato) from arcom.contrato c where c.codigo_usuario not in \n" +
+                    "(select codigo_usuario from arcom.contrato c where c.estado_contrato = 573 and c.estado_registro = true)\n" +
+                    "group by c.codigo_usuario)"
+                    + " order by u.nombre asc;");
                 List<Object[]> result = query.getResultList();
                 List<UsuarioDto> usuarios = new ArrayList<>();
                 for(Object[] fila : result ) {
