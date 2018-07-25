@@ -77,8 +77,7 @@ public enum ConstantesEnum {
     URL_APP_LOCAL("", "http://localhost:8080", null),
     URL_APP_PROD("", "http://172.16.30.246:8381", null), 
     URL_BASE("", "http://181.211.37.233:8384", null), 
-    //URL_PROD_REPORTES("", "http://www.controlminero.gob.ec:8080", null),
-    URL_PROD_REPORTES("", "http://181.211.37.237:8380", null),
+    URL_PROD_REPORTES("", "http://www.controlminero.gob.ec:8080", null),   
     URL_BASE_DESARROLLO("", "http://181.211.37.237:8380", null),
     
     //PARA ENVIO DE CORREO ELECTRONICO
