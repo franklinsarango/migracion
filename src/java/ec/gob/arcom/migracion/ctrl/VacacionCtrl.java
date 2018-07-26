@@ -811,7 +811,7 @@ public class VacacionCtrl {
             showVacacionPanel = true;
             showCalamidadPanel = false;
             showInstitucionalPanel = false;
-            showButtonPanel = true;
+            showButtonPanel = true;            
             fechaMinima = Calendar.getInstance().getTime();
             licencia.setFechaHoraSalida(null);
             licencia.setFechaHoraRetorno(null);
@@ -825,7 +825,8 @@ public class VacacionCtrl {
             Calendar c = Calendar.getInstance();
             if (licencia.getTipoLicencia().getNemonico().equals("MOTPERENF") || licencia.getTipoLicencia().getNemonico().equals("MOTPERCAL")) {
                 c.add(Calendar.DAY_OF_MONTH, -15);
-            }
+            }            
+            c.add(Calendar.DAY_OF_MONTH, -3);                        
             fechaMinima = c.getTime();
         } else {
             showVacacionPanel = false;

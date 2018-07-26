@@ -9,9 +9,19 @@
             <file>file:/D:/Frank/SGM/proyectos/migracion/src/java/ec/gob/arcom/migracion/ctrl/LoginCtrl.java</file>
         </group>
         <group>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/operativos.xhtml</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/web/operativofrm.xhtml</file>
-            <file>file:/D:/infarc/Documents/GitHub/migracion/src/java/ec/gob/arcom/migracion/ctrl/OperativoCtrl.java</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/impl/LicenciaServicioImpl.java</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/UsuarioServicio.java</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/LicenciaDaoEjb.java</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/UsuarioDaoEjb.java</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/LicenciaServicio.java</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/impl/GestionVacacionServicioImpl.java</file>
+            <file>file:/C:/proyectos/migracion/web/vacaciones-licencia-ingreso-th-frm.xhtml</file>
+            <file>file:/C:/proyectos/migracion/web/vacaciones-por-funcionario.xhtml</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/ctrl/VacacionCtrl.java</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/GestionVacacionDaoEjb.java</file>
+            <file>file:/C:/proyectos/migracion/web/vacaciones-saldos-view-frm.xhtml</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/impl/UsuarioServicioImpl.java</file>
+            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/GestionVacacionServicio.java</file>
         </group>
     </open-files>
 </project-private>
