@@ -856,8 +856,13 @@ public class VacacionCtrl {
         return DateUtil.obtenerFechaConFormato(f);
     }
     
-    public CatalogoDetalle obtenerNombreCatalogoDetalle(Long codigoCatalogoDetalle){
+    public CatalogoDetalle obtenerNombreCatalogoDetalle(Long codigoCatalogoDetalle){        
         return catalogoDetalleServicio.obtenerPorCodigoCatalogoDetalle(codigoCatalogoDetalle);
+    }
+    
+    public String obtenerNombreCatalogoDetalleFrm(Long codigoCatalogoDetalle){
+        String nombreCatalogoDetalle = catalogoDetalleServicio.obtenerPorCodigoCatalogoDetalle(codigoCatalogoDetalle).getNombre();        
+        return nombreCatalogoDetalle;
     }
 
     public String obtenerFechaHoraConFormato(Date f) {
@@ -1344,14 +1349,14 @@ public class VacacionCtrl {
         auditoriaServicio.create(a);
         FacesUtil.showInfoMessage("Aviso", "Tarea realizada correctamente");
 
-        //PROCESO DE VERIFICACIÓN DE PARTE DE RRHH        
-        Licencia anteriorVeriRRHH = new Licencia(licencia);
-        licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTINSC").get(0));
-        licencia.setFechaModificacion(Calendar.getInstance().getTime());
-        licencia.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
-        licenciaServicio.update(licencia);
-        Auditoria auditoriaVeriRRHH = new Auditoria(Auditoria.UPDATE, licencia, anteriorVeriRRHH, login.getCodigoUsuario());
-        auditoriaServicio.create(auditoriaVeriRRHH);
+//        //PROCESO DE VERIFICACIÓN DE PARTE DE RRHH        
+//        Licencia anteriorVeriRRHH = new Licencia(licencia);
+//        licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTINSC").get(0));
+//        licencia.setFechaModificacion(Calendar.getInstance().getTime());
+//        licencia.setUsuarioModificacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+//        licenciaServicio.update(licencia);
+//        Auditoria auditoriaVeriRRHH = new Auditoria(Auditoria.UPDATE, licencia, anteriorVeriRRHH, login.getCodigoUsuario());
+//        auditoriaServicio.create(auditoriaVeriRRHH);
         if (licencia.getTipoLicencia().getNemonico().equals("MOTPERVAC")) {
             Usuario usrlogged = usuarioServicio.findByPk(login.getCodigoUsuario());
             GestionVacacion gvOld = gestionVacacionServicio.findByUser(licencia.getUsuario().getCodigoUsuario());
@@ -1362,8 +1367,8 @@ public class VacacionCtrl {
             gvOld.setFechaModificacion(Calendar.getInstance().getTime());
             gvOld.setUsuarioModificacion(usrlogged);
             gestionVacacionServicio.update(gvOld);
-            auditoriaVeriRRHH = new Auditoria(Auditoria.UPDATE, gvOld, gvAnterior, login.getCodigoUsuario());
-            auditoriaServicio.create(auditoriaVeriRRHH);
+            a = new Auditoria(Auditoria.UPDATE, gvOld, gvAnterior, login.getCodigoUsuario());
+            auditoriaServicio.create(a);
 
             gv.setSaldoAnterior(gv.getSaldoActual());
             //Restar los dias de la licencia del saldo actual de gestion vacacion a la fecha.
@@ -1601,7 +1606,8 @@ public class VacacionCtrl {
     }
 
     public void showSolicitudAction(Licencia l) {
-        this.licencia = licenciaServicio.findByPk(l.getCodigoLicencia());        
+        Licencia lic = licenciaServicio.findByPk(l.getCodigoLicencia());
+        this.licencia = licenciaServicio.findByPk(lic.getCodigoLicencia());        
         contrato = contratoServicio.contratoUsuarioEstado(licencia.getUsuario(),ConstantesEnum.ESTCOMP_REGISTRADO.getCodigo());                
         motivoLicencia = licencia.getTipoLicencia().getNombre();
         showHourFields();

@@ -29,23 +29,23 @@
                             <p:column headerText="Nro." style="width:50px;text-align: right">
                                 <p:outputLabel value="#{tramite.numeroSolicitud}"/>
                             </p:column>
-                            <p:column headerText="Funcionario">
-                                <p:outputLabel value="#{tramite.usuario.nombresCompletos.toUpperCase()}"/>
+                            <p:column headerText="Funcionario">                                
+                                <p:outputLabel value="#{tramite.funcionario.toUpperCase()}"/>
                             </p:column>
-                            <p:column headerText="Tipo formulario">
-                                <p:outputLabel value="#{tramite.tipoFormulario.nombre}"/>
+                            <p:column headerText="Tipo formulario">                                
+                                <p:outputLabel value="#{tramite.tipoFormulario}"/>
                             </p:column>
-                            <p:column headerText="Motivo">
-                                <p:outputLabel value="#{tramite.tipoLicencia.nombre}"/>
+                            <p:column headerText="Motivo">                                
+                                <p:outputLabel value="#{tramite.motivo}"/>
                             </p:column>
-                            <p:column headerText="Estado">
-                                <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(tramite.estadoLicencia)}"/>
+                            <p:column headerText="Estado">                                
+                                <p:outputLabel value="#{tramite.estado}"/>
                             </p:column>
-                            <p:column headerText="Fecha solicitud">
+                            <p:column headerText="Fecha solicitud">                                
                                 <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(tramite.fechaSolicitud)}"/>
                             </p:column>
                             <p:column headerText="Ver" style="width:50px;text-align: center">
-                                <p:commandButton icon="ui-icon-newwin" title="Ver" actionListener="#{vacacionCtrl.showSolicitudAction(tramite)}" update=":view-licencia-form"/>
+                                <p:commandButton icon="ui-icon-newwin" title="Ver" actionListener="#{vacacionCtrl.showSolicitudAction(tramite.codigoLicencia)}" update=":view-licencia-form"/>
                             </p:column>
                         </p:dataTable>
                     </p:tab>
