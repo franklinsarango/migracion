@@ -193,6 +193,8 @@ public class ConcesionMinera implements Serializable {
     private Boolean senagua;
     @Column(name = "litispendencia")
     private Boolean litispendencia;
+    @Column(name = "declaracion_juramentada")
+    private Boolean declaracionJuramentada;
     @OneToMany(mappedBy = "codigoConcesion")
     private Collection<MaquinariaConcesion> maquinariaConcesionCollection;
     @Column(name = "migrada")
@@ -779,7 +781,7 @@ public class ConcesionMinera implements Serializable {
                 + ", migrada=" + migrada + ", fechaInforme=" + fechaInforme + ", codigoCasilleroLocalidad=" + (codigoCasilleroLocalidad != null ? codigoCasilleroLocalidad.getCodigoLocalidad() : null) 
                 + ", numeroResolucionArchivo=" + numeroResolucionArchivo + ", fechaResolucionArchivo=" + fechaResolucionArchivo + ", fechaArchivo=" + fechaArchivo 
                 + ", codigoMae=" + (codigoMae != null ? codigoMae: null) + ", codigoSenagua=" + (codigoSenagua != null ? codigoSenagua : null)
-                + ", numeroResolucionCambioRegimen=" + numeroResolucionCambioRegimen +", fechaOtorgamientoCambioRegimen=" + fechaOtorgamientoCambioRegimen +", fechaInscripcionCambioRegimen=" + fechaInscripcionCambioRegimen +", litispendencia=" + litispendencia+ '}';
+                + ", numeroResolucionCambioRegimen=" + numeroResolucionCambioRegimen +", fechaOtorgamientoCambioRegimen=" + fechaOtorgamientoCambioRegimen +", fechaInscripcionCambioRegimen=" + fechaInscripcionCambioRegimen +", litispendencia=" + litispendencia+", declaracionJuramentada="+declaracionJuramentada+ '}';
     }
 
     public List<Instrumento> getInstrumentoList() {
@@ -1120,5 +1122,12 @@ public class ConcesionMinera implements Serializable {
         this.codigoSenagua = codigoSenagua;
     }
 
+    public Boolean getDeclaracionJuramentada() {
+        return declaracionJuramentada;
+    }
+
+    public void setDeclaracionJuramentada(Boolean declaracionJuramentada) {
+        this.declaracionJuramentada = declaracionJuramentada;
+    }
     
 }

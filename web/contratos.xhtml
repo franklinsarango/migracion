@@ -16,10 +16,12 @@
                 <h:panelGrid columns="3">
                     <h:panelGrid columns="2">
                         <h:panelGrid columns="2" >
-                            <p:outputLabel value="Código:"/>
+                            <p:outputLabel value="Código área minera:"/>
                             <p:inputText value="#{contratoOperacionCtrl.codigoArcomFiltro}"/>
-                            <p:outputLabel value="CI Titular:"/>
+                            <p:outputLabel value="Número Doc. Operador:"/>
                             <p:inputText value="#{contratoOperacionCtrl.numDocumentoFiltro}"/>
+                            <p:outputLabel value="Nombre del Operador:"/>
+                            <p:inputText value="#{contratoOperacionCtrl.beneficiarioPrincipal}"/>
                         </h:panelGrid>
                         <h:commandButton image="resources/images/busca.png" style="width: 50px; height: 50px;" title="Buscar">
                             <p:ajax listener='#{contratoOperacionCtrl.mostrarDatos("btn_buscar")}' update="@form" process="@form" />
@@ -55,63 +57,66 @@
                     <p:dataTable var="reg" id="dtListaDerechosMineros"
                          value="#{contratoOperacionCtrl.contratosOperacion}" rows="10">
                         
-                    <p:column headerText="ID. CONTRATO#" width="25">
+                    <p:column headerText="ID. CONTRATO" width="60">
                         <h:outputText value="#{reg.codigoContratoOperacion}"/>
                     </p:column>
-
+                    
                     <p:column headerText="CODIGO CONCESION" style="text-align: right">
                         <h:outputText styleClass="texto_tabla_datos_codigo" 
-                                       value="#{reg.codigoConcesion.codigoArcom}" />
+                                      value="#{reg.codigoArcom}" />
                     </p:column>
-                    
+                        
                     <p:column headerText="CODIGO CONTRATO" style="text-align: right">
                         <h:outputText styleClass="texto_tabla_datos_codigo"
-                                      value="#{reg.codigoArcom}"/>
+                                      value="#{reg.codigoContrato}"/>
                     </p:column>
-                    
-                    <p:column headerText="NUM. DOCUMENTO" style="text-align: right">
+                        
+                    <p:column headerText="NUM. DOCUMENTO TITULAR MINERO" style="text-align: right">
                         <h:outputText  styleClass="texto_tabla_datos_codigo" 
                                        value="#{reg.numeroDocumento}" />
                     </p:column>
-
+                        
+                    <p:column headerText="NOMBRE TITULAR CONTRATO" style="text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" 
+                                       value="#{reg.titularContrato}" />
+                    </p:column>
+                        
                     <p:column headerText="PROVINCIA"
                               style="text-align: right">
-                        <h:outputText value="#{reg.codigoProvincia.nombre}"/>
+                        <h:outputText value="#{reg.provinica}"/>
                     </p:column>
-
+                        
                     <p:column headerText="CANTON"  
                               style="text-align: right">
-                        <h:outputText value="#{reg.codigoCanton.nombre}"/>
+                        <h:outputText value="#{reg.canton}"/>
                     </p:column>
 
                     <p:column headerText="PARROQUIA"  
                               style="text-align: right">
-                        <h:outputText value="#{reg.codigoParroquia.nombre}"/>
+                        <h:outputText value="#{reg.parroquia}"/>
                     </p:column>
-
+                    
                     <p:column headerText="ESTADO"  
                               style="text-align: right">
-                        <h:outputText value="#{reg.estadoContrato.nombre}"/>
+                        <h:outputText value="#{reg.estado}"/>
                     </p:column>
                     
                     <p:column headerText="FECHA INSCRIPCIÓN" 
                               style="text-align: right">
-                        <h:outputText value="#{reg.fechaInscribe}" >
+                        <h:outputText value="#{reg.fecha_inscripcion}" >
                             <f:convertDateTime pattern="yyyy-MM-dd"/>
                         </h:outputText>
                     </p:column>
-
                         <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{contratoOperacionCtrl.usuarioRegistrador}">
-                        <p:commandButton update=":form" action="#{contratoOperacionCtrl.editarRegistro}" icon="ui-icon-pencil" title="Editar Contrato"
-                                         oncomplete="PF('visorEditarContrato').show();" rendered="#{reg.codigoConcesion.codigoRegional.prefijoCodigo eq contratoOperacionCtrl.login.prefijoRegional}"></p:commandButton>
-                        
-                    </p:column>
-                    <p:column headerText="Ver" style="width:37px; text-align: right">
-                        <p:commandButton action="#{contratoOperacionCtrl.verRegistro}" 
-                                         icon="ui-icon-search" oncomplete="PF('visorVerContrato').show();"
-                                         title="Ver" 
-                                         ajax="false"/>
-                    </p:column>
+                            <p:commandButton update=":form" action="#{contratoOperacionCtrl.editarRegistro}" icon="ui-icon-pencil" title="Editar Contrato"
+                                             oncomplete="PF('visorEditarContrato').show();" rendered="#{reg.codigo_regional eq contratoOperacionCtrl.login.prefijoRegional}"></p:commandButton>                        
+                        </p:column>
+                        <p:column headerText="Ver" style="width:37px; text-align: right">
+                            <p:commandButton action="#{contratoOperacionCtrl.verRegistro}" 
+                                             icon="ui-icon-search" oncomplete="PF('visorVerContrato').show();"
+                                             title="Ver" 
+                                             ajax="false"/>
+                        </p:column>
                     
                     <f:facet name="footer">
                     <center>

@@ -812,7 +812,9 @@ public class VacacionCtrl {
             showCalamidadPanel = false;
             showInstitucionalPanel = false;
             showButtonPanel = true;            
-            fechaMinima = Calendar.getInstance().getTime();
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DAY_OF_MONTH, -1);
+            fechaMinima = c.getTime();
             licencia.setFechaHoraSalida(null);
             licencia.setFechaHoraRetorno(null);
             licencia.setDiasLicencia(null);
@@ -1278,7 +1280,9 @@ public class VacacionCtrl {
             showVacacionPanel = true;
             showCalamidadPanel = false;
             showInstitucionalPanel = false;
-            fechaMinima = Calendar.getInstance().getTime();
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DAY_OF_MONTH, -1);
+            fechaMinima = c.getTime();
         } else if (licencia.getTipoLicencia().getNemonico().equals("MOTPERINS")) {
             showVacacionPanel = false;
             showCalamidadPanel = false;

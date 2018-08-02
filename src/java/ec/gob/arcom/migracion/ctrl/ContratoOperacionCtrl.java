@@ -9,11 +9,13 @@ import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.constantes.ConversionEstadosEnum;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
+import ec.gob.arcom.migracion.dto.ContratoOperacionDTO;
 import ec.gob.arcom.migracion.dto.PersonaDto;
 import ec.gob.arcom.migracion.modelo.Auditoria;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
+import ec.gob.arcom.migracion.modelo.CoordenadaArea;
 import ec.gob.arcom.migracion.modelo.CoordenadaCota;
 import ec.gob.arcom.migracion.modelo.Localidad;
 import ec.gob.arcom.migracion.modelo.Secuencia;
@@ -25,6 +27,7 @@ import ec.gob.arcom.migracion.servicio.CoordenadaCotaServicio;
 import ec.gob.arcom.migracion.servicio.LocalidadServicio;
 import ec.gob.arcom.migracion.servicio.PersonaNaturalServicio;
 import ec.gob.arcom.migracion.servicio.SecuenciaServicio;
+import ec.gob.arcom.migracion.servicio.UsuarioServicio;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +41,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -60,6 +64,8 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     @EJB
     private CoordenadaCotaServicio coordenadaCotaServicio;
     @EJB
+    private UsuarioServicio usuarioServicio;
+    @EJB
     private AuditoriaServicio auditoriaServicio;
     @EJB
     private SecuenciaServicio secuenciaServicio;
@@ -67,7 +73,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     private LoginCtrl login;
 
     private ContratoOperacion contratoOperacion;
-    private List<ContratoOperacion> contratosOperacion;
+    private List<ContratoOperacionDTO> contratosOperacion;
 
     private ConcesionMinera concesionMineraPopup;
     private PersonaDto personaDtoPopup;
@@ -82,13 +88,14 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
     private String codigoArcomFiltro;
     private String numDocumentoFiltro;
+    private String beneficiarioPrincipal;
 
     private String numDocPersonaPopupFiltro;
     
     private String coordenadaX;
     private String coordenadaY;
     
-    private List<CoordenadaCota> coordenadasPorContrato;
+    private List<CoordenadaCota> coordenadasPorContrato;    
     
     private Boolean usuarioRegistrador;
     private boolean mostrarCoordenadas = false;
@@ -106,6 +113,10 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     private String urlEditarContrato;
     private String urlVerContrato;
     private boolean registrosPorRegional;
+    
+    private String textoCoordenadas;    
+    private boolean coordenadasEditadas;
+        
     @PostConstruct
     public void init() {
         try {
@@ -136,7 +147,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         } catch (Exception ex) {
             ex.printStackTrace();
         }        
-    }
+    }    
     public ContratoOperacion getContratoOperacion() {
         if (contratoOperacion == null) {
             String contratoId = getHttpServletRequestParam("idItem");
@@ -188,6 +199,12 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         this.contratoOperacion = contratoOperacion;
     }
 
+    public String nombrePropietario(String numeroDocumento){        
+        Usuario usuario = usuarioServicio.findByDocumento(numeroDocumento);
+        String nombrePropietario = usuario.getNombre() + " " + usuario.getApellido();
+        return nombrePropietario;
+    }
+    
     public void buscar() {
         contratosOperacion = null;
         //getContratosOperacion();
@@ -202,16 +219,16 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     
     public String editarRegistro() {
         mostrarCoordenadas = true;
-        ContratoOperacion contratoItem = (ContratoOperacion) getExternalContext().getRequestMap().get("reg");
-//        if(contratoItem.getCodigoConcesion().getCodigoRegional().getPrefijoCodigo().equals(login.getPrefijoRegional()))
-        urlEditarContrato = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratoform.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
+        ContratoOperacionDTO contratoItem = (ContratoOperacionDTO) getExternalContext().getRequestMap().get("reg");
+//        if(contratoItem.getCodigoConcesion().getCodigoRegional().getPrefijoCodigo().equals(login.getPrefijoRegional()))        
+        urlEditarContrato = ConstantesEnum.URL_APP_LOCAL.getDescripcion() + "/migracion/web/contratoform.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
         System.out.println("urlEditarContrato: " + urlEditarContrato);
         return null;
     }
     
     public String nuevoRegistro() {
         mostrarCoordenadas = false;
-        urlEditarContrato = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratoform.xhtml?";
+        urlEditarContrato = ConstantesEnum.URL_APP_LOCAL.getDescripcion() + "/migracion/web/contratoform.xhtml?";
         System.out.println("urlNuevoContrato: " + urlEditarContrato);
         RequestContext.getCurrentInstance().execute("PF('visorEditarContrato').show();");
         return null;
@@ -219,8 +236,8 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
     public String verRegistro() {
         mostrarCoordenadas = true;
-        ContratoOperacion contratoItem = (ContratoOperacion) getExternalContext().getRequestMap().get("reg");
-        urlVerContrato = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratoview.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
+        ContratoOperacionDTO contratoItem = (ContratoOperacionDTO) getExternalContext().getRequestMap().get("reg");
+        urlVerContrato = ConstantesEnum.URL_APP_LOCAL.getDescripcion() + "/migracion/web/contratoview.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
         System.out.println("urlVerContrato: " + urlVerContrato);
         RequestContext.getCurrentInstance().execute("PF('visorVerContrato').show();");
         return null;
@@ -289,14 +306,14 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         //return "contratos";
     }
 
-    public List<ContratoOperacion> getContratosOperacion() {
+    public List<ContratoOperacionDTO> getContratosOperacion() {
         /*if (contratosOperacion == null) {
             contratosOperacion = contratoOperacionServicio.obtenerContratosOperacion(codigoArcomFiltro, numDocumentoFiltro, login.getUserName());
         }*/
         return contratosOperacion;
     }
 
-    public void setContratosOperacion(List<ContratoOperacion> contratosOperacion) {
+    public void setContratosOperacion(List<ContratoOperacionDTO> contratosOperacion) {
         this.contratosOperacion = contratosOperacion;
     }
 
@@ -529,41 +546,63 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         this.coordenadaY = coordenadaY;
     }
     
-    public void guardarCoordenadas() {
-        Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
-        int orden = 0;
-        if (coordenadasPorContrato.size() > 0) {
-            orden = coordenadasPorContrato.size();
+    public void editarTodasCoordenadas() {
+        textoCoordenadas = null;
+        if (getCoordenadasPorContrato() != null) {
+            for (CoordenadaCota coordenadaCota : getCoordenadasPorContrato()) {
+                if (coordenadaCota != null) {
+                    if (textoCoordenadas == null) {
+                        textoCoordenadas = coordenadaCota.getOrden() + "-" + coordenadaCota.getUtmEste() + "-" + coordenadaCota.getUtmNorte();
+                    } else {
+                        textoCoordenadas = textoCoordenadas + "\n" + coordenadaCota.getOrden() + "-" + coordenadaCota.getUtmEste() + "-" + coordenadaCota.getUtmNorte();
+                    }
+                }
+            }
         }
-        CoordenadaCota cc = new CoordenadaCota();
-        cc.setUtmEste(coordenadaX);
-        cc.setUtmNorte(coordenadaY);
-        cc.setOrden(BigInteger.valueOf(orden));
-        if (orden == 0) {
-            cc.setInicial(true);
-        } else {
-            cc.setInicial(false);
+    }
+    
+    public void guardarCoordenadas() {       
+        Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());  
+        List<CoordenadaCota> coordenada;
+        coordenada = new ArrayList<CoordenadaCota>();
+        coordenada = coordenadaCotaServicio.findByCodigoContrato(contratoOperacion.getCodigoContratoOperacion());        
+        //SE ELIMINA LAS COORDENADAS ANTERIORES        
+        for (CoordenadaCota ca : coordenada) {            
+            coordenadaCotaServicio.delete(ca.getCodigoCoordenadaCota());
+            Auditoria auditoria = new Auditoria();
+            auditoria.setAccion("DELETE");
+            auditoria.setFecha(getCurrentTimeStamp());
+            auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+            auditoria.setDetalleAnterior(ca.toString());                        
+            auditoriaServicio.create(auditoria);
         }
-        cc.setCodigoContratoOperacion(contratoOperacion);
-        cc.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
-        cc.setFechaCreacion(new Date());
-        cc.setEstadoRegistro(true);
-        try {
-            coordenadaCotaServicio.create(cc);
-            Auditoria auditoria2 = new Auditoria();
-            auditoria2.setAccion("INSERT");
-            auditoria2.setFecha(getCurrentTimeStamp());
-            auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-            auditoria2.setDetalleAnterior(cc.toString());
-            auditoriaServicio.create(auditoria2);
-            FacesContext
-                    .getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                    "Registro guardado correctamente", null));
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "No se pudo guardar el registro", ex.getMessage()));
+
+        //SE INSERTA LAS NUEVAS COORDENADAS
+        boolean coordenadaInicial = true;
+        for (CoordenadaCota ca : getCoordenadasPorContrato()){
+            System.out.println("Orden las coordenadas: " + ca.getOrden());
+            ca.setInicial(coordenadaInicial);
+            coordenadaInicial = false;
+            ca.setCodigoContratoOperacion(contratoOperacion);
+            ca.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
+            ca.setFechaCreacion(new Date());
+            ca.setEstadoRegistro(true);
+            try {
+                coordenadaCotaServicio.create(ca);
+                Auditoria auditoria2 = new Auditoria();
+                auditoria2.setAccion("INSERT");
+                auditoria2.setFecha(getCurrentTimeStamp());
+                auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                auditoria2.setDetalleAnterior(ca.toString());
+                auditoriaServicio.create(auditoria2);                
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "No se pudo guardar el registro", ex.getMessage()));
+            }            
         }
-        coordenadasPorContrato = null;
+
+        textoCoordenadas = "";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro guardado correctamente", null));
         getCoordenadasPorContrato();
     }
     
@@ -708,21 +747,95 @@ public class ContratoOperacionCtrl extends BaseCtrl {
             cargarListaPaginas();
         }
         
-        if (contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento) != null) {
+        if (contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento, beneficiarioPrincipal) != null) {
             if (contratosOperacion != null) {
                 contratosOperacion.clear();
             } else {
                 contratosOperacion = new ArrayList<>();
             }
-            List<ContratoOperacion> listContratoOperacion = contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento);
-            for (ContratoOperacion contratoOp : listContratoOperacion) {
-                contratosOperacion.add(contratoOp);
-            }
+            contratosOperacion = contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento, beneficiarioPrincipal);
+//            List<ContratoOperacion> listaContratoOp = new ArrayList<>();            
+//            for(ContratoOperacionDTO contratoLista : listContratoOperacionDTO){
+//                ContratoOperacion contrato = new ContratoOperacion();            
+//                contrato = contratoOperacionServicio.findByPk(contratoLista.getCodigoContratoOperacion());
+//                listaContratoOp.add(contrato);
+//            }
+//            for (ContratoOperacion contratoOp : listaContratoOp) {
+//                contratosOperacion.add(contratoOp);
+//            }
         } else {
             //ponerMensajeInfo("", "No existen Contratos de Operacion con código ARCOM ");
             contratosOperacion.clear();
         }
     }
+    
+    public void onRowEditTablaCoordenadas(RowEditEvent event){
+        coordenadasEditadas = true;
+    }
+    
+    public void cargarCoordenadas() {        
+        System.out.println("metodo cargarCoordenadas");
+        if (textoCoordenadas.isEmpty()) {
+            return;
+        }
+
+        String texto = textoCoordenadas;
+        String[] array_coordenadas = null;
+        String[] parts = texto.split("\n");
+        for (String coordenadas : parts) {
+            System.out.println(coordenadas);
+            array_coordenadas = coordenadas.split("-");
+
+            //Validaciones
+            System.out.println(array_coordenadas);
+            if (array_coordenadas == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Por Favor Ingrese Coordenadas Válidas", null));
+                return;
+            }
+
+            if (array_coordenadas.length != 3) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: debe Ingresar la coordenada con los datos: PP-X-Y ", null));
+                System.out.println("Error: debe Ingresar la coordenada con los datos: PP-X-Y ");
+                return;
+            }
+
+            if (array_coordenadas[0].contains(",") || array_coordenadas[1].contains(",")|| array_coordenadas[2].contains(",")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: Las coordenadas con decimales deben utilizar el signo (.)", null));
+                return;
+            }
+            
+            //SE VALIDA QUE SOLO ESTEN INGRESADOS NUMEROS
+            try{
+                double numeroCoordenada = Double.parseDouble(array_coordenadas[0]);
+                double coordenadaEste = Double.parseDouble(array_coordenadas[1]);
+                double coordenadaNorte = Double.parseDouble(array_coordenadas[2]);
+            }catch(Exception e){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: Las coordenadas solo deben tener numeros", null));
+                return;
+            }            
+        }
+
+        getCoordenadasPorContrato().clear();                  
+        List<CoordenadaCota> coordenada;
+        coordenada = new ArrayList<CoordenadaCota>();
+        for (String coordenadas : parts) {
+            array_coordenadas = coordenadas.split("-");
+            CoordenadaCota c = new CoordenadaCota();
+            c.setOrden(new BigInteger(array_coordenadas[0]));
+            c.setUtmEste(array_coordenadas[1]);
+            c.setUtmNorte(array_coordenadas[2]);              
+            coordenada.add(c);                                    
+        }
+        for(CoordenadaCota nuevaCoordenada : coordenada){
+            this.coordenadasPorContrato.add(nuevaCoordenada);
+        }
+        textoCoordenadas = "";
+        coordenadasEditadas = true;
+    }   
 
     public void cargarListaPaginas() {
         if(listaPaginas == null){
@@ -850,4 +963,29 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     public void setUrlVerContrato(String urlVerContrato) {
         this.urlVerContrato = urlVerContrato;
     }
+
+    public UsuarioServicio getUsuarioServicio() {
+        return usuarioServicio;
+    }
+
+    public void setUsuarioServicio(UsuarioServicio usuarioServicio) {
+        this.usuarioServicio = usuarioServicio;
+    }
+
+    public String getBeneficiarioPrincipal() {
+        return beneficiarioPrincipal;
+    }
+
+    public void setBeneficiarioPrincipal(String beneficiarioPrincipal) {
+        this.beneficiarioPrincipal = beneficiarioPrincipal;
+    }
+
+    public String getTextoCoordenadas() {
+        return textoCoordenadas;
+    }
+
+    public void setTextoCoordenadas(String textoCoordenadas) {
+        this.textoCoordenadas = textoCoordenadas;
+    }
+    
 }

@@ -7,8 +7,11 @@ package ec.gob.arcom.migracion.dao.ejb;
 
 import com.saviasoft.persistence.util.dao.eclipselink.GenericDaoEjbEl;
 import ec.gob.arcom.migracion.dao.ContratoOperacionDao;
+import ec.gob.arcom.migracion.dto.ContratoOperacionDTO;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
@@ -249,45 +252,48 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
     }
     
     @Override
-    public List<ContratoOperacion> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean registrosPorRegional, int paramLimit, int paramOffset) {
-        String jpql = "select co from ContratoOperacion co, ConcesionMinera cm where co.codigoConcesion.codigoConcesion = cm.codigoConcesion \n"
-                + " and 1=1 and co.codigoArcom like :codigoArcomCO \n";
-//        if (registrosPorRegional == true) {
-//            jpql += "and cm.codigoProvincia in (select lcr.localidad.codigoLocalidad from LocalidadRegional lcr where lcr.regional.codigoRegional = \n"
-//                    + " (select r.codigoRegional from Regional r, LocalidadRegional lr, Usuario u where u.numeroDocumento = '" + cedulaRuc + "'\n"
-//                    + " and r.codigoRegional = lr.regional.codigoRegional and lr.localidad.codigoLocalidad = u.codigoProvincia)) \n";
-//        }
+    public List<ContratoOperacionDTO> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean registrosPorRegional, int paramLimit, int paramOffset, String beneficiarioPrincipal) {
+        String jpqlNative = "select * from (select co.codigo_contrato_operacion, cm.codigo_arcom, co.codigo_arcom as codigo_contrato, co.numero_documento, "
+                + "case when p.apellido is null then p.nombre else p.apellido || ' ' || p.nombre end as titular_contrato, "
+                + "(select l.nombre from catmin.localidad l where l.codigo_localidad = co.codigo_provincia) as provincia,\n"
+                + "(select l.nombre from catmin.localidad l where l.codigo_localidad = co.codigo_canton) as canton,\n"
+                + "(select l.nombre from catmin.localidad l where l.codigo_localidad = co.codigo_parroquia) as parroquia, cat.nombre, co.fecha_inscribe, r.prefijo_codigo, co.fecha_creacion \n"
+                + "from catmin.contrato_operacion co, catmin.concesion_minera cm, catmin.personas p, catmin.catalogo_detalle cat, catmin.regional r \n"
+                + "where co.codigo_concesion = cm.codigo_concesion and p.numero_documento = co.numero_documento and cat.codigo_catalogo_detalle = co.estado_contrato and r.codigo_regional = cm.codigo_regional \n"
+                + ") as contrato where 1=1 \n";
         if (codigoArcom != null && !codigoArcom.isEmpty()) {
-            jpql += "and co.codigoArcom like :codigoArcom \n";
+            jpqlNative += "and contrato.codigo_arcom = '" + codigoArcom + "'  \n";
         }
         if (numDocumento != null && !numDocumento.isEmpty()) {
-            jpql += "and co.numeroDocumento = :numDocumento \n";
+            jpqlNative += "and contrato.numero_documento = '" + numDocumento + "' \n";
         }
-
-        jpql += "order by co.fechaCreacion, co.codigoArcom desc ";
-
-        System.out.println("jpql: " + jpql);
-        Query query = em.createQuery(jpql);
-        if (codigoArcom != null && !codigoArcom.isEmpty()) {
-            query.setParameter("codigoArcom", codigoArcom + "%");
+        if (beneficiarioPrincipal != null && !beneficiarioPrincipal.isEmpty()) {
+            jpqlNative += "and contrato.titular_contrato ilike '%" + beneficiarioPrincipal + "%'\n";
         }
-        if (numDocumento != null && !numDocumento.isEmpty()) {
-            query.setParameter("numDocumento", numDocumento);
-        }
-        query.setParameter("codigoArcomCO", "%" + "CO" + "%");
+        jpqlNative += "order by contrato.fecha_creacion desc ";
+        
+        System.out.println("jpql: " + jpqlNative);
+        Query query = em.createNativeQuery(jpqlNative); 
         query.setFirstResult(paramOffset).setMaxResults(paramLimit);
-        try {
-            List<ContratoOperacion> listaFinal = query.getResultList();
-            for (ContratoOperacion cop : listaFinal) {
-                this.refresh(cop);
-            }
-            return listaFinal;
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-        }
-
-        //return query.getResultList();
-        return null;
+        List<Object[]> listaTmp = query.getResultList();
+        List<ContratoOperacionDTO> listaFinal = new ArrayList<>();
+        
+        for (Object[] fila : listaTmp) {
+            ContratoOperacionDTO co = new ContratoOperacionDTO();
+            co.setCodigoContratoOperacion((Long)fila[0]);    
+            co.setCodigoArcom((String)fila[1]);   
+            co.setCodigoContrato((String)fila[2]);
+            co.setNumeroDocumento((String)fila[3]);
+            co.setTitularContrato((String)fila[4]);            
+            co.setProvinica((String)fila[5]);
+            co.setCanton((String)fila[6]);
+            co.setParroquia((String)fila[7]);
+            co.setEstado((String)fila[8]);
+            co.setFecha_inscripcion((Date)fila[9]);
+            co.setCodigo_regional((String)fila[10]);
+            listaFinal.add(co);             
+        }     
+        return listaFinal;
     }
     
     @Override

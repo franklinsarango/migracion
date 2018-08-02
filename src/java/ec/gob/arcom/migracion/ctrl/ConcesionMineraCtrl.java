@@ -417,7 +417,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         }
     }
 
-    public String guardarRegistro() {
+    public String guardarRegistro() {        
         System.out.println("codigoRegimen: " + concesionMinera.getCodigoRegimen().getCodigoRegimen());
         System.out.println("codigoFase: " + concesionMinera.getCodigoFase().getCodigoFase());        
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
@@ -517,8 +517,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                 }
                 if (mostrarMaquinaria == false) {
                     mostrarMaquinaria = true;
-                }
-                System.out.println("concesionMinera.getCodigoConcesion(): " + concesionMinera.getCodigoConcesion());
+                }                
                 //System.out.println("solicitud.getCodigoSolicitud(): " + solicitud.getCodigoSolicitud());
                 System.out.println("mostrarCoordenadas: " + mostrarCoordenadas);
                 Auditoria auditoria = new Auditoria();
@@ -545,7 +544,7 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                         "El registro ha sido guardado", null));
                 return null;
-            } else {
+            } else {                
                 concesionMineraServicio.actualizarTodo(concesionMinera, null, areaMinera);
                 Auditoria auditoria = new Auditoria();
                 auditoria.setAccion("UPDATE");

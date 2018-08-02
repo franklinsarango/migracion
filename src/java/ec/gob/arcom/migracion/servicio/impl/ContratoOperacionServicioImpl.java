@@ -8,6 +8,7 @@ package ec.gob.arcom.migracion.servicio.impl;
 import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.dao.ContratoOperacionDao;
+import ec.gob.arcom.migracion.dto.ContratoOperacionDTO;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import ec.gob.arcom.migracion.servicio.ContratoOperacionServicio;
@@ -55,8 +56,8 @@ public class ContratoOperacionServicioImpl extends GenericServiceImpl<ContratoOp
     }
 
     @Override
-    public List<ContratoOperacion> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros, int paramLimit, int paramOffset) {
-        return contratoOperacionDao.countByContratoOperacionTabla(cedulaRuc, codigoArcom, numDocumento, allRegistros, paramLimit, paramOffset);
+    public List<ContratoOperacionDTO> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros, int paramLimit, int paramOffset, String beneficiarioPrincipal) {
+        return contratoOperacionDao.countByContratoOperacionTabla(cedulaRuc, codigoArcom, numDocumento, allRegistros, paramLimit, paramOffset, beneficiarioPrincipal);
     }
     @Override
     public int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros) {

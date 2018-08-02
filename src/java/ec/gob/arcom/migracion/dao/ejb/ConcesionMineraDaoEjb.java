@@ -541,6 +541,9 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
         if (concesionMinera.getLitispendencia()!= null) {
             sql = sql + "    litispendencia = " + concesionMinera.getLitispendencia()+ " ,\n";
         }
+        if (concesionMinera.getLitispendencia()!= null) {
+            sql = sql + "    declaracion_juramentada = " + concesionMinera.getDeclaracionJuramentada()+ " ,\n";
+        }
         if (concesionMinera.getObsActosAdmPrevios() != null) {
             sql = sql + "    obs_actos_adm_previos = '" + concesionMinera.getObsActosAdmPrevios() + "',\n";
         }

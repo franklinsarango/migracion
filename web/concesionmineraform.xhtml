@@ -186,12 +186,12 @@
 
                                     locale="es" pattern="yyyy-MM-dd"  effect="fold" style="width: 93%" />
 
-                        <p:outputLabel for="fecSustitucion" value="Fecha sustitución:"></p:outputLabel>
+                        <p:outputLabel for="fecSustitucion" value="Fecha sustitución/ampliación:"></p:outputLabel>
                         <p:calendar id="fecSustitucion"
                                     value="#{concesionMineraCtrl.concesionMinera.fechaSustitucion}" placeholder="aaaa-mm-dd" navigator="true"
                                     locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" />
 
-                        <p:outputLabel for="fecInscSustitucion" value="Fecha inscripciòn sustitución:"></p:outputLabel>
+                        <p:outputLabel for="fecInscSustitucion" value="Fecha inscripciòn sustitución/ampliación:"></p:outputLabel>
                         <p:calendar id="fecInscSustitucion"
                                     value="#{concesionMineraCtrl.concesionMinera.fechaInscripcionSustitucion}" placeholder="aaaa-mm-dd" navigator="true"
                                     locale="es" pattern="yyyy-MM-dd" effect="fold" style="width: 93%" />
@@ -373,10 +373,14 @@
                         
                         <h:outputText value="Litispendencia:" />
                         <p:selectBooleanCheckbox value="#{concesionMineraCtrl.concesionMinera.litispendencia}" />
-
+                        
+                        <h:outputText value="Declaración Juramentada Art. 26 LM.:" />
+                        <p:selectBooleanCheckbox value="#{concesionMineraCtrl.concesionMinera.declaracionJuramentada}" />
+                        
                         <h:outputText value="Observaciones generales:" />
-                        <p:inputTextarea value="#{concesionMineraCtrl.concesionMinera.observacionGeneral}" cols="52" maxlength="500"/>
-
+                        <p:inputTextarea counter="display" counterTemplate="{0} caracteres restantes." value="#{concesionMineraCtrl.concesionMinera.observacionGeneral}" cols="52" maxlength="3000"/>
+                        <h:outputText/>
+                        <h:outputText id="display" />
                         <f:facet name="footer">
                             <h:panelGroup style="display:block; text-align:center; height: 24px">
                                 <p:outputLabel value=""/>

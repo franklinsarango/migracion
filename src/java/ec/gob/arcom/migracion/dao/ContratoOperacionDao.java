@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.dao;
 
 import com.saviasoft.persistence.util.dao.GenericDao;
+import ec.gob.arcom.migracion.dto.ContratoOperacionDTO;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import java.util.List;
@@ -25,7 +26,7 @@ public interface ContratoOperacionDao extends GenericDao<ContratoOperacion, Long
 
     List<ContratoOperacion> obtenerContratosOperacion(String codigoConcesion, String numDocumneto, String loginDocumento);
     
-    List<ContratoOperacion> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros, int paramLimit, int paramOffset);
+    List<ContratoOperacionDTO> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros, int paramLimit, int paramOffset, String beneficiarioPrincipal);
     int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros);
 
     List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera);

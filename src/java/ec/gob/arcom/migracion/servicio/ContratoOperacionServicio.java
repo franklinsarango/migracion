@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
+import ec.gob.arcom.migracion.dto.ContratoOperacionDTO;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.ContratoOperacion;
 import java.util.List;
@@ -25,7 +26,7 @@ public interface ContratoOperacionServicio extends GenericService<ContratoOperac
     void actualizarContratoOperacion(ContratoOperacion contratoOperacion);
 
     List<ContratoOperacion> obtenerContratosOperacion(String codigoArcom, String numDocumento, String loginDocumento);
-    List<ContratoOperacion> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros, int paramLimit, int paramOffset);
+    List<ContratoOperacionDTO> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros, int paramLimit, int paramOffset, String beneficiarioPrincipal );
     int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros);
     
     List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera);
