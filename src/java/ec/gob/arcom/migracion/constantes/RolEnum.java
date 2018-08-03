@@ -24,6 +24,7 @@ public enum RolEnum
     ROL_TECNICO("TECNICO","Tecnico","INT",10L),
     ROL_TECNICO_CATASTRO("TECNICOCAT","Técnico de Catastro","INT",11L),
     ROL_TECNICO_CATASTRO_NACIONAL("TECCATNAC","Tecnico de Catastro Nacional","INT",29L),
+    ROL_SUBSECRETA_NACIONAL_DESARROLLO("SNDESA","Subsecretaría de Minería Artesanal y Pequeña Minería","INT",69L),      
     ROL_REGISTRADOR_REGIONAL("RGRGNL","Registrador Regional","INT",24L),
     ROL_REGISTRADOR_NACIONAL("RGRNAC","Registrador Nacional","INT",23L),
     ROL_ABOGADO_NACIONAL("ABOGNACIO","Abogado Nacional","INT",25L),

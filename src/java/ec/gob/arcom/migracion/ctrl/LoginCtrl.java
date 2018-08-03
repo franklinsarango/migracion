@@ -69,6 +69,8 @@ public class LoginCtrl extends BaseCtrl {
     private boolean directorEjecutivo;
     private boolean asistenteTalentoHumano;
     private boolean usuarioEnami;
+    private boolean subSecretariaNacionalDesarrollo;
+    private boolean usuarioExterno;
     
     //PERMISOS
     private boolean editarComprobante;  //UERR
@@ -116,7 +118,14 @@ public class LoginCtrl extends BaseCtrl {
         }
 
         try {
-            result = this.obtenerUsuario(userName.trim(), userPassword);
+            Usuario uBd = usuarioDao.obtenerPorLogin(userName);
+            UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(uBd.getCodigoUsuario());
+            if(usRol.getRol().getNemonico().equals(RolEnum.ROL_USUARIO_EXTERNO.getNemonico())){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "¡ERROR!", "Usuario externo no esta autorizado el ingreso"));
+                return null;
+            } else {
+                result = this.obtenerUsuario(userName.trim(), userPassword);            
             if (result) {
                 HttpSession session = FacesUtil.getSession();
                 session.setAttribute("codigoUsuario", codigoUsuario);
@@ -125,12 +134,13 @@ public class LoginCtrl extends BaseCtrl {
                 session.setAttribute("admin", admin);
                 session.setAttribute("regional", regional);
                 session.setAttribute("nombreUsuario", nombreUsuario);
-                session.setAttribute("rolUsuario", rolUsuario);
+                session.setAttribute("rolUsuario", rolUsuario);                
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", nombreUsuario));
                 return "index.xhtml?faces-redirect=true";
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "¡ERROR!", "Usuario o clave incorrectos"));
+            }                       
         } catch (LDAPException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "¡ERROR!", "Usuario o clave incorrectos"));
@@ -213,6 +223,16 @@ public class LoginCtrl extends BaseCtrl {
                             this.tecnicoCatastroNacional = true;
                         } else {
                             this.tecnicoCatastroNacional = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_SUBSECRETA_NACIONAL_DESARROLLO.getNemonico())){
+                            this.subSecretariaNacionalDesarrollo = true;
+                        } else {
+                            this.subSecretariaNacionalDesarrollo = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_USUARIO_EXTERNO.getNemonico())){
+                            this.usuarioExterno = true;
+                        } else {
+                            this.usuarioExterno = false;
                         }
                         if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ABOGADO.getNemonico())){
                             this.abogado = true;
@@ -517,6 +537,22 @@ public class LoginCtrl extends BaseCtrl {
      */
     public void setTecnicoCatastroNacional(boolean tecnicoCatastroNacional) {
         this.tecnicoCatastroNacional = tecnicoCatastroNacional;
+    }
+
+    public boolean isSubSecretariaNacionalDesarrollo() {
+        return subSecretariaNacionalDesarrollo;
+    }
+
+    public void setSubSecretariaNacionalDesarrollo(boolean subSecretariaNacionalDesarrollo) {
+        this.subSecretariaNacionalDesarrollo = subSecretariaNacionalDesarrollo;
+    }
+
+    public boolean isUsuarioExterno() {
+        return usuarioExterno;
+    }
+
+    public void setUsuarioExterno(boolean usuarioExterno) {
+        this.usuarioExterno = usuarioExterno;
     }
 
 }
