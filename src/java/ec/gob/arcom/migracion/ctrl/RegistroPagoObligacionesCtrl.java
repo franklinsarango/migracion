@@ -986,12 +986,12 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
             if (registroPagoObligacionesItem.getCodigoTipoRegistro() != null && 
                     (registroPagoObligacionesItem.getCodigoTipoRegistro().equals(ConstantesEnum.SUJETO_MINERO.getCodigo()) ||
                         registroPagoObligacionesItem.getCodigoTipoRegistro().equals(ConstantesEnum.TIPO_SOLICITUD_NO_APLICA_DERECHO_MINERO.getCodigo()))) {
-                urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                urlReporte = ConstantesEnum.URL_REPORTES.getDescripcion()
                         + "/birt/frameset?__report=report/ComprobatesPago/Comprobante-estandar.rptdesign&codigo_registro="
                         + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                         + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf";
             } else {
-                urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+                urlReporte = ConstantesEnum.URL_REPORTES.getDescripcion()
                         + "/birt/frameset?__report=report/ComprobatesPago/Respuesta-solicitud.rptdesign&codigo_registro="
                         + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                         + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf";

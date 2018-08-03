@@ -218,14 +218,14 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         mostrarCoordenadas = true;
         ContratoOperacionDTO contratoItem = (ContratoOperacionDTO) getExternalContext().getRequestMap().get("reg");
 //        if(contratoItem.getCodigoConcesion().getCodigoRegional().getPrefijoCodigo().equals(login.getPrefijoRegional()))        
-        urlEditarContrato = ConstantesEnum.URL_APP_LOCAL.getDescripcion() + "/migracion/web/contratoform.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
+        urlEditarContrato = ConstantesEnum.URL_SERVIDOR_APP.getDescripcion() + "/migracion/web/contratoform.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
         System.out.println("urlEditarContrato: " + urlEditarContrato);
         return null;
     }
     
     public String nuevoRegistro() {
         mostrarCoordenadas = false;
-        urlEditarContrato = ConstantesEnum.URL_APP_LOCAL.getDescripcion() + "/migracion/web/contratoform.xhtml?";
+        urlEditarContrato = ConstantesEnum.URL_SERVIDOR_APP.getDescripcion() + "/migracion/web/contratoform.xhtml?";
         System.out.println("urlNuevoContrato: " + urlEditarContrato);
         RequestContext.getCurrentInstance().execute("PF('visorEditarContrato').show();");
         return null;
@@ -234,7 +234,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
     public String verRegistro() {
         mostrarCoordenadas = true;
         ContratoOperacionDTO contratoItem = (ContratoOperacionDTO) getExternalContext().getRequestMap().get("reg");
-        urlVerContrato = ConstantesEnum.URL_APP_LOCAL.getDescripcion() + "/migracion/web/contratoview.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
+        urlVerContrato = ConstantesEnum.URL_SERVIDOR_APP.getDescripcion() + "/migracion/web/contratoview.xhtml?idItem=" + contratoItem.getCodigoContratoOperacion();
         System.out.println("urlVerContrato: " + urlVerContrato);
         RequestContext.getCurrentInstance().execute("PF('visorVerContrato').show();");
         return null;
@@ -285,12 +285,12 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                     auditoriaServicio.create(auditoria);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro actualizado con éxito", null));
                     
-                    String urlPagina = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratos.xhtml?codigo=" + contratoOperacion.getCodigoConcesion().getCodigoArcom();
+                    String urlPagina = ConstantesEnum.URL_SERVIDOR_APP.getDescripcion() + "/migracion/web/contratos.xhtml?codigo=" + contratoOperacion.getCodigoConcesion().getCodigoArcom();
                     RequestContext.getCurrentInstance().execute("javascript:window.parent.location.href = '" + urlPagina + "'");
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro ya guardado con éxito con código " + contratoOperacion.getCodigoArcom(), null));
                     
-                    String urlPagina = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/contratos.xhtml?codigo=" + contratoOperacion.getCodigoConcesion().getCodigoArcom();
+                    String urlPagina = ConstantesEnum.URL_SERVIDOR_APP.getDescripcion() + "/migracion/web/contratos.xhtml?codigo=" + contratoOperacion.getCodigoConcesion().getCodigoArcom();
                     RequestContext.getCurrentInstance().execute("javascript:window.parent.location.href = '" + urlPagina + "'");
                 }
             }

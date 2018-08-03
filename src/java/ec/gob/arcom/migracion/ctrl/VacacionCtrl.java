@@ -1654,7 +1654,7 @@ public class VacacionCtrl {
     }
 
     public void imprimirSolicitudPDF(Licencia l) {
-        urlFormatoImprimir = ConstantesEnum.URL_PROD_REPORTES.getDescripcion();
+        urlFormatoImprimir = ConstantesEnum.URL_REPORTES.getDescripcion();
         //urlFormatoImprimir= "../..";
         if (l != null && l.getTipoLicencia().getValor().equals("GRUPO_1")) {
             urlFormatoImprimir = urlFormatoImprimir + "/birt/frameset?__report=report/vacaciones/solicitud-vacacion.rptdesign&codigo_licencia="
@@ -1678,7 +1678,7 @@ public class VacacionCtrl {
     }
     
     public void descargarReporte(Contrato contrato) {         
-        urlFormatoImprimir = ConstantesEnum.URL_BASE_DESARROLLO.getDescripcion();
+        urlFormatoImprimir = ConstantesEnum.URL_REPORTES.getDescripcion();
         //urlFormatoImprimir = ConstantesEnum.URL_PROD_REPORTES.getDescripcion();
         urlFormatoImprimir = urlFormatoImprimir + "/birt/frameset?__report=report/vacaciones/reporte-por-funcionario.rptdesign&codigoUsuario="
                 + contrato.getUsuario().getCodigoUsuario() + "&codigoContrato="+contrato.getCodigoContrato()+"&__format=pdf";

@@ -73,13 +73,14 @@ public enum ConstantesEnum {
     TABLA_AREA_MINERA("TBAREAMIN", "area_minera",-1L),
     TABLA_COORDENADA_AREA("TBCOORDAREA", "coordenada_area",-1L),
     TABLA_COORDENADA_COTA("TBCOORDCOTA", "coordenada_cota",-1L),
+        
     
-    //URL_BASE("", "http://181.211.37.237:8380", null);
-    URL_APP_LOCAL("", "http://localhost:8080", null),
-    URL_APP_PROD("", "http://172.16.30.246:8381", null), 
-    URL_BASE("", "http://181.211.37.233:8384", null), 
-    URL_PROD_REPORTES("", "http://www.controlminero.gob.ec:8080", null),   
-    URL_BASE_DESARROLLO("", "http://181.211.37.237:8380", null),
+    URL_SERVIDOR_APP("", "http://localhost:8080", null),     //URL LOCAL    
+    //URL_SERVIDOR_APP("", "http://10.10.6.5:8380", null), //URL DESARROLLO    
+    //URL_SERVIDOR_APP("", "http://172.16.30.246:8381", null), //URL PRODUCCION
+            
+    //URL_REPORTES("", "http://www.controlminero.gob.ec:8080", null),       //URL PRODUCCION
+    URL_REPORTES("", "http://181.211.37.237:8380", null), //URL DESARROLLO
     
     //PARA ENVIO DE CORREO ELECTRONICO
     IP_SERVIDOR_CORREO("", "10.10.6.6", null),

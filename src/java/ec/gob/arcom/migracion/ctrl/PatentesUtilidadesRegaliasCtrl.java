@@ -381,7 +381,7 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(us.getCodigoUsuario());
         RegistroPagoObligacionesDto registroPagoObligacionesItem = (RegistroPagoObligacionesDto) getExternalContext().getRequestMap().get("reg");
         if (!registroPagoObligacionesItem.getEstadoPago().toUpperCase().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getDescripcion())) {
-            setUrlReporte(ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+            setUrlReporte(ConstantesEnum.URL_REPORTES.getDescripcion()
                     + "/birt/frameset?__report=report/ComprobatesPago/Patentes-utilidades-regalias.rptdesign&codigo_registro="
                     + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                     + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf");
@@ -398,7 +398,7 @@ public class PatentesUtilidadesRegaliasCtrl extends BaseCtrl {
         UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(us.getCodigoUsuario());
         RegistroPagoObligacionesDto registroPagoObligacionesItem = (RegistroPagoObligacionesDto) getExternalContext().getRequestMap().get("reg");
         if (!registroPagoObligacionesItem.getEstadoPago().toUpperCase().equals(ConstantesEnum.ESTCOMP_REGISTRADO.getDescripcion())) {
-            setUrlReporte(ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+            setUrlReporte(ConstantesEnum.URL_REPORTES.getDescripcion()
                     + "/birt/frameset?__report=report/ComprobatesPago/Patentes-utilidades-regalias.rptdesign&codigo_registro="
                     + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                     + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&imp_usuario_responsable=1&__format=pdf");

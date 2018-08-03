@@ -276,7 +276,7 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     public String verCotitulares() {
         DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
         if(derechoMineroDtoItem.getTipoDerechoMinero().equals("C")){
-            urlCotitulares = ConstantesEnum.URL_APP_PROD.getDescripcion() + "/migracion/web/cotitularview.xhtml?idItem=" + derechoMineroDtoItem.getCodigo();
+            urlCotitulares = ConstantesEnum.URL_SERVIDOR_APP.getDescripcion() + "/migracion/web/cotitularview.xhtml?idItem=" + derechoMineroDtoItem.getCodigo();
             System.out.println("urlCotitulares: " + urlCotitulares);
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -287,7 +287,7 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     
     public String verListainformes() {
         DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
-        urlReporte = ConstantesEnum.URL_PROD_REPORTES.getDescripcion()
+        urlReporte = ConstantesEnum.URL_REPORTES.getDescripcion()
                 + "/birt/frameset?__report=report/informes/lista_informes.rptdesign&codigoArcom=" + derechoMineroDtoItem.getCodigo();
         System.out.println("urlReporte: " + urlReporte);
 
