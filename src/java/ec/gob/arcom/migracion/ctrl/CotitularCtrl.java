@@ -83,10 +83,7 @@ public class CotitularCtrl extends BaseCtrl {
     private String codigoArcomFiltro;
     private String numDocumentoFiltro;
 
-    private String numDocPersonaPopupFiltro;
-    
-    private String coordenadaX;
-    private String coordenadaY;
+    private String numDocPersonaPopupFiltro;   
     
     private List<CoordenadaCota> coordenadasPorContrato;
     
@@ -488,22 +485,6 @@ public class CotitularCtrl extends BaseCtrl {
 
     public void setNumDocPersonaPopupFiltro(String numDocPersonaPopupFiltro) {
         this.numDocPersonaPopupFiltro = numDocPersonaPopupFiltro;
-    }
-
-    public String getCoordenadaX() {
-        return coordenadaX;
-    }
-
-    public void setCoordenadaX(String coordenadaX) {
-        this.coordenadaX = coordenadaX;
-    }
-
-    public String getCoordenadaY() {
-        return coordenadaY;
-    }
-
-    public void setCoordenadaY(String coordenadaY) {
-        this.coordenadaY = coordenadaY;
     }
     
     public List<CoordenadaCota> getCoordenadasPorContrato() {

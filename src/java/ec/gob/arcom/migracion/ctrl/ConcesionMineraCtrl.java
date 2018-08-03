@@ -63,6 +63,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -146,9 +147,9 @@ public class ConcesionMineraCtrl extends BaseCtrl {
     private boolean perNatural;
     private String tipoPersona = "N";
 
-    //private List<SolicitudDetalle> coordenadasSolicitud;
-    private String coordenadaX;
-    private String coordenadaY;
+    private String textoCoordenadas;
+    private boolean coordenadasEditadas;
+    
     private boolean mostrarCoordenadas = false;
 
     private Long codigoMaquinaria;
@@ -896,67 +897,53 @@ public class ConcesionMineraCtrl extends BaseCtrl {
         this.coordenadasPorArea = coordenadasPorArea;
     }
 
-    public void guardarCoordenadas() {
-        Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
-        int orden = 0;
-        if (coordenadasPorArea.size() > 0) {
-            orden = coordenadasPorArea.size();
-        }
-        /*SolicitudDetalle sd = new SolicitudDetalle();
-        sd.setTipoDetalle("INFCOOR");
-        sd.setCoordenadaUtmEste(coordenadaX);
-        sd.setCoordenadaUtmNorte(coordenadaY);
-        sd.setNumeroCoordenada(BigInteger.valueOf(orden));
-        if (orden == 0) {
-            sd.setCoordenadaInicial(true);
-        } else {
-            sd.setCoordenadaInicial(false);
-        }
-        sd.setCodigoConcesion(concesionMinera.getCodigoConcesion().toString());
-        sd.setCodigoSolicitud(solicitud);
-        sd.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
-        sd.setFechaCreacion(new Date());
-        sd.setMigrada(true);
-        sd.setEstadoRegistro(true);*/
-        CoordenadaArea ca = new CoordenadaArea();
-        ca.setUtmEste(coordenadaX);
-        ca.setUtmNorte(coordenadaY);
-        ca.setNumeroCoordenada(BigInteger.valueOf(orden));
-        if (orden == 0) {
-            ca.setInicial(true);
-        } else {
-            ca.setInicial(false);
-        }
-        ca.setCodigoArea(areaMinera);
-        ca.setUsuarioCreacion(BigInteger.valueOf(-1));
-        ca.setFechaCreacion(new Date());
-        ca.setMigrada(true);
-        ca.setEstadoRegistro(true);
-        try {
-            solicitudDetalleServicio.guardarTodo(null, ca);
-            /*Auditoria auditoria = new Auditoria();
-            auditoria.setAccion("INSERT");
+    
+        public void guardarCoordenadas() {       
+        Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());  
+        List<CoordenadaArea> coordenada;
+        coordenada = new ArrayList<CoordenadaArea>();        
+        coordenada = coordenadaAreaServicio.findByCodigoArea(areaMinera.getCodigoAreaMinera());        
+        //SE ELIMINA LAS COORDENADAS ANTERIORES        
+        for (CoordenadaArea ca : coordenada) {            
+            coordenadaAreaServicio.delete(ca.getCodigoCoordenada());
+            Auditoria auditoria = new Auditoria();
+            auditoria.setAccion("DELETE");
             auditoria.setFecha(getCurrentTimeStamp());
             auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-            auditoria.setDetalleAnterior(sd.toString());
-            auditoriaServicio.create(auditoria);*/
-            Auditoria auditoria2 = new Auditoria();
-            auditoria2.setAccion("INSERT");
-            auditoria2.setFecha(getCurrentTimeStamp());
-            auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-            auditoria2.setDetalleAnterior(ca.toString());
-            auditoriaServicio.create(auditoria2);
-            FacesContext
-                    .getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                    "Registro guardado correctamente", null));
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "No se pudo guardar el registro", ex.getMessage()));
+            auditoria.setDetalleAnterior(ca.toString());   
+            auditoria.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_AREA.getDescripcion());
+            auditoriaServicio.create(auditoria);
         }
-        coordenadasPorArea = null;
+
+        //SE INSERTA LAS NUEVAS COORDENADAS
+        boolean coordenadaInicial = true;
+        for (CoordenadaArea ca : getCoordenadasPorArea()){
+            System.out.println("Orden las coordenadas: " + ca.getNumeroCoordenada());
+            ca.setInicial(coordenadaInicial);
+            coordenadaInicial = false;
+            ca.setCodigoArea(areaMinera);
+            ca.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
+            ca.setFechaCreacion(new Date());
+            ca.setEstadoRegistro(true);
+            try {
+                coordenadaAreaServicio.create(ca);
+                Auditoria auditoria2 = new Auditoria();
+                auditoria2.setAccion("INSERT");
+                auditoria2.setFecha(getCurrentTimeStamp());
+                auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                auditoria2.setDetalleAnterior(ca.toString());
+                auditoria2.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_AREA.getDescripcion());
+                auditoriaServicio.create(auditoria2);                
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "No se pudo guardar el registro", ex.getMessage()));
+            }            
+        }
+
+        textoCoordenadas = "";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro guardado correctamente", null));
         getCoordenadasPorArea();
-        //return "concesionesmineras";
-    }
+    }   
 
     public void editarCoordenadas() {
 
@@ -1003,21 +990,91 @@ public class ConcesionMineraCtrl extends BaseCtrl {
                     "No se pudo eliminar el registro", ex.getMessage()));
         }
     }
+    
+    public void cargarCoordenadas() {        
+        System.out.println("metodo cargarCoordenadas");
+        if (textoCoordenadas.isEmpty()) {
+            return;
+        }
 
-    public String getCoordenadaX() {
-        return coordenadaX;
+        String texto = textoCoordenadas;
+        String[] array_coordenadas = null;
+        String[] parts = texto.split("\n");
+        for (String coordenadas : parts) {
+            System.out.println(coordenadas);
+            array_coordenadas = coordenadas.split("-");
+
+            //Validaciones
+            System.out.println(array_coordenadas);
+            if (array_coordenadas == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Por Favor Ingrese Coordenadas Válidas", null));
+                return;
+            }
+
+            if (array_coordenadas.length != 3) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: debe Ingresar la coordenada con los datos: PP-X-Y ", null));
+                System.out.println("Error: debe Ingresar la coordenada con los datos: PP-X-Y ");
+                return;
+            }
+
+            if (array_coordenadas[0].contains(",") || array_coordenadas[1].contains(",")|| array_coordenadas[2].contains(",")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: Las coordenadas con decimales deben utilizar el signo (.)", null));
+                return;
+            }
+            
+            //SE VALIDA QUE SOLO ESTEN INGRESADOS NUMEROS
+            try{
+                double numeroCoordenada = Double.parseDouble(array_coordenadas[0]);
+                double coordenadaEste = Double.parseDouble(array_coordenadas[1]);
+                double coordenadaNorte = Double.parseDouble(array_coordenadas[2]);
+            }catch(Exception e){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Error: Las coordenadas solo deben tener numeros", null));
+                return;
+            }            
+        }
+
+        //getCoordenadasPorContrato().clear();    
+        getCoordenadasPorArea().clear();
+        List<CoordenadaArea> coordenada;
+        coordenada = new ArrayList<CoordenadaArea>();
+        for (String coordenadas : parts) {
+            array_coordenadas = coordenadas.split("-");
+            CoordenadaArea c = new CoordenadaArea();
+            c.setNumeroCoordenada(new BigInteger(array_coordenadas[0]));
+            c.setUtmEste(array_coordenadas[1]);
+            c.setUtmNorte(array_coordenadas[2]);              
+            coordenada.add(c);                                    
+        }
+        for(CoordenadaArea nuevaCoordenada : coordenada){
+            this.coordenadasPorArea.add(nuevaCoordenada);
+        }
+        textoCoordenadas = "";
+        coordenadasEditadas = true;
+    }  
+    
+    
+    public void editarTodasCoordenadas() {
+        textoCoordenadas = null;        
+        if (getCoordenadasPorArea() != null) {
+            for (CoordenadaArea coordenadaCota : getCoordenadasPorArea()) {
+                if (coordenadaCota != null) {
+                    if (textoCoordenadas == null) {
+                        textoCoordenadas = coordenadaCota.getNumeroCoordenada()+ "-" + coordenadaCota.getUtmEste() + "-" + coordenadaCota.getUtmNorte();
+                    } else {
+                        textoCoordenadas = textoCoordenadas + "\n" + coordenadaCota.getNumeroCoordenada()+ "-" + coordenadaCota.getUtmEste() + "-" + coordenadaCota.getUtmNorte();
+                    }
+                }
+            }
+            coordenadasPorArea.clear();
+        }
     }
-
-    public void setCoordenadaX(String coordenadaX) {
-        this.coordenadaX = coordenadaX;
-    }
-
-    public String getCoordenadaY() {
-        return coordenadaY;
-    }
-
-    public void setCoordenadaY(String coordenadaY) {
-        this.coordenadaY = coordenadaY;
+    
+    public void onRowEditTablaCoordenadas(RowEditEvent event){
+        coordenadasEditadas = true;
     }
 
     public boolean isMostrarCoordenadas() {
@@ -1580,6 +1637,13 @@ public class ConcesionMineraCtrl extends BaseCtrl {
     public void setTituloLista(String tituloLista) {
         this.tituloLista = tituloLista;
     }
-       
+
+    public String getTextoCoordenadas() {
+        return textoCoordenadas;
+    }
+
+    public void setTextoCoordenadas(String textoCoordenadas) {
+        this.textoCoordenadas = textoCoordenadas;
+    }
     
 }

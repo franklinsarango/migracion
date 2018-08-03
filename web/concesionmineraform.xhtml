@@ -427,16 +427,55 @@
                 <h:form id="form2">
                     <p:growl id="message2" showDetail="true" />
                     <div align="center">
-                        <h:panelGrid columns="1">
-                            <p:outputLabel value="Coordenada x:" />
-                            <p:inputText id="coorx" value="#{concesionMineraCtrl.coordenadaX}" 
-                                         required="true" requiredMessage="Coordenada X es requerida"/>
-                            <p:outputLabel value="Coordenada y:" />
-                            <p:inputText id="coory" value="#{concesionMineraCtrl.coordenadaY}" 
-                                         required="true" requiredMessage="Coordenada Y es requerida"/>
-                        </h:panelGrid>
-                        <h:outputLabel value="Por favor ingresar las coordenadas en sentido horario y en orden" />
-                        <p:spacer/>
+                        <p:panelGrid columns="1" styleClass="panel_grid_center" columnClasses="form-label-width, form-input">
+                            <br/>
+                            <p:inputTextarea maxlength="900000" id="idTxtCoordenada" 
+                                             value="#{concesionMineraCtrl.textoCoordenadas}"
+                                             cols="99" rows="10"
+                                             autoResize="false"/>
+                            <f:facet name="footer" >
+                                <div align="center">
+                                    <p:commandButton value="Cargar Coordenadas Coordenada" action="#{concesionMineraCtrl.cargarCoordenadas()}"
+                                                     update="message2 coordt idTxtCoordenada"/>
+                                    <p:spacer></p:spacer>
+                                    <p:commandButton value="Editar Coordenadas" action="#{concesionMineraCtrl.editarTodasCoordenadas()}"
+                                                     update="message2 coordt idTxtCoordenada"/>
+                                </div>
+                            </f:facet>
+
+                        </p:panelGrid>
+                        <br/>
+                        <p:dataTable id="coordt" var="coor" value="#{concesionMineraCtrl.coordenadasPorArea}" paginator="true"
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                     styleClass="listaCoordenadas"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="20,50,100" paginatorPosition="bottom" rowIndexVar="rowIndex" emptyMessage="No existen registros" rows="15"
+                                     editable="true">
+
+                            <p:ajax event="rowEdit" listener="#{concesionMineraCtrl.onRowEditTablaCoordenadas}" />
+                            <p:column headerText="Orden" style="width: 40px; text-align: center">
+                                <h:outputText value="#{coor.numeroCoordenada}"/>
+                            </p:column>
+
+                            <p:column headerText="UTM Este" style="text-align: center">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{coor.utmEste}"/></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{coor.utmEste}" required="true" requiredMessage="Valor de coordenada es requerido"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="UTM Norte" style="text-align: center"> 
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{coor.utmNorte}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{coor.utmNorte}" required="true" requiredMessage="Valor de coordenada es requerido"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Editar" style="width:35px; text-align: center">
+                                <p:rowEditor/>
+                            </p:column>
+
+                        </p:dataTable>
                         <h:panelGroup >
                             <h:panelGrid style="text-align:center" columns="2">
                                 <p:commandLink actionListener="#{concesionMineraCtrl.guardarCoordenadas}" title="Guardar" update="@form">
@@ -453,27 +492,7 @@
                                 </p:commandLink> -->
                             </h:panelGrid>
                         </h:panelGroup>
-                    </div>
-                    <p:dataTable id="tablaCoordenadas" var="crd" value="#{concesionMineraCtrl.coordenadasPorArea}" 
-                                 emptyMessage="No existen registros" scrollable="true">
-                        <p:column headerText="Orden">
-                            <h:outputText value="#{crd.numeroCoordenada}" />
-                        </p:column>
-                        <p:column headerText="Coordenada x">
-                            <h:outputText value="#{crd.utmEste}" />
-                        </p:column>
-                        <p:column headerText="Coordenada y">
-                            <h:outputText value="#{crd.utmNorte}" />
-                        </p:column>
-                        <p:column width="40">
-                            <p:commandLink action="#{concesionMineraCtrl.eliminarCoordenadas}" title="Eliminar" immediate="true" update="@form" 
-                                           rendered="#{crd.numeroCoordenada == concesionMineraCtrl.longitudCoordenadas - 1}">
-                                <h:panelGrid style="text-align:center">
-                                    <h:graphicImage value="resources/images/delete.png" title="Eliminar" style="width: 25px; height: 25px" />
-                                </h:panelGrid>
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
+                    </div>                  
                 </h:form>
             </p:dialog>
             <p:dialog header="Maquinarias" widgetVar="dlgMaq" modal="true" dynamic="true" resizable="true" draggable="false" width="951px" height="424px" >

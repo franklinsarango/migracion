@@ -92,9 +92,6 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
     private String numDocPersonaPopupFiltro;
     
-    private String coordenadaX;
-    private String coordenadaY;
-    
     private List<CoordenadaCota> coordenadasPorContrato;    
     
     private Boolean usuarioRegistrador;
@@ -530,22 +527,6 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         this.numDocPersonaPopupFiltro = numDocPersonaPopupFiltro;
     }
 
-    public String getCoordenadaX() {
-        return coordenadaX;
-    }
-
-    public void setCoordenadaX(String coordenadaX) {
-        this.coordenadaX = coordenadaX;
-    }
-
-    public String getCoordenadaY() {
-        return coordenadaY;
-    }
-
-    public void setCoordenadaY(String coordenadaY) {
-        this.coordenadaY = coordenadaY;
-    }
-    
     public void editarTodasCoordenadas() {
         textoCoordenadas = null;
         if (getCoordenadasPorContrato() != null) {
@@ -558,6 +539,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                     }
                 }
             }
+            coordenadasPorContrato.clear();
         }
     }
     
@@ -573,7 +555,8 @@ public class ContratoOperacionCtrl extends BaseCtrl {
             auditoria.setAccion("DELETE");
             auditoria.setFecha(getCurrentTimeStamp());
             auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-            auditoria.setDetalleAnterior(ca.toString());                        
+            auditoria.setDetalleAnterior(ca.toString());
+            auditoria.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_COTA.getDescripcion());
             auditoriaServicio.create(auditoria);
         }
 
@@ -594,6 +577,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
                 auditoria2.setFecha(getCurrentTimeStamp());
                 auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
                 auditoria2.setDetalleAnterior(ca.toString());
+                auditoria2.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_COTA.getDescripcion());
                 auditoriaServicio.create(auditoria2);                
             } catch (Exception ex) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,

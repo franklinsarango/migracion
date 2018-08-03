@@ -72,6 +72,7 @@ public enum ConstantesEnum {
     TABLA_CONCESION_MINERA("TBCONCESIONMIN", "concesion_minera",-1L),
     TABLA_AREA_MINERA("TBAREAMIN", "area_minera",-1L),
     TABLA_COORDENADA_AREA("TBCOORDAREA", "coordenada_area",-1L),
+    TABLA_COORDENADA_COTA("TBCOORDCOTA", "coordenada_cota",-1L),
     
     //URL_BASE("", "http://181.211.37.237:8380", null);
     URL_APP_LOCAL("", "http://localhost:8080", null),
