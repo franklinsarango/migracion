@@ -273,7 +273,7 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         jpqlNative += "order by contrato.fecha_creacion desc ";
         
         System.out.println("jpql: " + jpqlNative);
-        Query query = em.createNativeQuery(jpqlNative); 
+        Query query = em.createNativeQuery(jpqlNative);         
         query.setFirstResult(paramOffset).setMaxResults(paramLimit);
         List<Object[]> listaTmp = query.getResultList();
         List<ContratoOperacionDTO> listaFinal = new ArrayList<>();
@@ -295,6 +295,48 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         }     
         return listaFinal;
     }
+    
+    
+    
+    @Override
+    public List<ContratoOperacionDTO> getContratoOperacionCodigoArcomConcesion(String codigoArcom) {
+        String jpqlNative = "select * from (select co.codigo_contrato_operacion, cm.codigo_arcom, co.codigo_arcom as codigo_contrato, co.numero_documento, "
+                + "case when p.apellido is null then p.nombre else p.apellido || ' ' || p.nombre end as titular_contrato, "
+                + "(select l.nombre from catmin.localidad l where l.codigo_localidad = co.codigo_provincia) as provincia,\n"
+                + "(select l.nombre from catmin.localidad l where l.codigo_localidad = co.codigo_canton) as canton,\n"
+                + "(select l.nombre from catmin.localidad l where l.codigo_localidad = co.codigo_parroquia) as parroquia, cat.nombre, co.fecha_inscribe, r.prefijo_codigo, co.fecha_creacion \n"
+                + "from catmin.contrato_operacion co, catmin.concesion_minera cm, catmin.personas p, catmin.catalogo_detalle cat, catmin.regional r \n"
+                + "where co.codigo_concesion = cm.codigo_concesion and p.numero_documento = co.numero_documento and cat.codigo_catalogo_detalle = co.estado_contrato and r.codigo_regional = cm.codigo_regional and co.codigo_arcom like '%CO%' \n"
+                + ") as contrato where 1=1 \n";
+        if (codigoArcom != null && !codigoArcom.isEmpty()) {
+            jpqlNative += "and contrato.codigo_arcom = '" + codigoArcom + "'  \n";
+        }
+
+        jpqlNative += "order by contrato.fecha_creacion desc ";
+        
+        System.out.println("jpql: " + jpqlNative);
+        Query query = em.createNativeQuery(jpqlNative);         
+        List<Object[]> listaTmp = query.getResultList();
+        List<ContratoOperacionDTO> listaFinal = new ArrayList<>();
+        
+        for (Object[] fila : listaTmp) {
+            ContratoOperacionDTO co = new ContratoOperacionDTO();
+            co.setCodigoContratoOperacion((Long)fila[0]);    
+            co.setCodigoArcom((String)fila[1]);   
+            co.setCodigoContrato((String)fila[2]);
+            co.setNumeroDocumento((String)fila[3]);
+            co.setTitularContrato((String)fila[4]);            
+            co.setProvinica((String)fila[5]);
+            co.setCanton((String)fila[6]);
+            co.setParroquia((String)fila[7]);
+            co.setEstado((String)fila[8]);
+            co.setFecha_inscripcion((Date)fila[9]);
+            co.setCodigo_regional((String)fila[10]);
+            listaFinal.add(co);             
+        }     
+        return listaFinal;
+    }
+    
     
     @Override
     public List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera) {

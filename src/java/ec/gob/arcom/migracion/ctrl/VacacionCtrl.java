@@ -813,7 +813,7 @@ public class VacacionCtrl {
             showInstitucionalPanel = false;
             showButtonPanel = true;            
             Calendar c = Calendar.getInstance();
-            c.add(Calendar.DAY_OF_MONTH, -1);
+            c.add(Calendar.DAY_OF_MONTH, -3);
             fechaMinima = c.getTime();
             licencia.setFechaHoraSalida(null);
             licencia.setFechaHoraRetorno(null);

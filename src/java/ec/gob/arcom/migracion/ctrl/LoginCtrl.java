@@ -71,6 +71,8 @@ public class LoginCtrl extends BaseCtrl {
     private boolean usuarioEnami;
     private boolean subSecretariaNacionalDesarrollo;
     private boolean usuarioExterno;
+    private boolean recepcionista;
+    private boolean recepcionistaSubsecretariaGeneral;
     
     //PERMISOS
     private boolean editarComprobante;  //UERR
@@ -249,6 +251,16 @@ public class LoginCtrl extends BaseCtrl {
                         } else {
                             this.coordinadorRegional = false;
                         }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_RECEPCIONISTA.getNemonico())){
+                            this.recepcionista = true;
+                        } else {
+                            this.recepcionista = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_RECEPCIONISTA_SUBSECRETARIA_GENERAL.getNemonico())){
+                            this.recepcionistaSubsecretariaGeneral = true;
+                        } else {
+                            this.recepcionistaSubsecretariaGeneral = false;
+                        }        
                         if(usRol.getRol().getNemonico().equals(RolEnum.ROL_DIRECTOR_EJECUTIVO.getNemonico())){
                             this.directorEjecutivo = true;
                         } else {
@@ -555,4 +567,20 @@ public class LoginCtrl extends BaseCtrl {
         this.usuarioExterno = usuarioExterno;
     }
 
+    public boolean isRecepcionista() {
+        return recepcionista;
+    }
+
+    public void setRecepcionista(boolean recepcionista) {
+        this.recepcionista = recepcionista;
+    }
+
+    public boolean isRecepcionistaSubsecretariaGeneral() {
+        return recepcionistaSubsecretariaGeneral;
+    }
+
+    public void setRecepcionistaSubsecretariaGeneral(boolean recepcionistaSubsecretariaGeneral) {
+        this.recepcionistaSubsecretariaGeneral = recepcionistaSubsecretariaGeneral;
+    }
+    
 }

@@ -843,11 +843,11 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             sql1 += "union\n";
         }
         if (tipoSolicitud == null || tipoSolicitud.equals(ConstantesEnum.TIPO_CONTRATOS_OPERACION_REPORTE.getNemonico())) {
-            sql1 += "select concesiones.codigo_arcom, concesiones.nombre_concesion,\n"
+            sql1 += "select distinct concesiones.codigo_arcom, concesiones.nombre_concesion,\n"
                     + "concesiones.nombre_regional, concesiones.provincia, concesiones.fase,\n"
                     + "concesiones.estado, concesiones.nombre_tipo_mineria, concesiones.beneficiario_principal,\n"
                     + "concesiones.tipo_persona, concesiones.fecha_inscribe, 'C' as tipo_form, concesiones.codigo_concesion, \n"
-                    + "concesiones.numero_documento \n"
+                    + "concesiones.documento_concesionario_principal \n"
                     + "from\n"
                     + "(\n"
                     + "select cm.codigo_arcom as codigo_arcom, \n"
@@ -870,7 +870,7 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
                     + "est.codigo_catalogo_detalle as codigo_estado,\n"
                     + "(select r.nombre_regional from catmin.regional r, catmin.localidad_regional l where cm.codigo_provincia = l.codigo_localidad and r.codigo_regional = l.codigo_regional) as nombre_regional, \n"
                     + "cm.codigo_tipo_mineria, \n"
-                    + "co.numero_documento \n"
+                    + "cm.documento_concesionario_principal \n"
                     + "from catmin.contrato_operacion co,catmin.concesion_minera cm , catmin.localidad prov, catmin.catalogo_detalle est, catmin.tipo_mineria tm, catmin.personas p\n"
                     + "where prov.codigo_localidad = cm.codigo_provincia "
                     + "and co.codigo_concesion = cm.codigo_concesion \n"
@@ -879,19 +879,27 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
                     + "and (co.codigo_arcom like  '%CO%' or co.codigo_arcom like  '%CD%') \n"
                     + "and est.codigo_catalogo_detalle = cm.estado_concesion\n"
                     + "and cm.codigo_tipo_mineria = tm.codigo_tipo_mineria\n"
-                    + "and co.numero_documento = p.numero_documento\n"                    
+                    + "and cm.documento_concesionario_principal = p.numero_documento\n"                    
                     + "and cm.estado_registro = true\n"
-                    + ") as concesiones where 1=1\n";   
-            if (codigo != null && !codigo.isEmpty()) {
-                sql1 += "and concesiones.codigo_arcom = '" + codigo + "'\n";
-            }            
+                    + ") as concesiones where 1=1\n";            
             if (beneficiarioPrincipal != null && !beneficiarioPrincipal.isEmpty()) {
-                sql1 += "and concesiones.beneficiario_principal ilike '%" + beneficiarioPrincipal + "%'\n";
+                sql1 += "and concesiones.codigo_concesion in (select co.codigo_concesion \n" +
+            "	from catmin.contrato_operacion co, catmin.personas p \n" +
+            "	where p.numero_documento = co.numero_documento \n" +
+            "	and co.estado_contrato = 243 \n" +
+            "	and co.estado_registro = true \n" +
+            "	and (co.codigo_arcom like  '%CO%' or co.codigo_arcom like  '%CD%') \n" +
+            "	and p.apellido || ' ' || p.nombre ilike '%" + beneficiarioPrincipal +"%') \n";
             }  
             if (numDocumento != null && !numDocumento.isEmpty()) {
-                sql1 += "and concesiones.numero_documento = '" + numDocumento + "'\n";
+                sql1 += "and concesiones.codigo_concesion in (\n" +
+            "   select co.codigo_concesion \n" +
+            "   from catmin.contrato_operacion co \n" +
+            "	where co.estado_contrato = 243 \n" +
+            "	and co.estado_registro = true \n" +
+            "	and (co.codigo_arcom like  '%CO%' or co.codigo_arcom like  '%CD%') \n" +
+            "	and co.numero_documento = '"+numDocumento+"') \n";
             }
-
         }
         
         System.out.println("sql derechos mineros nacional: " + sql1);

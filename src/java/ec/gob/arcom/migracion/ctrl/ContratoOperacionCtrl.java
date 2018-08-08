@@ -543,51 +543,54 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         }
     }
     
-    public void guardarCoordenadas() {       
-        Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());  
-        List<CoordenadaCota> coordenada;
-        coordenada = new ArrayList<CoordenadaCota>();
-        coordenada = coordenadaCotaServicio.findByCodigoContrato(contratoOperacion.getCodigoContratoOperacion());        
-        //SE ELIMINA LAS COORDENADAS ANTERIORES        
-        for (CoordenadaCota ca : coordenada) {            
-            coordenadaCotaServicio.delete(ca.getCodigoCoordenadaCota());
-            Auditoria auditoria = new Auditoria();
-            auditoria.setAccion("DELETE");
-            auditoria.setFecha(getCurrentTimeStamp());
-            auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-            auditoria.setDetalleAnterior(ca.toString());
-            auditoria.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_COTA.getDescripcion());
-            auditoriaServicio.create(auditoria);
-        }
+    public void guardarCoordenadas() {      
+        if (!coordenadasPorContrato.isEmpty()){
+            Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());  
+            List<CoordenadaCota> coordenada;
+            coordenada = new ArrayList<CoordenadaCota>();
+            coordenada = coordenadaCotaServicio.findByCodigoContrato(contratoOperacion.getCodigoContratoOperacion());        
+            //SE ELIMINA LAS COORDENADAS ANTERIORES        
+            for (CoordenadaCota ca : coordenada) {            
+                coordenadaCotaServicio.delete(ca.getCodigoCoordenadaCota());
+                Auditoria auditoria = new Auditoria();
+                auditoria.setAccion("DELETE");
+                auditoria.setFecha(getCurrentTimeStamp());
+                auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                auditoria.setDetalleAnterior(ca.toString());
+                auditoria.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_COTA.getDescripcion());
+                auditoriaServicio.create(auditoria);
+            }
 
-        //SE INSERTA LAS NUEVAS COORDENADAS
-        boolean coordenadaInicial = true;
-        for (CoordenadaCota ca : getCoordenadasPorContrato()){
-            System.out.println("Orden las coordenadas: " + ca.getOrden());
-            ca.setInicial(coordenadaInicial);
-            coordenadaInicial = false;
-            ca.setCodigoContratoOperacion(contratoOperacion);
-            ca.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
-            ca.setFechaCreacion(new Date());
-            ca.setEstadoRegistro(true);
-            try {
-                coordenadaCotaServicio.create(ca);
-                Auditoria auditoria2 = new Auditoria();
-                auditoria2.setAccion("INSERT");
-                auditoria2.setFecha(getCurrentTimeStamp());
-                auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-                auditoria2.setDetalleAnterior(ca.toString());
-                auditoria2.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_COTA.getDescripcion());
-                auditoriaServicio.create(auditoria2);                
-            } catch (Exception ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "No se pudo guardar el registro", ex.getMessage()));
-            }            
-        }
-
-        textoCoordenadas = "";
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro guardado correctamente", null));
-        getCoordenadasPorContrato();
+            //SE INSERTA LAS NUEVAS COORDENADAS
+            boolean coordenadaInicial = true;
+            for (CoordenadaCota ca : getCoordenadasPorContrato()){
+                System.out.println("Orden las coordenadas: " + ca.getOrden());
+                ca.setInicial(coordenadaInicial);
+                coordenadaInicial = false;
+                ca.setCodigoContratoOperacion(contratoOperacion);
+                ca.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
+                ca.setFechaCreacion(new Date());
+                ca.setEstadoRegistro(true);
+                try {
+                    coordenadaCotaServicio.create(ca);
+                    Auditoria auditoria2 = new Auditoria();
+                    auditoria2.setAccion("INSERT");
+                    auditoria2.setFecha(getCurrentTimeStamp());
+                    auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                    auditoria2.setDetalleAnterior(ca.toString());
+                    auditoria2.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_COTA.getDescripcion());
+                    auditoriaServicio.create(auditoria2);                
+                } catch (Exception ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "No se pudo guardar el registro", ex.getMessage()));
+                }            
+            }
+            textoCoordenadas = "";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro guardado correctamente", null));
+            getCoordenadasPorContrato();
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe coordenadas cargadas en la matriz", null));
+        }        
     }
     
     public void eliminarCoordenadas() {

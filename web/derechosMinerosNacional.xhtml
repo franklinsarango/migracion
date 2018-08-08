@@ -167,12 +167,44 @@
                           widgetVar="visorContratoOP" width="95%" height="600px"  
                           showEffect="fade" draggable="false" 
                           resizable="false" modal="true" >
-                    <iframe frameborder="0"
-                            src="#{derechosMinerosCtrl.urlCotitulares}"
-                            name="frameTareas" id="frameTareas" scrolling="auto" 
-                            width="100%" height="98%" 
-                            marginheight="0" marginwidth="0">
-                    </iframe>
+                    <p:dataTable var="reg" id="dtListaDerechosMineros"
+                                 value="#{derechosMinerosCtrl.listaContratosOperacion}" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">                       
+                    
+                    <p:column headerText="CODIGO CONCESION" style="text-align: right">
+                        <h:outputText styleClass="texto_tabla_datos_codigo" 
+                                      value="#{reg.codigoArcom}" />
+                    </p:column>
+                        
+                    <p:column headerText="CODIGO CONTRATO" style="text-align: right">
+                        <h:outputText styleClass="texto_tabla_datos_codigo"
+                                      value="#{reg.codigoContrato}"/>
+                    </p:column>
+                        
+                    <p:column headerText="NUM. DOCUMENTO TITULAR MINERO" style="text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" 
+                                       value="#{reg.numeroDocumento}" />
+                    </p:column>
+                        
+                    <p:column headerText="NOMBRE TITULAR CONTRATO" style="text-align: right">
+                        <h:outputText  styleClass="texto_tabla_datos_codigo" 
+                                       value="#{reg.titularContrato}" />
+                    </p:column>                    
+                    
+                    <p:column headerText="ESTADO"  
+                              style="text-align: right">
+                        <h:outputText value="#{reg.estado}"/>
+                    </p:column>
+                    
+                    <p:column headerText="FECHA INSCRIPCIÓN" 
+                              style="text-align: right">
+                        <h:outputText value="#{reg.fecha_inscripcion}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:outputText>
+                    </p:column>                        
+                </p:dataTable>
                 </p:dialog>
                 
                 <p:dialog id="dlgCotitulares" header="Cotitulares" 

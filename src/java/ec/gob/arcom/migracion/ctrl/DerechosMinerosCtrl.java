@@ -10,6 +10,7 @@ import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
 import ec.gob.arcom.migracion.dao.ConcesionMineraDao;
 import ec.gob.arcom.migracion.dao.SadminDataDao;
 import ec.gob.arcom.migracion.dto.ConcesionMineraDto;
+import ec.gob.arcom.migracion.dto.ContratoOperacionDTO;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
 import ec.gob.arcom.migracion.modelo.AreaMinera;
 import ec.gob.arcom.migracion.modelo.CatalogoDetalle;
@@ -29,6 +30,7 @@ import ec.gob.arcom.migracion.servicio.PersonaNaturalServicio;
 import ec.gob.arcom.migracion.servicio.PlantaBeneficioServicio;
 import ec.gob.arcom.migracion.servicio.RegimenServicio;
 import ec.gob.arcom.migracion.servicio.AreaMineraServicio;
+import ec.gob.arcom.migracion.servicio.ContratoOperacionServicio;
 import ec.gob.arcom.migracion.servicio.CoordenadaAreaServicio;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -50,6 +52,8 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class DerechosMinerosCtrl extends BaseCtrl {
 
+    @EJB
+    private ContratoOperacionServicio contratoOperacionServicio;
     @EJB
     private ConcesionMineraServicio concesionMineraServicio;
     @EJB
@@ -97,6 +101,7 @@ public class DerechosMinerosCtrl extends BaseCtrl {
     private LicenciaComercializacion licenciaComercializacion;
     private PlantaBeneficio plantaBeneficio;
     private List<CoordenadaArea> coordenadasPorArea;
+    private List<ContratoOperacionDTO> listaContratosOperacion;
 
     public void buscar() {
         mostrarLista = true;
@@ -192,6 +197,12 @@ public class DerechosMinerosCtrl extends BaseCtrl {
         this.mostrarLista = mostrarLista;
     }
 
+    public String verContratoOP(){
+        DerechoMineroDto derechoMineroDtoItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
+        listaContratosOperacion = contratoOperacionServicio.getContratoOperacionCodigoArcomConcesion(derechoMineroDtoItem.getCodigo()); 
+        return null;
+    }
+    
     public List<DerechoMineroDto> getListaRegistros() {
         if (listaRegistros == null) {
             System.out.println(codigo + " " + nombreDerechoMinero + " " + codigoRegional
@@ -526,4 +537,13 @@ public class DerechosMinerosCtrl extends BaseCtrl {
         this.urlReporte = urlReporte;
     }
 
+    public List<ContratoOperacionDTO> getListaContratosOperacion() {
+        return listaContratosOperacion;
+    }
+
+    public void setListaContratosOperacion(List<ContratoOperacionDTO> listaContratosOperacion) {
+        this.listaContratosOperacion = listaContratosOperacion;
+    }
+
+    
 }
