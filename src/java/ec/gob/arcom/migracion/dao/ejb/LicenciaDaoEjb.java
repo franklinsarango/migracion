@@ -274,7 +274,7 @@ public class LicenciaDaoEjb extends GenericDaoEjbEl<Licencia, Long> implements L
         sql1 += "select codigo_licencia,\n" +
                 "numero_solicitud,\n" +
                 "upper(u.nombre || ' ' || u.apellido) as funcionario,\n" +
-                "(select d.nombre from arcom.departamento d, arcom.contrato c where c.estado_registro=true and d.codigo_departamento=c.codigo_departamento and c.codigo_usuario=lic.codigo_usuario) as \"unidad_administrativa\",\n" +
+                "d.nombre as unidad_administrativa,\n" +
                 "(select cat.nombre from catmin.catalogo_detalle cat where cat.codigo_catalogo_detalle=lic.codigo_formulario) as \"tipo_formulario\",\n" +
                 "(select cat.nombre from catmin.catalogo_detalle cat where cat.codigo_catalogo_detalle=lic.codigo_tipo_licencia) as \"motivo\",\n" +
                 "cat.nombre as \"estado\",\n" +

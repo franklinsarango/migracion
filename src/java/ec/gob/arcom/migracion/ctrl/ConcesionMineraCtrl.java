@@ -898,51 +898,55 @@ public class ConcesionMineraCtrl extends BaseCtrl {
     }
 
     
-        public void guardarCoordenadas() {       
-        Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());  
-        List<CoordenadaArea> coordenada;
-        coordenada = new ArrayList<CoordenadaArea>();        
-        coordenada = coordenadaAreaServicio.findByCodigoArea(areaMinera.getCodigoAreaMinera());        
-        //SE ELIMINA LAS COORDENADAS ANTERIORES        
-        for (CoordenadaArea ca : coordenada) {            
-            coordenadaAreaServicio.delete(ca.getCodigoCoordenada());
-            Auditoria auditoria = new Auditoria();
-            auditoria.setAccion("DELETE");
-            auditoria.setFecha(getCurrentTimeStamp());
-            auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-            auditoria.setDetalleAnterior(ca.toString());   
-            auditoria.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_AREA.getDescripcion());
-            auditoriaServicio.create(auditoria);
-        }
+        public void guardarCoordenadas() { 
+        if (!coordenadasPorArea.isEmpty()){
+            Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());  
+            List<CoordenadaArea> coordenada;
+            coordenada = new ArrayList<CoordenadaArea>();        
+            coordenada = coordenadaAreaServicio.findByCodigoArea(areaMinera.getCodigoAreaMinera());        
+            //SE ELIMINA LAS COORDENADAS ANTERIORES        
+            for (CoordenadaArea ca : coordenada) {            
+                coordenadaAreaServicio.delete(ca.getCodigoCoordenada());
+                Auditoria auditoria = new Auditoria();
+                auditoria.setAccion("DELETE");
+                auditoria.setFecha(getCurrentTimeStamp());
+                auditoria.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                auditoria.setDetalleAnterior(ca.toString());   
+                auditoria.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_AREA.getDescripcion());
+                auditoriaServicio.create(auditoria);
+            }
 
-        //SE INSERTA LAS NUEVAS COORDENADAS
-        boolean coordenadaInicial = true;
-        for (CoordenadaArea ca : getCoordenadasPorArea()){
-            System.out.println("Orden las coordenadas: " + ca.getNumeroCoordenada());
-            ca.setInicial(coordenadaInicial);
-            coordenadaInicial = false;
-            ca.setCodigoArea(areaMinera);
-            ca.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
-            ca.setFechaCreacion(new Date());
-            ca.setEstadoRegistro(true);
-            try {
-                coordenadaAreaServicio.create(ca);
-                Auditoria auditoria2 = new Auditoria();
-                auditoria2.setAccion("INSERT");
-                auditoria2.setFecha(getCurrentTimeStamp());
-                auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
-                auditoria2.setDetalleAnterior(ca.toString());
-                auditoria2.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_AREA.getDescripcion());
-                auditoriaServicio.create(auditoria2);                
-            } catch (Exception ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "No se pudo guardar el registro", ex.getMessage()));
-            }            
-        }
+            //SE INSERTA LAS NUEVAS COORDENADAS
+            boolean coordenadaInicial = true;
+            for (CoordenadaArea ca : getCoordenadasPorArea()){
+                System.out.println("Orden las coordenadas: " + ca.getNumeroCoordenada());
+                ca.setInicial(coordenadaInicial);
+                coordenadaInicial = false;
+                ca.setCodigoArea(areaMinera);
+                ca.setUsuarioCreacion(BigInteger.valueOf(us.getCodigoUsuario()));
+                ca.setFechaCreacion(new Date());
+                ca.setEstadoRegistro(true);
+                try {
+                    coordenadaAreaServicio.create(ca);
+                    Auditoria auditoria2 = new Auditoria();
+                    auditoria2.setAccion("INSERT");
+                    auditoria2.setFecha(getCurrentTimeStamp());
+                    auditoria2.setUsuario(BigInteger.valueOf(us.getCodigoUsuario()));
+                    auditoria2.setDetalleAnterior(ca.toString());
+                    auditoria2.setNombreTabla(ConstantesEnum.TABLA_COORDENADA_AREA.getDescripcion());
+                    auditoriaServicio.create(auditoria2);                
+                } catch (Exception ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "No se pudo guardar el registro", ex.getMessage()));
+                }            
+            }
 
-        textoCoordenadas = "";
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro guardado correctamente", null));
-        getCoordenadasPorArea();
+            textoCoordenadas = "";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro guardado correctamente", null));
+            getCoordenadasPorArea();
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe coordenadas cargadas en la matriz", null));
+        }
     }   
 
     public void editarCoordenadas() {

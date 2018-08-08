@@ -126,20 +126,20 @@ public class LoginCtrl extends BaseCtrl {
                 return null;
             } else {
                 result = this.obtenerUsuario(userName.trim(), userPassword);            
-            if (result) {
-                HttpSession session = FacesUtil.getSession();
-                session.setAttribute("codigoUsuario", codigoUsuario);
-                session.setAttribute("username", userName);
-                session.setAttribute("logged", logged);
-                session.setAttribute("admin", admin);
-                session.setAttribute("regional", regional);
-                session.setAttribute("nombreUsuario", nombreUsuario);
-                session.setAttribute("rolUsuario", rolUsuario);                
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", nombreUsuario));
-                return "index.xhtml?faces-redirect=true";
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "¡ERROR!", "Usuario o clave incorrectos"));
+                if (result) {
+                    HttpSession session = FacesUtil.getSession();
+                    session.setAttribute("codigoUsuario", codigoUsuario);
+                    session.setAttribute("username", userName);
+                    session.setAttribute("logged", logged);
+                    session.setAttribute("admin", admin);
+                    session.setAttribute("regional", regional);
+                    session.setAttribute("nombreUsuario", nombreUsuario);
+                    session.setAttribute("rolUsuario", rolUsuario);                
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", nombreUsuario));
+                    return "index.xhtml?faces-redirect=true";
+                }
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "¡ERROR!", "Usuario o clave incorrectos"));
             }                       
         } catch (LDAPException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
