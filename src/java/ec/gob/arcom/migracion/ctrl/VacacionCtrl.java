@@ -1458,7 +1458,7 @@ public class VacacionCtrl {
         List<Licencia> solicitudesVigentes = licenciaServicio.listarSolicitudesExcluyendoEstado(login.getCodigoUsuario(), estadosExcluir);
 
         for (Licencia l : solicitudesVigentes) {
-            if ((licencia.getFechaHoraSalida().getTime() >= l.getFechaHoraSalida().getTime() && licencia.getFechaHoraSalida().getTime() <= l.getFechaHoraRetorno().getTime())
+                if ((licencia.getFechaHoraSalida().getTime() >= l.getFechaHoraSalida().getTime() && licencia.getFechaHoraSalida().getTime() <= l.getFechaHoraRetorno().getTime())
                     || (licencia.getFechaHoraRetorno().getTime() >= l.getFechaHoraSalida().getTime() && licencia.getFechaHoraRetorno().getTime() <= l.getFechaHoraRetorno().getTime())) {
                 return true;
             }
@@ -1822,8 +1822,7 @@ public class VacacionCtrl {
     
     public void controlDecremento(){
         accionDecremento = true;
-        saveIngresoLicenciaAction();
-        //RequestContext.getCurrentInstance().execute("PF('listaLicenciasfrmwg').show();");        
+        saveIngresoLicenciaAction();        
     }
     
     public boolean validarFechasSubsanacion(){
@@ -1846,6 +1845,7 @@ public class VacacionCtrl {
     }
     
     public void saveIngresoLicenciaAction() {
+        boolean error =false;        
         Calendar c = Calendar.getInstance();
         c.setTime(licencia.getFechaHoraSalida());
         if (c.get(Calendar.HOUR_OF_DAY) == 0) {
@@ -1872,24 +1872,26 @@ public class VacacionCtrl {
                 FacesUtil.showErrorMessage("Error", "Ya existe una solicitud dentro de este rango de fechas");
   //              return null;
             }
-        } else {
-            Long dias = (fechaF - fechaI) / (1000 * 60 * 60 * 24);
-            BigDecimal days = new BigDecimal(dias);
-            if (days.compareTo(licencia.getDiasDisponibles()) == 1) {
-                licencia.setFechaHoraRetorno(null);
-                FacesUtil.showErrorMessage("Error", "Los días no pueden exceder del total disponible");
-    //            return null;
-            } else if (days.compareTo(new BigDecimal(8)) == 1) {
-                licencia.setFechaHoraRetorno(null);
-                FacesUtil.showErrorMessage("Error", "Los días no pueden exceder de 10 para permiso");
-      //          return null;
-            }
+       } else if ((!licencia.getTipoLicencia().getNemonico().equals("MOTPERINS"))){
+            if (((!licencia.getTipoLicencia().getNemonico().equals("MOTPERSINCV")))){
+               Long dias = (fechaF - fechaI) / (1000 * 60 * 60 * 24);
+                BigDecimal days = new BigDecimal(dias);
+                if (days.compareTo(licencia.getDiasDisponibles()) == 1) {                    
+                    licencia.setFechaHoraRetorno(null);
+                    FacesUtil.showErrorMessage("Error", "Los días no pueden exceder del total disponible");
+                    error = true;
+                } else if (days.compareTo(new BigDecimal(8)) == 1) {
+                    licencia.setFechaHoraRetorno(null);
+                    FacesUtil.showErrorMessage("Error", "Los días no pueden exceder de 10 para permiso");
+                    error = true;
+                }
+            }            
         }
-
-        if (licencia.getTipoLicencia().getNemonico().equals("MOTPERVAC")) {            
+        
+        if (error == false && licencia.getTipoLicencia().getNemonico().equals("MOTPERVAC")) {            
             if (accionDecremento){
                 crearLicenciaFuncionario();
-                Usuario usrlogged = usuarioServicio.findByPk(login.getCodigoUsuario());
+                Usuario usrlogged = usuarioServicio.findByPk(login.getCodigoUsuario());               
                 GestionVacacion gvOld = gestionVacacionServicio.findByUser(licencia.getUsuario().getCodigoUsuario());
                 GestionVacacion gvAnterior = new GestionVacacion(gvOld);
                 GestionVacacion gv = new GestionVacacion(gvOld);
@@ -1967,9 +1969,16 @@ public class VacacionCtrl {
                     nuevoIngresoLicenciaFuncionario("Aviso", "Solicitud creada correctamente");
                 }
         } else {
-            crearLicenciaFuncionario();
-        }
-        
+            licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTINSC").get(0));
+            licencia.setEstadoRegistro(true);
+            licencia.setFechaCreacion(Calendar.getInstance().getTime());
+            licencia.setUsuarioCreacion(usuarioServicio.findByPk(login.getCodigoUsuario()));
+            licencia.setCodigo_contrato(contrato);
+            licenciaServicio.create(licencia);
+            Auditoria a = new Auditoria(Auditoria.INSERT, licencia, new Licencia(), login.getCodigoUsuario());
+            auditoriaServicio.create(a);            
+            nuevoIngresoLicenciaFuncionario("Aviso", "Solicitud enviada correctamente");
+        }        
     }
     
     public void crearLicenciaFuncionario(){
@@ -1980,7 +1989,7 @@ public class VacacionCtrl {
         licencia.setCodigo_contrato(contrato);
         licenciaServicio.create(licencia);
         Auditoria a = new Auditoria(Auditoria.INSERT, licencia, new Licencia(), login.getCodigoUsuario());
-        auditoriaServicio.create(a);
+        auditoriaServicio.create(a);        
     }
 
     public void nuevoIngresoLicenciaFuncionario(String msg, String detalle){

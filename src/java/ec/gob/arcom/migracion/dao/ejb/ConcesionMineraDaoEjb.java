@@ -881,7 +881,10 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
                     + "and cm.codigo_tipo_mineria = tm.codigo_tipo_mineria\n"
                     + "and cm.documento_concesionario_principal = p.numero_documento\n"                    
                     + "and cm.estado_registro = true\n"
-                    + ") as concesiones where 1=1\n";            
+                    + ") as concesiones where 1=1\n";             
+            if (codigo != null && !codigo.isEmpty()) {
+                sql1 += "and concesiones.codigo_arcom = '" + codigo + "'\n";
+            }            
             if (beneficiarioPrincipal != null && !beneficiarioPrincipal.isEmpty()) {
                 sql1 += "and concesiones.codigo_concesion in (select co.codigo_concesion \n" +
             "	from catmin.contrato_operacion co, catmin.personas p \n" +
