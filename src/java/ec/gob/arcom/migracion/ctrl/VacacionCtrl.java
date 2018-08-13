@@ -51,6 +51,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -807,13 +808,22 @@ public class VacacionCtrl {
 
     public void showFormPanel() {
         motivoLicencia = licencia.getTipoLicencia().getNombre();
+        Calendar c = Calendar.getInstance();
+        int diasPorRestar = 0;
+        for (int i = 0; i < 4; ++i) {                      
+            c.setTime(new Date());
+            c.add(Calendar.DAY_OF_MONTH, -i);
+            System.out.println("dias: " + c.getTime());
+            diasPorRestar = diasPorRestar + getDayOfTheWeek(c.getTime());               
+            System.out.println("dias para restar: " + diasPorRestar);                
+        }
         if (licencia.getTipoLicencia().getValor().equals("GRUPO_1")) {
             showVacacionPanel = true;
             showCalamidadPanel = false;
             showInstitucionalPanel = false;
             showButtonPanel = true;            
-            Calendar c = Calendar.getInstance();
-            c.add(Calendar.DAY_OF_MONTH, -3);
+            
+            c.add(Calendar.DAY_OF_MONTH, -diasPorRestar);
             fechaMinima = c.getTime();
             licencia.setFechaHoraSalida(null);
             licencia.setFechaHoraRetorno(null);
@@ -824,23 +834,35 @@ public class VacacionCtrl {
             showCalamidadPanel = true;
             showInstitucionalPanel = false;
             showButtonPanel = true;
-            Calendar c = Calendar.getInstance();
+//            Calendar c = Calendar.getInstance();
             if (licencia.getTipoLicencia().getNemonico().equals("MOTPERENF") || licencia.getTipoLicencia().getNemonico().equals("MOTPERCAL")) {
                 c.add(Calendar.DAY_OF_MONTH, -15);
             }            
-            c.add(Calendar.DAY_OF_MONTH, -3);                        
+            c.add(Calendar.DAY_OF_MONTH, -diasPorRestar);                        
             fechaMinima = c.getTime();
         } else {
             showVacacionPanel = false;
             showCalamidadPanel = false;
             showInstitucionalPanel = true;
             showButtonPanel = true;
-            Calendar c = Calendar.getInstance();
+            //Calendar c = Calendar.getInstance();
             c.add(Calendar.DAY_OF_MONTH, -15);
             fechaMinima = c.getTime();
         }
     }
 
+    public static int getDayOfTheWeek(Date d){
+	GregorianCalendar cal = new GregorianCalendar();
+	cal.setTime(d);
+        if (cal.get(Calendar.DAY_OF_WEEK) == 1){
+            return 1;
+        }
+        if (cal.get(Calendar.DAY_OF_WEEK) == 7){
+            return 1;
+        } 
+	return 0;		
+}
+    
     public void showHourFields() {
         //if (obtenerNombreCatalogoDetalle(licencia.getTipoFormulario().getCodigoCatalogoDetalle()).getNemonico().equals("TIPOFORSOLIC")) {
         try {
@@ -1326,7 +1348,7 @@ public class VacacionCtrl {
     public String saveAprobacionJefeAction() {
         Licencia anterior = licenciaServicio.findByPk(licencia.getCodigoLicencia());
         if (aprobado) {
-            licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTOTOR").get(0));
+            licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTINSC").get(0));
             sendNewTaskMsgTH(licencia);
             sendNotificationMsg(licencia.getUsuario(), licencia, "APROBADA");
         } else if (!aprobado && subsanar) {

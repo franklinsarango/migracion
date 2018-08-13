@@ -9,19 +9,34 @@
             <file>file:/D:/Frank/SGM/proyectos/migracion/src/java/ec/gob/arcom/migracion/ctrl/LoginCtrl.java</file>
         </group>
         <group>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/impl/LicenciaServicioImpl.java</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/UsuarioServicio.java</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/LicenciaDaoEjb.java</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/UsuarioDaoEjb.java</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/LicenciaServicio.java</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/impl/GestionVacacionServicioImpl.java</file>
-            <file>file:/C:/proyectos/migracion/web/vacaciones-licencia-ingreso-th-frm.xhtml</file>
-            <file>file:/C:/proyectos/migracion/web/vacaciones-por-funcionario.xhtml</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/ctrl/VacacionCtrl.java</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/GestionVacacionDaoEjb.java</file>
-            <file>file:/C:/proyectos/migracion/web/vacaciones-saldos-view-frm.xhtml</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/impl/UsuarioServicioImpl.java</file>
-            <file>file:/C:/proyectos/migracion/src/java/ec/gob/arcom/migracion/servicio/GestionVacacionServicio.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/concesionmineraform.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/ctrl/LoginCtrl.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/servicio/ConcesionMineraServicio.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/ctrl/CotitularCtrl.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/actividadesmineras-zp.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/cotitularview.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/modelo/Licencia.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/vacaciones-admin.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/actividadesmineras.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/ctrl/VacacionCtrl.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/derechosMinerosNacional.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/ConcesionMineraDaoEjb.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/vacaciones-licencia-ingreso-th-frm.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/LicenciaDaoEjb.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/servicio/impl/ContratoOperacionServicioImpl.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/ctrl/ContratoOperacionCtrl.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/ctrl/ConcesionMineraCtrl.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/servicio/ContratoOperacionServicio.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/contratoview.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/dao/ejb/ContratoOperacionDaoEjb.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/index.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/ctrl/DerechosMinerosCtrl.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/dao/ContratoOperacionDao.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/concesionesmineras.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/constantes/ConstantesEnum.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/constantes/RolEnum.java</file>
+            <file>file:/C:/proyectoVacaciones/migracion/web/contratoform.xhtml</file>
+            <file>file:/C:/proyectoVacaciones/migracion/src/java/ec/gob/arcom/migracion/servicio/impl/ConcesionMineraServicioImpl.java</file>
         </group>
     </open-files>
 </project-private>

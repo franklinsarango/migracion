@@ -75,7 +75,7 @@ public enum ConstantesEnum {
     TABLA_COORDENADA_COTA("TBCOORDCOTA", "coordenada_cota",-1L),
         
     
-    URL_SERVIDOR_APP("", "http://localhost:8080", null),     //URL LOCAL    
+    URL_SERVIDOR_APP("", "http://172.16.54.56:8080", null),     //URL LOCAL    
     //URL_SERVIDOR_APP("", "http://10.10.6.5:8380", null), //URL DESARROLLO    
     //URL_SERVIDOR_APP("", "http://172.16.30.246:8381", null), //URL PRODUCCION
             
