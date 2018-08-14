@@ -1356,15 +1356,33 @@ public class VacacionCtrl {
             if (licencia.getObservacionesJefatura() == null || licencia.getObservacionesJefatura().length() == 0) {
                 FacesUtil.showErrorMessage("Error", "Debe ingresar una observación");
                 return null;
-            }
-            sendNewTaskMsg(licencia.getUsuario(), licencia);
+            }             
+            sendNewTaskMsg(licencia.getUsuario(), licencia);            
+            Usuario u = usuarioServicio.findByPk(login.getCodigoUsuario());
+            licencia.setUsuarioAprobacion(u);
+            licencia.setFechaModificacion(Calendar.getInstance().getTime());
+            licencia.setUsuarioModificacion(u);
+            licenciaServicio.update(licencia);
+            Auditoria a = new Auditoria(Auditoria.UPDATE, licencia, anterior, u.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            FacesUtil.showInfoMessage("Aviso", "Tarea realizada correctamente");            
+            return resetAction();
         } else {
             licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTARCHIV").get(0));
             if (licencia.getObservacionesJefatura() == null || licencia.getObservacionesJefatura().length() == 0) {
-                FacesUtil.showErrorMessage("Error", "Debe ingresar una observación");
+                FacesUtil.showErrorMessage("Error", "Debe ingresar una observación");                
                 return null;
-            }
+            }            
             sendNotificationMsg(licencia.getUsuario(), licencia, "RECHAZADA");
+            Usuario u = usuarioServicio.findByPk(login.getCodigoUsuario());
+            licencia.setUsuarioAprobacion(u);
+            licencia.setFechaModificacion(Calendar.getInstance().getTime());
+            licencia.setUsuarioModificacion(u);
+            licenciaServicio.update(licencia);
+            Auditoria a = new Auditoria(Auditoria.UPDATE, licencia, anterior, u.getCodigoUsuario());
+            auditoriaServicio.create(a);
+            FacesUtil.showInfoMessage("Aviso", "Tarea realizada correctamente");            
+            return resetAction();
         }
         Usuario u = usuarioServicio.findByPk(login.getCodigoUsuario());
         licencia.setUsuarioAprobacion(u);
