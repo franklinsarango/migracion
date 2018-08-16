@@ -903,6 +903,24 @@ public class ConcesionMineraDaoEjb extends GenericDaoEjbEl<ConcesionMinera, Long
             "	and (co.codigo_arcom like  '%CO%' or co.codigo_arcom like  '%CD%') \n" +
             "	and co.numero_documento = '"+numDocumento+"') \n";
             }
+            if (nombre != null && !nombre.isEmpty()) {
+                sql1 += "and concesiones.nombre_concesion ilike '%" + nombre + "%'\n";
+            }
+            if (codigoRegional != null) {
+                sql1 += "and concesiones.codigo_regional = " + codigoRegional + "\n";
+            }
+            if (codigoProvincia != null) {
+                sql1 += "and concesiones.codigo_provincia = " + codigoProvincia + "\n";
+            }
+            if (codigoFase != null) {
+                sql1 += "and concesiones.codigo_fase = " + codigoFase + "\n";
+            }
+            if (codigoEstado != null) {
+                sql1 += "and concesiones.codigo_estado = " + codigoEstado + "\n";
+            }
+             if (tipoPersona != null && !tipoPersona.isEmpty()) {
+                sql1 += "and concesiones.tipo_persona = '" + tipoPersona + "'\n";
+            }
         }
         
         System.out.println("sql derechos mineros nacional: " + sql1);
