@@ -187,6 +187,7 @@ public class VacacionCtrl {
     //Variables para diferenciar incrementos o decrementos a los saldos de vacación
     private Boolean accionIncremento;
     private Boolean accionDecremento;
+    private int nuevoIngresoLicencia;
 
     /**
      * Creates a new instance of VacacionCtrl
@@ -200,7 +201,7 @@ public class VacacionCtrl {
         showHour = false;
         showDatosPersonalesPanel = false;
         accionIncremento = false;
-        accionDecremento = false;
+        accionDecremento = false;        
     }
 
     public void checkPageUpdate() {
@@ -220,6 +221,7 @@ public class VacacionCtrl {
         cargarHistorial();
         saldoActual = obtenerSaldoActual(login.getCodigoUsuario());
         tareaSeleccionada = new LicenciaVacacionDto();
+        nuevoIngresoLicencia = 0;
     }
 
     public void setTH() {
@@ -1013,7 +1015,7 @@ public class VacacionCtrl {
         BigDecimal diasLicencia = new BigDecimal(descontar[1].trim());
         licencia.setDiasLicencia(diasLicencia);
         licencia.setSaldoVacaciones(saldoActualTemp.subtract(diasLicencia));
-        if (licencia.getSaldoVacaciones().compareTo(BigDecimal.ZERO) == -1) {
+        if (licencia.getSaldoVacaciones().compareTo(BigDecimal.ZERO) == -1 && nuevoIngresoLicencia != 1) {
             licencia.setFechaHoraRetorno(null);
             FacesUtil.showErrorMessage("Error", "El saldo de vacaciones no puede ser menor a cero: " + obtenerFormatoDecimal(licencia.getSaldoVacaciones()));
             licencia.setDiasLicencia(null);
@@ -1079,11 +1081,14 @@ public class VacacionCtrl {
                 FacesUtil.showErrorMessage("Error", "La fecha de fin debe ser mayor a la fecha de inicio");
             } else {
                 Long dias = (fechaF - fechaI) / (1000 * 60 * 60 * 24);
-                BigDecimal days = new BigDecimal(dias);
-                if (days.compareTo(licencia.getDiasDisponibles()) == 1) {
+                BigDecimal days = new BigDecimal(dias);  
+                System.out.println("****************");
+                System.out.println("numero ingreso licencia: " + nuevoIngresoLicencia);
+                System.out.println("****************");
+                if (days.compareTo(licencia.getDiasDisponibles()) == 1 && nuevoIngresoLicencia != 1) {
                     licencia.setFechaHoraRetorno(null);
                     FacesUtil.showErrorMessage("Error", "Los días no pueden exceder del total disponible");
-                } else if (days.compareTo(new BigDecimal(8)) == -1) {
+                } else if (days.compareTo(new BigDecimal(8)) == -1 && nuevoIngresoLicencia != 1) {
                     licencia.setFechaHoraRetorno(null);
                     FacesUtil.showErrorMessage("Error", "Los días no pueden ser menores de 10 para vacación");
                 } else {
@@ -1795,6 +1800,7 @@ public class VacacionCtrl {
     }
 
     public String newIngresoLicenciaAction() {
+        nuevoIngresoLicencia = 1;
         if (login.getCodigoUsuario() != null) {
             documentoBuscar = "";
             licencia = new Licencia();
@@ -1908,7 +1914,7 @@ public class VacacionCtrl {
         }
 
         if (licencia.getTipoFormulario().getNemonico().equals("TIPOFORSOLIC")) {
-            if (existeRangoFechas()) {
+            if (existeRangoFechas() && nuevoIngresoLicencia != 1) {
                 FacesUtil.showErrorMessage("Error", "Ya existe una solicitud dentro de este rango de fechas");
   //              return null;
             }

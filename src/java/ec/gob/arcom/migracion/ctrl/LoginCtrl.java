@@ -73,6 +73,9 @@ public class LoginCtrl extends BaseCtrl {
     private boolean usuarioExterno;
     private boolean recepcionista;
     private boolean recepcionistaSubsecretariaGeneral;
+    private boolean abogadoSubsecreatariaMinas;
+    private boolean subsecretariaRegionalMinas;
+    private boolean subsecretariaNacionalContratacion;
     
     //PERMISOS
     private boolean editarComprobante;  //UERR
@@ -200,7 +203,31 @@ public class LoginCtrl extends BaseCtrl {
                             
                         } else {
                             this.economicoRegional = false;
+                        }                                                                        
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ABOGADO_SUBSECRETARIA_MINAS.getNemonico())){
+                            this.abogadoSubsecreatariaMinas = true;
+                            
+                        } else {
+                            this.abogadoSubsecreatariaMinas = false;
                         }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_RECEPCIONISTA_SUBSECRETARIA_GENERAL.getNemonico())){
+                            this.recepcionistaSubsecretariaGeneral = true;
+                            
+                        } else {
+                            this.recepcionistaSubsecretariaGeneral = false;
+                        }                      
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_SUBSECRETARIA_REGIONAL_MINAS.getNemonico())){
+                            this.subsecretariaRegionalMinas = true;
+                            
+                        } else {
+                            this.subsecretariaRegionalMinas = false;
+                        }
+                        if(usRol.getRol().getNemonico().equals(RolEnum.ROL_SUBSECRETARIA_NACIONAL_CONTRATACION.getNemonico())){
+                            this.subsecretariaNacionalContratacion = true;
+                            
+                        } else {
+                            this.subsecretariaNacionalContratacion = false;
+                        }                                                                                                                                               
                         if(usRol.getRol().getNemonico().equals(RolEnum.ROL_ESPECIALISTA_ECONOMICO_NACIONAL.getNemonico())){
                             this.economicoNacional = true;
                         } else {
@@ -582,5 +609,31 @@ public class LoginCtrl extends BaseCtrl {
     public void setRecepcionistaSubsecretariaGeneral(boolean recepcionistaSubsecretariaGeneral) {
         this.recepcionistaSubsecretariaGeneral = recepcionistaSubsecretariaGeneral;
     }
+
+    public boolean isAbogadoSubsecreatariaMinas() {
+        return abogadoSubsecreatariaMinas;
+    }
+
+    public void setAbogadoSubsecreatariaMinas(boolean abogadoSubsecreatariaMinas) {
+        this.abogadoSubsecreatariaMinas = abogadoSubsecreatariaMinas;
+    }
+
+    public boolean isSubsecretariaRegionalMinas() {
+        return subsecretariaRegionalMinas;
+    }
+
+    public void setSubsecretariaRegionalMinas(boolean subsecretariaRegionalMinas) {
+        this.subsecretariaRegionalMinas = subsecretariaRegionalMinas;
+    }
+
+    public boolean isSubsecretariaNacionalContratacion() {
+        return subsecretariaNacionalContratacion;
+    }
+
+    public void setSubsecretariaNacionalContratacion(boolean subsecretariaNacionalContratacion) {
+        this.subsecretariaNacionalContratacion = subsecretariaNacionalContratacion;
+    }
+
+
     
 }
