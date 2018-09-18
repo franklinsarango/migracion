@@ -155,11 +155,10 @@
                         </h:panelGroup>
 
                         <h:panelGroup id="estado">
-                            <p:outputLabel for="somEstado" value="Estado:" rendered="#{!plantaBeneficioCtrl.concesionMinera}"></p:outputLabel>
+                            <p:outputLabel for="somEstado" value="Estado:"></p:outputLabel>
                         </h:panelGroup>
                         <h:panelGroup id="estado2">
-                            <p:selectOneMenu id="somEstado" value="#{plantaBeneficioCtrl.plantaBeneficio.estadoPlanta.codigoCatalogoDetalle}" required="true" requiredMessage="Estado es requerido" style="width: 93%"
-                                             rendered="#{!plantaBeneficioCtrl.concesionMinera}">
+                            <p:selectOneMenu id="somEstado" value="#{plantaBeneficioCtrl.plantaBeneficio.estadoPlanta.codigoCatalogoDetalle}" required="true" requiredMessage="Estado es requerido" style="width: 93%">
                                 <f:selectItem itemValue="" itemLabel="--Seleccione una opción--" />
                                 <f:selectItems value="#{selectItemCtrl.estadosCodigoCatalogo19}" />
                                 <p:ajax listener="#{plantaBeneficioCtrl.validarEstadoPlantaBeneficio}" update="numResolArchivo1 numResolArchivo2 fecResolArchivo1 fecResolArchivo2 fecArchivo1 fecArchivo2"/>                                

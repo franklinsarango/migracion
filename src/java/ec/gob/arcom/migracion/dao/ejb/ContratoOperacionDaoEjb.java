@@ -281,16 +281,16 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         for (Object[] fila : listaTmp) {
             ContratoOperacionDTO co = new ContratoOperacionDTO();
             co.setCodigoContratoOperacion((Long)fila[0]);    
-            co.setCodigoArcom((String)fila[1]);   
-            co.setCodigoContrato((String)fila[2]);
+            co.setCodigoArcomConcesion((String)fila[1]);   
+            co.setCodigoArcomContrato((String)fila[2]);
             co.setNumeroDocumento((String)fila[3]);
             co.setTitularContrato((String)fila[4]);            
             co.setProvinica((String)fila[5]);
             co.setCanton((String)fila[6]);
             co.setParroquia((String)fila[7]);
             co.setEstado((String)fila[8]);
-            co.setFecha_inscripcion((Date)fila[9]);
-            co.setCodigo_regional((String)fila[10]);
+            co.setFechaInscripcion((Date)fila[9]);
+            co.setPrefijoCodigo((String)fila[10]);
             listaFinal.add(co);             
         }     
         return listaFinal;
@@ -322,16 +322,16 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         for (Object[] fila : listaTmp) {
             ContratoOperacionDTO co = new ContratoOperacionDTO();
             co.setCodigoContratoOperacion((Long)fila[0]);    
-            co.setCodigoArcom((String)fila[1]);   
-            co.setCodigoContrato((String)fila[2]);
+            co.setCodigoArcomConcesion((String)fila[1]);   
+            co.setCodigoArcomContrato((String)fila[2]);
             co.setNumeroDocumento((String)fila[3]);
             co.setTitularContrato((String)fila[4]);            
             co.setProvinica((String)fila[5]);
             co.setCanton((String)fila[6]);
             co.setParroquia((String)fila[7]);
             co.setEstado((String)fila[8]);
-            co.setFecha_inscripcion((Date)fila[9]);
-            co.setCodigo_regional((String)fila[10]);
+            co.setFechaInscripcion((Date)fila[9]);
+            co.setPrefijoCodigo((String)fila[10]);
             listaFinal.add(co);             
         }     
         return listaFinal;

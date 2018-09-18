@@ -16,16 +16,16 @@ import java.util.Date;
  */
 public class ContratoOperacionDTO {
     private Long codigoContratoOperacion;    
-    private String codigoArcom;
+    private String codigoArcomConcesion;
+    private String codigoArcomContrato;
     private String numeroDocumento;    
     private String provinica;
     private String canton;
     private String parroquia;
     private String estado;
-    private Date fecha_inscripcion;
-    private String CodigoContrato;
+    private Date fechaInscripcion;    
     private String titularContrato;
-    private String codigo_regional;
+    private String prefijoCodigo;
 
     public Long getCodigoContratoOperacion() {
         return codigoContratoOperacion;
@@ -33,14 +33,6 @@ public class ContratoOperacionDTO {
 
     public void setCodigoContratoOperacion(Long codigoContratoOperacion) {
         this.codigoContratoOperacion = codigoContratoOperacion;
-    }
-
-    public String getCodigoArcom() {
-        return codigoArcom;
-    }
-
-    public void setCodigoArcom(String codigoArcom) {
-        this.codigoArcom = codigoArcom;
     }
 
     public String getNumeroDocumento() {
@@ -83,22 +75,7 @@ public class ContratoOperacionDTO {
         this.estado = estado;
     }
 
-    public Date getFecha_inscripcion() {
-        return fecha_inscripcion;
-    }
-
-    public void setFecha_inscripcion(Date fecha_inscripcion) {
-        this.fecha_inscripcion = fecha_inscripcion;
-    }
-
-    public String getCodigoContrato() {
-        return CodigoContrato;
-    }
-
-    public void setCodigoContrato(String CodigoContrato) {
-        this.CodigoContrato = CodigoContrato;
-    }
-
+   
     public String getTitularContrato() {
         return titularContrato;
     }
@@ -107,14 +84,37 @@ public class ContratoOperacionDTO {
         this.titularContrato = titularContrato;
     }
 
-    public String getCodigo_regional() {
-        return codigo_regional;
+    public String getCodigoArcomConcesion() {
+        return codigoArcomConcesion;
     }
 
-    public void setCodigo_regional(String codigo_regional) {
-        this.codigo_regional = codigo_regional;
+    public void setCodigoArcomConcesion(String codigoArcomConcesion) {
+        this.codigoArcomConcesion = codigoArcomConcesion;
     }
 
+    public String getCodigoArcomContrato() {
+        return codigoArcomContrato;
+    }
 
+    public void setCodigoArcomContrato(String codigoArcomContrato) {
+        this.codigoArcomContrato = codigoArcomContrato;
+    }
+
+    public Date getFechaInscripcion() {
+        return fechaInscripcion;
+    }
+
+    public void setFechaInscripcion(Date fechaInscripcion) {
+        this.fechaInscripcion = fechaInscripcion;
+    }
+
+    public String getPrefijoCodigo() {
+        return prefijoCodigo;
+    }
+
+    public void setPrefijoCodigo(String prefijoCodigo) {
+        this.prefijoCodigo = prefijoCodigo;
+    }
+    
     
 }

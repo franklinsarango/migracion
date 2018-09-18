@@ -709,7 +709,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
      * PAGINACION LISTA DE CONTRATOS
      */
     public void mostrarDatos(String strTipoRecorrido) {
-        if (strTipoRecorrido.equals("siguiente")) {
+        /*if (strTipoRecorrido.equals("siguiente")) {
             if (numeroPagina < totalPaginas) {
                 numeroPagina = numeroPagina + 1;
             }
@@ -732,28 +732,24 @@ public class ContratoOperacionCtrl extends BaseCtrl {
 
         if (strTipoRecorrido.equals("btn_buscar")) {
             cargarListaPaginas();
-        }
+        }*/
         
-        if (contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento, beneficiarioPrincipal) != null) {
+        //if (contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento, beneficiarioPrincipal) != null) {
             if (contratosOperacion != null) {
                 contratosOperacion.clear();
             } else {
                 contratosOperacion = new ArrayList<>();
+            }            
+            List<ContratoOperacionDTO> contratosOperacionTemp = contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento, beneficiarioPrincipal);
+            for (ContratoOperacionDTO c : contratosOperacionTemp) {
+                if (c.getCodigoArcomContrato().contains("CD") == false) {
+                    contratosOperacion.add(c);
+                }
             }
-            contratosOperacion = contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento, beneficiarioPrincipal);
-//            List<ContratoOperacion> listaContratoOp = new ArrayList<>();            
-//            for(ContratoOperacionDTO contratoLista : listContratoOperacionDTO){
-//                ContratoOperacion contrato = new ContratoOperacion();            
-//                contrato = contratoOperacionServicio.findByPk(contratoLista.getCodigoContratoOperacion());
-//                listaContratoOp.add(contrato);
-//            }
-//            for (ContratoOperacion contratoOp : listaContratoOp) {
-//                contratosOperacion.add(contratoOp);
-//            }
-        } else {
-            //ponerMensajeInfo("", "No existen Contratos de Operacion con código ARCOM ");
-            contratosOperacion.clear();
-        }
+//        } else {
+//            //ponerMensajeInfo("", "No existen Contratos de Operacion con código ARCOM ");
+//            contratosOperacion.clear();
+//        }
     }
     
     public void onRowEditTablaCoordenadas(RowEditEvent event){
@@ -824,7 +820,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         coordenadasEditadas = true;
     }   
 
-    public void cargarListaPaginas() {
+    /*public void cargarListaPaginas() {
         if(listaPaginas == null){
             listaPaginas = new ArrayList<>();
         }
@@ -837,7 +833,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
         for (int i = 0; i < totalPaginas; i++) {
             getListaPaginas().add(i + 1);
         }
-    }
+    }*/
     
     /**
      * @return the paginaSeleccionada

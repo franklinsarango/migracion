@@ -175,12 +175,12 @@
                     
                     <p:column headerText="CODIGO CONCESION" style="text-align: right">
                         <h:outputText styleClass="texto_tabla_datos_codigo" 
-                                      value="#{reg.codigoArcom}" />
+                                      value="#{reg.codigoArcomConcesion}" />
                     </p:column>
                         
                     <p:column headerText="CODIGO CONTRATO" style="text-align: right">
                         <h:outputText styleClass="texto_tabla_datos_codigo"
-                                      value="#{reg.codigoContrato}"/>
+                                      value="#{reg.codigoArcomContrato}"/>
                     </p:column>
                         
                     <p:column headerText="NUM. DOCUMENTO TITULAR MINERO" style="text-align: right">
@@ -200,7 +200,7 @@
                     
                     <p:column headerText="FECHA INSCRIPCIÓN" 
                               style="text-align: right">
-                        <h:outputText value="#{reg.fecha_inscripcion}" >
+                        <h:outputText value="#{reg.fechaInscripcion}" >
                             <f:convertDateTime pattern="yyyy-MM-dd"/>
                         </h:outputText>
                     </p:column>                        
