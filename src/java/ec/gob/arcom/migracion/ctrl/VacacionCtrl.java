@@ -47,7 +47,9 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -64,8 +66,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
-import static org.omnifaces.util.Faces.getExternalContext;
+import static org.apache.poi.hssf.usermodel.HeaderFooter.date;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -131,6 +132,8 @@ public class VacacionCtrl {
     private boolean showButtonPanel02;
     private boolean showHour;
     private boolean showDatosPersonalesPanel;
+    private boolean accionSeleccionada;
+    private boolean habilitarBusqueda;
     private List<UsuarioDto> funcionarios;
     private List<Usuario> funcionariosBk;
     private List<Contrato> contratosUsuario;
@@ -188,7 +191,7 @@ public class VacacionCtrl {
     private Boolean accionIncremento;
     private Boolean accionDecremento;
     private int nuevoIngresoLicencia;
-
+    
     /**
      * Creates a new instance of VacacionCtrl
      */
@@ -201,7 +204,8 @@ public class VacacionCtrl {
         showHour = false;
         showDatosPersonalesPanel = false;
         accionIncremento = false;
-        accionDecremento = false;        
+        accionDecremento = false;  
+        accionSeleccionada = true;
     }
 
     public void checkPageUpdate() {
@@ -554,10 +558,12 @@ public class VacacionCtrl {
             Catalogo catalogo = catalogoServicio.findByNemonico("TIPOFOR");
             if (catalogo != null) {
                 List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
-                for (CatalogoDetalle catDet : tipoServCat) {
+                for (CatalogoDetalle catDet : tipoServCat) {                    
                     if (catDet.getNemonico().equals("TIPOFORSOLIC")) {
                         tiposFormulario.add(new SelectItem(catDet, catDet.getNombre() + " - 10 días en adelante"));
-                    } else {
+                    }else if (catDet.getNemonico().equals("TIPOFORSCARG")){
+                        tiposFormulario.add(new SelectItem(catDet, catDet.getNombre()));
+                    }else if (catDet.getNemonico().equals("TIPOFORPEROCA")) {
                         tiposFormulario.add(new SelectItem(catDet, catDet.getNombre() + " - minutos, horas hasta 9 días"));
                     }
                 }
@@ -574,13 +580,19 @@ public class VacacionCtrl {
                 List<CatalogoDetalle> tipoServCat = catalogoDetalleServicio.obtenerPorCatalogo(catalogo.getCodigoCatalogo());
                 if (licencia.getTipoFormulario().getNemonico().equals("TIPOFORPEROCA")) {
                     for (CatalogoDetalle catDet : tipoServCat) {
-                        if (catDet.getNemonico().equals("MOTPERVAC") || catDet.getNemonico().equals("MOTPERINS") || catDet.getNemonico().equals("MOTPERSINCV")) {
+                        if (catDet.getNemonico().equals("MOTPERVAC")) {
                             tiposLicencia.add(new SelectItem(catDet, catDet.getNombre()));
                         }
                     }
                 } else if (licencia.getTipoFormulario().getNemonico().equals("TIPOFORSOLIC")) {
                     for (CatalogoDetalle catDet : tipoServCat) {
                         if (catDet.getNemonico().equals("MOTPERVAC")) {
+                            tiposLicencia.add(new SelectItem(catDet, catDet.getNombre()));
+                        }
+                    }
+                } else if (licencia.getTipoFormulario().getNemonico().equals("TIPOFORSCARG")){
+                    for (CatalogoDetalle catDet : tipoServCat) {
+                        if (catDet.getNemonico().equals("MOTPERINS") || catDet.getNemonico().equals("MOTPERSINCV")) {
                             tiposLicencia.add(new SelectItem(catDet, catDet.getNombre()));
                         }
                     }
@@ -1014,7 +1026,13 @@ public class VacacionCtrl {
         BigDecimal saldoActualTemp = new BigDecimal(disponibles[1].trim());
         BigDecimal diasLicencia = new BigDecimal(descontar[1].trim());
         licencia.setDiasLicencia(diasLicencia);
-        licencia.setSaldoVacaciones(saldoActualTemp.subtract(diasLicencia));
+        if (nuevoIngresoLicencia != 1){
+            licencia.setSaldoVacaciones(saldoActualTemp.subtract(diasLicencia));
+        }else if(nuevoIngresoLicencia == 1 && !accionSeleccionada) {    
+            licencia.setSaldoVacaciones(saldoActualTemp.subtract(diasLicencia));                        
+        }else if(nuevoIngresoLicencia == 1 && accionSeleccionada) {    
+            licencia.setSaldoVacaciones(saldoActualTemp.add(diasLicencia));
+        }        
         if (licencia.getSaldoVacaciones().compareTo(BigDecimal.ZERO) == -1 && nuevoIngresoLicencia != 1) {
             licencia.setFechaHoraRetorno(null);
             FacesUtil.showErrorMessage("Error", "El saldo de vacaciones no puede ser menor a cero: " + obtenerFormatoDecimal(licencia.getSaldoVacaciones()));
@@ -1081,10 +1099,7 @@ public class VacacionCtrl {
                 FacesUtil.showErrorMessage("Error", "La fecha de fin debe ser mayor a la fecha de inicio");
             } else {
                 Long dias = (fechaF - fechaI) / (1000 * 60 * 60 * 24);
-                BigDecimal days = new BigDecimal(dias);  
-                System.out.println("****************");
-                System.out.println("numero ingreso licencia: " + nuevoIngresoLicencia);
-                System.out.println("****************");
+                BigDecimal days = new BigDecimal(dias);
                 if (days.compareTo(licencia.getDiasDisponibles()) == 1 && nuevoIngresoLicencia != 1) {
                     licencia.setFechaHoraRetorno(null);
                     FacesUtil.showErrorMessage("Error", "Los días no pueden exceder del total disponible");
@@ -1204,7 +1219,11 @@ public class VacacionCtrl {
                 return null;
             }
         }
-
+        
+        if(licencia.getTipoLicencia().getValor().equals("GRUPO_3") || licencia.getTipoLicencia().getValor().equals("GRUPO_2")){
+            licencia.setDiasDisponibles(null);
+        }
+        
         licencia.setCodigo_contrato(contrato);
         licencia.setEstadoLicencia(catalogoDetalleServicio.obtenerPorNemonico("ESTENTRA").get(0));
         licencia.setEstadoRegistro(true);
@@ -1811,6 +1830,7 @@ public class VacacionCtrl {
             showHour = false;
             showButtonPanel = false;
             showDatosPersonalesPanel = false;
+            habilitarBusqueda = false;
             archivosCargados = new ArrayList<>();
             archivosParaCargar = new ArrayList<>();
             return "vacaciones-licencia-ingreso-th-frm";
@@ -1824,6 +1844,7 @@ public class VacacionCtrl {
         if (documentoBuscar.trim().length() > 0) {
             Usuario usuarioIngresarSolicitud = usuarioServicio.findByDocumento(documentoBuscar.trim());            
             licenciasSubsanar = licenciaServicio.listarLicenciasFinalizadasPorFuncionario(usuarioIngresarSolicitud.getCodigoUsuario(), catalogoDetalleServicio.obtenerPorNemonico("ESTINSC").get(0), catalogoDetalleServicio.obtenerPorNemonico("PAREG").get(0));
+            habilitarBusqueda = true;
             if (usuarioIngresarSolicitud != null) {                
                 contrato = contratoServicio.contratoUsuarioEstado(usuarioIngresarSolicitud,ConstantesEnum.ESTCOMP_REGISTRADO.getCodigo());                        
                 if (contrato != null){
@@ -1837,12 +1858,14 @@ public class VacacionCtrl {
                     setFuncionarioNuevaLicenciaTH(usuarioIngresarSolicitud);
                 } else {
                     FacesUtil.showErrorMessage("Error", "El funcionario aun no tiene un contrato");
+                    habilitarBusqueda = false;
                 }
             } else {
                 FacesUtil.showWarnMessage("Busqueda finalizada", "No se encontro un usuario con este número de documento");
                 licencia.setUsuario(null);
                 showDatosPersonalesPanel = false;
-            }
+                habilitarBusqueda = false;
+            }            
         } else {
             inicializarListasBusquedaFuncionario();
             RequestContext.getCurrentInstance().execute("PF('busquedafrmwg').show();");
@@ -1857,6 +1880,15 @@ public class VacacionCtrl {
         showDatosPersonalesPanel = true;              
     }
 
+    public void guardarSolicitud(){
+        if (accionSeleccionada){
+            controlIncremento();
+        } else {
+            controlDecremento();
+        }
+        habilitarBusqueda = false;
+    }
+    
     public void controlIncremento(){
         if(licencia.getTipoLicencia().getNemonico().equals("MOTPERVAC")){
             accionIncremento = true;
@@ -1872,11 +1904,15 @@ public class VacacionCtrl {
     }
     
     public boolean validarFechasSubsanacion(){
-        if (licencia.getFechaHoraSalida().compareTo(licenciasSubsanarSeleccionada.getFechaHoraSalida())>= 0 && licencia.getFechaHoraSalida().compareTo(licenciasSubsanarSeleccionada.getFechaHoraRetorno())<= 0){
-            if (licencia.getFechaHoraRetorno().compareTo(licenciasSubsanarSeleccionada.getFechaHoraSalida())>= 0 && licencia.getFechaHoraRetorno().compareTo(licenciasSubsanarSeleccionada.getFechaHoraRetorno())<= 0){
-                return true;
-            }
-        }        
+        if (licenciasSubsanarSeleccionada != null){
+            DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");            
+            if (outputFormatter.format(licencia.getFechaHoraSalida()).compareTo(outputFormatter.format(licenciasSubsanarSeleccionada.getFechaHoraSalida()))>= 0 && outputFormatter.format(licencia.getFechaHoraSalida()).compareTo(outputFormatter.format(licenciasSubsanarSeleccionada.getFechaHoraRetorno()))<= 0){
+                if (outputFormatter.format(licencia.getFechaHoraRetorno()).compareTo(outputFormatter.format(licenciasSubsanarSeleccionada.getFechaHoraSalida()))>= 0 && outputFormatter.format(licencia.getFechaHoraRetorno()).compareTo(outputFormatter.format(licenciasSubsanarSeleccionada.getFechaHoraRetorno()))<= 0){
+                    return true;
+                }
+            }        
+            return false;
+        }
         return false;
     }
     
@@ -1886,6 +1922,7 @@ public class VacacionCtrl {
             licenciasSubsanarSeleccionada = null;
         }else{
             licenciasSubsanarSeleccionada = null;
+            habilitarBusqueda = true;            
             FacesUtil.showErrorMessage("Error", "Las fechas de salida y retorno no corresponden a la solicitud seleccionada");
         }
     }
@@ -1976,6 +2013,7 @@ public class VacacionCtrl {
                     gestionVacacionServicio.update(gvOld);
                     Auditoria a = new Auditoria(Auditoria.UPDATE, gvOld, gvAnterior, login.getCodigoUsuario());
                     auditoriaServicio.create(a);
+                        gv.setSaldoAnterior(gv.getSaldoActual());
                         //Incrementa los dias de la licencia del saldo actual de gestion vacacion a la fecha.
                         gv.setSaldoActual(gv.getSaldoActual().add(licencia.getDiasLicencia()));
                         gv.setLicencia(licencia);
@@ -2276,8 +2314,9 @@ public class VacacionCtrl {
         RequestContext.getCurrentInstance().execute("PF('busquedafrmwg').hide();");
     }
 
-    public void setFuncionarioIngresarLicencia(Usuario usr) {        
-        contrato = contratoServicio.contratoUsuarioEstado(usr,ConstantesEnum.ESTCOMP_REGISTRADO.getCodigo());            
+    public void setFuncionarioIngresarLicencia(UsuarioDto usr) {       
+        Usuario usuario = usuarioServicio.findByDocumento(usr.getIdentificacion());
+        contrato = contratoServicio.contratoUsuarioEstado(usuario,ConstantesEnum.ESTCOMP_REGISTRADO.getCodigo());            
         if (contrato != null){
             contratos = new ArrayList<>();
             contratos.add(contrato);
@@ -2286,10 +2325,12 @@ public class VacacionCtrl {
             contrato = null;
         }          
         if (contratos.size() > 0) {
-            setFuncionarioNuevaLicenciaTH(usr);
+            setFuncionarioNuevaLicenciaTH(usuario);
             RequestContext.getCurrentInstance().execute("PF('busquedafrmwg').hide();");
+            habilitarBusqueda = true;
         } else  {
             FacesUtil.showErrorMessage("Error", "El funcionario aun no tiene un contrato");
+            habilitarBusqueda = false;
         }
     }
 
@@ -2534,5 +2575,20 @@ public class VacacionCtrl {
     public void setContratosUsuario(List<Contrato> contratosUsuario) {
         this.contratosUsuario = contratosUsuario;
     }
-        
+
+    public boolean isAccionSeleccionada() {
+        return accionSeleccionada;
+    }
+
+    public void setAccionSeleccionada(boolean accionSeleccionada) {
+        this.accionSeleccionada = accionSeleccionada;
+    }
+
+    public boolean isHabilitarBusqueda() {
+        return habilitarBusqueda;
+    }
+
+    public void setHabilitarBusqueda(boolean habilitarBusqueda) {
+        this.habilitarBusqueda = habilitarBusqueda;
+    } 
 }
