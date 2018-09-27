@@ -34,7 +34,7 @@
                                              value="#{vacacionCtrl.licencia.tipoFormulario}" disabled="#{vacacionCtrl.habilitarBusqueda}">
                                 <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
                                 <f:selectItems value="#{vacacionCtrl.tiposFormulario}"/>
-                                <p:ajax listener="#{vacacionCtrl.showHourFields()}" update="grouppanel licenciaPor"/>
+                                <p:ajax listener="#{vacacionCtrl.showHourFields()}" update="grouppanel licenciaPor acciSobreLic"/>
                             </p:selectOneMenu>
                         </p:column>
 
@@ -65,14 +65,16 @@
                             <p:outputLabel for="acciSobreLic" value="Acción sobre la solicitud: "/>
                         </p:column>
                         <p:column style="text-align: left">
-                            <p:selectOneRadio id="acciSobreLic" value="#{vacacionCtrl.accionSeleccionada}" required="true" requiredMessage="Debe seleccionar una acción"  disabled="#{vacacionCtrl.habilitarBusqueda}">
+                            <p:selectOneRadio id="acciSobreLic" value="#{vacacionCtrl.accionSeleccionada}" required="#{not empty param.includeInSave1}" requiredMessage="Debe seleccionar una acción"  disabled="#{vacacionCtrl.habilitarBusqueda}">
                                 <f:selectItem itemLabel="Incremento" itemValue="true" />
                                 <f:selectItem itemLabel="Decremento" itemValue="false" />
                             </p:selectOneRadio>
                         </p:column>
                         <p:column style="text-align: left">
                             <p:commandButton value="Buscar" actionListener="#{vacacionCtrl.buscarUsuarioIngresarSolicitud()}" disabled="#{vacacionCtrl.habilitarBusqueda}"
-                                             update="@form :vacaciones-busqueda-frm" process="acciSobreLic numDocumento @this"/>
+                                             update="@form :vacaciones-busqueda-frm" process="acciSobreLic numDocumento @this" ajax="false">
+                                <f:param name="includeInSave1" value="true" />
+                            </p:commandButton>
                         </p:column>
                         <p:column>
                             <p:spacer width="10"/>
@@ -192,7 +194,7 @@
                                                  value="#{vacacionCtrl.licencia.tipoLicencia}">
                                     <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
                                     <f:selectItems value="#{vacacionCtrl.tiposLicencia}"/>
-                                    <p:ajax listener="#{vacacionCtrl.showFormPanel()}" update="grouppanel vacacionTitle calamidadTitle fechaInicioC fechaFinC"/>
+                                    <p:ajax listener="#{vacacionCtrl.showFormPanel()}" update="grouppanel vacacionTitle calamidadTitle fechaInicioC fechaFinC groupListaSubsanar"/>
                                 </p:selectOneMenu>
                             </p:column>
 
@@ -291,7 +293,7 @@
                         </p:row>
 
                         <p:row>
-                            <p:column>
+                            <p:column>                               
                                 <p:spacer width="10"/>
                             </p:column>
                             <p:column>
@@ -304,6 +306,38 @@
 
                             <p:column>
                                 <p:spacer width="10"/>
+                            </p:column>
+                        </p:row>                       
+                    </p:panelGrid>                    
+
+                    <p:panelGrid id="groupListaSubsanar" styleClass="pg-center" rendered="#{vacacionCtrl.showListaSolicitudesSubsanar}" style="width: 930px">
+                        <p:row>                            
+                            <p:column>                                
+                                <p:dataTable id="misLicenciasSubsanar" value="#{vacacionCtrl.licenciasSubsanar}" var="licencia" emptyMessage="" selectionMode="single"
+                                             selection="#{vacacionCtrl.licenciasSubsanarSeleccionada}" rowKey="#{licencia.numeroSolicitud}" scrollable="true" scrollHeight="350">                        
+                                    <p:ajax event="rowSelect" listener="#{vacacionCtrl.setSolicitudSeleccioanda()}" update="misLicenciasSubsanar"/>                                    
+                                    <f:facet name="header">
+                                        Lista de Solicitudes para Subsanar
+                                    </f:facet>
+                                    <p:column headerText="Nro de solicitud">
+                                        <p:outputLabel value="#{licencia.numeroSolicitud}"/>
+                                    </p:column>                                   
+                                    <p:column headerText="Tipo formulario">
+                                        <p:outputLabel value="#{licencia.tipoFormulario.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Motivo">
+                                        <p:outputLabel value="#{licencia.tipoLicencia.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Estado">
+                                        <p:outputLabel value="#{vacacionCtrl.obtenerNombreEstado(licencia.estadoLicencia.nombre)}"/>
+                                    </p:column>                          
+                                    <p:column headerText="Fecha de salida">
+                                        <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(licencia.fechaHoraSalida)}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha de retorno">
+                                        <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(licencia.fechaHoraRetorno)}"/>
+                                    </p:column>                                    
+                                </p:dataTable>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
@@ -506,44 +540,7 @@
                             </p:row>
                         </f:facet>
                     </p:panelGrid>
-                </h:panelGroup>
-
-                <p:dialog id="listaLicenciasfrm" widgetVar="listaLicenciasfrmwg" modal="true" resizable="false" width="90%" height="90%"
-                          header="Lista de permisos para subsanar">
-                    <h:form id="listaLicenciaform">                        
-                        <p:dataTable id="misLicenciasSubsanar" value="#{vacacionCtrl.licenciasSubsanar}" var="licencia" emptyMessage=""
-                                     selection="#{vacacionCtrl.licenciasSubsanarSeleccionada}" rowKey="#{licencia.numeroSolicitud}" scrollable="true" scrollHeight="350">
-                            <p:column selectionMode="single" style="width:16px;text-align:center"/>
-                            <p:column headerText="Nro de solicitud">
-                                <p:outputLabel value="#{licencia.numeroSolicitud}"/>
-                            </p:column>
-                            <p:column headerText="Funcionario">
-                                <p:outputLabel value="#{licencia.codigo_contrato.usuario.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Cargo">
-                                <p:outputLabel value="#{licencia.codigo_contrato.tipoCargo.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Tipo formulario">
-                                <p:outputLabel value="#{licencia.tipoFormulario.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Motivo">
-                                <p:outputLabel value="#{licencia.tipoLicencia.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Estado">
-                                <p:outputLabel value="#{licencia.estadoLicencia.nombre}"/>
-                            </p:column>                            
-                            <p:column headerText="Fecha de salida">
-                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(licencia.fechaHoraSalida)}"/>
-                            </p:column>
-                            <p:column headerText="Fecha de retorno">
-                                <p:outputLabel value="#{vacacionCtrl.obtenerFechaConFormato(licencia.fechaHoraRetorno)}"/>
-                            </p:column>
-                            <f:facet name="footer">
-                                <p:commandButton process="misLicenciasSubsanar" update="misLicenciasSubsanar" value="Aceptar" action="#{vacacionCtrl.controlSubsanar()}"/>
-                            </f:facet>
-                        </p:dataTable>                        
-                    </h:form>
-                </p:dialog>
+                </h:panelGroup>                
 
             </h:form>
 
