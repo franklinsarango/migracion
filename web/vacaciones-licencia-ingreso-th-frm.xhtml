@@ -522,7 +522,13 @@
                                                 emptyMessage="No se encontraron archivos" rendered="#{vacacionCtrl.showUploadPanel}" rowIndexVar="row">
                                         <p:outputLabel value="#{row + 1}"/>
                                         <p:spacer width="10" height="10"/>
-                                        <p:outputLabel value="#{newfile.fileName}"/>
+                                        <p:outputLabel value="#{newfile.fileName}"/>                                      
+                                        <p:spacer width="10" height="10"/>                                      
+                                        <p:commandButton  icon="ui-icon-trash" 
+                                                          action="#{vacacionCtrl.eliminarArchivo()}" update="filelistUpload"
+                                                          process="@this" title="Eliminar adjunto">
+                                            <f:setPropertyActionListener value="#{newfile}" target="#{vacacionCtrl.archivoParaEliminar}"/>
+                                        </p:commandButton>
                                     </p:dataList>
                                 </h:panelGroup>
                             </p:column>

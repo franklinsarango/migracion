@@ -10,12 +10,14 @@ import ec.gob.arcom.migracion.dao.ConcesionMineraDao;
 import ec.gob.arcom.migracion.dao.LicenciaComercializacionDao;
 import ec.gob.arcom.migracion.dao.PlantaBeneficioDao;
 import ec.gob.arcom.migracion.dao.RegistroPagoObligacionesDao;
+import ec.gob.arcom.migracion.dto.AutoGestionDto;
 import ec.gob.arcom.migracion.dto.RegistroPagoObligacionesDto;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
 import ec.gob.arcom.migracion.modelo.LicenciaComercializacion;
 import ec.gob.arcom.migracion.modelo.PlantaBeneficio;
 import ec.gob.arcom.migracion.modelo.RegistroPagoObligaciones;
 import ec.gob.arcom.migracion.modelo.RegistroPagoDetalle;
+import ec.gob.arcom.migracion.servicio.ConceptoPagoServicio;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -308,8 +310,10 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         return listaFinal;
     }
     
+    
+    //asd
     @Override
-    public List<RegistroPagoObligaciones> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom, String numeroComprobanteBanco,
+    public List<AutoGestionDto> obtenerListaAutogestion(Date fechaDesde, Date fechaHasta, String numeroComprobanteArcom, String numeroComprobanteBanco,
             String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String fechaD = "";
@@ -341,83 +345,131 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         
         String jpql = "";
         if (usuarioEconomicoNacional == false && editarComprobante == true) {
-            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 "
+            jpql = "select * from catmin.registro_pago_obligaciones rpo where 1 = 1 "
                     + "and ("
-                    + "(rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null)"
+                    + "(rpo.estado_pago = 574 and rpo.entidad_tramite is null and rpo.comprobante_electronico is null)"
                     + "or"
-                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
+                    + "(rpo.estado_pago in (574) and rpo.entidad_tramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
                     + ")";
         }else{
         if (usuarioEconomicoNacional == false) {
-            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 and rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null ";
+            jpql = "select * from catmin.registro_pago_obligaciones rpo where 1 = 1 and rpo.estado_pago = 574 and rpo.entidad_tramite is null and rpo.comprobante_electronico is null ";
         } else {
-            jpql = "select rpo from RegistroPagoObligaciones rpo where 1 = 1 "
+            jpql = "select * from catmin.registro_Pago_obligaciones rpo where 1 = 1 "
                     + "and ("
-                    + "(rpo.estadoPago.codigoCatalogoDetalle = 574 and rpo.entidadTramite = null and rpo.comprobanteElectronico is null)"
+                    + "(rpo.estado_pago = 574 and rpo.entidad_tramite is null and rpo.comprobante_electronico is null)"
                     + "or"
 //                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
-                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573))"
+                    + "(rpo.estado_pago in (574,573))"
                     + ")";
         }
         }
         if (fechaDesde != null && fechaHasta != null) {
-            jpql += " and rpo.fechaCreacion >= '" + fechaD + "' and rpo.fechaCreacion <= '" + fechaH + "'";
+            jpql += " and rpo.fecha_creacion >= '" + fechaD + "' and rpo.fecha_creacion <= '" + fechaH + "'";
         }
         if (fechaDesde != null && fechaHasta == null) {
-            jpql += " and rpo.fechaCreacion >= '" + fechaD + "'";
+            jpql += " and rpo.fecha_creacion >= '" + fechaD + "'";
         }
         if (fechaDesde == null && fechaHasta != null) {
-            jpql += " and rpo.fechaCreacion <= '" + fechaH + "'";
+            jpql += " and rpo.fecha_creacion <= '" + fechaH + "'";
         }
         if (numeroComprobanteArcom != null && !numeroComprobanteArcom.isEmpty()) {
-            jpql += " and rpo.numeroComprobanteArcom = :numeroComprobanteArcom";
+            jpql += " and rpo.numero_comprobante_arcom = '" + numeroComprobanteArcom + "'";
         }
         if (numeroComprobanteBanco != null && !numeroComprobanteBanco.isEmpty()) {
-            jpql += " and rpo.numeroComprobanteBanco = :numeroComprobanteBanco";
+            jpql += " and rpo.numero_comprobante_banco = '" + numeroComprobanteBanco + "'";
         }
         if (numeroTramite != null) {
-            jpql += " and rpo.numeroTramite = :numeroTramite";
+            jpql += " and rpo.numero_tramite = " + numeroTramite + "";
         }
         if (codigoDerMin != null) {
-            jpql += " and (rpo.codigoConcesion.codigoConcesion = :codigoDerMin "
-                    + "or rpo.codigoLicenciaComercializacion.codigoLicenciaComercializacion = :codigoDerMin"
-                    + " or rpo.codigoPlantaBeneficio.codigoPlantaBeneficio = :codigoDerMin)";
+            jpql += " and (rpo.codigo_concesion = " + codigoDerMin + " "
+                    + "or rpo.codigo_licencia_comercializacion = " + codigoDerMin + ""
+                    + " or rpo.codigo_plantaBeneficio = " + codigoDerMin + ")";
         }
-        jpql += " order by rpo.fechaCreacion desc";
+        jpql += " order by rpo.fecha_creacion desc";
         System.out.println("JPQL: " + jpql);
-        Query query = em.createQuery(jpql);
-        if (numeroComprobanteArcom != null && !numeroComprobanteArcom.isEmpty()) {
-            query.setParameter("numeroComprobanteArcom", numeroComprobanteArcom);
-        }
-        if (numeroComprobanteBanco != null && !numeroComprobanteBanco.isEmpty()) {
-            query.setParameter("numeroComprobanteBanco", numeroComprobanteBanco);
-        }
-        if (codigoDerMin != null) {
-            query.setParameter("codigoDerMin", codigoDerMin);
-        }
-        if (numeroTramite != null) {
-            query.setParameter("numeroTramite", numeroTramite);
-        }
-        List<RegistroPagoObligaciones> listaTmp = query.getResultList();
-        List<RegistroPagoObligaciones> listaFinal = new ArrayList<>();
-        if (usuarioEconomicoNacional == false) {
-            for (RegistroPagoObligaciones rpo : listaTmp) {
-                if (rpo.getNumeroComprobanteArcom() != null) {
-                    String prefijoRegional = rpo.getNumeroComprobanteArcom().substring(2, 4);
-                    if (prefijoRegional.equals(prefijoRegionalParam)) {
-                        this.refresh(rpo);
-                        listaFinal.add(rpo);
-                    }
-                }
+        Query query = em.createNativeQuery(jpql);
+//        if (numeroComprobanteArcom != null && !numeroComprobanteArcom.isEmpty()) {
+//            query.setParameter("numero_comprobante_arcom", numeroComprobanteArcom);
+//        }
+//        if (numeroComprobanteBanco != null && !numeroComprobanteBanco.isEmpty()) {
+//            query.setParameter("numero_comprobante_banco", numeroComprobanteBanco);
+//        }
+//        if (codigoDerMin != null) {
+//            query.setParameter("codigoDerMin", codigoDerMin);
+//        }
+//        if (numeroTramite != null) {
+//            query.setParameter("numeroTramite", numeroTramite);
+//        }
+       
+        List<Object[]> listaTmp = query.getResultList();
+        List<AutoGestionDto> listaFinal = new ArrayList<>();
+//        if (usuarioEconomicoNacional == false){
+//            for (Object[] fila : listaTmp){
+//                AutoGestionDto rpoDto = new AutoGestionDto();
+//                
+//                rpoDto.setCodigoRegistro(fila[0] != null ? Long.valueOf(fila[0].toString()) : null);
+//                rpoDto.setFechaEmisionPago(fila[7] != null ? (Date)fila[7] : null);
+//                rpoDto.setNumeroTramite(fila[19] != null ? fila[19].toString() : null);
+//                rpoDto.setEntidadTramite(fila[20] != null ? fila[20].toString() : null);
+//                rpoDto.setFechaCreacion(fila[27] != null ? (Date)fila[27] : null);
+//                //rpoDto.setFechaDeposito(fila[7] != null ? (Date)fila[7] : null);
+//                rpoDto.setNumeroComprobanteBancario(fila[11] != null ? fila[11].toString() : null);
+//                rpoDto.setCodigoConceptoPago(fila[1] != null ? Long.valueOf(fila[1].toString()) : null);                                
+//                rpoDto.setEstadoPago(fila[17] != null ? fila[17].toString() : null);                                
+//                rpoDto.setValorPagadoUsuario(fila[42] != null ? new BigDecimal(fila[42].toString()) : null);                                
+//                rpoDto.setNumeroComprobanteArcom(fila[15] != null ? fila[15].toString() : null);
+//                                
+//                if (rpoDto.getNumeroComprobanteArcom() != null) {
+//                    String prefijoRegional = rpoDto.getNumeroComprobanteArcom().substring(2, 4);
+//                    if (prefijoRegional.equals(prefijoRegionalParam)) {
+//                        //this.refresh(rpoDto);
+//                        listaFinal.add(rpoDto);
+//                    }
+//                }
+//            }   
+//        } else {
+            for (Object[] fila : listaTmp){
+                AutoGestionDto rpoDto = new AutoGestionDto();
+                
+                rpoDto.setCodigoRegistro(fila[0] != null ? Long.valueOf(fila[0].toString()) : null);
+                rpoDto.setFechaEmisionPago(fila[7] != null ? (Date)fila[7] : null);
+                rpoDto.setNumeroTramite(fila[19] != null ? fila[19].toString() : null);
+                rpoDto.setEntidadTramite(fila[20] != null ? fila[20].toString() : null);
+                rpoDto.setFechaCreacion(fila[27] != null ? (Date)fila[27] : null);
+                //rpoDto.setFechaDeposito(fila[7] != null ? (Date)fila[7] : null);
+                rpoDto.setNumeroComprobanteBancario(fila[11] != null ? fila[11].toString() : null);
+                rpoDto.setCodigoConceptoPago(fila[1] != null ? Long.valueOf(fila[1].toString()) : null);                                
+                rpoDto.setEstadoPago(fila[17] != null ? fila[17].toString() : null);                                
+                rpoDto.setValorPagadoUsuario(fila[42] != null ? new BigDecimal(fila[42].toString()) : null);                                
+                rpoDto.setNumeroComprobanteArcom(fila[15] != null ? fila[15].toString() : null);
+                
+                listaFinal.add(rpoDto);
             }
-        } else {
-            for (RegistroPagoObligaciones rpo : listaTmp) {
-                //if (rpo.getNumeroComprobanteArcom() != null) {
-                    this.refresh(rpo);
-                    listaFinal.add(rpo);
-                //}
-            }
-        }
+//        }
+        
+        
+        
+//        //List<RegistroPagoObligaciones> listaFinal = new ArrayList<>();
+//        if (usuarioEconomicoNacional == false) {
+//            for (RegistroPagoObligaciones rpo : listaTmp) {
+//                if (rpo.getNumeroComprobanteArcom() != null) {
+//                    String prefijoRegional = rpo.getNumeroComprobanteArcom().substring(2, 4);
+//                    if (prefijoRegional.equals(prefijoRegionalParam)) {
+//                        this.refresh(rpo);
+//                        listaFinal.add(rpo);
+//                    }
+//                }
+//            }
+//        } else {
+//            for (RegistroPagoObligaciones rpo : listaTmp) {
+//                //if (rpo.getNumeroComprobanteArcom() != null) {
+//                    this.refresh(rpo);
+//                    listaFinal.add(rpo);
+//                //}
+//            }
+//        }
         return listaFinal;
     }
     
@@ -619,5 +671,5 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
 
         return listaFinal;
     }
-    
+
 }

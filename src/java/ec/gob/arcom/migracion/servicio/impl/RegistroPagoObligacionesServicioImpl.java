@@ -9,6 +9,7 @@ import com.saviasoft.persistence.util.dao.GenericDao;
 import com.saviasoft.persistence.util.service.impl.GenericServiceImpl;
 import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.dao.RegistroPagoObligacionesDao;
+import ec.gob.arcom.migracion.dto.AutoGestionDto;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
 import ec.gob.arcom.migracion.dto.RegistroPagoObligacionesDto;
 import ec.gob.arcom.migracion.modelo.ConcesionMinera;
@@ -73,7 +74,7 @@ public class RegistroPagoObligacionesServicioImpl extends GenericServiceImpl<Reg
     }
     
     @Override
-    public List<RegistroPagoObligaciones> obtenerRegistrosAutogestion(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, String numeroComprobanteBanco,
+    public List<AutoGestionDto> obtenerRegistrosAutogestion(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, String numeroComprobanteBanco,
             String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante) {
         return registroPagoObligacionesDao.obtenerListaAutogestion(fechaInicio, fechaFin, numeroComprobanteArcom, numeroComprobanteBanco,
                 cedula, codigoDerechoMinero, prefijoRegionalParam, numeroTramite, usuarioEconomicoNacional, editarComprobante);

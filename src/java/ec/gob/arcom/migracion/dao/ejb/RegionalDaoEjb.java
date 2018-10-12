@@ -57,7 +57,7 @@ public class RegionalDaoEjb extends GenericDaoEjbEl<Regional, Long> implements
     public Regional findByNombre(String nombre) {
         StringBuilder hql = new StringBuilder(100);
         hql.append("select r from Regional r where ");
-        hql.append("c.nombreRegional = :nombre ");
+        hql.append("r.nombreRegional = :nombre ");
 
         Query query = em.createQuery(hql.toString());
         query.setParameter("nombre", nombre);

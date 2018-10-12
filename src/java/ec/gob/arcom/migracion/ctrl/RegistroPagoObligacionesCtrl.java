@@ -8,7 +8,9 @@ package ec.gob.arcom.migracion.ctrl;
 import ec.gob.arcom.migracion.constantes.ConstantesEnum;
 import ec.gob.arcom.migracion.ctrl.base.BaseCtrl;
 import ec.gob.arcom.migracion.dao.AuditorTecnicoDao;
+import ec.gob.arcom.migracion.dao.ConceptoPagoDao;
 import ec.gob.arcom.migracion.dao.UsuarioDao;
+import ec.gob.arcom.migracion.dto.AutoGestionDto;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
 import ec.gob.arcom.migracion.dto.PersonaDto;
 import ec.gob.arcom.migracion.modelo.AuditorTecnico;
@@ -32,6 +34,7 @@ import ec.gob.arcom.migracion.modelo.UsuarioRol;
 import ec.gob.arcom.migracion.servicio.AuditoriaServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoDetalleServicio;
 import ec.gob.arcom.migracion.servicio.CatalogoServicio;
+import ec.gob.arcom.migracion.servicio.ConceptoPagoServicio;
 import ec.gob.arcom.migracion.servicio.ConcesionMineraServicio;
 import ec.gob.arcom.migracion.servicio.CostoServiciosServicio;
 import ec.gob.arcom.migracion.servicio.LicenciaComercializacionServicio;
@@ -105,12 +108,14 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     private RegistroPagoDetalleServicio registroPagoDetalleServicio;
     @EJB
     private AuditorTecnicoDao auditorTecnicoServicio;
+    @EJB
+    private ConceptoPagoServicio conceptoPagoServicio;
     
     @ManagedProperty(value = "#{loginCtrl}")
     private LoginCtrl login;
     private RegistroPagoObligaciones registroPagoObligacionesAutoGestion;
     private RegistroPagoObligaciones registroPagoObligacionesAutoGestionAnterior;
-    private List<RegistroPagoObligaciones> listaRegistrosAutoGestion;
+    private List<AutoGestionDto> listaRegistrosAutoGestion;
     private String codigoFiltro;
 
     private boolean sujetoMinero;
@@ -334,8 +339,8 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     }
 
     public String editarRegistro() {
-        RegistroPagoObligaciones registroPagoObligacionesItem = (RegistroPagoObligaciones) getExternalContext().getRequestMap().get("reg");
-        return "autogestionform?faces-redirect=true&idItem=" + registroPagoObligacionesItem.getCodigoRegistro();
+        AutoGestionDto registroPagoObligacionesItem = (AutoGestionDto) getExternalContext().getRequestMap().get("reg");       
+        return "autogestionform?faces-redirect=true&idItem=" + registroPagoObligacionesServicio.findByPk(registroPagoObligacionesItem.getCodigoRegistro()).getCodigoRegistro();
     }
 
     public String guardarRegistroAutoGestion() {
@@ -511,7 +516,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
         return comprobanteDuplicado;
     }
     
-    public List<RegistroPagoObligaciones> getListaRegistrosAutoGestion() {
+    public List<AutoGestionDto> getListaRegistrosAutoGestion() {
         if (listaRegistrosAutoGestion == null) {
 //            //SI NO ES ECONOMICO NACIONAL SOLO SE PRESENTAN LOS COMPROBANTES GENERADOS POR AUTOGESTION
 //            if (login.isEconomicoNacional() == false) {
@@ -565,10 +570,18 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
         return listaRegistrosAutoGestion;
     }
 
-    public void setListaRegistrosAutoGestion(List<RegistroPagoObligaciones> listaRegistrosAutoGestion) {
+    public void setListaRegistrosAutoGestion(List<AutoGestionDto> listaRegistrosAutoGestion) {
         this.listaRegistrosAutoGestion = listaRegistrosAutoGestion;
     }
-
+    
+    public String obtenerNombreEstadoPago(String codigo){
+        return catalogoDetalleServicio.obtenerPorCodigoCatalogoDetalle(Long.valueOf(codigo)).getNombre();
+    }
+    
+    public String obtenerDescripcionConceptoPago (Long codigo){
+        return conceptoPagoServicio.findByPk(codigo).getDescripcionConceptoPago();
+    }
+            
     public void buscarRegistro() {
         concesionMineraPopup = null;
         licenciaComercializacionPopup = null;
@@ -981,19 +994,20 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     public void descargaPDF() {
         Usuario us = usuarioDao.obtenerPorLogin(login.getUserName());
         UsuarioRol usRol = usuarioRolServicio.obtenerPorCodigoUsuuario(us.getCodigoUsuario());
-        RegistroPagoObligaciones registroPagoObligacionesItem = (RegistroPagoObligaciones) getExternalContext().getRequestMap().get("reg");
+        AutoGestionDto registroPagoObligacionesItem = (AutoGestionDto) getExternalContext().getRequestMap().get("reg");
+        RegistroPagoObligaciones registroPagoObligaciones = registroPagoObligacionesServicio.findByPk(registroPagoObligacionesItem.getCodigoRegistro());
 //        if (registroPagoObligacionesItem.getCodigoTipoRegistro() != null) {
-            if (registroPagoObligacionesItem.getCodigoTipoRegistro() != null && 
-                    (registroPagoObligacionesItem.getCodigoTipoRegistro().equals(ConstantesEnum.SUJETO_MINERO.getCodigo()) ||
-                        registroPagoObligacionesItem.getCodigoTipoRegistro().equals(ConstantesEnum.TIPO_SOLICITUD_NO_APLICA_DERECHO_MINERO.getCodigo()))) {
+            if (registroPagoObligaciones.getCodigoTipoRegistro() != null && 
+                    (registroPagoObligaciones.getCodigoTipoRegistro().equals(ConstantesEnum.SUJETO_MINERO.getCodigo()) ||
+                        registroPagoObligaciones.getCodigoTipoRegistro().equals(ConstantesEnum.TIPO_SOLICITUD_NO_APLICA_DERECHO_MINERO.getCodigo()))) {
                 urlReporte = ConstantesEnum.URL_REPORTES.getDescripcion()
                         + "/birt/frameset?__report=report/ComprobatesPago/Comprobante-estandar.rptdesign&codigo_registro="
-                        + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
+                        + registroPagoObligaciones.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                         + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf";
             } else {
                 urlReporte = ConstantesEnum.URL_REPORTES.getDescripcion()
                         + "/birt/frameset?__report=report/ComprobatesPago/Respuesta-solicitud.rptdesign&codigo_registro="
-                        + registroPagoObligacionesItem.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
+                        + registroPagoObligaciones.getCodigoRegistro() + "&nombre_funcionario=" + us.getNombresCompletos()
                         + "&cargo_funcionario=" + usRol.getRol().getDescripcion() + "&__format=pdf";
             }
 //        }
@@ -1157,7 +1171,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     }
 
     public void eliminarDerechoMinero() {
-        DerechoMineroDto derechoMineraItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");
+        DerechoMineroDto derechoMineraItem = (DerechoMineroDto) getExternalContext().getRequestMap().get("reg");                
         System.out.println("derechoMineraItem: " + derechoMineraItem.getCodigo());
         derechosMineros.remove(derechoMineraItem);
     }

@@ -6,6 +6,7 @@
 package ec.gob.arcom.migracion.servicio;
 
 import com.saviasoft.persistence.util.service.GenericService;
+import ec.gob.arcom.migracion.dto.AutoGestionDto;
 import ec.gob.arcom.migracion.dto.DerechoMineroDto;
 import ec.gob.arcom.migracion.dto.RegistroPagoObligacionesDto;
 import ec.gob.arcom.migracion.modelo.RegistroPagoObligaciones;
@@ -33,7 +34,7 @@ public interface RegistroPagoObligacionesServicio extends GenericService<Registr
     
     List<RegistroPagoObligaciones> obtenerPorNumeroComprobanteBanco(String numeroComprobanteBanco);
 
-    List<RegistroPagoObligaciones> obtenerRegistrosAutogestion(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, String numeroComprobanteBanco,String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante);
+    List<AutoGestionDto> obtenerRegistrosAutogestion(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, String numeroComprobanteBanco,String cedula, String codigoDerechoMinero, String prefijoRegionalParam, BigInteger numeroTramite, boolean usuarioEconomicoNacional, boolean editarComprobante);
     
     List<RegistroPagoObligacionesDto> obtenerRegistrosPatUtiReg(Date fechaInicio, Date fechaFin, String numeroComprobanteArcom, String cedula, String codigoDerechoMinero, String prefijoRegionalParam);
 

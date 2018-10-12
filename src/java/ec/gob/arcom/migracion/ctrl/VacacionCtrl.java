@@ -168,6 +168,7 @@ public class VacacionCtrl {
     //
     private List<Adjunto> archivosCargados;
     private List<UploadedFile> archivosParaCargar;
+    private UploadedFile archivoParaEliminar;
     private boolean showUploadPanel= false;
     //
     private String urlFormatoImprimir;
@@ -1586,6 +1587,12 @@ public class VacacionCtrl {
         }
         RequestContext.getCurrentInstance().execute("PF('archivosfrmwg').hide();");
     }
+    
+    public void eliminarArchivo(){        
+        System.out.println("Eliminar archivo adjunto");
+        System.out.println("Nombre del archivo: " + archivoParaEliminar.getFileName());
+        archivosParaCargar.remove(archivoParaEliminar);              
+    }
 
     public String saveLegalizacionTHAction() {
         Licencia anterior = new Licencia(licencia);
@@ -2646,6 +2653,14 @@ public class VacacionCtrl {
 
     public void setShowListaSolicitudesSubsanar(boolean showListaSolicitudesSubsanar) {
         this.showListaSolicitudesSubsanar = showListaSolicitudesSubsanar;
+    }
+
+    public UploadedFile getArchivoParaEliminar() {
+        return archivoParaEliminar;
+    }
+
+    public void setArchivoParaEliminar(UploadedFile archivoParaEliminar) {
+        this.archivoParaEliminar = archivoParaEliminar;
     }
     
 }
