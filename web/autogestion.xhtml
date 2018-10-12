@@ -102,15 +102,15 @@
                     </p:column>
 
                     <p:column headerText="No. DEPOSITO" style="width: 5%; text-align: right">
-                        <h:outputText value="#{reg.numeroComprobanteBanco}" styleClass="texto_tabla_detalle"/>
+                        <h:outputText value="#{reg.numeroComprobanteBancario}" styleClass="texto_tabla_detalle"/>
                     </p:column>
 
                     <p:column headerText="TIPO INGRESO/CONCEPTO" width="150">
-                        <h:outputText value="#{reg.codigoConceptoPago.descripcionConceptoPago}" />
+                        <h:outputText value="#{registroPagoObligacionesCtrl.obtenerDescripcionConceptoPago(reg.codigoConceptoPago)}" />
                     </p:column>
 
                     <p:column headerText="ESTADO PAGO" style="width: 5%">
-                        <h:outputText value="#{reg.estadoPago.nombre}" styleClass="texto_tabla_detalle"/>
+                        <h:outputText value="#{registroPagoObligacionesCtrl.obtenerNombreEstadoPago(reg.estadoPago)}" styleClass="texto_tabla_detalle"/>
                     </p:column>
 
                     <p:column headerText="VALOR" style="width: 5%">
