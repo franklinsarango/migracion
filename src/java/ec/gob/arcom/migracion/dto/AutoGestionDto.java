@@ -15,7 +15,7 @@ import java.util.Date;
 public class AutoGestionDto {
     private Date fechaCreacion;
     private Date fechaDeposito;
-    private String numeroComprobanteBancario;
+    private String numeroComprobanteBanco;
     private Long codigoConceptoPago;
     private String estadoPago;
     private BigDecimal valorPagadoUsuario;
@@ -24,6 +24,8 @@ public class AutoGestionDto {
     private String numeroTramite;
     private Date fechaEmisionPago;
     private Long codigoRegistro;
+    private boolean editar1;
+    private boolean editar2;
 
     public Date getFechaCreacion() {
         return fechaCreacion;
@@ -73,12 +75,12 @@ public class AutoGestionDto {
         this.codigoConceptoPago = codigoConceptoPago;
     }
 
-    public String getNumeroComprobanteBancario() {
-        return numeroComprobanteBancario;
+    public String getNumeroComprobanteBanco() {
+        return numeroComprobanteBanco;
     }
 
-    public void setNumeroComprobanteBancario(String numeroComprobanteBancario) {
-        this.numeroComprobanteBancario = numeroComprobanteBancario;
+    public void setNumeroComprobanteBanco(String numeroComprobanteBanco) {
+        this.numeroComprobanteBanco = numeroComprobanteBanco;
     }
 
     public String getEntidadTramite() {
@@ -111,6 +113,22 @@ public class AutoGestionDto {
 
     public void setCodigoRegistro(Long codigoRegistro) {
         this.codigoRegistro = codigoRegistro;
+    }
+
+    public boolean isEditar1() {
+        return editar1;
+    }
+
+    public void setEditar1(boolean editar1) {
+        this.editar1 = editar1;
+    }
+
+    public boolean isEditar2() {
+        return editar2;
+    }
+
+    public void setEditar2(boolean editar2) {
+        this.editar2 = editar2;
     }
     
 }

@@ -343,27 +343,31 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
             }
         }
         
+        int aux = 0;
+        if(usuarioEconomicoNacional == true){
+            aux = 1;
+        }
+        
         String jpql = "";
-        if (usuarioEconomicoNacional == false && editarComprobante == true) {
-            jpql = "select * from catmin.registro_pago_obligaciones rpo where 1 = 1 "
-                    + "and ("
-                    + "(rpo.estado_pago = 574 and rpo.entidad_tramite is null and rpo.comprobante_electronico is null)"
-                    + "or"
-                    + "(rpo.estado_pago in (574) and rpo.entidad_tramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
-                    + ")";
-        }else{
-        if (usuarioEconomicoNacional == false) {
-            jpql = "select * from catmin.registro_pago_obligaciones rpo where 1 = 1 and rpo.estado_pago = 574 and rpo.entidad_tramite is null and rpo.comprobante_electronico is null ";
-        } else {
-            jpql = "select * from catmin.registro_Pago_obligaciones rpo where 1 = 1 "
-                    + "and ("
-                    + "(rpo.estado_pago = 574 and rpo.entidad_tramite is null and rpo.comprobante_electronico is null)"
-                    + "or"
-//                    + "(rpo.estadoPago.codigoCatalogoDetalle in (574,573) and rpo.entidadTramite in ('RESPUESTA_SOLICITUD_INFORMACION','REGISTRO_MINERO_CON_PAGO'))"
-                    + "(rpo.estado_pago in (574,573))"
-                    + ")";
-        }
-        }
+                    
+        jpql = "select codigo_registro,\n"
+                + "fecha_emision_pago,\n"
+                + "numero_tramite,\n"
+                + "entidad_tramite,\n"
+                + "fecha_creacion,\n"
+                + "numero_comprobante_banco,\n"
+                + "codigo_concepto_pago,\n"
+                + "estado_pago,\n"
+                + "valor_pagado_usuario,\n"
+                + "numero_comprobante_arcom,\n"
+                + "case when 1 = " + aux + " then true else false end,\n"
+                + "case when '" + prefijoRegionalParam + "' = substring(rpo.numero_comprobante_arcom from 3 for 2) then true else false end "
+                + "from catmin.registro_pago_obligaciones rpo where 1 = 1\n"
+                + "and rpo.estado_pago in (574,573)\n"
+                + "and rpo.comprobante_electronico is null\n"
+                + "and rpo.numero_comprobante_banco is not null\n"
+                    + "and rpo.estado_registro = true\n";
+
         if (fechaDesde != null && fechaHasta != null) {
             jpql += " and rpo.fecha_creacion >= '" + fechaD + "' and rpo.fecha_creacion <= '" + fechaH + "'";
         }
@@ -390,86 +394,29 @@ public class RegistroPagoObligacionesDaoEjb extends GenericDaoEjbEl<RegistroPago
         jpql += " order by rpo.fecha_creacion desc";
         System.out.println("JPQL: " + jpql);
         Query query = em.createNativeQuery(jpql);
-//        if (numeroComprobanteArcom != null && !numeroComprobanteArcom.isEmpty()) {
-//            query.setParameter("numero_comprobante_arcom", numeroComprobanteArcom);
-//        }
-//        if (numeroComprobanteBanco != null && !numeroComprobanteBanco.isEmpty()) {
-//            query.setParameter("numero_comprobante_banco", numeroComprobanteBanco);
-//        }
-//        if (codigoDerMin != null) {
-//            query.setParameter("codigoDerMin", codigoDerMin);
-//        }
-//        if (numeroTramite != null) {
-//            query.setParameter("numeroTramite", numeroTramite);
-//        }
-       
+                     
         List<Object[]> listaTmp = query.getResultList();
         List<AutoGestionDto> listaFinal = new ArrayList<>();
-//        if (usuarioEconomicoNacional == false){
-//            for (Object[] fila : listaTmp){
-//                AutoGestionDto rpoDto = new AutoGestionDto();
-//                
-//                rpoDto.setCodigoRegistro(fila[0] != null ? Long.valueOf(fila[0].toString()) : null);
-//                rpoDto.setFechaEmisionPago(fila[7] != null ? (Date)fila[7] : null);
-//                rpoDto.setNumeroTramite(fila[19] != null ? fila[19].toString() : null);
-//                rpoDto.setEntidadTramite(fila[20] != null ? fila[20].toString() : null);
-//                rpoDto.setFechaCreacion(fila[27] != null ? (Date)fila[27] : null);
-//                //rpoDto.setFechaDeposito(fila[7] != null ? (Date)fila[7] : null);
-//                rpoDto.setNumeroComprobanteBancario(fila[11] != null ? fila[11].toString() : null);
-//                rpoDto.setCodigoConceptoPago(fila[1] != null ? Long.valueOf(fila[1].toString()) : null);                                
-//                rpoDto.setEstadoPago(fila[17] != null ? fila[17].toString() : null);                                
-//                rpoDto.setValorPagadoUsuario(fila[42] != null ? new BigDecimal(fila[42].toString()) : null);                                
-//                rpoDto.setNumeroComprobanteArcom(fila[15] != null ? fila[15].toString() : null);
-//                                
-//                if (rpoDto.getNumeroComprobanteArcom() != null) {
-//                    String prefijoRegional = rpoDto.getNumeroComprobanteArcom().substring(2, 4);
-//                    if (prefijoRegional.equals(prefijoRegionalParam)) {
-//                        //this.refresh(rpoDto);
-//                        listaFinal.add(rpoDto);
-//                    }
-//                }
-//            }   
-//        } else {
-            for (Object[] fila : listaTmp){
-                AutoGestionDto rpoDto = new AutoGestionDto();
-                
-                rpoDto.setCodigoRegistro(fila[0] != null ? Long.valueOf(fila[0].toString()) : null);
-                rpoDto.setFechaEmisionPago(fila[7] != null ? (Date)fila[7] : null);
-                rpoDto.setNumeroTramite(fila[19] != null ? fila[19].toString() : null);
-                rpoDto.setEntidadTramite(fila[20] != null ? fila[20].toString() : null);
-                rpoDto.setFechaCreacion(fila[27] != null ? (Date)fila[27] : null);
-                //rpoDto.setFechaDeposito(fila[7] != null ? (Date)fila[7] : null);
-                rpoDto.setNumeroComprobanteBancario(fila[11] != null ? fila[11].toString() : null);
-                rpoDto.setCodigoConceptoPago(fila[1] != null ? Long.valueOf(fila[1].toString()) : null);                                
-                rpoDto.setEstadoPago(fila[17] != null ? fila[17].toString() : null);                                
-                rpoDto.setValorPagadoUsuario(fila[42] != null ? new BigDecimal(fila[42].toString()) : null);                                
-                rpoDto.setNumeroComprobanteArcom(fila[15] != null ? fila[15].toString() : null);
-                
-                listaFinal.add(rpoDto);
-            }
-//        }
-        
-        
-        
-//        //List<RegistroPagoObligaciones> listaFinal = new ArrayList<>();
-//        if (usuarioEconomicoNacional == false) {
-//            for (RegistroPagoObligaciones rpo : listaTmp) {
-//                if (rpo.getNumeroComprobanteArcom() != null) {
-//                    String prefijoRegional = rpo.getNumeroComprobanteArcom().substring(2, 4);
-//                    if (prefijoRegional.equals(prefijoRegionalParam)) {
-//                        this.refresh(rpo);
-//                        listaFinal.add(rpo);
-//                    }
-//                }
-//            }
-//        } else {
-//            for (RegistroPagoObligaciones rpo : listaTmp) {
-//                //if (rpo.getNumeroComprobanteArcom() != null) {
-//                    this.refresh(rpo);
-//                    listaFinal.add(rpo);
-//                //}
-//            }
-//        }
+
+        for (Object[] fila : listaTmp) {
+            AutoGestionDto rpoDto = new AutoGestionDto();
+
+            rpoDto.setCodigoRegistro(fila[0] != null ? Long.valueOf(fila[0].toString()) : null);
+            rpoDto.setFechaEmisionPago(fila[1] != null ? (Date) fila[1] : null);
+            rpoDto.setNumeroTramite(fila[2] != null ? fila[2].toString() : null);
+            rpoDto.setEntidadTramite(fila[3] != null ? fila[3].toString() : null);
+            rpoDto.setFechaCreacion(fila[4] != null ? (Date) fila[4] : null);            
+            rpoDto.setNumeroComprobanteBanco(fila[5] != null ? fila[5].toString() : null);
+            rpoDto.setCodigoConceptoPago(fila[6] != null ? Long.valueOf(fila[6].toString()) : null);
+            rpoDto.setEstadoPago(fila[7] != null ? fila[7].toString() : null);
+            rpoDto.setValorPagadoUsuario(fila[8] != null ? new BigDecimal(fila[8].toString()) : null);
+            rpoDto.setNumeroComprobanteArcom(fila[9] != null ? fila[9].toString() : null);
+            rpoDto.setEditar1(fila[10] != null ? Boolean.valueOf(fila[10].toString()) : null);
+            rpoDto.setEditar2(fila[11] != null ? Boolean.valueOf(fila[11].toString()) : null);
+                        
+            listaFinal.add(rpoDto);
+        }
+
         return listaFinal;
     }
     

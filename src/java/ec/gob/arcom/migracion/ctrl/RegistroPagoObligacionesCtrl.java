@@ -164,7 +164,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     private BigDecimal valorPagoDerechoMinero;
     private BigInteger numeroTramite;
     
-    private boolean registrarAuditor;
+    private boolean registrarAuditor;    
     private boolean mostrarAnioPago;
 
     public boolean isRegistrarAuditor() {
@@ -351,10 +351,10 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
             }
             if (generacionComprobante) {
                 generarCodigoComprobante();
+                CatalogoDetalle cd = new CatalogoDetalle();
+                cd.setCodigoCatalogoDetalle(574L);
+                registroPagoObligacionesAutoGestion.setEstadoPago(cd);
             }
-            CatalogoDetalle cd = new CatalogoDetalle();
-            cd.setCodigoCatalogoDetalle(574L);
-            registroPagoObligacionesAutoGestion.setEstadoPago(cd);
             if (registroPagoObligacionesAutoGestion.getCodigoConcesion() != null) {
                 registroPagoObligacionesAutoGestion.setCodigoLicenciaComercializacion(null);
                 registroPagoObligacionesAutoGestion.setCodigoPlantaBeneficio(null);
@@ -518,12 +518,7 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
     
     public List<AutoGestionDto> getListaRegistrosAutoGestion() {
         if (listaRegistrosAutoGestion == null) {
-//            //SI NO ES ECONOMICO NACIONAL SOLO SE PRESENTAN LOS COMPROBANTES GENERADOS POR AUTOGESTION
-//            if (login.isEconomicoNacional() == false) {
-//                listaRegistrosAutoGestion = registroPagoObligacionesServicio
-//                        .obtenerRegistrosAutogestion(fechaDesdeFiltro, fechaHastaFiltro, numeroComprobanteArcomFiltro, null,
-//                                codigoArcomFiltro, login.getPrefijoRegional(), numeroTramite, login.isEconomicoNacional(), login.isEditarComprobante());
-//            } else { //SI ES ECONOMICO NACIONAL SE PRESENTAN LOS COMPROBANTES EN ESTADO REGISTRADO Y APROBADO SI EXISTE UN FILTRO SELECCIONADO
+            
                 boolean existeFiltro = false;
                 if (fechaDesdeFiltro != null || fechaHastaFiltro != null) {
                     System.out.println("fechaDesdeFiltro FILTRO ---->" + fechaDesdeFiltro);
@@ -554,19 +549,10 @@ public class RegistroPagoObligacionesCtrl extends BaseCtrl {
                     return null;
                 }
                 System.out.println("BUSCAR REGISTROS ---->: fechaDesdeFiltro" + fechaDesdeFiltro);
-//                if(login.isEditarComprobante() == true){
-//                if (existeFiltro == true) {
                     listaRegistrosAutoGestion = registroPagoObligacionesServicio
                             .obtenerRegistrosAutogestion(fechaDesdeFiltro, fechaHastaFiltro, numeroComprobanteArcomFiltro, numeroComprobanteBancoFiltro, null,
                                     codigoArcomFiltro, login.getPrefijoRegional(), numeroTramite, login.isEconomicoNacional(), login.isEditarComprobante());
-//                }
-//                }else{
-//                    listaRegistrosAutoGestion = registroPagoObligacionesServicio
-//                        .obtenerRegistrosAutogestion(fechaDesdeFiltro, fechaHastaFiltro, numeroComprobanteArcomFiltro, null,
-//                                codigoArcomFiltro, login.getPrefijoRegional(), numeroTramite, login.isEconomicoNacional(), login.isEditarComprobante());
-//                }
             }
-//        }
         return listaRegistrosAutoGestion;
     }
 

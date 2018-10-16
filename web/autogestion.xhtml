@@ -102,7 +102,7 @@
                     </p:column>
 
                     <p:column headerText="No. DEPOSITO" style="width: 5%; text-align: right">
-                        <h:outputText value="#{reg.numeroComprobanteBancario}" styleClass="texto_tabla_detalle"/>
+                        <h:outputText value="#{reg.numeroComprobanteBanco}" styleClass="texto_tabla_detalle"/>
                     </p:column>
 
                     <p:column headerText="TIPO INGRESO/CONCEPTO" width="150">
@@ -121,8 +121,8 @@
                         <h:outputText value="#{reg.numeroComprobanteArcom}" />
                     </p:column>
 
-                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.editarComprobante}">
-                        <p:commandButton action="#{registroPagoObligacionesCtrl.editarRegistro}" icon="ui-icon-pencil" 
+                    <p:column headerText="EDITAR" style="width:37px; text-align: right" rendered="#{registroPagoObligacionesCtrl.login.editarComprobante or registroPagoObligacionesCtrl.login.economicoNacional}">
+                        <p:commandButton action="#{registroPagoObligacionesCtrl.editarRegistro}" icon="ui-icon-pencil" rendered="#{reg.editar1 or reg.editar2}" 
                                          title="Editar" ajax="false"></p:commandButton>
                     </p:column>
 
