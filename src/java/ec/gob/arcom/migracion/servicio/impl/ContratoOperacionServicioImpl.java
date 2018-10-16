@@ -56,18 +56,13 @@ public class ContratoOperacionServicioImpl extends GenericServiceImpl<ContratoOp
     }
 
     @Override
-    public List<ContratoOperacionDTO> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros, int paramLimit, int paramOffset, String beneficiarioPrincipal) {
-        return contratoOperacionDao.countByContratoOperacionTabla(cedulaRuc, codigoArcom, numDocumento, allRegistros, paramLimit, paramOffset, beneficiarioPrincipal);
+    public List<ContratoOperacionDTO> getContratosOperacionAll(String cedulaRuc, String codigoArcom, String numDocumento, String beneficiarioPrincipal) {
+        return contratoOperacionDao.getContratosOperacionAll(cedulaRuc, codigoArcom, numDocumento, beneficiarioPrincipal);
     }
     
     @Override
     public List<ContratoOperacionDTO> getContratoOperacionCodigoArcomConcesion(String codigoArcom) {    
         return contratoOperacionDao.getContratoOperacionCodigoArcomConcesion(codigoArcom);
-    }
-    
-    @Override
-    public int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros) {
-        return contratoOperacionDao.countByContratoOperacionTablaTotal(cedulaRuc, codigoArcom, numDocumento, allRegistros);
     }
     
     @Override

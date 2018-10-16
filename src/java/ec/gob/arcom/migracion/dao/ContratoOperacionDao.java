@@ -26,11 +26,9 @@ public interface ContratoOperacionDao extends GenericDao<ContratoOperacion, Long
 
     List<ContratoOperacion> obtenerContratosOperacion(String codigoConcesion, String numDocumneto, String loginDocumento);
     
-    List<ContratoOperacionDTO> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros, int paramLimit, int paramOffset, String beneficiarioPrincipal);
+    List<ContratoOperacionDTO> getContratosOperacionAll(String cedulaRuc, String codigoArcom, String numDocumento, String beneficiarioPrincipal);
     
     List<ContratoOperacionDTO> getContratoOperacionCodigoArcomConcesion(String codigoArcom);
-    
-    int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento, boolean allRegistros);
 
     List<ContratoOperacion> obtenerCotitulares(ConcesionMinera concesionMinera);
 

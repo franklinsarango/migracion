@@ -217,42 +217,9 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         //return query.getResultList();
         return null;
     }
-
-    @Override
-    public int countByContratoOperacionTablaTotal(String cedulaRuc, String codigoArcom, String numDocumento, boolean registrosPorRegional) {
-        String jpql = "select co.codigoContratoOperacion from ContratoOperacion co, ConcesionMinera cm where co.codigoConcesion.codigoConcesion = cm.codigoConcesion \n"
-                + " and 1=1 and co.codigoArcom like :codigoArcomCO \n";
-//        if (registrosPorRegional == true) {
-//            jpql += "and cm.codigoProvincia in (select lcr.localidad.codigoLocalidad from LocalidadRegional lcr where lcr.regional.codigoRegional = \n"
-//                    + " (select r.codigoRegional from Regional r, LocalidadRegional lr, Usuario u where u.numeroDocumento = '" + cedulaRuc + "'\n"
-//                    + " and r.codigoRegional = lr.regional.codigoRegional and lr.localidad.codigoLocalidad = u.codigoProvincia)) \n";
-//        }
-        if (codigoArcom != null && !codigoArcom.isEmpty()) {
-            jpql += "and co.codigoArcom like :codigoArcom \n";
-        }
-        if (numDocumento != null && !numDocumento.isEmpty()) {
-            jpql += "and co.numeroDocumento = :numDocumento \n";
-        }
-
-        jpql += "order by co.fechaCreacion, co.codigoArcom desc ";
-
-        System.out.println("jpql: " + jpql);
-        Query query = em.createQuery(jpql);
-        if (codigoArcom != null && !codigoArcom.isEmpty()) {
-            query.setParameter("codigoArcom", codigoArcom + "%");
-        }
-        if (numDocumento != null && !numDocumento.isEmpty()) {
-            query.setParameter("numDocumento", numDocumento);
-        }
-        query.setParameter("codigoArcomCO", "%" + "CO" + "%");
-
-        int count =  query.getResultList().size();
-        return count;
-
-    }
     
     @Override
-    public List<ContratoOperacionDTO> countByContratoOperacionTabla(String cedulaRuc, String codigoArcom, String numDocumento, boolean registrosPorRegional, int paramLimit, int paramOffset, String beneficiarioPrincipal) {
+    public List<ContratoOperacionDTO> getContratosOperacionAll(String cedulaRuc, String codigoArcom, String numDocumento, String beneficiarioPrincipal) {
         String jpqlNative = "select * from (select co.codigo_contrato_operacion, cm.codigo_arcom, co.codigo_arcom as codigo_contrato, co.numero_documento, "
                 + "case when p.apellido is null then p.nombre else p.apellido || ' ' || p.nombre end as titular_contrato, "
                 + "(select l.nombre from catmin.localidad l where l.codigo_localidad = co.codigo_provincia) as provincia,\n"
@@ -273,8 +240,7 @@ public class ContratoOperacionDaoEjb extends GenericDaoEjbEl<ContratoOperacion, 
         jpqlNative += "order by contrato.fecha_creacion desc ";
         
         System.out.println("jpql: " + jpqlNative);
-        Query query = em.createNativeQuery(jpqlNative);         
-        query.setFirstResult(paramOffset).setMaxResults(paramLimit);
+        Query query = em.createNativeQuery(jpqlNative);                 
         List<Object[]> listaTmp = query.getResultList();
         List<ContratoOperacionDTO> listaFinal = new ArrayList<>();
         

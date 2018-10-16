@@ -740,7 +740,7 @@ public class ContratoOperacionCtrl extends BaseCtrl {
             } else {
                 contratosOperacion = new ArrayList<>();
             }            
-            List<ContratoOperacionDTO> contratosOperacionTemp = contratoOperacionServicio.countByContratoOperacionTabla(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, isRegistrosPorRegional(), tamanoPagina, desplazamiento, beneficiarioPrincipal);
+            List<ContratoOperacionDTO> contratosOperacionTemp = contratoOperacionServicio.getContratosOperacionAll(login.getUserName(), codigoArcomFiltro, numDocumentoFiltro, beneficiarioPrincipal);
             for (ContratoOperacionDTO c : contratosOperacionTemp) {
                 if (c.getCodigoArcomContrato().contains("CD") == false) {
                     contratosOperacion.add(c);
